@@ -1,3 +1,7 @@
 # mac
 .DS_Store
 
+xcuserdata
+*.xccheckout
+/NIMKit/NIMKit/Vendors/NIMSDK/libNIMSDK.a
+
