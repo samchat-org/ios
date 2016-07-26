@@ -18,16 +18,18 @@
 #import "NTESNavigationAnimator.h"
 #import "NTESBundleSetting.h"
 #import "SAMCServiceViewController.h"
+#import "SAMCPublicViewController.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
 #define TabbarImage @"image"
 #define TabbarSelectedImage @"selectedImage"
 #define TabbarItemBadgeValue @"badgeValue"
-#define TabBarCount 4
+#define TabBarCount 5
 
 typedef NS_ENUM(NSInteger,NTESMainTabType) {
     NTESMainTabTypeService,
+    NTESMainTabTypePublic,
     NTESMainTabTypeMessageList,    //聊天
     NTESMainTabTypeContact,        //通讯录
 //    NTESMainTabTypeChatroomList,   //聊天室
@@ -238,12 +240,18 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     {
         _configs = @{
                      @(NTESMainTabTypeService) : @{
-                         TabbarVC               : @"SAMCServiceViewController",
-                         TabbarTitle            : @"Service",
-                         TabbarImage            : @"icon_message_normal",
-                         TabbarSelectedImage    : @"icon_message_pressed",
-                         TabbarItemBadgeValue   : @(self.sessionUnreadCount)
-                     },
+                             TabbarVC           : @"SAMCServiceViewController",
+                             TabbarTitle        : @"Service",
+                             TabbarImage        : @"icon_message_normal",
+                             TabbarSelectedImage: @"icon_message_pressed",
+                             TabbarItemBadgeValue: @(self.sessionUnreadCount)
+                             },
+                     @(NTESMainTabTypePublic) : @{
+                             TabbarVC           : @"SAMCPublicViewController",
+                             TabbarTitle        : @"Public",
+                             TabbarImage        : @"icon_message_normal",
+                             TabbarItemBadgeValue: @(self.sessionUnreadCount)
+                             },
                      @(NTESMainTabTypeMessageList) : @{
                              TabbarVC           : @"NTESSessionListViewController",
                              TabbarTitle        : @"云信",
@@ -258,12 +266,6 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarSelectedImage: @"icon_contact_pressed",
                              TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
-//                     @(NTESMainTabTypeChatroomList): @{
-//                             TabbarVC           : @"NTESChatroomListViewController",
-//                             TabbarTitle        : @"直播间",
-//                             TabbarImage        : @"icon_chatroom_normal",
-//                             TabbarSelectedImage: @"icon_chatroom_pressed",
-//                             },
                      @(NTESMainTabTypeSetting)     : @{
                              TabbarVC           : @"NTESSettingViewController",
                              TabbarTitle        : @"设置",
@@ -272,7 +274,6 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarItemBadgeValue: @(self.customSystemUnreadCount)
                              }
                      };
-
     }
     return _configs[@(type)];
 }

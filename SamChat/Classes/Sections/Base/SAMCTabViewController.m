@@ -23,6 +23,8 @@ NSString * const SAMCSwitchToUserModeKey = @"mode";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.edgesForExtendedLayout = UIRectEdgeNone;
+    self.automaticallyAdjustsScrollViewInsets = NO;
     
     UIImage *image = [UIImage imageNamed:@"icon_message_normal"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

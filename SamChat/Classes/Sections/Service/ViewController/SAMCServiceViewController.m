@@ -31,10 +31,8 @@
 
 - (void)setupSubviews
 {
-//    UIView *testView = [[UIView alloc] initWithFrame:self.view.frame];
-//    testView.backgroundColor = [UIColor yellowColor];
-//    [self.view addSubview:testView];
     self.view.backgroundColor = [UIColor whiteColor];
+    // TODO: init according current mode
     [self setupCustomModeViews];
 }
 
@@ -76,7 +74,8 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestTableView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_requestButton(44)]-20-[_requestTableView]|", SAMCTopBarHeight+20]
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_requestButton(44)]-20-[_requestTableView]|", SAMCTopBarHeight+20]
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_requestButton(44)]-20-[_requestTableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestButton, _requestTableView)]];
@@ -98,8 +97,8 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_responseTableView)]];
- //   [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-64-[_responseTableView]|"
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_responseTableView]|",SAMCTopBarHeight]
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_responseTableView]|"
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_responseTableView]|",SAMCTopBarHeight]
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_responseTableView)]];
