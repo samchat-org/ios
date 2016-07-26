@@ -64,4 +64,6 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
     });
 }
 
+#define SAMCTopBarHeight ([UIApplication sharedApplication].statusBarFrame.size.height+self.navigationController.navigationBar.frame.size.height)
+
 #endif /* SAMCGlobalMacro_h */

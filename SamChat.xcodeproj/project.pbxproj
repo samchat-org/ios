@@ -196,6 +196,11 @@
 		312C1CF11D35D85B00242906 /* video_connect_chat_tip_sender.aac in Resources */ = {isa = PBXBuildFile; fileRef = 312C1C341D35D85B00242906 /* video_connect_chat_tip_sender.aac */; };
 		312FD4321D37193D00CC0ACF /* samchat_debug.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312FD4301D37193D00CC0ACF /* samchat_debug.xcconfig */; };
 		312FD4331D37193D00CC0ACF /* samchat_release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312FD4311D37193D00CC0ACF /* samchat_release.xcconfig */; };
+		314444BB1D45B21C0062B797 /* SAMCServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444BA1D45B21C0062B797 /* SAMCServiceViewController.m */; };
+		314444BE1D45E49C0062B797 /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444BD1D45E49C0062B797 /* UIBarButtonItem+Badge.m */; };
+		314444C81D45F6B80062B797 /* SAMCTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444C71D45F6B80062B797 /* SAMCTabViewController.m */; };
+		314444CE1D461ECF0062B797 /* SAMCNewRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444CD1D461ECF0062B797 /* SAMCNewRequestViewController.m */; };
+		314444D21D462F420062B797 /* SAMCPublicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444D11D462F420062B797 /* SAMCPublicViewController.m */; };
 		31799EB11D405A3400878058 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB01D405A3400878058 /* login.storyboard */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
@@ -560,6 +565,16 @@
 		312C1C341D35D85B00242906 /* video_connect_chat_tip_sender.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = video_connect_chat_tip_sender.aac; sourceTree = "<group>"; };
 		312FD4301D37193D00CC0ACF /* samchat_debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = samchat_debug.xcconfig; sourceTree = "<group>"; };
 		312FD4311D37193D00CC0ACF /* samchat_release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = samchat_release.xcconfig; sourceTree = "<group>"; };
+		314444B91D45B21C0062B797 /* SAMCServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCServiceViewController.h; path = Service/ViewController/SAMCServiceViewController.h; sourceTree = "<group>"; };
+		314444BA1D45B21C0062B797 /* SAMCServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCServiceViewController.m; path = Service/ViewController/SAMCServiceViewController.m; sourceTree = "<group>"; };
+		314444BC1D45E49C0062B797 /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
+		314444BD1D45E49C0062B797 /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
+		314444C61D45F6B80062B797 /* SAMCTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCTabViewController.h; path = Base/SAMCTabViewController.h; sourceTree = "<group>"; };
+		314444C71D45F6B80062B797 /* SAMCTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCTabViewController.m; path = Base/SAMCTabViewController.m; sourceTree = "<group>"; };
+		314444CC1D461ECF0062B797 /* SAMCNewRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCNewRequestViewController.h; path = Service/ViewController/SAMCNewRequestViewController.h; sourceTree = "<group>"; };
+		314444CD1D461ECF0062B797 /* SAMCNewRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCNewRequestViewController.m; path = Service/ViewController/SAMCNewRequestViewController.m; sourceTree = "<group>"; };
+		314444D01D462F420062B797 /* SAMCPublicViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicViewController.h; path = Public/SAMCPublicViewController.h; sourceTree = "<group>"; };
+		314444D11D462F420062B797 /* SAMCPublicViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicViewController.m; path = Public/SAMCPublicViewController.m; sourceTree = "<group>"; };
 		31799EB01D405A3400878058 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = login.storyboard; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
@@ -612,6 +627,7 @@
 		3124116D1D45A2AA008B2A35 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				314444B81D45B1DD0062B797 /* ViewController */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -685,6 +701,8 @@
 		312C1AB31D35D85B00242906 /* Addons */ = {
 			isa = PBXGroup;
 			children = (
+				314444BC1D45E49C0062B797 /* UIBarButtonItem+Badge.h */,
+				314444BD1D45E49C0062B797 /* UIBarButtonItem+Badge.m */,
 				312C1AB41D35D85B00242906 /* SwizzlingDefine.h */,
 				312C1AB51D35D85B00242906 /* UINavigationBar+Swizzling.h */,
 				312C1AB61D35D85B00242906 /* UINavigationBar+Swizzling.m */,
@@ -740,6 +758,8 @@
 		312C1AD21D35D85B00242906 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				314444CF1D462F1A0062B797 /* Public */,
+				314444C51D45F68E0062B797 /* Base */,
 				3124116D1D45A2AA008B2A35 /* Service */,
 				312C1AD31D35D85B00242906 /* Card */,
 				312C1AE71D35D85B00242906 /* Chatroom */,
@@ -1501,6 +1521,35 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		314444B81D45B1DD0062B797 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				314444B91D45B21C0062B797 /* SAMCServiceViewController.h */,
+				314444BA1D45B21C0062B797 /* SAMCServiceViewController.m */,
+				314444CC1D461ECF0062B797 /* SAMCNewRequestViewController.h */,
+				314444CD1D461ECF0062B797 /* SAMCNewRequestViewController.m */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		314444C51D45F68E0062B797 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				314444C61D45F6B80062B797 /* SAMCTabViewController.h */,
+				314444C71D45F6B80062B797 /* SAMCTabViewController.m */,
+			);
+			name = Base;
+			sourceTree = "<group>";
+		};
+		314444CF1D462F1A0062B797 /* Public */ = {
+			isa = PBXGroup;
+			children = (
+				314444D01D462F420062B797 /* SAMCPublicViewController.h */,
+				314444D11D462F420062B797 /* SAMCPublicViewController.m */,
+			);
+			name = Public;
+			sourceTree = "<group>";
+		};
 		31799EB51D4064EA00878058 /* CountryCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1756,6 +1805,8 @@
 				312C1C4A1D35D85B00242906 /* NTESFPSLabel.m in Sources */,
 				312C1C9E1D35D85B00242906 /* NTESSessionLocalHistoryViewController.m in Sources */,
 				312C1CD31D35D85B00242906 /* NTESClientUtil.m in Sources */,
+				314444D21D462F420062B797 /* SAMCPublicViewController.m in Sources */,
+				314444BE1D45E49C0062B797 /* UIBarButtonItem+Badge.m in Sources */,
 				312C1C601D35D85B00242906 /* NTESLiveInfoViewController.m in Sources */,
 				312C1CE61D35D85B00242906 /* main.m in Sources */,
 				312C1CC81D35D85B00242906 /* NTESUserInfoSettingViewController.m in Sources */,
@@ -1774,6 +1825,7 @@
 				312C1C931D35D85B00242906 /* NTESSessionWhiteBoardContentView.m in Sources */,
 				312C1C631D35D85B00242906 /* NTESChatroomMemberCell.m in Sources */,
 				312C1C6B1D35D85B00242906 /* NTESGroupedContacts.m in Sources */,
+				314444CE1D461ECF0062B797 /* SAMCNewRequestViewController.m in Sources */,
 				312C1C3D1D35D85B00242906 /* UIScrollView+NTESDirection.m in Sources */,
 				312C1C3A1D35D85B00242906 /* UIImage+NTES.m in Sources */,
 				312C1C5E1D35D85B00242906 /* NTESChatroomMessageDataProvider.m in Sources */,
@@ -1822,6 +1874,7 @@
 				312C1C651D35D85B00242906 /* NTESLiveActionView.m in Sources */,
 				312C1CD81D35D85B00242906 /* NTESNotificationCenter.m in Sources */,
 				312C1CCC1D35D85B00242906 /* NTESSettingPortraitCell.m in Sources */,
+				314444BB1D45B21C0062B797 /* SAMCServiceViewController.m in Sources */,
 				312C1CB21D35D85B00242906 /* NTESTextHeaderView.m in Sources */,
 				312C1C851D35D85B00242906 /* NTESJanKenPonAttachment.m in Sources */,
 				312C1C4B1D35D85B00242906 /* NTESMarginButton.m in Sources */,
@@ -1842,6 +1895,7 @@
 				312C1CCE1D35D85B00242906 /* NTESDemoFetchChatroomTask.m in Sources */,
 				31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */,
 				312C1C9F1D35D85B00242906 /* NTESSessionRemoteHistoryViewController.m in Sources */,
+				314444C81D45F6B80062B797 /* SAMCTabViewController.m in Sources */,
 				312C1C5A1D35D85B00242906 /* NTESChatroomManager.m in Sources */,
 				312C1CA01D35D85B00242906 /* NTESSessionViewController.m in Sources */,
 				312C1C841D35D85B00242906 /* NTESCustomAttachmentDecoder.m in Sources */,
