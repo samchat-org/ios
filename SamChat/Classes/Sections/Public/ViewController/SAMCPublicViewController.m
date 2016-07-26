@@ -36,7 +36,6 @@
 - (void)switchToUserMode:(NSNotification *)notification
 {
     SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
-    NSLog(@"%ld", mode);
     if (mode == SAMCUserModeTypeCustom) {
         [self setupCustomModeViews];
     } else {

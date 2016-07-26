@@ -20,6 +20,7 @@
 #import "SAMCServiceViewController.h"
 #import "SAMCPublicViewController.h"
 #import "SAMCContactListViewController.h"
+#import "SAMCSettingViewController.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -119,6 +120,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
         UIViewController *vc = [[clazz alloc] initWithNibName:nil bundle:nil];
         vc.hidesBottomBarWhenPushed = NO;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBar.translucent = NO;
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title
                                                        image:[UIImage imageNamed:imageName]
                                                selectedImage:[UIImage imageNamed:imageSelected]];
@@ -267,6 +269,13 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarSelectedImage: @"icon_contact_pressed",
                              TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
+                     @(NTESMainTabTypeSetting) : @{
+                             TabbarVC           : @"SAMCSettingViewController",
+                             TabbarTitle        : @"设置",
+                             TabbarImage        : @"icon_setting_normal",
+                             TabbarSelectedImage: @"icon_setting_pressed",
+                             TabbarItemBadgeValue: @(self.customSystemUnreadCount)
+                             }
 //                     @(NTESMainTabTypeContact)     : @{
 //                             TabbarVC           : @"NTESContactViewController",
 //                             TabbarTitle        : @"通讯录",
@@ -274,13 +283,13 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 //                             TabbarSelectedImage: @"icon_contact_pressed",
 //                             TabbarItemBadgeValue: @(self.systemUnreadCount)
 //                             },
-                     @(NTESMainTabTypeSetting)     : @{
-                             TabbarVC           : @"NTESSettingViewController",
-                             TabbarTitle        : @"设置",
-                             TabbarImage        : @"icon_setting_normal",
-                             TabbarSelectedImage: @"icon_setting_pressed",
-                             TabbarItemBadgeValue: @(self.customSystemUnreadCount)
-                             }
+//                     @(NTESMainTabTypeSetting)     : @{
+//                             TabbarVC           : @"NTESSettingViewController",
+//                             TabbarTitle        : @"设置",
+//                             TabbarImage        : @"icon_setting_normal",
+//                             TabbarSelectedImage: @"icon_setting_pressed",
+//                             TabbarItemBadgeValue: @(self.customSystemUnreadCount)
+//                             }
                      };
     }
     return _configs[@(type)];
