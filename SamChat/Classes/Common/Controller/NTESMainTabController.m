@@ -19,6 +19,7 @@
 #import "NTESBundleSetting.h"
 #import "SAMCServiceViewController.h"
 #import "SAMCPublicViewController.h"
+#import "SAMCContactListViewController.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -31,7 +32,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     NTESMainTabTypeService,
     NTESMainTabTypePublic,
     NTESMainTabTypeMessageList,    //聊天
-    NTESMainTabTypeContact,        //通讯录
+    NTESMainTabTypeContact,
 //    NTESMainTabTypeChatroomList,   //聊天室
     NTESMainTabTypeSetting,        //设置
 };
@@ -259,13 +260,20 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarSelectedImage: @"icon_message_pressed",
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
                              },
-                     @(NTESMainTabTypeContact)     : @{
-                             TabbarVC           : @"NTESContactViewController",
-                             TabbarTitle        : @"通讯录",
+                     @(NTESMainTabTypeContact) : @{
+                             TabbarVC           : @"SAMCContactListViewController",
+                             TabbarTitle        : @"Contact",
                              TabbarImage        : @"icon_contact_normal",
                              TabbarSelectedImage: @"icon_contact_pressed",
                              TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
+//                     @(NTESMainTabTypeContact)     : @{
+//                             TabbarVC           : @"NTESContactViewController",
+//                             TabbarTitle        : @"通讯录",
+//                             TabbarImage        : @"icon_contact_normal",
+//                             TabbarSelectedImage: @"icon_contact_pressed",
+//                             TabbarItemBadgeValue: @(self.systemUnreadCount)
+//                             },
                      @(NTESMainTabTypeSetting)     : @{
                              TabbarVC           : @"NTESSettingViewController",
                              TabbarTitle        : @"设置",

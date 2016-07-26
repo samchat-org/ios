@@ -53,7 +53,6 @@
     
     self.customTableView = [[UITableView alloc] init];
     self.customTableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.customTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.customTableView.backgroundColor = [UIColor greenColor];
     self.customTableView.dataSource = self;
     self.customTableView.delegate = self;
