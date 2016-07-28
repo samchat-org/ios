@@ -9,6 +9,7 @@
 #import "SAMCConfirmPhoneNumViewController.h"
 #import "SAMCCountryCodeViewController.h"
 #import "SAMCTextField.h"
+#import "SAMCConfirmPhoneCodeViewController.h"
 
 @interface SAMCConfirmPhoneNumViewController ()
 
@@ -16,6 +17,8 @@
 @property (nonatomic, strong) UIButton *sendButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *sendButtonBottomContraint;
+
+@property (nonatomic, strong) NSString *phoneNumber;
 
 @end
 
@@ -100,8 +103,13 @@
 #pragma mark - Action
 - (void)sendConfirmationCode:(UIButton *)sender
 {
+    self.phoneNumber = self.phoneTextField.rightTextField.text;
     // TODO: add phone no. check
-    
+    SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
+    vc.navTitle = self.navTitle;
+    vc.countryCode = self.phoneTextField.leftButton.titleLabel.text;
+    vc.phoneNumber = self.phoneNumber;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UIKeyBoard Notification
