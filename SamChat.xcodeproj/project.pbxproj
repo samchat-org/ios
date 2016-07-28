@@ -204,6 +204,7 @@
 		314444DB1D473D630062B797 /* SAMCChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444DA1D473D630062B797 /* SAMCChatListViewController.m */; };
 		314444DF1D473E1D0062B797 /* SAMCContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444DE1D473E1D0062B797 /* SAMCContactListViewController.m */; };
 		314444E31D4753C30062B797 /* SAMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E21D4753C30062B797 /* SAMCSettingViewController.m */; };
+		314444E61D4860960062B797 /* SAMCSettingPortraitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */; };
 		31799EB11D405A3400878058 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB01D405A3400878058 /* login.storyboard */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
@@ -584,6 +585,8 @@
 		314444DE1D473E1D0062B797 /* SAMCContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCContactListViewController.m; sourceTree = "<group>"; };
 		314444E11D4753C30062B797 /* SAMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingViewController.h; path = ViewController/SAMCSettingViewController.h; sourceTree = "<group>"; };
 		314444E21D4753C30062B797 /* SAMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSettingViewController.m; path = ViewController/SAMCSettingViewController.m; sourceTree = "<group>"; };
+		314444E41D4860960062B797 /* SAMCSettingPortraitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSettingPortraitCell.h; sourceTree = "<group>"; };
+		314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSettingPortraitCell.m; sourceTree = "<group>"; };
 		31799EB01D405A3400878058 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = login.storyboard; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
@@ -1432,6 +1435,8 @@
 				312C1BF21D35D85B00242906 /* NTESSettingPortraitCell.m */,
 				312C1BF31D35D85B00242906 /* NTESSettingSwitcherCell.h */,
 				312C1BF41D35D85B00242906 /* NTESSettingSwitcherCell.m */,
+				314444E41D4860960062B797 /* SAMCSettingPortraitCell.h */,
+				314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1898,6 +1903,7 @@
 				312C1C3F1D35D85B00242906 /* UIView+NTES.m in Sources */,
 				312C1CC51D35D85B00242906 /* NTESMobileSettingViewController.m in Sources */,
 				312C1C8F1D35D85B00242906 /* NTESSearchMessageEntraceCell.m in Sources */,
+				314444E61D4860960062B797 /* SAMCSettingPortraitCell.m in Sources */,
 				312C1CC11D35D85B00242906 /* NTESAliasSettingViewController.m in Sources */,
 				312C1CB41D35D85B00242906 /* NTESSessionListViewController.m in Sources */,
 				312C1CB31D35D85B00242906 /* NTESClientsTableViewController.m in Sources */,

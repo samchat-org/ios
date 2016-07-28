@@ -23,7 +23,9 @@
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         _button = [[NTESColorButton alloc] initWithFrame:CGRectZero];
-        _button.size = [_button sizeThatFits:CGSizeMake(self.width, CGFLOAT_MAX)];
+        _button.size = [_button sizeThatFits:CGSizeMake(self.width-20, CGFLOAT_MAX)];
+        _button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        _button.titleEdgeInsets = UIEdgeInsetsMake(0, 20, 0, 0);
         _button.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [self addSubview:_button];
     }

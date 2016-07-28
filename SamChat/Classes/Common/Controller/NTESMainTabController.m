@@ -15,10 +15,10 @@
 #import "NTESCustomNotificationDB.h"
 #import "NTESNotificationCenter.h"
 #import "NTESNavigationHandler.h"
-#import "NTESNavigationAnimator.h"
 #import "NTESBundleSetting.h"
 #import "SAMCServiceViewController.h"
 #import "SAMCPublicViewController.h"
+#import "SAMCChatListViewController.h"
 #import "SAMCContactListViewController.h"
 #import "SAMCSettingViewController.h"
 
@@ -42,9 +42,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 @interface NTESMainTabController ()<NIMSystemNotificationManagerDelegate,NIMConversationManagerDelegate>
 
-@property (nonatomic,strong) NSArray *navigationHandlers;
-
-@property (nonatomic,strong) NTESNavigationAnimator *animator;
+//@property (nonatomic,strong) NSArray *navigationHandlers;
 
 @property (nonatomic,assign) NSInteger sessionUnreadCount;
 
@@ -108,7 +106,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 
 - (void)setUpSubNav{
-    NSMutableArray *handleArray = [[NSMutableArray alloc] init];
+//    NSMutableArray *handleArray = [[NSMutableArray alloc] init];
     NSMutableArray *vcArray = [[NSMutableArray alloc] init];
     [self.tabbars enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary * item =[self vcInfoForTabType:[obj integerValue]];
@@ -129,14 +127,14 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
         if (badge) {
             nav.tabBarItem.badgeValue = [NSString stringWithFormat:@"%zd",badge];
         }
-        NTESNavigationHandler *handler = [[NTESNavigationHandler alloc] initWithNavigationController:nav];
-        nav.delegate = handler;
+//        NTESNavigationHandler *handler = [[NTESNavigationHandler alloc] initWithNavigationController:nav];
+//        nav.delegate = handler;
         
         [vcArray addObject:nav];
-        [handleArray addObject:handler];
+//        [handleArray addObject:handler];
     }];
     self.viewControllers = [NSArray arrayWithArray:vcArray];
-    self.navigationHandlers = [NSArray arrayWithArray:handleArray];
+//    self.navigationHandlers = [NSArray arrayWithArray:handleArray];
 }
 
 
@@ -256,8 +254,9 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
                              },
                      @(NTESMainTabTypeMessageList) : @{
-                             TabbarVC           : @"NTESSessionListViewController",
-                             TabbarTitle        : @"云信",
+//                             TabbarVC           : @"NTESSessionListViewController",
+                             TabbarVC           : @"SAMCChatListViewController",
+                             TabbarTitle        : @"Chat",
                              TabbarImage        : @"icon_message_normal",
                              TabbarSelectedImage: @"icon_message_pressed",
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
@@ -271,7 +270,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              },
                      @(NTESMainTabTypeSetting) : @{
                              TabbarVC           : @"SAMCSettingViewController",
-                             TabbarTitle        : @"设置",
+                             TabbarTitle        : @"Settings",
                              TabbarImage        : @"icon_setting_normal",
                              TabbarSelectedImage: @"icon_setting_pressed",
                              TabbarItemBadgeValue: @(self.customSystemUnreadCount)

@@ -91,8 +91,8 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_popularTabeView)]];
-    NSString *visualFomat = [NSString stringWithFormat:@"V:|-%f-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_popularTabeView]|", SAMCTopBarHeight+10];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:visualFomat
+//    NSString *visualFomat = [NSString stringWithFormat:@"V:|-%f-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_popularTabeView]|", SAMCTopBarHeight+10];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_popularTabeView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_popularTabeView)]];
