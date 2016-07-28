@@ -205,7 +205,8 @@
 		314444DF1D473E1D0062B797 /* SAMCContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444DE1D473E1D0062B797 /* SAMCContactListViewController.m */; };
 		314444E31D4753C30062B797 /* SAMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E21D4753C30062B797 /* SAMCSettingViewController.m */; };
 		314444E61D4860960062B797 /* SAMCSettingPortraitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */; };
-		31799EB11D405A3400878058 /* login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB01D405A3400878058 /* login.storyboard */; };
+		314444EA1D49A5590062B797 /* SAMCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E91D49A5590062B797 /* SAMCTextField.m */; };
+		314444ED1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -587,7 +588,10 @@
 		314444E21D4753C30062B797 /* SAMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSettingViewController.m; path = ViewController/SAMCSettingViewController.m; sourceTree = "<group>"; };
 		314444E41D4860960062B797 /* SAMCSettingPortraitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSettingPortraitCell.h; sourceTree = "<group>"; };
 		314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSettingPortraitCell.m; sourceTree = "<group>"; };
-		31799EB01D405A3400878058 /* login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = login.storyboard; sourceTree = "<group>"; };
+		314444E81D49A5590062B797 /* SAMCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCTextField.h; path = View/SAMCTextField.h; sourceTree = "<group>"; };
+		314444E91D49A5590062B797 /* SAMCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCTextField.m; path = View/SAMCTextField.m; sourceTree = "<group>"; };
+		314444EB1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCConfirmPhoneNumViewController.h; sourceTree = "<group>"; };
+		314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCConfirmPhoneNumViewController.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -1021,6 +1025,7 @@
 		312C1B3F1D35D85B00242906 /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				314444E71D49A0DA0062B797 /* View */,
 				312C1B401D35D85B00242906 /* Manager */,
 				312C1B431D35D85B00242906 /* ViewController */,
 			);
@@ -1046,9 +1051,10 @@
 				312C1B471D35D85B00242906 /* NTESRegisterViewController.h */,
 				312C1B481D35D85B00242906 /* NTESRegisterViewController.m */,
 				312C1B491D35D85B00242906 /* NTESRegisterViewController.xib */,
-				31799EB01D405A3400878058 /* login.storyboard */,
 				31799EB21D4063D000878058 /* SAMCLoginViewController.h */,
 				31799EB31D4063D000878058 /* SAMCLoginViewController.m */,
+				314444EB1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.h */,
+				314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1602,6 +1608,15 @@
 			name = ViewController;
 			sourceTree = "<group>";
 		};
+		314444E71D49A0DA0062B797 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				314444E81D49A5590062B797 /* SAMCTextField.h */,
+				314444E91D49A5590062B797 /* SAMCTextField.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		31799EB51D4064EA00878058 /* CountryCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1726,7 +1741,6 @@
 				312C1C501D35D85B00242906 /* NTESJionTeamViewController.xib in Resources */,
 				312C1C951D35D85B00242906 /* NTESAudio2TextViewController.xib in Resources */,
 				31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */,
-				31799EB11D405A3400878058 /* login.storyboard in Resources */,
 				312C1CE41D35D85B00242906 /* SetupOSX.mpq in Resources */,
 				312C1CA81D35D85B00242906 /* NTESAudioChatViewController.xib in Resources */,
 				312FD4321D37193D00CC0ACF /* samchat_debug.xcconfig in Resources */,
@@ -1877,6 +1891,7 @@
 				312C1CA41D35D85B00242906 /* NTESVideoViewController.m in Sources */,
 				314444DB1D473D630062B797 /* SAMCChatListViewController.m in Sources */,
 				312C1C4F1D35D85B00242906 /* NTESJionTeamViewController.m in Sources */,
+				314444ED1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m in Sources */,
 				312C1C931D35D85B00242906 /* NTESSessionWhiteBoardContentView.m in Sources */,
 				312C1C631D35D85B00242906 /* NTESChatroomMemberCell.m in Sources */,
 				312C1C6B1D35D85B00242906 /* NTESGroupedContacts.m in Sources */,
@@ -1914,6 +1929,7 @@
 				312C1C6D1D35D85B00242906 /* NTESGroupedUsrInfo.m in Sources */,
 				312C1CD21D35D85B00242906 /* NTESCADisplayLinkHolder.m in Sources */,
 				312C1C551D35D85B00242906 /* NTESTeamListViewController.m in Sources */,
+				314444EA1D49A5590062B797 /* SAMCTextField.m in Sources */,
 				312C1C461D35D85B00242906 /* NTESNavigationAnimator.m in Sources */,
 				312C1CDE1D35D85B00242906 /* NTESPinyinConverter.m in Sources */,
 				312C1C591D35D85B00242906 /* NTESChatroomTextContentConfig.m in Sources */,

@@ -165,10 +165,10 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 
 - (void)setupLoginViewController
 {
-        NTESLoginViewController *loginController = [[NTESLoginViewController alloc] init];
-//    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"login" bundle:[NSBundle mainBundle]];
-//    UIViewController *loginController = [storyBoard instantiateViewControllerWithIdentifier:@"LoginView"];
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:loginController];
+//        NTESLoginViewController *loginController = [[NTESLoginViewController alloc] init];
+    SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
     self.window.rootViewController = nav;
 }
 
