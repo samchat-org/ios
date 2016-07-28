@@ -32,7 +32,9 @@
 
 @property (nonatomic,strong) UILabel *emptyTipLabel;
 @property (nonatomic,strong) NTESListHeader *header;
-@property (nonatomic,strong)   UITableView *tableView;
+@property (nonatomic,strong) UITableView *tableView;
+@property (nonatomic, strong) UISearchDisplayController *searchResultController;
+@property (nonatomic, strong) UISearchBar *searchBar;
 
 @property (nonatomic,readonly) NSMutableArray * recentSessions;
 
@@ -56,8 +58,17 @@
         _recentSessions = [NSMutableArray array];
     }
     
-    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
-    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+//    self.searchBar.delegate = self;
+    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    self.tableView.tableHeaderView = self.searchBar;
+    
+    self.searchResultController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar
+                                                                    contentsController:self];
+//    self.searchResultController.delegate = self;
+//    self.searchResultController.searchResultsDataSource = self;
+//    self.searchResultController.searchResultsDelegate = self;
+    
     self.header = [[NTESListHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
     self.header.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.header.delegate = self;
@@ -69,6 +80,10 @@
     self.emptyTipLabel.hidden = self.recentSessions.count;
     [self.view addSubview:self.emptyTipLabel];
     
+    
+    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    
     extern NSString *const NIMKitTeamInfoHasUpdatedNotification;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamInfoHasUpdatedNotification:) name:NIMKitTeamInfoHasUpdatedNotification object:nil];
     
@@ -77,7 +92,6 @@
     
     extern NSString *const NIMKitUserInfoHasUpdatedNotification;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserInfoHasUpdatedNotification object:nil];
-    
 }
 
 - (void)dealloc
