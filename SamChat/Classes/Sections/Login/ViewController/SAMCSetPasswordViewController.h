@@ -1,5 +1,5 @@
 //
-//  SAMCConfirmPhoneNumViewController.h
+//  SAMCSetPasswordViewController.h
 //  SamChat
 //
 //  Created by HJ on 7/28/16.
@@ -8,9 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SAMCConfirmPhoneNumViewController : UIViewController
+@interface SAMCSetPasswordViewController : UIViewController
 
 @property (nonatomic, getter=isSignupOperation) BOOL signupOperation;
-@property (nonatomic, copy) NSString *countryCode;
 
 @end

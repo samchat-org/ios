@@ -209,6 +209,7 @@
 		314444ED1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */; };
 		314444F31D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */; };
 		314444F61D49F6820062B797 /* SAMCPhoneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F51D49F6820062B797 /* SAMCPhoneCodeView.m */; };
+		314444FA1D4A41A50062B797 /* SAMCSetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -598,6 +599,8 @@
 		314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCConfirmPhoneCodeViewController.m; sourceTree = "<group>"; };
 		314444F41D49F6820062B797 /* SAMCPhoneCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPhoneCodeView.h; path = View/SAMCPhoneCodeView.h; sourceTree = "<group>"; };
 		314444F51D49F6820062B797 /* SAMCPhoneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPhoneCodeView.m; path = View/SAMCPhoneCodeView.m; sourceTree = "<group>"; };
+		314444F81D4A41A50062B797 /* SAMCSetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSetPasswordViewController.h; sourceTree = "<group>"; };
+		314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSetPasswordViewController.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -1063,6 +1066,8 @@
 				314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */,
 				314444F11D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.h */,
 				314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */,
+				314444F81D4A41A50062B797 /* SAMCSetPasswordViewController.h */,
+				314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1973,6 +1978,7 @@
 				312C1C8D1D35D85B00242906 /* NTESSessionTipConfig.m in Sources */,
 				314444F31D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m in Sources */,
 				312C1C5B1D35D85B00242906 /* NTESChatroomListViewController.m in Sources */,
+				314444FA1D4A41A50062B797 /* SAMCSetPasswordViewController.m in Sources */,
 				312C1C8A1D35D85B00242906 /* NTESWhiteboardAttachment.m in Sources */,
 				312C1C521D35D85B00242906 /* NTESSearchTeamViewController.m in Sources */,
 				312C1CBC1D35D85B00242906 /* NTESTextSettingCell.m in Sources */,

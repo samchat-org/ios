@@ -9,6 +9,7 @@
 #import "SAMCConfirmPhoneCodeViewController.h"
 #import "SAMCTextField.h"
 #import "SAMCPhoneCodeView.h"
+#import "SAMCSetPasswordViewController.h"
 
 @interface SAMCConfirmPhoneCodeViewController ()<SAMCPhoneCodeViewDelegate>
 
@@ -27,7 +28,11 @@
 
 - (void)setupSubviews
 {
-    self.navigationItem.title = self.navTitle;
+    if (self.isSignupOperation) {
+        self.navigationItem.title = @"Sign Up";
+    } else {
+        self.navigationItem.title = @"Reset Password";
+    }
     self.view.backgroundColor = [UIColor whiteColor];
     
     self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
@@ -63,6 +68,10 @@
 - (void)phonecodeCompleteInput:(SAMCPhoneCodeView *)view
 {
     DDLogDebug(@"phone code:%@", view.phoneCode);
+    // TODO: check phone code
+    SAMCSetPasswordViewController *vc = [[SAMCSetPasswordViewController alloc] init];
+    vc.signupOperation = self.isSignupOperation;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

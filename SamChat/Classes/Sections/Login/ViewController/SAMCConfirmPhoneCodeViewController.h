@@ -10,7 +10,7 @@
 
 @interface SAMCConfirmPhoneCodeViewController : UIViewController
 
-@property (nonatomic, strong) NSString *navTitle;
+@property (nonatomic, getter=isSignupOperation) BOOL signupOperation;
 
 @property (nonatomic, strong) NSString *countryCode;
 @property (nonatomic, strong) NSString *phoneNumber;

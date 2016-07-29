@@ -127,14 +127,16 @@ NTES_USE_CLEAR_BAR
 - (void)signup:(UIButton *)sender
 {
     SAMCConfirmPhoneNumViewController *vc = [[SAMCConfirmPhoneNumViewController alloc] init];
-    vc.navTitle = @"Sign Up";
+    vc.signupOperation = YES;
     vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)forgotPassword:(UIButton *)sender
 {
-    SAMCNewRequestViewController *vc = [[SAMCNewRequestViewController alloc] init];
+    SAMCConfirmPhoneNumViewController *vc = [[SAMCConfirmPhoneNumViewController alloc] init];
+    vc.signupOperation = NO;
+    vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

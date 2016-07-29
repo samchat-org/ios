@@ -51,7 +51,11 @@
 
 - (void)setupSubviews
 {
-    self.navigationItem.title = self.navTitle;
+    if (self.isSignupOperation) {
+        self.navigationItem.title = @"Sign Up";
+    } else {
+        self.navigationItem.title = @"Reset Password";
+    }
     self.view.backgroundColor = [UIColor whiteColor];
 
     self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
@@ -106,7 +110,7 @@
     self.phoneNumber = self.phoneTextField.rightTextField.text;
     // TODO: add phone no. check
     SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
-    vc.navTitle = self.navTitle;
+    vc.signupOperation = self.isSignupOperation;
     vc.countryCode = self.phoneTextField.leftButton.titleLabel.text;
     vc.phoneNumber = self.phoneNumber;
     [self.navigationController pushViewController:vc animated:YES];
