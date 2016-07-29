@@ -8,8 +8,6 @@
 
 #import "SAMCPhoneCodeView.h"
 
-static NSString *CODENUMBERS = @"0123456789";
-
 @interface SAMCPhoneCodeView ()
 
 @property (nonatomic, strong) NSArray *codeViews;
@@ -111,11 +109,6 @@ static NSString *CODENUMBERS = @"0123456789";
     }
 }
 
-- (UIKeyboardType)keyboardType
-{
-    return UIKeyboardTypeNumberPad;
-}
-
 - (BOOL)becomeFirstResponder
 {
     if ([self.delegate respondsToSelector:@selector(phonecodeBeginInput:)]) {
@@ -130,6 +123,12 @@ static NSString *CODENUMBERS = @"0123456789";
 }
 
 #pragma mark - UIKeyInput
+- (UIKeyboardType)keyboardType
+{
+//    return UIKeyboardTypeNumberPad;
+    return UIKeyboardTypePhonePad;
+}
+
 - (BOOL)hasText
 {
     return self.phoneCode.length > 0;
@@ -137,25 +136,22 @@ static NSString *CODENUMBERS = @"0123456789";
 
 - (void)insertText:(NSString *)text
 {
-    if (self.phoneCode.length < 4) {
-            //判断是否是数字
-            NSCharacterSet *cs = [[NSCharacterSet characterSetWithCharactersInString:CODENUMBERS] invertedSet];
-            NSString*filtered = [[text componentsSeparatedByCharactersInSet:cs] componentsJoinedByString:@""];
-            BOOL basicTest = [text isEqualToString:filtered];
-            if(basicTest) {
-                [self.inputViews[self.phoneCode.length] setHidden:NO];
-                [self.phoneCode appendString:text];
-                if ([self.delegate respondsToSelector:@selector(phonecodeDidChange:)]) {
-                    [self.delegate phonecodeDidChange:self];
-                }
-                if (self.phoneCode.length == 4) {
-                    if ([self.delegate respondsToSelector:@selector(phonecodeCompleteInput:)]) {
-                        [self.delegate phonecodeCompleteInput:self];
-                    }
-                }
-                [self setNeedsDisplay];
+    if (self.phoneCode.length >= 4) {
+        return;
+    }
+    if ([@"0123456789" rangeOfString:text].location != NSNotFound) {
+        [self.inputViews[self.phoneCode.length] setHidden:NO];
+        [self.phoneCode appendString:text];
+        if ([self.delegate respondsToSelector:@selector(phonecodeDidChange:)]) {
+            [self.delegate phonecodeDidChange:self];
+        }
+        if (self.phoneCode.length == 4) {
+            if ([self.delegate respondsToSelector:@selector(phonecodeCompleteInput:)]) {
+                [self.delegate phonecodeCompleteInput:self];
             }
         }
+        [self setNeedsDisplay];
+    }
 }
 
 - (void)deleteBackward
@@ -170,6 +166,7 @@ static NSString *CODENUMBERS = @"0123456789";
     [self setNeedsDisplay];
 }
 
+#pragma mark - UIView
 - (void)drawRect:(CGRect)rect
 {
     for (UIView *view in self.codeViews) {
