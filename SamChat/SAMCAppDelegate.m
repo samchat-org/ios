@@ -26,6 +26,8 @@
 #import "SAMCLoginViewController.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
+NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
+NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 @interface SAMCAppDelegate ()<NIMLoginManagerDelegate>
 @property (nonatomic,strong) NTESSDKConfig *config;
 @end
@@ -159,7 +161,10 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
                                              selector:@selector(logout:)
                                                  name:NTESNotificationLogout
                                                object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(login:)
+                                                 name:SAMCLoginNotification
+                                               object:nil];
     [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
 }
 
@@ -172,9 +177,19 @@ NSString *NTESNotificationLogout = @"NTESNotificationLogout";
     self.window.rootViewController = nav;
 }
 
+#pragma mark - 主动登录
+- (void)login:(NSNotification *)notification
+{
+    LoginData *data = [[notification userInfo] objectForKey:SAMCLoginUserDataKey];
+    [[NTESLoginManager sharedManager] setCurrentLoginData:data];
+    
+    [[NTESServiceManager sharedManager] start];
+    NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
+    [UIApplication sharedApplication].keyWindow.rootViewController = mainTab;
+}
 
 #pragma mark - 注销
--(void)logout:(NSNotification*)note
+- (void)logout:(NSNotification *)note
 {
     [self doLogout];
 }

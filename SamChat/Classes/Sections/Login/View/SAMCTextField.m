@@ -44,6 +44,8 @@
     
     _rightTextField = [[UITextField alloc] init];
     _rightTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    _rightTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _rightTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _rightTextField.backgroundColor = [UIColor clearColor];
     [self addSubview:_rightTextField];
     
