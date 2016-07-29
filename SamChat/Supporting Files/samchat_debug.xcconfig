@@ -9,7 +9,7 @@
 #include "../../Pods/Target Support Files/Pods/Pods.debug.xcconfig"
 
 XCCONFIG_BUNDLE_ID                  = com.netease.NIM.demo
-XCCONFIG_BUNDLE_NAME                = 网易云信开发版
+XCCONFIG_BUNDLE_NAME                = SamChat Dev
 XCCONFIG_CODE_SIGNING               = iPhone Developer
 XCCONFIG_PROVISIONING_PROFILE       = 
 
