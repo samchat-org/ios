@@ -34,7 +34,7 @@
 {
     self = [super init];
     if (self) {
-        _syncQueue = dispatch_queue_create("com.github.gknows.samchat.preferenceQueue", DISPATCH_QUEUE_SERIAL);
+        _syncQueue = dispatch_queue_create("com.github.gknows.samchat.preferenceQueue", DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
 }
@@ -55,11 +55,9 @@
 
 - (void)setCurrentUserMode:(NSNumber *)currentUserMode
 {
-    dispatch_sync(_syncQueue, ^{
+    dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = currentUserMode;
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [[NSUserDefaults standardUserDefaults] setValue:currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
-        });
+        [[NSUserDefaults standardUserDefaults] setValue:currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
     });
 }
 
