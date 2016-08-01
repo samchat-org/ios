@@ -44,6 +44,16 @@
                                                object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    if (self.isSignupOperation) {
+        [self.usernameTextField.rightTextField becomeFirstResponder];
+    } else {
+        [self.passwordTextField.rightTextField becomeFirstResponder];
+    }
+}
+
 - (void)setupSignUpViews
 {
     [self.view addSubview:self.usernameTextField];
@@ -98,6 +108,7 @@
     [_doneButton setTitle:@"DONE" forState:UIControlStateNormal];
     [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_doneButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+    [_doneButton addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_doneButton];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_doneButton]-20-|"
                                                                       options:0
@@ -121,9 +132,19 @@
 }
 
 #pragma mark - Action
+- (void)usernameTextFieldEditingDidEndOnExit
+{
+    [self.passwordTextField.rightTextField becomeFirstResponder];
+}
+
 - (void)touchAgreeButton:(UIButton *)sender
 {
     _agreeButton.selected = !_agreeButton.selected;
+}
+
+- (void)touchDoneButton:(UIButton *)sender
+{
+    DDLogDebug(@"touch done button");
 }
 
 #pragma mark - UIKeyBoard Notification
@@ -155,6 +176,8 @@
         _usernameTextField = [[SAMCTextField alloc] init];
         _usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _usernameTextField.rightTextField.placeholder = @"Enter a username";
+        _usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
+        [_usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     }
     return _usernameTextField;
 }
@@ -166,6 +189,8 @@
         _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _passwordTextField.rightTextField.secureTextEntry = YES;
         _passwordTextField.rightTextField.placeholder = @"Enter your password";
+        _passwordTextField.rightTextField.returnKeyType = UIReturnKeyDone;
+        [_passwordTextField.rightTextField addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventEditingDidEndOnExit];
     }
     return _passwordTextField;
 }
