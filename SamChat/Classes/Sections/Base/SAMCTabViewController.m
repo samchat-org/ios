@@ -10,15 +10,15 @@
 #import "UIBarButtonItem+Badge.h"
 
 NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotification";
-NSString * const SAMCSwitchToUserModeKey = @"mode";
+NSString * const SAMCSwitchToUserModeKey = @"SAMCSwitchToUserModeKey";
 
 @interface SAMCTabViewController ()
-
-@property (nonatomic) SAMCUserModeType userMode;
 
 @end
 
 @implementation SAMCTabViewController
+
+@synthesize currentUserMode = _currentUserMode;
 
 - (void)viewDidLoad
 {
@@ -51,12 +51,12 @@ NSString * const SAMCSwitchToUserModeKey = @"mode";
 - (void)touchSwitchUserMode:(id)sender
 {
     NSDictionary *userInfo;
-    if (self.userMode == SAMCUserModeTypeCustom) {
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
         userInfo = @{SAMCSwitchToUserModeKey : @(SAMCUserModeTypeSP)};
-        self.userMode = SAMCUserModeTypeSP;
+        self.currentUserMode = SAMCUserModeTypeSP;
     } else {
         userInfo = @{SAMCSwitchToUserModeKey : @(SAMCUserModeTypeCustom)};
-        self.userMode = SAMCUserModeTypeCustom;
+        self.currentUserMode = SAMCUserModeTypeCustom;
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
                                                         object:nil
@@ -65,6 +65,17 @@ NSString * const SAMCSwitchToUserModeKey = @"mode";
 
 - (void)switchToUserMode:(NSDictionary *)notification
 {
+}
+
+#pragma mark - currentUserMode
+- (SAMCUserModeType)currentUserMode
+{
+    return [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+}
+
+- (void)setCurrentUserMode:(SAMCUserModeType)currentUserMode
+{
+    [[SAMCPreferenceManager sharedManager] setCurrentUserMode:@(currentUserMode)];
 }
 
 @end

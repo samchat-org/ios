@@ -22,8 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
-    // TODO: init data according user mode
-    [self prepareCustomModeData];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        [self prepareCustomModeData];
+    } else {
+        [self prepareSPModeData];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

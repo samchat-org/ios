@@ -21,8 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
-    // TODO: init according user mode
-    [self prepareCustomModeContacts];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        [self prepareCustomModeContacts];
+    } else {
+        [self prepareSPModeContacts];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

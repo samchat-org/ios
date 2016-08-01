@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCPreferenceManager.h"
 
 extern NSString * const SAMCSwitchToUserModeKey;
-typedef NS_ENUM(NSInteger,SAMCUserModeType) {
-    SAMCUserModeTypeCustom,
-    SAMCUserModeTypeSP
-};
 
 @interface SAMCTabViewController : UIViewController
+
+@property (nonatomic, assign) SAMCUserModeType currentUserMode;
 
 @end

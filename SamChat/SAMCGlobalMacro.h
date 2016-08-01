@@ -66,4 +66,12 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 
 #define SAMCTopBarHeight ([UIApplication sharedApplication].statusBarFrame.size.height+self.navigationController.navigationBar.frame.size.height)
 
+#ifdef DEBUG
+#define TICK  NSDate *startTime = [NSDate date]
+#define TOCK  NSLog(@"Time: %f", -[startTime timeIntervalSinceNow])
+#else
+#define TICK
+#define TOCK
+#endif
+
 #endif /* SAMCGlobalMacro_h */

@@ -24,8 +24,11 @@
 {
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
-    // TODO: init according current mode
-    [self setupCustomModeViews];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        [self setupCustomModeViews];
+    } else {
+        [self setupSPModeViews];
+    }
 }
 
 - (void)didReceiveMemoryWarning

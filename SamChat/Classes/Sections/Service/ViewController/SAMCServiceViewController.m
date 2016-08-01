@@ -32,8 +32,11 @@
 - (void)setupSubviews
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    // TODO: init according current mode
-    [self setupCustomModeViews];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        [self setupCustomModeViews];
+    } else {
+        [self setupSPModeViews];
+    }
 }
 
 - (void)switchToUserMode:(NSNotification *)notification
