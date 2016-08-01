@@ -25,6 +25,7 @@
 @property (nonatomic, strong) UIButton *signinButton;
 @property (nonatomic, strong) UIButton *signupButton;
 @property (nonatomic, strong) UIButton *forgotPasswordButton;
+@property (nonatomic, strong) NSLayoutConstraint *bottomSpaceConstraint;
 
 @end
 
@@ -34,6 +35,20 @@ NTES_USE_CLEAR_BAR
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.usernameTextField.rightTextField becomeFirstResponder];
 }
 
 - (void)setupSubviews
@@ -43,12 +58,16 @@ NTES_USE_CLEAR_BAR
     self.usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.usernameTextField.leftButton setTitle:@"+1" forState:UIControlStateNormal];
     [self.usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
+    [self.usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
     self.usernameTextField.rightTextField.placeholder = @"Username or phone no.";
     [self.view addSubview:self.usernameTextField];
     
     self.passwordTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.passwordTextField.leftButton setTitle:@"Pass" forState:UIControlStateNormal];
+    [self.passwordTextField.rightTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.passwordTextField.rightTextField.returnKeyType = UIReturnKeyDone;
     self.passwordTextField.rightTextField.placeholder = @"Enter your password";
     self.passwordTextField.rightTextField.secureTextEntry = YES;
     [self.view addSubview:self.passwordTextField];
@@ -94,10 +113,14 @@ NTES_USE_CLEAR_BAR
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_signinButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_signupButton][_forgotPasswordButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_signupButton,_forgotPasswordButton)]];
+                                                                        views:NSDictionaryOfVariableBindings(_signupButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_forgotPasswordButton]-20-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_forgotPasswordButton)]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.signupButton
                                                           attribute:NSLayoutAttributeCenterY
                                                           relatedBy:NSLayoutRelationEqual
@@ -105,13 +128,37 @@ NTES_USE_CLEAR_BAR
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(50)]-10-[_passwordTextField(50)]-10-[_signinButton(50)]-10-[_signupButton]-300-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(50)]-10-[_passwordTextField(50)]-10-[_signinButton(50)]-10-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField,_passwordTextField,_signinButton,_signupButton)]];
+    self.bottomSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.signupButton
+                                                              attribute:NSLayoutAttributeBottom
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeBottom
+                                                             multiplier:1.0f
+                                                               constant:-20.0f];
+    [self.view addConstraint:self.bottomSpaceConstraint];
+}
+
+#pragma mark 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    UIView *view = (UIView *)[touch view];
+    if (view == self.view) {
+        [self.usernameTextField.rightTextField resignFirstResponder];
+        [self.passwordTextField.rightTextField resignFirstResponder];
+    }
 }
 
 #pragma mark - Action
+- (void)usernameTextFieldEditingDidEndOnExit
+{
+    [self.passwordTextField.rightTextField becomeFirstResponder];
+}
+
 - (void)selectCountryCode:(UIButton *)sender
 {
     SAMCCountryCodeViewController *countryCodeController = [[SAMCCountryCodeViewController alloc] init];
@@ -178,6 +225,28 @@ NTES_USE_CLEAR_BAR
     vc.signupOperation = NO;
     vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - UIKeyBoard Notification
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyboardHeight = keyboardRect.size.height;
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         [self.bottomSpaceConstraint setConstant:-keyboardHeight-5];
+                         [self.view layoutIfNeeded];
+                     }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         [self.bottomSpaceConstraint setConstant:-20];
+                         [self.view layoutIfNeeded];
+                     }];
 }
 
 
