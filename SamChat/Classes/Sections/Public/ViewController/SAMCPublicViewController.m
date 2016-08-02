@@ -7,6 +7,7 @@
 //
 
 #import "SAMCPublicViewController.h"
+#import "SAMCSPPublicMsgDataSource.h"
 
 @interface SAMCPublicViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
@@ -15,6 +16,8 @@
 @property (nonatomic, strong) UISearchBar *customSearchBar;
 
 @property (nonatomic, strong) UITableView *spTableView;
+
+@property (nonatomic, strong) SAMCSPPublicMsgDataSource *spPublicDataSource;
 
 @end
 

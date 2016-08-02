@@ -214,6 +214,11 @@
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
 		3195DDB31D4EE004001BD2B4 /* SAMCPreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDB21D4EE004001BD2B4 /* SAMCPreferenceManager.m */; };
+		3195DDB71D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDB61D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.m */; };
+		3195DDBF1D4F4A6C001BD2B4 /* SAMCRequestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */; };
+		3195DDCA1D50380F001BD2B4 /* SAMCTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDC91D50380F001BD2B4 /* SAMCTableViewDelegate.m */; };
+		3195DDCD1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDCC1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m */; };
+		3195DDD01D503C08001BD2B4 /* SAMCSPRequestListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDCF1D503C08001BD2B4 /* SAMCSPRequestListDelegate.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -608,6 +613,16 @@
 		31799EB71D4064EA00878058 /* CountryCodeListEn.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListEn.plist; sourceTree = "<group>"; };
 		3195DDB11D4EE004001BD2B4 /* SAMCPreferenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPreferenceManager.h; path = Base/Manager/SAMCPreferenceManager.h; sourceTree = "<group>"; };
 		3195DDB21D4EE004001BD2B4 /* SAMCPreferenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPreferenceManager.m; path = Base/Manager/SAMCPreferenceManager.m; sourceTree = "<group>"; };
+		3195DDB51D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPPublicMsgDataSource.h; path = Public/Other/SAMCSPPublicMsgDataSource.h; sourceTree = "<group>"; };
+		3195DDB61D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPPublicMsgDataSource.m; path = Public/Other/SAMCSPPublicMsgDataSource.m; sourceTree = "<group>"; };
+		3195DDBD1D4F4A6C001BD2B4 /* SAMCRequestListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestListCell.h; path = Service/View/SAMCRequestListCell.h; sourceTree = "<group>"; };
+		3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCRequestListCell.m; path = Service/View/SAMCRequestListCell.m; sourceTree = "<group>"; };
+		3195DDC81D50380F001BD2B4 /* SAMCTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCTableViewDelegate.h; path = Base/Other/SAMCTableViewDelegate.h; sourceTree = "<group>"; };
+		3195DDC91D50380F001BD2B4 /* SAMCTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCTableViewDelegate.m; path = Base/Other/SAMCTableViewDelegate.m; sourceTree = "<group>"; };
+		3195DDCB1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCustomRequestListDelegate.h; path = Service/Other/SAMCCustomRequestListDelegate.h; sourceTree = "<group>"; };
+		3195DDCC1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomRequestListDelegate.m; path = Service/Other/SAMCCustomRequestListDelegate.m; sourceTree = "<group>"; };
+		3195DDCE1D503C08001BD2B4 /* SAMCSPRequestListDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPRequestListDelegate.h; path = Service/Other/SAMCSPRequestListDelegate.h; sourceTree = "<group>"; };
+		3195DDCF1D503C08001BD2B4 /* SAMCSPRequestListDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPRequestListDelegate.m; path = Service/Other/SAMCSPRequestListDelegate.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -655,7 +670,9 @@
 		3124116D1D45A2AA008B2A35 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				3195DDB91D4F48BF001BD2B4 /* View */,
 				314444B81D45B1DD0062B797 /* ViewController */,
+				3195DDC01D502B76001BD2B4 /* Other */,
 			);
 			name = Service;
 			sourceTree = "<group>";
@@ -1575,6 +1592,7 @@
 		314444C51D45F68E0062B797 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				3195DDC71D5037E1001BD2B4 /* Other */,
 				3195DDB01D4EDFCD001BD2B4 /* Manager */,
 				314444C61D45F6B80062B797 /* SAMCTabViewController.h */,
 				314444C71D45F6B80062B797 /* SAMCTabViewController.m */,
@@ -1586,6 +1604,8 @@
 			isa = PBXGroup;
 			children = (
 				314444D31D46F0490062B797 /* ViewController */,
+				3195DDB81D4F45A4001BD2B4 /* Manager */,
+				3195DDB41D4F3A75001BD2B4 /* Other */,
 			);
 			name = Public;
 			sourceTree = "<group>";
@@ -1654,6 +1674,51 @@
 				3195DDB21D4EE004001BD2B4 /* SAMCPreferenceManager.m */,
 			);
 			name = Manager;
+			sourceTree = "<group>";
+		};
+		3195DDB41D4F3A75001BD2B4 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDB51D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.h */,
+				3195DDB61D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.m */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		3195DDB81D4F45A4001BD2B4 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
+		3195DDB91D4F48BF001BD2B4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDBD1D4F4A6C001BD2B4 /* SAMCRequestListCell.h */,
+				3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		3195DDC01D502B76001BD2B4 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDCB1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.h */,
+				3195DDCC1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m */,
+				3195DDCE1D503C08001BD2B4 /* SAMCSPRequestListDelegate.h */,
+				3195DDCF1D503C08001BD2B4 /* SAMCSPRequestListDelegate.m */,
+			);
+			name = Other;
+			sourceTree = "<group>";
+		};
+		3195DDC71D5037E1001BD2B4 /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDC81D50380F001BD2B4 /* SAMCTableViewDelegate.h */,
+				3195DDC91D50380F001BD2B4 /* SAMCTableViewDelegate.m */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 		5176189D0086B38FE643A26A /* Frameworks */ = {
@@ -1873,6 +1938,7 @@
 				312C1CA31D35D85B00242906 /* NTESWhiteboardDrawView.m in Sources */,
 				312C1C411D35D85B00242906 /* UINavigationController+Swizzling.m in Sources */,
 				312C1C491D35D85B00242906 /* NTESBadgeView.m in Sources */,
+				3195DDB71D4F3AC7001BD2B4 /* SAMCSPPublicMsgDataSource.m in Sources */,
 				312C1CB71D35D85B00242906 /* NTESLogViewController.m in Sources */,
 				312C1C8C1D35D85B00242906 /* NTESSessionCustomLayoutConfig.m in Sources */,
 				312C1CCF1D35D85B00242906 /* NTESDemoRegisterTask.m in Sources */,
@@ -1890,6 +1956,7 @@
 				312C1C431D35D85B00242906 /* UIView+Swizzling.m in Sources */,
 				312C1C6C1D35D85B00242906 /* NTESGroupedDataCollection.m in Sources */,
 				312C1C791D35D85B00242906 /* NTESSystemNotificationCell.m in Sources */,
+				3195DDCA1D50380F001BD2B4 /* SAMCTableViewDelegate.m in Sources */,
 				312C1C831D35D85B00242906 /* NTESChartletAttachment.m in Sources */,
 				312C1CBF1D35D85B00242906 /* NTESSettingViewController.m in Sources */,
 				312C1C541D35D85B00242906 /* NTESSessionCardViewController.m in Sources */,
@@ -1898,8 +1965,10 @@
 				314444DF1D473E1D0062B797 /* SAMCContactListViewController.m in Sources */,
 				312C1CBB1D35D85B00242906 /* NTESNoDisturbTimeCell.m in Sources */,
 				312C1C911D35D85B00242906 /* NTESSessionJankenponContentView.m in Sources */,
+				3195DDD01D503C08001BD2B4 /* SAMCSPRequestListDelegate.m in Sources */,
 				312C1C4A1D35D85B00242906 /* NTESFPSLabel.m in Sources */,
 				312C1C9E1D35D85B00242906 /* NTESSessionLocalHistoryViewController.m in Sources */,
+				3195DDCD1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m in Sources */,
 				312C1CD31D35D85B00242906 /* NTESClientUtil.m in Sources */,
 				314444D61D46F0950062B797 /* SAMCPublicViewController.m in Sources */,
 				314444BE1D45E49C0062B797 /* UIBarButtonItem+Badge.m in Sources */,
@@ -1976,6 +2045,7 @@
 				312C1CD81D35D85B00242906 /* NTESNotificationCenter.m in Sources */,
 				312C1CCC1D35D85B00242906 /* NTESSettingPortraitCell.m in Sources */,
 				314444BB1D45B21C0062B797 /* SAMCServiceViewController.m in Sources */,
+				3195DDBF1D4F4A6C001BD2B4 /* SAMCRequestListCell.m in Sources */,
 				312C1CB21D35D85B00242906 /* NTESTextHeaderView.m in Sources */,
 				312C1C851D35D85B00242906 /* NTESJanKenPonAttachment.m in Sources */,
 				312C1C4B1D35D85B00242906 /* NTESMarginButton.m in Sources */,
