@@ -10,16 +10,18 @@
 
 @interface SAMCTableViewDelegate ()
 
-@property (nonatomic,copy) NSArray *(^SAMCDataReceiver)(void);
+@property (nonatomic, copy) NSArray *(^SAMCDataReceiver)(void);
 
 @end
 
 @implementation SAMCTableViewDelegate
 
-- (instancetype) initWithTableData:(NSArray *(^)(void))data{
+- (instancetype) initWithTableData:(NSArray *(^)(void))data viewController:(UIViewController *)controller
+{
     self = [super init];
     if (self) {
         _SAMCDataReceiver = data;
+        _viewController = controller;
     }
     return self;
 }

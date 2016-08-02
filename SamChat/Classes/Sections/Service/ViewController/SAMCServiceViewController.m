@@ -59,7 +59,7 @@
     __weak typeof(self) weakSelf = self;
     self.delegator = [[SAMCCustomRequestListDelegate alloc] initWithTableData:^NSArray *{
         return weakSelf.data;
-    }];
+    } viewController:self];
     
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.tableView = nil;
@@ -105,7 +105,7 @@
     __weak typeof(self) weakSelf = self;
     self.delegator = [[SAMCSPRequestListDelegate alloc] initWithTableData:^NSArray *{
         return weakSelf.data;
-    }];
+    } viewController:self];
     
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.tableView = nil;

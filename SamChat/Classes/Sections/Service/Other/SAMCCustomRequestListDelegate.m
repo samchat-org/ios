@@ -8,6 +8,7 @@
 
 #import "SAMCCustomRequestListDelegate.h"
 #import "SAMCRequestListCell.h"
+#import "SAMCRequestDetailViewController.h"
 
 @implementation SAMCCustomRequestListDelegate
 
@@ -37,6 +38,8 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SAMCRequestDetailViewController *vc = [[SAMCRequestDetailViewController alloc] init];
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

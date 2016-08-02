@@ -10,7 +10,9 @@
 
 @interface SAMCTableViewDelegate : NSObject<UITableViewDataSource,UITableViewDelegate>
 
-- (instancetype) initWithTableData:(NSArray *(^)(void))data;
+@property (nonatomic, weak) UIViewController *viewController;
+
+- (instancetype) initWithTableData:(NSArray *(^)(void))data viewController:(UIViewController *)controller;
 - (NSArray *)data;
 
 @end
