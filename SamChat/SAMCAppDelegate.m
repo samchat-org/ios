@@ -24,6 +24,7 @@
 #import "NTESDataManager.h"
 #import "NTESSDKConfig.h"
 #import "SAMCLoginViewController.h"
+#import "SAMCDataBaseManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
@@ -69,7 +70,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
     [self.window makeKeyAndVisible];
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
-    [self setupMainViewController];
+    [self setupUserViewController];
     
     
     return YES;
@@ -134,7 +135,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
     }
 }
 
-- (void)setupMainViewController
+- (void)setupUserViewController
 {
     LoginData *data = [[NTESLoginManager sharedManager] currentLoginData];
     NSString *account = [data account];
@@ -145,14 +146,21 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
     {
         [[[NIMSDK sharedSDK] loginManager] autoLogin:account
                                                token:token];
-        [[NTESServiceManager sharedManager] start];
-        NTESMainTabController *mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
-        self.window.rootViewController = mainTab;
+        [self setupMainViewController];
     }
     else
     {
         [self setupLoginViewController];
     }
+}
+
+- (void)setupMainViewController
+{
+    [[NTESServiceManager sharedManager] start];
+    [[SAMCDataBaseManager sharedManager] open];;
+    
+    NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
+    self.window.rootViewController = mainTab;
 }
 
 - (void)commonInitListenEvents
@@ -183,9 +191,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
     LoginData *data = [[notification userInfo] objectForKey:SAMCLoginUserDataKey];
     [[NTESLoginManager sharedManager] setCurrentLoginData:data];
     
-    [[NTESServiceManager sharedManager] start];
-    NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
-    [UIApplication sharedApplication].keyWindow.rootViewController = mainTab;
+    [self setupMainViewController];
 }
 
 #pragma mark - 注销
@@ -198,6 +204,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 {
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
+    [[SAMCDataBaseManager sharedManager] close];
     [self setupLoginViewController];
 }
 

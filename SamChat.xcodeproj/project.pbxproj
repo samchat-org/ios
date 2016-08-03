@@ -221,6 +221,9 @@
 		3195DDD01D503C08001BD2B4 /* SAMCSPRequestListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDCF1D503C08001BD2B4 /* SAMCSPRequestListDelegate.m */; };
 		3195DDD31D509A0F001BD2B4 /* SAMCRequestDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDD21D509A0F001BD2B4 /* SAMCRequestDetailViewController.m */; };
 		3195DDD61D509E3A001BD2B4 /* SAMCRequestDetailInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDD51D509E3A001BD2B4 /* SAMCRequestDetailInfoView.m */; };
+		3195DDDB1D51C116001BD2B4 /* SAMCDataBaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDDA1D51C116001BD2B4 /* SAMCDataBaseManager.m */; };
+		3195DDDE1D51CC01001BD2B4 /* SAMCMessageDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDDD1D51CC01001BD2B4 /* SAMCMessageDB.m */; };
+		3195DDE11D51D373001BD2B4 /* SAMCDBBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDE01D51D373001BD2B4 /* SAMCDBBase.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -629,6 +632,12 @@
 		3195DDD21D509A0F001BD2B4 /* SAMCRequestDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCRequestDetailViewController.m; path = Service/ViewController/SAMCRequestDetailViewController.m; sourceTree = "<group>"; };
 		3195DDD41D509E3A001BD2B4 /* SAMCRequestDetailInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestDetailInfoView.h; path = Service/View/SAMCRequestDetailInfoView.h; sourceTree = "<group>"; };
 		3195DDD51D509E3A001BD2B4 /* SAMCRequestDetailInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCRequestDetailInfoView.m; path = Service/View/SAMCRequestDetailInfoView.m; sourceTree = "<group>"; };
+		3195DDD91D51C116001BD2B4 /* SAMCDataBaseManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCDataBaseManager.h; path = DataBase/SAMCDataBaseManager.h; sourceTree = "<group>"; };
+		3195DDDA1D51C116001BD2B4 /* SAMCDataBaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCDataBaseManager.m; path = DataBase/SAMCDataBaseManager.m; sourceTree = "<group>"; };
+		3195DDDC1D51CC01001BD2B4 /* SAMCMessageDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCMessageDB.h; path = DataBase/SAMCMessageDB.h; sourceTree = "<group>"; };
+		3195DDDD1D51CC01001BD2B4 /* SAMCMessageDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCMessageDB.m; path = DataBase/SAMCMessageDB.m; sourceTree = "<group>"; };
+		3195DDDF1D51D373001BD2B4 /* SAMCDBBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCDBBase.h; path = DataBase/SAMCDBBase.h; sourceTree = "<group>"; };
+		3195DDE01D51D373001BD2B4 /* SAMCDBBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCDBBase.m; path = DataBase/SAMCDBBase.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -700,6 +709,7 @@
 		312C1A9A1D35D85B00242906 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3195DDD71D51BE30001BD2B4 /* DataBase */,
 				312C1A9B1D35D85B00242906 /* Category */,
 				312C1AB21D35D85B00242906 /* Common */,
 				312C1AD21D35D85B00242906 /* Sections */,
@@ -1731,6 +1741,19 @@
 			name = Other;
 			sourceTree = "<group>";
 		};
+		3195DDD71D51BE30001BD2B4 /* DataBase */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDD91D51C116001BD2B4 /* SAMCDataBaseManager.h */,
+				3195DDDA1D51C116001BD2B4 /* SAMCDataBaseManager.m */,
+				3195DDDC1D51CC01001BD2B4 /* SAMCMessageDB.h */,
+				3195DDDD1D51CC01001BD2B4 /* SAMCMessageDB.m */,
+				3195DDDF1D51D373001BD2B4 /* SAMCDBBase.h */,
+				3195DDE01D51D373001BD2B4 /* SAMCDBBase.m */,
+			);
+			name = DataBase;
+			sourceTree = "<group>";
+		};
 		5176189D0086B38FE643A26A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -1975,6 +1998,7 @@
 				314444DF1D473E1D0062B797 /* SAMCContactListViewController.m in Sources */,
 				312C1CBB1D35D85B00242906 /* NTESNoDisturbTimeCell.m in Sources */,
 				312C1C911D35D85B00242906 /* NTESSessionJankenponContentView.m in Sources */,
+				3195DDDE1D51CC01001BD2B4 /* SAMCMessageDB.m in Sources */,
 				3195DDD31D509A0F001BD2B4 /* SAMCRequestDetailViewController.m in Sources */,
 				3195DDD01D503C08001BD2B4 /* SAMCSPRequestListDelegate.m in Sources */,
 				312C1C4A1D35D85B00242906 /* NTESFPSLabel.m in Sources */,
@@ -1986,7 +2010,9 @@
 				312C1C601D35D85B00242906 /* NTESLiveInfoViewController.m in Sources */,
 				312C1CE61D35D85B00242906 /* main.m in Sources */,
 				312C1CC81D35D85B00242906 /* NTESUserInfoSettingViewController.m in Sources */,
+				3195DDDB1D51C116001BD2B4 /* SAMCDataBaseManager.m in Sources */,
 				312C1C481D35D85B00242906 /* NTESAvatarImageView.m in Sources */,
+				3195DDE11D51D373001BD2B4 /* SAMCDBBase.m in Sources */,
 				312C1C611D35D85B00242906 /* NTESLiveViewController.m in Sources */,
 				312C1CBD1D35D85B00242906 /* NTESAboutViewController.m in Sources */,
 				312C1CB91D35D85B00242906 /* NTESNoDisturbSettingViewController.m in Sources */,

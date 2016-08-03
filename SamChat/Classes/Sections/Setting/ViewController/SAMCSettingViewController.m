@@ -9,6 +9,7 @@
 #import "SAMCSettingViewController.h"
 #import "NIMCommonTableData.h"
 #import "NIMCommonTableViewCell.h"
+#import "UIAlertView+NTESBlock.h"
 
 @interface SAMCSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -262,6 +263,24 @@
 - (void)refreshData:(NIMCommonTableRow *)rowData cell:(UITableViewCell *)cell{
     cell.textLabel.text = rowData.title;
     cell.detailTextLabel.text = rowData.detailTitle;
+}
+
+#pragma mark - Action
+- (void)logoutCurrentAccount:(id)sender{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"退出当前帐号？" message:nil delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
+        switch (alertIndex) {
+            case 1:
+                [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error)
+                 {
+                     extern NSString *NTESNotificationLogout;
+                     [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
+                 }];
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 @end

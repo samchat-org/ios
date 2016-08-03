@@ -7,8 +7,30 @@
 //
 
 #import "SAMCContactListViewController.h"
+#import "NTESSessionUtil.h"
+#import "NTESSessionViewController.h"
+#import "NTESContactUtilItem.h"
+#import "NTESContactDefines.h"
+#import "NTESGroupedContacts.h"
+#import "UIView+Toast.h"
+#import "NTESCustomNotificationDB.h"
+#import "NTESNotificationCenter.h"
+#import "UIActionSheet+NTESBlock.h"
+#import "NTESSearchTeamViewController.h"
+#import "NTESContactAddFriendViewController.h"
+#import "NTESPersonalCardViewController.h"
+#import "UIAlertView+NTESBlock.h"
+#import "SVProgressHUD.h"
+#import "NTESContactUtilCell.h"
+#import "NIMContactDataCell.h"
+#import "NIMContactSelectViewController.h"
+#import "NTESUserUtil.h"
 
-@interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+@interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
+NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,NIMLoginManagerDelegate>
+{
+    NTESGroupedContacts *_contacts;
+}
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchDisplayController *searchResultController;
@@ -21,11 +43,25 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserInfoHasUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserBlackListHasUpdatedNotification object:nil];
+    
+    [self prepareData];
+    [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
+    [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
+    
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         [self prepareCustomModeContacts];
     } else {
         [self prepareSPModeContacts];
     }
+}
+
+- (void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[[NIMSDK sharedSDK] systemNotificationManager] removeDelegate:self];
+    [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -37,7 +73,7 @@
 {
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.view.backgroundColor = [UIColor whiteColor];
-    self.tableView = [[UITableView alloc] init];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -79,66 +115,310 @@
 - (void)prepareCustomModeContacts
 {
     self.navigationItem.title = @"Service Provider";
-    self.tableView.backgroundColor = [UIColor greenColor];
+//    self.tableView.backgroundColor = [UIColor greenColor];
 }
 
 - (void)prepareSPModeContacts
 {
     self.navigationItem.title = @"My Clients";
-    self.tableView.backgroundColor = [UIColor yellowColor];
+//    self.tableView.backgroundColor = [UIColor yellowColor];
 }
 
-#pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 0;
+- (void)setUpNavItem{
+    UIButton *teamBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [teamBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
+    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
+    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
+    [teamBtn sizeToFit];
+    UIBarButtonItem *teamItem = [[UIBarButtonItem alloc] initWithCustomView:teamBtn];
+    self.navigationItem.rightBarButtonItem = teamItem;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"ContactListCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
+- (void)prepareData{
+    _contacts = [[NTESGroupedContacts alloc] init];
     
-//    NSString *value = nil;
-//    if (tableView == self.countryCodeTableView) {
-//        NSString *key = self.indexArray[indexPath.section];
-//        value = [[self.countryCodeDictionary objectForKey:key] objectAtIndex:indexPath.row];
-//    } else {
-//        value = [self.searchResultArray objectAtIndex:indexPath.row];
-//    }
-//    NSArray *splitValueList = [value componentsSeparatedByString:@","];
-//    cell.textLabel.text = splitValueList[0];
-//    cell.detailTextLabel.text = [splitValueList count] > 1 ? splitValueList[1]:@"";
-    return cell;
+    NSString *contactCellUtilIcon   = @"icon";
+    NSString *contactCellUtilVC     = @"vc";
+    NSString *contactCellUtilBadge  = @"badge";
+    NSString *contactCellUtilTitle  = @"title";
+    NSString *contactCellUtilUid    = @"uid";
+    NSString *contactCellUtilSelectorName = @"selName";
+    //原始数据
+    
+    NSInteger systemCount = [[[NIMSDK sharedSDK] systemNotificationManager] allUnreadCount];
+    NSMutableArray *utils =
+    [@[
+       @{
+           contactCellUtilIcon:@"icon_notification_normal",
+           contactCellUtilTitle:@"验证消息",
+           contactCellUtilVC:@"NTESSystemNotificationViewController",
+           contactCellUtilBadge:@(systemCount)
+           },
+       @{
+           contactCellUtilIcon:@"icon_team_advance_normal",
+           contactCellUtilTitle:@"高级群",
+           contactCellUtilVC:@"NTESAdvancedTeamListViewController"
+           },
+       @{
+           contactCellUtilIcon:@"icon_team_normal_normal",
+           contactCellUtilTitle:@"讨论组",
+           contactCellUtilVC:@"NTESNormalTeamListViewController"
+           },
+       @{
+           contactCellUtilIcon:@"icon_blacklist_normal",
+           contactCellUtilTitle:@"黑名单",
+           contactCellUtilVC:@"NTESBlackListViewController"
+           },
+       ] mutableCopy];
+    
+    [self setUpNavItem];
+    
+    //构造显示的数据模型
+    NTESContactUtilItem *contactUtil = [[NTESContactUtilItem alloc] init];
+    NSMutableArray * members = [[NSMutableArray alloc] init];
+    for (NSDictionary *item in utils) {
+        NTESContactUtilMember *utilItem = [[NTESContactUtilMember alloc] init];
+        utilItem.nick              = item[contactCellUtilTitle];
+        utilItem.icon              = [UIImage imageNamed:item[contactCellUtilIcon]];
+        utilItem.vcName            = item[contactCellUtilVC];
+        utilItem.badge             = [item[contactCellUtilBadge] stringValue];
+        utilItem.userId            = item[contactCellUtilUid];
+        utilItem.selName           = item[contactCellUtilSelectorName];
+        [members addObject:utilItem];
+    }
+    contactUtil.members = members;
+    
+    [_contacts addGroupAboveWithTitle:@"" members:contactUtil.members];
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return nil;
+#pragma mark - Action
+- (void)onOpera:(id)sender{
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"添加好友",@"创建高级群",@"创建讨论组",@"搜索高级群", nil];
+    __weak typeof(self) wself = self;
+    NSString *currentUserId = [[NIMSDK sharedSDK].loginManager currentAccount];
+    [sheet showInView:self.view completionHandler:^(NSInteger index) {
+        UIViewController *vc;
+        switch (index) {
+            case 0:
+                vc = [[NTESContactAddFriendViewController alloc] initWithNibName:nil bundle:nil];
+                break;
+            case 1:{  //创建高级群
+                [wself presentMemberSelector:^(NSArray *uids) {
+                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
+                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
+                    option.name       = @"高级群";
+                    option.type       = NIMTeamTypeAdvanced;
+                    option.joinMode   = NIMTeamJoinModeNoAuth;
+                    option.postscript = @"邀请你加入群组";
+                    [SVProgressHUD show];
+                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
+                        [SVProgressHUD dismiss];
+                        if (!error) {
+                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+                            NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:session];
+                            [wself.navigationController pushViewController:vc animated:YES];
+                        }else{
+                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
+                        }
+                    }];
+                }];
+                break;
+            }
+            case 2:{ //创建讨论组
+                [wself presentMemberSelector:^(NSArray *uids) {
+                    if (!uids.count) {
+                        return; //讨论组必须除自己外必须要有一个群成员
+                    }
+                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
+                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
+                    option.name       = @"讨论组";
+                    option.type       = NIMTeamTypeNormal;
+                    [SVProgressHUD show];
+                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
+                        [SVProgressHUD dismiss];
+                        if (!error) {
+                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+                            NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:session];
+                            [wself.navigationController pushViewController:vc animated:YES];
+                        }else{
+                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
+                        }
+                    }];
+                }];
+                break;
+            }
+            case 3:
+                vc = [[NTESSearchTeamViewController alloc] initWithNibName:nil bundle:nil];
+                break;
+            default:
+                break;
+        }
+        if (vc) {
+            [wself.navigationController pushViewController:vc animated:YES];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 44;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
+    if ([contactItem respondsToSelector:@selector(selName)] && [contactItem selName].length) {
+        SEL sel = NSSelectorFromString([contactItem selName]);
+        SuppressPerformSelectorLeakWarning([self performSelector:sel withObject:nil]);
+    }
+    else if (contactItem.vcName.length) {
+        Class clazz = NSClassFromString(contactItem.vcName);
+        UIViewController * vc = [[clazz alloc] initWithNibName:nil bundle:nil];
+        [self.navigationController pushViewController:vc animated:YES];
+    }else if([contactItem respondsToSelector:@selector(userId)]){
+        NSString * friendId   = contactItem.userId;
+        [self enterPersonalCard:friendId];
+    }
+    
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 30;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
+    return contactItem.uiHeight;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    return [_contacts memberCountOfGroup:section];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return [_contacts groupCount];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    id contactItem = [_contacts memberOfIndex:indexPath];
+    NSString * cellId = [contactItem reuseId];
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        Class cellClazz = NSClassFromString([contactItem cellName]);
+        cell = [[cellClazz alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    if ([contactItem showAccessoryView]) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }else{
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    if ([cell isKindOfClass:[NTESContactUtilCell class]]) {
+        [(NTESContactUtilCell *)cell refreshWithContactItem:contactItem];
+        [(NTESContactUtilCell *)cell setDelegate:self];
+    }else{
+        [(NIMContactDataCell *)cell refreshUser:contactItem];
+        [(NIMContactDataCell *)cell setDelegate:self];
+    }
+    return cell;
+}
+
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
+    return [_contacts titleOfGroup:section];
+}
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return _contacts.sortedGroupTitles;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
+    return index + 1;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
+    return [contactItem userId].length;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除好友" message:@"删除好友后，将同时解除双方的好友关系" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        [alert showAlertWithCompletionHandler:^(NSInteger index) {
+            if (index == 1) {
+                [SVProgressHUD show];
+                id<NTESContactItem,NTESGroupMemberProtocol> contactItem = (id<NTESContactItem,NTESGroupMemberProtocol>)[_contacts memberOfIndex:indexPath];
+                NSString *userId = [contactItem userId];
+                __weak typeof(self) wself = self;
+                [[NIMSDK sharedSDK].userManager deleteFriend:userId completion:^(NSError *error) {
+                    [SVProgressHUD dismiss];
+                    if (!error) {
+                        [_contacts removeGroupMember:contactItem];
+                    }else{
+                        [wself.view makeToast:@"删除失败"duration:2.0f position:CSToastPositionCenter];
+                    }
+                }];
+            }
+        }];
+    }
+}
+
+#pragma mark - NIMContactDataCellDelegate
+- (void)onPressAvatar:(NSString *)memberId{
+    [self enterPersonalCard:memberId];
+}
+
+#pragma mark - NTESContactUtilCellDelegate
+- (void)onPressUtilImage:(NSString *)content{
+    [self.view makeToast:[NSString stringWithFormat:@"点我干嘛 我是<%@>",content] duration:2.0 position:CSToastPositionCenter];
+}
+
+#pragma mark - NIMContactSelectDelegate
+- (void)didFinishedSelect:(NSArray *)selectedContacts{
+    
+}
+
+#pragma mark - NIMSDK Delegate
+#pragma mark - NIMSystemNotificationManagerDelegate
+- (void)onSystemNotificationCountChanged:(NSInteger)unreadCount
 {
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    [self prepareData];
+    [self.tableView reloadData];
+}
+
+#pragma mark - NIMLoginManagerDelegate
+- (void)onLogin:(NIMLoginStep)step
+{
+    if (step == NIMLoginStepSyncOK) {
+        if (self.isViewLoaded) {//没有加载view的话viewDidLoad里会走一遍prepareData
+            [self prepareData];
+            [self.tableView reloadData];
+        }
+    }
+}
+
+#pragma mark - Notification
+- (void)onUserInfoHasUpdatedNotification:(NSNotification *)notfication{
+    [self prepareData];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Private
+- (void)enterPersonalCard:(NSString *)userId{
+    NTESPersonalCardViewController *vc = [[NTESPersonalCardViewController alloc] initWithUserId:userId];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+- (void)presentMemberSelector:(ContactSelectFinishBlock) block{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    //使用内置的好友选择器
+    NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
+    //获取自己id
+    NSString *currentUserId = [[NIMSDK sharedSDK].loginManager currentAccount];
+    [users addObject:currentUserId];
+    //将自己的id过滤
+    config.filterIds = users;
+    //需要多选
+    config.needMutiSelected = YES;
+    //初始化联系人选择器
+    NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
+    //回调处理
+    vc.finshBlock = block;
+    [vc show];
 }
 
 #pragma mark - UISearchBarDelegate
