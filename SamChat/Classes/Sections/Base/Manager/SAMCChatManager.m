@@ -46,8 +46,14 @@
 {
     NSMutableArray<SAMCMessage *> *samcmessages = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages) {
-        BOOL isCustomSession = YES; // for test
-        BOOL isSpSession = NO; // for test
+        BOOL isCustomSession = NO;
+        BOOL isSpSession = NO;
+        id ext = message.remoteExt;
+        if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP]) {
+            isSpSession = YES;
+        } else {
+            isCustomSession = YES;
+        }
         SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
                                                    type:message.session.sessionType
                                              customFlag:isCustomSession

@@ -74,4 +74,9 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 #define TOCK
 #endif
 
+#define MESSAGE_EXT_FROM_USER_MODE_KEY          @"from_user_mode"
+#define MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM @"custom"
+#define MESSAGE_EXT_FROM_USER_MODE_VALUE_SP     @"sp"
+
+
 #endif /* SAMCGlobalMacro_h */

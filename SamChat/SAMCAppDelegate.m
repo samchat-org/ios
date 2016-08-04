@@ -25,6 +25,7 @@
 #import "NTESSDKConfig.h"
 #import "SAMCLoginViewController.h"
 #import "SAMCDataBaseManager.h"
+#import "SAMCChatManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
@@ -157,7 +158,8 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 - (void)setupMainViewController
 {
     [[NTESServiceManager sharedManager] start];
-    [[SAMCDataBaseManager sharedManager] open];;
+    [[SAMCDataBaseManager sharedManager] open];
+    [SAMCChatManager sharedManager];
     
     NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
     self.window.rootViewController = mainTab;
