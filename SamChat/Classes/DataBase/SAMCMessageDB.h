@@ -7,12 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCSession.h"
+#import "SAMCMessage.h"
 #import "SAMCDBBase.h"
-
-@class SAMCMessage;
 
 @interface SAMCMessageDB : SAMCDBBase
 
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages;
+
+- (NSArray<SAMCSession *> *)allCustomSessions;
+- (NSArray<SAMCSession *> *)allSPSessions;
 
 @end

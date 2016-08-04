@@ -25,6 +25,7 @@
 #import "NTESPersonalCardViewController.h"
 #import "NIMCellConfig.h"
 #import "NIMSDK.h"
+#import "SAMCDataBaseManager.h"
 
 #define SessionListTitle @"Chat"
 
@@ -53,7 +54,8 @@
     self.tableView.dataSource       = self;
     self.tableView.tableFooterView  = [[UIView alloc] init];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+//    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+    _recentSessions = [self allCurrentUserModeRecentSessions];
     if (!self.recentSessions.count) {
         _recentSessions = [NSMutableArray array];
     }
@@ -104,6 +106,12 @@
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
     [self refreshSubview];
+}
+
+- (void)switchToUserMode:(NSNotification *)notification
+{
+    _recentSessions = [self allCurrentUserModeRecentSessions];
+    [self reload];
 }
 
 - (void)reload
@@ -208,13 +216,15 @@
 
 - (void)messagesDeletedInSession:(NIMSession *)session
 {
-    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+//    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+    _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
 }
 
 - (void)allMessagesDeleted
 {
-    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+//    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
+    _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
 }
 
@@ -267,6 +277,26 @@
 }
 
 #pragma mark - Private
+- (NSMutableArray<NIMRecentSession *> *)allCurrentUserModeRecentSessions
+{
+    __block NSMutableArray<NIMRecentSession *> *sessions = [[NSMutableArray alloc] init];
+    NSArray<SAMCSession *> *modeSessions = nil;
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
+        modeSessions = [[SAMCDataBaseManager sharedManager].messageDB allSPSessions];
+    } else {
+        modeSessions = [[SAMCDataBaseManager sharedManager].messageDB allCustomSessions];
+    }
+    [[NIMSDK sharedSDK].conversationManager.allRecentSessions enumerateObjectsUsingBlock:^(NIMRecentSession * _Nonnull recentSession, NSUInteger idx, BOOL * _Nonnull stop) {
+        [modeSessions enumerateObjectsUsingBlock:^(SAMCSession * _Nonnull modeSession, NSUInteger idx, BOOL * _Nonnull stop) {
+            if ([recentSession.session.sessionId isEqual:modeSession.sessionId]) {
+                *stop = YES;
+                [sessions addObject:recentSession];
+            }
+        }];
+    }];
+    return sessions;
+}
+
 - (NSString *)nameForRecentSession:(NIMRecentSession *)recent
 {
     if ([recent.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {

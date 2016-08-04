@@ -9,8 +9,6 @@
 #import "SAMCMessageDB.h"
 #import "FMDB.h"
 #import "NTESFileLocationHelper.h"
-#import "SAMCSession.h"
-#import "SAMCMessage.h"
 #import "NSString+NIM.h"
 
 @interface SAMCMessageDB ()
@@ -52,15 +50,15 @@
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         for (SAMCMessage *message in messages) {
             NSString *sessionName = [self nameOfSession:message.session];
-            FMResultSet *s = [db executeQuery:@"SELECT custom_flag, sp_flag FROM session_table where session_id = ?", message.session.sessionId];
+            FMResultSet *s = [db executeQuery:@"SELECT custom_flag, sp_flag FROM session_table WHERE session_id = ?", message.session.sessionId];
             if ([s next]) {
                 int custom_flag = [s intForColumn:@"custom_flag"];
                 int sp_flag = [s intForColumn:@"sp_flag"];
                 if (message.session.isCustomSession && (custom_flag == 0)) {
-                    [db executeUpdate:@"update session_table set custom_flag = ? where session_id = ?", @(YES), message.session.sessionId];
+                    [db executeUpdate:@"UPDATE session_table SET custom_flag = ? WHERE session_id = ?", @(YES), message.session.sessionId];
                 }
                 if (message.session.isSpSession && (sp_flag == 0)) {
-                    [db executeUpdate:@"update session_table set sp_flag = ? where session_id = ?", @(YES), message.session.sessionId];
+                    [db executeUpdate:@"UPDATE session_table SET sp_flag = ? WHERE session_id = ?", @(YES), message.session.sessionId];
                 }
             } else {
                 DDLogDebug(@"insert");
@@ -77,6 +75,40 @@
             [db executeUpdate:sql, message.messageId];
         }
     }];
+}
+
+- (NSArray<SAMCSession *> *)allCustomSessions
+{
+    NSMutableArray *sessions = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE custom_flag = ?", @(YES)];
+        while ([s next]) {
+            NSString *sessionId = [s stringForColumn:@"session_id"];
+            int sessionType = [s intForColumn:@"session_type"];
+            int customFlag = [s intForColumn:@"custom_flag"];
+            int spFlag = [s intForColumn:@"sp_flag"];
+            SAMCSession *session = [SAMCSession session:sessionId type:sessionType customFlag:customFlag spFlag:spFlag];
+            [sessions addObject:session];
+        }
+    }];
+    return sessions;
+}
+
+- (NSArray<SAMCSession *> *)allSPSessions
+{
+    NSMutableArray *sessions = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE sp_flag = ?", @(YES)];
+        while ([s next]) {
+            NSString *sessionId = [s stringForColumn:@"session_id"];
+            int sessionType = [s intForColumn:@"session_type"];
+            int customFlag = [s intForColumn:@"custom_flag"];
+            int spFlag = [s intForColumn:@"sp_flag"];
+            SAMCSession *session = [SAMCSession session:sessionId type:sessionType customFlag:customFlag spFlag:spFlag];
+            [sessions addObject:session];
+        }
+    }];
+    return sessions;
 }
 
 #pragma mark - private
