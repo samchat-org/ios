@@ -7,8 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCMessageDB.h"
+
 
 @interface SAMCDataBaseManager : NSObject
+
+@property (nonatomic, strong) SAMCMessageDB *messageDB;
 
 + (instancetype)sharedManager;
 - (void)open;

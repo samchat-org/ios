@@ -7,11 +7,9 @@
 //
 
 #import "SAMCDataBaseManager.h"
-#import "SAMCMessageDB.h"
 
 @interface SAMCDataBaseManager ()
 
-@property (nonatomic, strong) SAMCMessageDB *messageDB;
 
 @end
 
