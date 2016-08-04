@@ -49,7 +49,7 @@
         BOOL isCustomSession = NO;
         BOOL isSpSession = NO;
         id ext = message.remoteExt;
-        if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP]) {
+        if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM]) {
             isSpSession = YES;
         } else {
             isCustomSession = YES;
