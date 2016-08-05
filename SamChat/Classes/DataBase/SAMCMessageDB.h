@@ -13,7 +13,9 @@
 
 @interface SAMCMessageDB : SAMCDBBase
 
-- (void)insertMessages:(NSArray<SAMCMessage *> *)messages;
+- (void)insertMessages:(NSArray<SAMCMessage *> *)messages
+           sessionMode:(SAMCUserModeType)sessionMode
+                unread:(BOOL)unreadFlag;
 
 - (NSArray<SAMCSession *> *)allCustomSessions;
 - (NSArray<SAMCSession *> *)allSPSessions;

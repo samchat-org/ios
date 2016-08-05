@@ -8,11 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger,SAMCUserModeType) {
-    SAMCUserModeTypeCustom,
-    SAMCUserModeTypeSP
-};
-
 @interface SAMCPreferenceManager : NSObject
 
 @property (nonatomic, assign) NSNumber *currentUserMode;

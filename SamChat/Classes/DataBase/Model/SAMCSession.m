@@ -7,13 +7,15 @@
 //
 
 #import "SAMCSession.h"
+#import "NSString+NIM.h"
 
 @interface SAMCSession ()
 
-@property (nonatomic,copy) NSString *sessionId;
-@property (nonatomic,assign) NIMSessionType sessionType;
-@property (nonatomic, assign, getter=isCustomSession) BOOL customSession;
-@property (nonatomic, assign, getter=isSpSession) BOOL spSession;
+@property (nonatomic, copy) NSString *tableName;
+@property (nonatomic, copy) NSString *sessionId;
+@property (nonatomic, assign) NIMSessionType sessionType;
+@property (nonatomic, assign) SAMCUserModeType sessionMode;
+@property (nonatomic, assign) NSInteger unreadCount;
 
 @end
 
@@ -21,15 +23,36 @@
 
 + (instancetype)session:(NSString *)sessionId
                    type:(NIMSessionType)sessionType
-             customFlag:(BOOL)customFlag
-                 spFlag:(BOOL)spFlag
+                   mode:(SAMCUserModeType)sessionMode
+{
+    return [SAMCSession session:sessionId
+                           type:sessionType
+                           mode:sessionMode
+                    unreadCount:0];
+}
+
++ (instancetype)session:(NSString *)sessionId
+                   type:(NIMSessionType)sessionType
+                   mode:(SAMCUserModeType)sessionMode
+            unreadCount:(NSInteger)unreadCount
 {
     SAMCSession *session = [[SAMCSession alloc] init];
     session.sessionId = sessionId;
     session.sessionType = sessionType;
-    session.customSession = customFlag;
-    session.spSession = spFlag;
+    session.sessionMode = sessionMode;
+    session.unreadCount = unreadCount;
     return session;
+}
+
+- (NSString *)tableName
+{
+    if (_tableName == nil) {
+        _tableName = [NSString stringWithFormat:@"msg_%@_%@_%@",
+                      [self.sessionId nim_MD5String],
+                      @(self.sessionMode),
+                      @(self.sessionType)];
+    }
+    return _tableName;
 }
 
 - (id)copyWithZone:(nullable NSZone *)zone
@@ -37,15 +60,14 @@
     SAMCSession *session = [[SAMCSession allocWithZone:zone] init];
     session.sessionId = [self.sessionId copy];
     session.sessionType = self.sessionType;
-    session.customSession = self.isCustomSession;
-    session.spSession = self.isSpSession;
+    session.sessionMode = self.sessionMode;
     return session;
 }
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"%@\nsessionId:%@\nsessionType:%ld\nisCustomSession:%d\nisSpSession:%d\n",
-            [super description],_sessionId,_sessionType,_customSession,_spSession];
+    return [NSString stringWithFormat:@"%@\nsessionId:%@\nsessionType:%ld\nsessionMode:%ld\n",
+            [super description],_sessionId,_sessionType,_sessionMode];
 }
 
 @end

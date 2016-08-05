@@ -78,5 +78,9 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 #define MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM @"custom"
 #define MESSAGE_EXT_FROM_USER_MODE_VALUE_SP     @"sp"
 
+typedef NS_ENUM(NSInteger,SAMCUserModeType) {
+    SAMCUserModeTypeCustom,
+    SAMCUserModeTypeSP
+};
 
 #endif /* SAMCGlobalMacro_h */

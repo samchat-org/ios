@@ -10,6 +10,7 @@
 #import "SwizzlingDefine.h"
 #import "NIMMessage.h"
 #import "SAMCPreferenceManager.h"
+#import "SAMCDataBaseManager.h"
 
 @implementation NIMSessionViewController (Swizzling)
 
@@ -23,7 +24,8 @@
 - (void)swizzling_sendMessage:(NIMMessage *)message
 {
     id usermodeValue = nil;
-    if ([[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue] == SAMCUserModeTypeSP) {
+    SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+    if (mode == SAMCUserModeTypeSP) {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
     } else {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
@@ -31,7 +33,21 @@
     NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
     [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:usermodeValue}];
     message.remoteExt = ext;
-    [self swizzling_sendMessage:message];
+    
+    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
+                                               type:self.session.sessionType
+                                               mode:mode];
+    SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]
+                                                          sessionMode:mode
+                                                               unread:NO];
+//        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self swizzling_sendMessage:message];
+        });
+    });
 }
 
 @end

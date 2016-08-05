@@ -8,16 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
+// | name | session_id | session_mode | session_type | unread_count | tag |
 @interface SAMCSession : NSObject<NSCopying>
 
+@property (nonatomic, copy, readonly) NSString *tableName;
 @property (nonatomic, copy, readonly) NSString *sessionId;
 @property (nonatomic, assign, readonly) NIMSessionType sessionType;
-@property (nonatomic, assign, readonly, getter=isCustomSession) BOOL customSession;
-@property (nonatomic, assign, readonly, getter=isSpSession) BOOL spSession;
+@property (nonatomic, assign, readonly) SAMCUserModeType sessionMode;
+@property (nonatomic, assign, readonly) NSInteger unreadCount;
 
 + (instancetype)session:(NSString *)sessionId
                    type:(NIMSessionType)sessionType
-             customFlag:(BOOL)customFlag
-                 spFlag:(BOOL)spFlag;
+                   mode:(SAMCUserModeType)sessionMode;
+
++ (instancetype)session:(NSString *)sessionId
+                   type:(NIMSessionType)sessionType
+                   mode:(SAMCUserModeType)sessionMode
+            unreadCount:(NSInteger)unreadCount;
 
 @end
