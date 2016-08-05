@@ -45,7 +45,7 @@
 - (void)onRecvMessages:(NSArray<NIMMessage *> *)messages
 {
     // the messages belongs to the same session
-    if ([messages count] == 0) {
+    if (([messages count] == 0) || (messages.firstObject.session.sessionType != NIMSessionTypeP2P)) {
         return;
     }
     
