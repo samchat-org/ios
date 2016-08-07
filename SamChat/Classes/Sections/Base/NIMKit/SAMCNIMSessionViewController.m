@@ -291,6 +291,9 @@ NIMUserManagerDelegate>
                                                                unread:NO];
         //        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
+            NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];
+            setting.roamingEnabled = false;
+            message.setting = setting;
             [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
         });
     });
