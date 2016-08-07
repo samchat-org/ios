@@ -8,7 +8,7 @@
 
 #import "SAMCContactListViewController.h"
 #import "NTESSessionUtil.h"
-#import "NTESSessionViewController.h"
+#import "SAMCSessionViewController.h"
 #import "NTESContactUtilItem.h"
 #import "NTESContactDefines.h"
 #import "NTESGroupedContacts.h"
@@ -216,7 +216,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
                         [SVProgressHUD dismiss];
                         if (!error) {
                             NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-                            NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:session];
+                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
                             [wself.navigationController pushViewController:vc animated:YES];
                         }else{
                             [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
@@ -239,7 +239,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
                         [SVProgressHUD dismiss];
                         if (!error) {
                             NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-                            NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:session];
+                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
                             [wself.navigationController pushViewController:vc animated:YES];
                         }else{
                             [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];

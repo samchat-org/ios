@@ -10,8 +10,11 @@
 #import "SAMCMessage.h"
 #import "SAMCSession.h"
 #import "SAMCDataBaseManager.h"
+#import "GCDMulticastDelegate.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate>
+
+@property (nonatomic, strong) GCDMulticastDelegate<SAMCChatManagerDelegate> *multicastDelegate;
 
 @end
 
@@ -41,7 +44,41 @@
     [[NIMSDK sharedSDK].chatManager removeDelegate:self];
 }
 
+- (void)addDelegate:(id<SAMCChatManagerDelegate>)delegate
+{
+    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)removeDelegate:(id<SAMCChatManagerDelegate>)delegate
+{
+    [self.multicastDelegate removeDelegate:delegate];
+}
+
+#pragma mark - lazy load
+- (GCDMulticastDelegate<SAMCChatManagerDelegate> *)multicastDelegate
+{
+    if (_multicastDelegate == nil) {
+        _multicastDelegate = (GCDMulticastDelegate <SAMCChatManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    }
+    return _multicastDelegate;
+}
+
 #pragma mark - NIMChatManagerDelegate
+- (void)willSendMessage:(NIMMessage *)message
+{
+    [self.multicastDelegate willSendMessage:message];
+}
+
+- (void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress
+{
+    [self.multicastDelegate sendMessage:message progress:progress];
+}
+
+- (void)sendMessage:(NIMMessage *)message didCompleteWithError:(nullable NSError *)error
+{
+    [self.multicastDelegate sendMessage:message didCompleteWithError:error];
+}
+
 - (void)onRecvMessages:(NSArray<NIMMessage *> *)messages
 {
     // the messages belongs to the same session
@@ -76,7 +113,23 @@
         [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unread:YES];
         [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unread:YES];
         //TODO: add SAMCChatManagerDelegate
+        [self.multicastDelegate onRecvMessages:messages];
     });
+}
+
+- (void)onRecvMessageReceipt:(NIMMessageReceipt *)receipt
+{
+    [self.multicastDelegate onRecvMessageReceipt:receipt];
+}
+
+- (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress
+{
+    [self.multicastDelegate fetchMessageAttachment:message progress:progress];
+}
+
+- (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(nullable NSError *)error
+{
+    [self.multicastDelegate fetchMessageAttachment:message didCompleteWithError:error];
 }
 
 @end

@@ -228,6 +228,9 @@
 		3195DDEB1D52DB04001BD2B4 /* SAMCSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDEA1D52DB04001BD2B4 /* SAMCSession.m */; };
 		3195DDF11D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDF01D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m */; };
 		3195DDF41D53317C001BD2B4 /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDF31D53317C001BD2B4 /* UIBarButtonItem+Badge.m */; };
+		3195DE011D5494A8001BD2B4 /* GCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE001D5494A8001BD2B4 /* GCDMulticastDelegate.m */; };
+		3195DE081D54B94E001BD2B4 /* SAMCSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE071D54B94E001BD2B4 /* SAMCSessionViewController.m */; };
+		3195DE0C1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE0B1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -650,6 +653,13 @@
 		3195DDF01D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIMSessionViewController+Swizzling.m"; sourceTree = "<group>"; };
 		3195DDF21D53317C001BD2B4 /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
 		3195DDF31D53317C001BD2B4 /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
+		3195DDF91D549124001BD2B4 /* SAMCChatManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCChatManagerDelegate.h; path = Base/Protocol/SAMCChatManagerDelegate.h; sourceTree = "<group>"; };
+		3195DDFF1D5494A8001BD2B4 /* GCDMulticastDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDMulticastDelegate.h; sourceTree = "<group>"; };
+		3195DE001D5494A8001BD2B4 /* GCDMulticastDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDMulticastDelegate.m; sourceTree = "<group>"; };
+		3195DE061D54B94E001BD2B4 /* SAMCSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSessionViewController.h; sourceTree = "<group>"; };
+		3195DE071D54B94E001BD2B4 /* SAMCSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSessionViewController.m; sourceTree = "<group>"; };
+		3195DE0A1D54BB35001BD2B4 /* SAMCNIMSessionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCNIMSessionViewController.h; sourceTree = "<group>"; };
+		3195DE0B1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCNIMSessionViewController.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -805,6 +815,7 @@
 		312C1AC21D35D85B00242906 /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				3195DDFE1D5494A8001BD2B4 /* GCDMulticastDelegate */,
 				312C1AC31D35D85B00242906 /* NTESNavigationAnimator.h */,
 				312C1AC41D35D85B00242906 /* NTESNavigationAnimator.m */,
 				312C1AC51D35D85B00242906 /* NTESNavigationHandler.h */,
@@ -1246,6 +1257,8 @@
 				312C1B911D35D85B00242906 /* NTESSessionRemoteHistoryViewController.m */,
 				312C1B921D35D85B00242906 /* NTESSessionViewController.h */,
 				312C1B931D35D85B00242906 /* NTESSessionViewController.m */,
+				3195DE061D54B94E001BD2B4 /* SAMCSessionViewController.h */,
+				3195DE071D54B94E001BD2B4 /* SAMCSessionViewController.m */,
 				312C1B941D35D85B00242906 /* RealTimeSession */,
 				312C1B9B1D35D85B00242906 /* Video */,
 				312C1B9F1D35D85B00242906 /* VideoChat */,
@@ -1624,6 +1637,8 @@
 		314444C51D45F68E0062B797 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				3195DE091D54BB35001BD2B4 /* NIMKit */,
+				3195DDF81D5490DC001BD2B4 /* Protocol */,
 				3195DDC71D5037E1001BD2B4 /* Other */,
 				3195DDB01D4EDFCD001BD2B4 /* Manager */,
 				314444C61D45F6B80062B797 /* SAMCTabViewController.h */,
@@ -1780,6 +1795,33 @@
 				3195DDEA1D52DB04001BD2B4 /* SAMCSession.m */,
 			);
 			name = Model;
+			sourceTree = "<group>";
+		};
+		3195DDF81D5490DC001BD2B4 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDF91D549124001BD2B4 /* SAMCChatManagerDelegate.h */,
+			);
+			name = Protocol;
+			sourceTree = "<group>";
+		};
+		3195DDFE1D5494A8001BD2B4 /* GCDMulticastDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				3195DDFF1D5494A8001BD2B4 /* GCDMulticastDelegate.h */,
+				3195DE001D5494A8001BD2B4 /* GCDMulticastDelegate.m */,
+			);
+			path = GCDMulticastDelegate;
+			sourceTree = "<group>";
+		};
+		3195DE091D54BB35001BD2B4 /* NIMKit */ = {
+			isa = PBXGroup;
+			children = (
+				3195DE0A1D54BB35001BD2B4 /* SAMCNIMSessionViewController.h */,
+				3195DE0B1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m */,
+			);
+			name = NIMKit;
+			path = Base/NIMKit;
 			sourceTree = "<group>";
 		};
 		5176189D0086B38FE643A26A /* Frameworks */ = {
@@ -1997,6 +2039,7 @@
 				312C1C821D35D85B00242906 /* NTESSessionConfig.m in Sources */,
 				312C1C691D35D85B00242906 /* NTESCustomSysNotificationSender.m in Sources */,
 				312C1C5F1D35D85B00242906 /* NTESChatroomViewController.m in Sources */,
+				3195DE011D5494A8001BD2B4 /* GCDMulticastDelegate.m in Sources */,
 				312C1CA31D35D85B00242906 /* NTESWhiteboardDrawView.m in Sources */,
 				312C1C411D35D85B00242906 /* UINavigationController+Swizzling.m in Sources */,
 				312C1C491D35D85B00242906 /* NTESBadgeView.m in Sources */,
@@ -2092,7 +2135,9 @@
 				312C1C3E1D35D85B00242906 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				312C1C381D35D85B00242906 /* UIActionSheet+NTESBlock.m in Sources */,
 				312C1C871D35D85B00242906 /* NTESSearchLocalHistoryObject.m in Sources */,
+				3195DE0C1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m in Sources */,
 				312C1C6D1D35D85B00242906 /* NTESGroupedUsrInfo.m in Sources */,
+				3195DE081D54B94E001BD2B4 /* SAMCSessionViewController.m in Sources */,
 				312C1CD21D35D85B00242906 /* NTESCADisplayLinkHolder.m in Sources */,
 				312C1C551D35D85B00242906 /* NTESTeamListViewController.m in Sources */,
 				314444EA1D49A5590062B797 /* SAMCTextField.m in Sources */,

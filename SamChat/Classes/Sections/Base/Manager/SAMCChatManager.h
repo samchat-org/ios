@@ -7,9 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCChatManagerDelegate.h"
 
 @interface SAMCChatManager : NSObject
 
 + (instancetype)sharedManager;
+
+- (void)addDelegate:(id<SAMCChatManagerDelegate>)delegate;
+- (void)removeDelegate:(id<SAMCChatManagerDelegate>)delegate;
 
 @end

@@ -13,6 +13,7 @@
 
 @interface SAMCMessageDB : SAMCDBBase
 
+// messages should belong to the same session
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages
            sessionMode:(SAMCUserModeType)sessionMode
                 unread:(BOOL)unreadFlag;

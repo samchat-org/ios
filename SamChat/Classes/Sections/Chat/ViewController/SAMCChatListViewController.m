@@ -12,7 +12,7 @@
 #import "NIMAvatarImageView.h"
 #import "NIMKitUtil.h"
 #import "NIMKit.h"
-#import "NTESSessionViewController.h"
+#import "SAMCSessionViewController.h"
 #import "UIView+NTES.h"
 #import "NTESBundleSetting.h"
 #import "NTESListHeader.h"
@@ -131,7 +131,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NIMRecentSession *recentSession = self.recentSessions[indexPath.row];
-    NTESSessionViewController *vc = [[NTESSessionViewController alloc] initWithSession:recentSession.session];
+    SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:recentSession.session];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
