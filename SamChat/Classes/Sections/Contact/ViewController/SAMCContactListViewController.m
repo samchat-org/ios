@@ -18,7 +18,7 @@
 #import "UIActionSheet+NTESBlock.h"
 #import "NTESSearchTeamViewController.h"
 #import "NTESContactAddFriendViewController.h"
-#import "NTESPersonalCardViewController.h"
+#import "SAMCPersonalCardViewController.h"
 #import "UIAlertView+NTESBlock.h"
 #import "SVProgressHUD.h"
 #import "NTESContactUtilCell.h"
@@ -404,7 +404,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 #pragma mark - Private
 - (void)enterPersonalCard:(NSString *)userId{
-    NTESPersonalCardViewController *vc = [[NTESPersonalCardViewController alloc] initWithUserId:userId];
+    SAMCPersonalCardViewController *vc = [[SAMCPersonalCardViewController alloc] initWithUserId:userId];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
