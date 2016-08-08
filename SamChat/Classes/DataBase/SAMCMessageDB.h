@@ -7,11 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SAMCRecentSession.h"
-#import "SAMCSession.h"
-#import "SAMCMessage.h"
-#import "SAMCDBBase.h"
 #import "SAMCConversationManagerDelegate.h"
+#import "SAMCDBBase.h"
+
+@class SAMCMessage;
 
 @interface SAMCMessageDB : SAMCDBBase
 

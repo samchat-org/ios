@@ -8,8 +8,8 @@
 
 #import "SAMCConversationManager.h"
 #import "SAMCDataBaseManager.h"
-#import "SAMCMessageDB.h"
 #import "GCDMulticastDelegate.h"
+#import "SAMCMessageDB.h"
 
 @interface SAMCConversationManager ()<NIMConversationManagerDelegate>
 
@@ -49,6 +49,11 @@
 - (void)removeDelegate:(id<SAMCConversationManagerDelegate>)delegate
 {
     [[SAMCDataBaseManager sharedManager].messageDB removeConversationDelegate:delegate];
+}
+
+- (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode
+{
+    return [[SAMCDataBaseManager sharedManager].messageDB allSessionsOfUserMode:userMode];
 }
 
 #pragma mark - NIMConversationManagerDelegate

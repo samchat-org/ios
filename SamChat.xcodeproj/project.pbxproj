@@ -226,7 +226,6 @@
 		3195DDE41D52CF51001BD2B4 /* SAMCChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDE31D52CF51001BD2B4 /* SAMCChatManager.m */; };
 		3195DDE81D52DA6A001BD2B4 /* SAMCMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDE71D52DA6A001BD2B4 /* SAMCMessage.m */; };
 		3195DDEB1D52DB04001BD2B4 /* SAMCSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDEA1D52DB04001BD2B4 /* SAMCSession.m */; };
-		3195DDF11D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDF01D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m */; };
 		3195DDF41D53317C001BD2B4 /* UIBarButtonItem+Badge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDF31D53317C001BD2B4 /* UIBarButtonItem+Badge.m */; };
 		3195DE011D5494A8001BD2B4 /* GCDMulticastDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE001D5494A8001BD2B4 /* GCDMulticastDelegate.m */; };
 		3195DE081D54B94E001BD2B4 /* SAMCSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE071D54B94E001BD2B4 /* SAMCSessionViewController.m */; };
@@ -653,8 +652,6 @@
 		3195DDE71D52DA6A001BD2B4 /* SAMCMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCMessage.m; path = DataBase/Model/SAMCMessage.m; sourceTree = "<group>"; };
 		3195DDE91D52DB04001BD2B4 /* SAMCSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSession.h; path = DataBase/Model/SAMCSession.h; sourceTree = "<group>"; };
 		3195DDEA1D52DB04001BD2B4 /* SAMCSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSession.m; path = DataBase/Model/SAMCSession.m; sourceTree = "<group>"; };
-		3195DDEF1D53275C001BD2B4 /* NIMSessionViewController+Swizzling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NIMSessionViewController+Swizzling.h"; sourceTree = "<group>"; };
-		3195DDF01D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIMSessionViewController+Swizzling.m"; sourceTree = "<group>"; };
 		3195DDF21D53317C001BD2B4 /* UIBarButtonItem+Badge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIBarButtonItem+Badge.h"; sourceTree = "<group>"; };
 		3195DDF31D53317C001BD2B4 /* UIBarButtonItem+Badge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIBarButtonItem+Badge.m"; sourceTree = "<group>"; };
 		3195DDF91D549124001BD2B4 /* SAMCChatManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCChatManagerDelegate.h; path = Base/Protocol/SAMCChatManagerDelegate.h; sourceTree = "<group>"; };
@@ -810,8 +807,6 @@
 				312C1ABC1D35D85B00242906 /* UIView+Swizzling.m */,
 				312C1ABD1D35D85B00242906 /* UIViewController+Swizzling.h */,
 				312C1ABE1D35D85B00242906 /* UIViewController+Swizzling.m */,
-				3195DDEF1D53275C001BD2B4 /* NIMSessionViewController+Swizzling.h */,
-				3195DDF01D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m */,
 			);
 			path = Addons;
 			sourceTree = "<group>";
@@ -2143,7 +2138,6 @@
 				312C1CAE1D35D85B00242906 /* NTESMutiClientsCell.m in Sources */,
 				312C1C961D35D85B00242906 /* NTESFilePreViewController.m in Sources */,
 				312C1C581D35D85B00242906 /* NTESChatroomConfig.m in Sources */,
-				3195DDF11D53275C001BD2B4 /* NIMSessionViewController+Swizzling.m in Sources */,
 				312C1C6E1D35D85B00242906 /* NTESContactUtilCell.m in Sources */,
 				312C1C8E1D35D85B00242906 /* NTESSearchMessageContentCell.m in Sources */,
 				312C1CD91D35D85B00242906 /* NTESSDKConfig.m in Sources */,

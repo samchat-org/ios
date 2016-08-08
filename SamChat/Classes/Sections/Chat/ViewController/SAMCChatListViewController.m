@@ -26,7 +26,6 @@
 #import "NTESPersonalCardViewController.h"
 #import "NIMCellConfig.h"
 #import "NIMSDK.h"
-#import "SAMCDataBaseManager.h"
 #import "SAMCConversationManager.h"
 #import "NIMMessage+SAMC.h"
 
@@ -285,7 +284,7 @@
 #pragma mark - Private
 - (NSMutableArray<SAMCRecentSession *> *)allCurrentUserModeRecentSessions
 {
-    return [[[SAMCDataBaseManager sharedManager].messageDB allSessionsOfUserMode:self.currentUserMode] mutableCopy];
+    return [[[SAMCConversationManager sharedManager] allSessionsOfUserMode:self.currentUserMode] mutableCopy];
 }
 
 - (NSString *)nameForRecentSession:(SAMCRecentSession *)recent

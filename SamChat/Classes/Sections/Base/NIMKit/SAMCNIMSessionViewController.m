@@ -26,6 +26,8 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCChatManager.h"
+#import "SAMCSession.h"
+#import "SAMCMessage.h"
 
 
 static const void * const SAMCDispatchMessageDataPrepareSpecificKey = &SAMCDispatchMessageDataPrepareSpecificKey;

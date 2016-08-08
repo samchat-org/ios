@@ -12,6 +12,9 @@
 #import "NSString+NIM.h"
 #import "SAMCRecentSession.h"
 #import "GCDMulticastDelegate.h"
+#import "SAMCRecentSession.h"
+#import "SAMCSession.h"
+#import "SAMCMessage.h"
 
 @interface SAMCMessageDB ()
 
