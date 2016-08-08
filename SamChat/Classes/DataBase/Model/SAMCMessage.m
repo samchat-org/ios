@@ -34,9 +34,11 @@
 
 - (void)loadNIMMessage
 {
-    NIMSession *nimSession = [NIMSession session:_session.sessionId type:_session.sessionType];
-    NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession messageIds:@[_messageId]];
-    _nimMessage = [messages firstObject];
+    if (_nimMessage == nil) {
+        NIMSession *nimSession = [NIMSession session:_session.sessionId type:_session.sessionType];
+        NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession messageIds:@[_messageId]];
+        _nimMessage = [messages firstObject];
+    }
 }
 
 @end

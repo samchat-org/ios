@@ -287,6 +287,7 @@ NIMUserManagerDelegate>
                                                type:self.session.sessionType
                                                mode:self.currentUserMode];
     SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
+    samcmessage.nimMessage = message;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]
@@ -302,10 +303,11 @@ NIMUserManagerDelegate>
     });
 }
 
+#pragma mark - SAMCChatManagerDelegate
 //发送消息
 - (void)willSendMessage:(NIMMessage *)message
 {
-    if ([message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
         if ([self findModel:message]) {
             [self uiUpdateMessage:message];
         }else{
@@ -317,7 +319,7 @@ NIMUserManagerDelegate>
 //发送结果
 - (void)sendMessage:(NIMMessage *)message didCompleteWithError:(NSError *)error
 {
-    if ([message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
         NIMMessageModel *model = [self makeModel:message];
         NSInteger index = [self.sessionDatasource indexAtModelArray:model];
         [self.layoutManager updateCellAtIndex:index model:model];
@@ -327,7 +329,7 @@ NIMUserManagerDelegate>
 //发送进度
 -(void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress
 {
-    if ([message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
         NIMMessageModel *model = [self makeModel:message];
         [_layoutManager updateCellAtIndex:[self.sessionDatasource indexAtModelArray:model] model:model];
     }
@@ -356,7 +358,7 @@ NIMUserManagerDelegate>
 
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress
 {
-    if ([message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
         NIMMessageModel *model = [self makeModel:message];
         [_layoutManager updateCellAtIndex:[self.sessionDatasource indexAtModelArray:model] model:model];
     }
@@ -364,7 +366,7 @@ NIMUserManagerDelegate>
 
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error
 {
-    if ([message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
         NIMMessageModel *model = [self makeModel:message];
         //下完缩略图之后，因为比例有变化，重新刷下宽高。
         [model calculateContent:self.tableView.nim_width force:YES];
@@ -671,6 +673,9 @@ NIMUserManagerDelegate>
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages)
     {
+        if (![self isCurrentModeMessage:message]) {
+            continue;
+        }
         NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
         [self layoutConfig:model];
         [models addObject:model];
@@ -886,8 +891,6 @@ NIMUserManagerDelegate>
     }
 }
 
-
-
 - (void)processPendingMessages
 {
     __weak typeof(self) weakSelf = self;
@@ -958,6 +961,23 @@ NIMUserManagerDelegate>
                                         model:models[index]];
         }
     }
+}
+
+- (BOOL)isCurrentModeMessage:(NIMMessage *)message
+{
+    id ext = message.remoteExt;
+    SAMCUserModeType messageMode = SAMCUserModeTypeCustom;
+    if (([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM])) {
+        // from custom user mode, local should display in sp mode
+        if (!message.isOutgoingMsg) {
+            messageMode = SAMCUserModeTypeSP;
+        }
+    } else {
+        if (message.isOutgoingMsg) {
+            messageMode = SAMCUserModeTypeSP;
+        }
+    }
+    return (messageMode == self.currentUserMode);
 }
 
 @end
