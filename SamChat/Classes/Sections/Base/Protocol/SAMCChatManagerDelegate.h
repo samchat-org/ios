@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NIMMessage.h"
+
+@class NIMMessage;
 
 NS_ASSUME_NONNULL_BEGIN
 

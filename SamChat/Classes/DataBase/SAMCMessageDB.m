@@ -10,9 +10,12 @@
 #import "FMDB.h"
 #import "NTESFileLocationHelper.h"
 #import "NSString+NIM.h"
+#import "SAMCRecentSession.h"
+#import "GCDMulticastDelegate.h"
 
 @interface SAMCMessageDB ()
 
+@property (nonatomic, strong) GCDMulticastDelegate<SAMCConversationManagerDelegate> *conversationDelegate;
 
 @end
 
@@ -27,6 +30,30 @@
     return self;
 }
 
+- (void)dealloc
+{
+}
+
+- (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate
+{
+    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate
+{
+    [self.multicastDelegate removeDelegate:delegate];
+}
+
+#pragma mark - lazy load
+- (GCDMulticastDelegate<SAMCConversationManagerDelegate> *)multicastDelegate
+{
+    if (_conversationDelegate == nil) {
+        _conversationDelegate = (GCDMulticastDelegate <SAMCConversationManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    }
+    return _conversationDelegate;
+}
+
+#pragma mark - Create DB
 - (void)createDataBaseIfNeccessary
 {
     // | name | session_id | session_mode | session_type | unread_count | tag |
@@ -37,7 +64,7 @@
 //                          @"create index if not exists spindex on sessiontag(sp)"];
         NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS session_table(name TEXT NOT NULL UNIQUE, \
                           session_id TEXT NOT NULL, session_mode INTEGER DEFAULT 0, \
-                          session_type INTEGER DEFAULT 0, unread_count INTEGER DEFAULT 0, tag INTEGER DEFAULT 0)",
+                          session_type INTEGER DEFAULT 0, last_msg_id text, unread_count INTEGER DEFAULT 0, tag INTEGER DEFAULT 0)",
                           @"CREATE INDEX IF NOT EXISTS session_id_index ON session_table(session_id)"];
         for (NSString *sql in sqls) {
             if (![db executeUpdate:sql]) {
@@ -54,70 +81,79 @@
     if ([messages count] == 0) {
         return;
     }
-    NSInteger unreadCount = 0;
-    if (unreadFlag) {
-        unreadCount = [messages count];
-    }
-    // the messages belongs to the same session
+    SAMCMessage *lastMessage = [messages lastObject]; 
+    // the messages belongs to the same SAMCSession
     SAMCSession *session = messages.firstObject.session;
     NSString *sessionName = session.tableName;
     NSString *sessionId = session.sessionId;
     NSInteger sessionType = session.sessionType;
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        NSInteger totalUnreadCount = 0;
+        NSInteger unreadCount = 0;
+        if (unreadFlag) {
+            unreadCount = [messages count];
+        }
+        BOOL isNewSession = false;
+        // 1. get pre unread count
         FMResultSet *s = [db executeQuery:@"SELECT unread_count FROM session_table WHERE session_mode = ? AND session_id = ?",
                           @(sessionMode), sessionId];
+        // 2. update unread count or insert session
         if ([s next] && (unreadCount != 0)) {
-            NSInteger totalUnread = [s intForColumn:@"unread_count"] + unreadCount;
-            [db executeUpdate:@"UPDATE session_table SET unread_count = ? WHERE session_mode = ? AND session_id = ?",
-             @(totalUnread),@(sessionMode),sessionId];
+            unreadCount = [s intForColumn:@"unread_count"] + unreadCount;
+            [db executeUpdate:@"UPDATE session_table SET unread_count = ?, last_msg_id = ? WHERE session_mode = ? AND session_id = ?",
+             @(unreadCount),lastMessage.messageId,@(sessionMode),sessionId];
         } else {
-            [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count) VALUES (?,?,?,?,?)",
-             sessionName,sessionId,@(sessionMode),@(sessionType),@(unreadCount)];
+            isNewSession = true;
+            [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count, last_msg_id) VALUES (?,?,?,?,?,?)",
+             sessionName,sessionId,@(sessionMode),@(sessionType),@(unreadCount),lastMessage.messageId];
         }
+        
+        // 3. insert messages
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (msg_id TEXT NOT NULL UNIQUE)",sessionName]];
         
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_id) VALUES(?)", sessionName];
         for (SAMCMessage *message in messages) {
             [db executeUpdate:sql, message.messageId];
         }
-    }];
-}
-
-- (NSArray<SAMCSession *> *)allCustomSessions
-{
-    NSMutableArray *sessions = [[NSMutableArray alloc] init];
-    [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE session_mode = ?", @(SAMCUserModeTypeCustom)];
-        while ([s next]) {
-            NSString *sessionId = [s stringForColumn:@"session_id"];
-            int sessionType = [s intForColumn:@"session_type"];
-            int sessionMode = [s intForColumn:@"session_mode"];
-            int unreadCount = [s intForColumn:@"unread_count"];
-            SAMCSession *session = [SAMCSession session:sessionId
-                                                   type:sessionType
-                                                   mode:sessionMode
-                                            unreadCount:unreadCount];
-            [sessions addObject:session];
+        // 4. get all current session_mode unreadcount
+        s = [db executeQuery:@"select sum(unread_count) from session_table where session_mode = ?",@(sessionMode)];
+        if ([s next]) {
+            totalUnreadCount = [s intForColumnIndex:0];
+        }
+        // 5. notify the event
+        [lastMessage loadNIMMessage];
+        SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
+                                                                lastMessage:lastMessage
+                                                                unreadCount:unreadCount];
+        if (isNewSession) {
+            [_conversationDelegate didAddRecentSession:recentSession totalUnreadCount:totalUnreadCount];
+        } else {
+            [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:totalUnreadCount];
         }
     }];
-    return sessions;
 }
 
-- (NSArray<SAMCSession *> *)allSPSessions
+- (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode
 {
     NSMutableArray *sessions = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE session_mode = ?", @(SAMCUserModeTypeSP)];
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE session_mode = ?", @(userMode)];
         while ([s next]) {
             NSString *sessionId = [s stringForColumn:@"session_id"];
             int sessionType = [s intForColumn:@"session_type"];
             int sessionMode = [s intForColumn:@"session_mode"];
             int unreadCount = [s intForColumn:@"unread_count"];
+            NSString *lastMsgId = [s stringForColumn:@"last_msg_id"];
             SAMCSession *session = [SAMCSession session:sessionId
                                                    type:sessionType
-                                                   mode:sessionMode
-                                            unreadCount:unreadCount];
-            [sessions addObject:session];
+                                                   mode:sessionMode];
+            SAMCMessage *message = [SAMCMessage message:lastMsgId session:session];
+            // get the last message for chat list view display
+            [message loadNIMMessage];
+            SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
+                                                                    lastMessage:message
+                                                                    unreadCount:unreadCount];
+            [sessions addObject:recentSession];
         }
     }];
     return sessions;

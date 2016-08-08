@@ -14,7 +14,10 @@
 
 @property (nonatomic,copy,readonly) NSString *messageId;
 @property (nonatomic,copy,readonly) SAMCSession *session;
+@property (nonatomic,strong) NIMMessage *nimMessage;
 
 + (instancetype)message:(NSString *)messageId session:(SAMCSession *)session;
+
+- (void)loadNIMMessage;
 
 @end

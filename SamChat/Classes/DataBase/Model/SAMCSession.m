@@ -25,22 +25,10 @@
                    type:(NIMSessionType)sessionType
                    mode:(SAMCUserModeType)sessionMode
 {
-    return [SAMCSession session:sessionId
-                           type:sessionType
-                           mode:sessionMode
-                    unreadCount:0];
-}
-
-+ (instancetype)session:(NSString *)sessionId
-                   type:(NIMSessionType)sessionType
-                   mode:(SAMCUserModeType)sessionMode
-            unreadCount:(NSInteger)unreadCount
-{
     SAMCSession *session = [[SAMCSession alloc] init];
     session.sessionId = sessionId;
     session.sessionType = sessionType;
     session.sessionMode = sessionMode;
-    session.unreadCount = unreadCount;
     return session;
 }
 

@@ -8,6 +8,7 @@
 
 #import "SAMCChatListViewController.h"
 #import "NIMSessionListCell.h"
+#import "NIMSessionListCell+SAMC.h"
 #import "UIView+NIM.h"
 #import "NIMAvatarImageView.h"
 #import "NIMKitUtil.h"
@@ -26,10 +27,11 @@
 #import "NIMCellConfig.h"
 #import "NIMSDK.h"
 #import "SAMCDataBaseManager.h"
+#import "SAMCConversationManager.h"
 
 #define SessionListTitle @"Chat"
 
-@interface SAMCChatListViewController ()<NIMConversationManagerDelegate,NIMTeamManagerDelegate,NIMLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,NIMLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UILabel *emptyTipLabel;
 @property (nonatomic,strong) NTESListHeader *header;
@@ -83,7 +85,8 @@
     [self.view addSubview:self.emptyTipLabel];
     
     
-    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+//    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+    [[SAMCConversationManager sharedManager] addDelegate:self];
     [[NIMSDK sharedSDK].loginManager addDelegate:self];
     
     extern NSString *const NIMKitTeamInfoHasUpdatedNotification;
@@ -98,7 +101,8 @@
 
 - (void)dealloc
 {
-    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+//    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+    [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[NIMSDK sharedSDK].loginManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -176,22 +180,24 @@
         cell = [[NIMSessionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         [cell.avatarImageView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
     }
-    NIMRecentSession *recent = self.recentSessions[indexPath.row];
+    SAMCRecentSession *recent = self.recentSessions[indexPath.row];
+    NIMSession *nimsession = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
     cell.nameLabel.text = [self nameForRecentSession:recent];
-    [cell.avatarImageView setAvatarBySession:recent.session];
+    [cell.avatarImageView setAvatarBySession:nimsession];
     [cell.nameLabel sizeToFit];
     cell.messageLabel.text  = [self contentForRecentSession:recent];
     [cell.messageLabel sizeToFit];
     cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
     [cell.timeLabel sizeToFit];
     
-    [cell refresh:recent];
+//    [cell refresh:recent];
+    [cell refreshBadge:recent.unreadCount];
     return cell;
 }
 
 
-#pragma mark - NIMConversationManagerDelegate
-- (void)didAddRecentSession:(NIMRecentSession *)recentSession
+#pragma mark - SAMCConversationManagerDelegate
+- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount
 {
     [self.recentSessions addObject:recentSession];
@@ -200,7 +206,7 @@
 }
 
 
-- (void)didUpdateRecentSession:(NIMRecentSession *)recentSession
+- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount
 {
     for (NIMRecentSession *recent in self.recentSessions) {
@@ -216,14 +222,12 @@
 
 - (void)messagesDeletedInSession:(NIMSession *)session
 {
-//    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
     _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
 }
 
 - (void)allMessagesDeleted
 {
-//    _recentSessions = [[NIMSDK sharedSDK].conversationManager.allRecentSessions mutableCopy];
     _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
 }
@@ -277,42 +281,28 @@
 }
 
 #pragma mark - Private
-- (NSMutableArray<NIMRecentSession *> *)allCurrentUserModeRecentSessions
+- (NSMutableArray<SAMCRecentSession *> *)allCurrentUserModeRecentSessions
 {
-    __block NSMutableArray<NIMRecentSession *> *sessions = [[NSMutableArray alloc] init];
-    NSArray<SAMCSession *> *modeSessions = nil;
-    if (self.currentUserMode == SAMCUserModeTypeSP) {
-        modeSessions = [[SAMCDataBaseManager sharedManager].messageDB allSPSessions];
-    } else {
-        modeSessions = [[SAMCDataBaseManager sharedManager].messageDB allCustomSessions];
-    }
-    [[NIMSDK sharedSDK].conversationManager.allRecentSessions enumerateObjectsUsingBlock:^(NIMRecentSession * _Nonnull recentSession, NSUInteger idx, BOOL * _Nonnull stop) {
-        [modeSessions enumerateObjectsUsingBlock:^(SAMCSession * _Nonnull modeSession, NSUInteger idx, BOOL * _Nonnull stop) {
-            if ([recentSession.session.sessionId isEqual:modeSession.sessionId]) {
-                *stop = YES;
-                [sessions addObject:recentSession];
-            }
-        }];
-    }];
-    return sessions;
+    return [[[SAMCDataBaseManager sharedManager].messageDB allSessionsOfUserMode:self.currentUserMode] mutableCopy];
 }
 
-- (NSString *)nameForRecentSession:(NIMRecentSession *)recent
+- (NSString *)nameForRecentSession:(SAMCRecentSession *)recent
 {
     if ([recent.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
         return @"我的电脑";
     }
     if (recent.session.sessionType == NIMSessionTypeP2P) {
-        return [NIMKitUtil showNick:recent.session.sessionId inSession:recent.session];
+        NIMSession *session = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
+        return [NIMKitUtil showNick:recent.session.sessionId inSession:session];
     }else{
         NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recent.session.sessionId];
         return team.teamName;
     }
 }
 
-- (NSString *)timestampDescriptionForRecentSession:(NIMRecentSession *)recent
+- (NSString *)timestampDescriptionForRecentSession:(SAMCRecentSession *)recent
 {
-    return [NIMKitUtil showTime:recent.lastMessage.timestamp showDetail:NO];
+    return [NIMKitUtil showTime:recent.lastMessage.nimMessage.timestamp showDetail:NO];
 }
 
 - (void)refreshSubview
@@ -324,15 +314,15 @@
     self.emptyTipLabel.centerY = self.tableView.height * .5f;
 }
 
-- (NSString *)contentForRecentSession:(NIMRecentSession *)recent
+- (NSString *)contentForRecentSession:(SAMCRecentSession *)recent
 {
     NSString *text = @"";
-    switch (recent.lastMessage.messageType) {
+    switch (recent.lastMessage.nimMessage.messageType) {
         case NIMMessageTypeCustom:
-            text = [self customMessageContent:recent.lastMessage];
+            text = [self customMessageContent:recent.lastMessage.nimMessage];
             break;
         case NIMMessageTypeText:
-            text = recent.lastMessage.text;
+            text = recent.lastMessage.nimMessage.text;
             break;
         case NIMMessageTypeAudio:
             text = @"[语音]";
@@ -347,7 +337,7 @@
             text = @"[位置]";
             break;
         case NIMMessageTypeNotification:
-            return [self notificationMessageContent:recent.lastMessage];
+            return [self notificationMessageContent:recent.lastMessage.nimMessage];
         case NIMMessageTypeFile:
             text = @"[文件]";
             break;
@@ -360,19 +350,19 @@
     if (recent.lastMessage.session.sessionType == NIMSessionTypeP2P) {
         return text;
     }else{
-        NSString *nickName = [NIMKitUtil showNick:recent.lastMessage.from inSession:recent.lastMessage.session];
+        NSString *nickName = [NIMKitUtil showNick:recent.lastMessage.nimMessage.from inSession:recent.lastMessage.nimMessage.session];
         return nickName.length ? [nickName stringByAppendingFormat:@" : %@",text] : @"";
     }
 }
 
 #pragma mark - Misc
-- (NSInteger)findInsertPlace:(NIMRecentSession *)recentSession
+- (NSInteger)findInsertPlace:(SAMCRecentSession *)recentSession
 {
     __block NSUInteger matchIdx = 0;
     __block BOOL find = NO;
     [self.recentSessions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        NIMRecentSession *item = obj;
-        if (item.lastMessage.timestamp <= recentSession.lastMessage.timestamp) {
+        SAMCRecentSession *item = obj;
+        if (item.lastMessage.nimMessage.timestamp <= recentSession.lastMessage.nimMessage.timestamp) {
             *stop = YES;
             find  = YES;
             matchIdx = idx;
@@ -388,12 +378,12 @@
 - (void)sort
 {
     [self.recentSessions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NIMRecentSession *item1 = obj1;
-        NIMRecentSession *item2 = obj2;
-        if (item1.lastMessage.timestamp < item2.lastMessage.timestamp) {
+        SAMCRecentSession *item1 = obj1;
+        SAMCRecentSession *item2 = obj2;
+        if (item1.lastMessage.nimMessage.timestamp < item2.lastMessage.nimMessage.timestamp) {
             return NSOrderedDescending;
         }
-        if (item1.lastMessage.timestamp > item2.lastMessage.timestamp) {
+        if (item1.lastMessage.nimMessage.timestamp > item2.lastMessage.nimMessage.timestamp) {
             return NSOrderedAscending;
         }
         return NSOrderedSame;

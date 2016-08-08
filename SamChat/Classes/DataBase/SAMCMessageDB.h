@@ -7,9 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCRecentSession.h"
 #import "SAMCSession.h"
 #import "SAMCMessage.h"
 #import "SAMCDBBase.h"
+#import "SAMCConversationManagerDelegate.h"
 
 @interface SAMCMessageDB : SAMCDBBase
 
@@ -18,7 +20,9 @@
            sessionMode:(SAMCUserModeType)sessionMode
                 unread:(BOOL)unreadFlag;
 
-- (NSArray<SAMCSession *> *)allCustomSessions;
-- (NSArray<SAMCSession *> *)allSPSessions;
+- (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode;
+
+- (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
+- (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 
 @end

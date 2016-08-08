@@ -7,6 +7,8 @@
 //
 
 #import "SAMCMessage.h"
+#import "NIMSession.h"
+#import "SAMCSession.h"
 
 @interface SAMCMessage ()
 
@@ -28,6 +30,13 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"%@\nmessageId:%@\nsession:\n%@",[super description],_messageId,_session];
+}
+
+- (void)loadNIMMessage
+{
+    NIMSession *nimSession = [NIMSession session:_session.sessionId type:_session.sessionType];
+    NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession messageIds:@[_messageId]];
+    _nimMessage = [messages firstObject];
 }
 
 @end

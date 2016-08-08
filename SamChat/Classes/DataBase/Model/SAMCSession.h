@@ -15,15 +15,9 @@
 @property (nonatomic, copy, readonly) NSString *sessionId;
 @property (nonatomic, assign, readonly) NIMSessionType sessionType;
 @property (nonatomic, assign, readonly) SAMCUserModeType sessionMode;
-@property (nonatomic, assign, readonly) NSInteger unreadCount;
 
 + (instancetype)session:(NSString *)sessionId
                    type:(NIMSessionType)sessionType
                    mode:(SAMCUserModeType)sessionMode;
-
-+ (instancetype)session:(NSString *)sessionId
-                   type:(NIMSessionType)sessionType
-                   mode:(SAMCUserModeType)sessionMode
-            unreadCount:(NSInteger)unreadCount;
 
 @end

@@ -7,120 +7,121 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m */ = {isa = PBXBuildFile; fileRef = 610D71A01D0E5A9C00FCE25A /* NIMKitNotificationFirer.m */; };
-		6110D8AF1C24001300805BA4 /* UITableView+NIMScrollToBottom.m */ = {isa = PBXBuildFile; fileRef = 6110D8AE1C24001300805BA4 /* UITableView+NIMScrollToBottom.m */; };
-		611B65DA1BA8591700038641 /* NIMContactSelectTabView.m */ = {isa = PBXBuildFile; fileRef = 611B65D91BA8591700038641 /* NIMContactSelectTabView.m */; };
-		6132C7141BA7C47C00897DDB /* NIMContactDataCell.m */ = {isa = PBXBuildFile; fileRef = 6132C7101BA7C47C00897DDB /* NIMContactDataCell.m */; };
-		614B8E351C5209940091BF28 /* NIMTipContentConfig.m */ = {isa = PBXBuildFile; fileRef = 614B8E341C5209940091BF28 /* NIMTipContentConfig.m */; };
-		6157802E1B8F246F00C441F2 /* NIMKitTimerHolder.m */ = {isa = PBXBuildFile; fileRef = 6157802D1B8F246F00C441F2 /* NIMKitTimerHolder.m */; };
-		615BD0F31B85A6A2000F174B /* NIMLoadProgressView.m */ = {isa = PBXBuildFile; fileRef = 615BD0F21B85A6A2000F174B /* NIMLoadProgressView.m */; };
-		6187F9D41B81915700EFFB3A /* NIMAttributedLabel.m */ = {isa = PBXBuildFile; fileRef = E4EF06E11B7DAFCA006669AC /* NIMAttributedLabel.m */; };
-		6187F9D51B81915700EFFB3A /* NIMAttributedLabelAttachment.m */ = {isa = PBXBuildFile; fileRef = E4EF06E31B7DAFCA006669AC /* NIMAttributedLabelAttachment.m */; };
-		6187F9D61B81915700EFFB3A /* NIMAttributedLabelURL.m */ = {isa = PBXBuildFile; fileRef = E4EF06E61B7DAFCA006669AC /* NIMAttributedLabelURL.m */; };
-		6187F9D71B81915700EFFB3A /* NSMutableAttributedString+NIM.m */ = {isa = PBXBuildFile; fileRef = E4EF06E81B7DAFCA006669AC /* NSMutableAttributedString+NIM.m */; };
-		6187F9D81B81915700EFFB3A /* NIMImageCache.m */ = {isa = PBXBuildFile; fileRef = E4EF06EB1B7DAFCA006669AC /* NIMImageCache.m */; };
-		6187F9D91B81915700EFFB3A /* NIMWebImageCompat.m */ = {isa = PBXBuildFile; fileRef = E4EF06ED1B7DAFCA006669AC /* NIMWebImageCompat.m */; };
-		6187F9DA1B81915700EFFB3A /* NIMWebImageDecoder.m */ = {isa = PBXBuildFile; fileRef = E4EF06EF1B7DAFCA006669AC /* NIMWebImageDecoder.m */; };
-		6187F9DB1B81915700EFFB3A /* NIMWebImageDownloader.m */ = {isa = PBXBuildFile; fileRef = E4EF06F11B7DAFCA006669AC /* NIMWebImageDownloader.m */; };
-		6187F9DC1B81915700EFFB3A /* NIMWebImageDownloaderOperation.m */ = {isa = PBXBuildFile; fileRef = E4EF06F31B7DAFCA006669AC /* NIMWebImageDownloaderOperation.m */; };
-		6187F9DD1B81915700EFFB3A /* NIMWebImageManager.m */ = {isa = PBXBuildFile; fileRef = E4EF06F51B7DAFCA006669AC /* NIMWebImageManager.m */; };
-		6187F9DE1B81915700EFFB3A /* NIMWebImagePrefetcher.m */ = {isa = PBXBuildFile; fileRef = E4EF06F81B7DAFCA006669AC /* NIMWebImagePrefetcher.m */; };
-		6187F9DF1B81915700EFFB3A /* NSData+NIMImageContentType.m */ = {isa = PBXBuildFile; fileRef = E4EF06FA1B7DAFCA006669AC /* NSData+NIMImageContentType.m */; };
-		6187F9E01B81915700EFFB3A /* UIImage+NIMGIF.m */ = {isa = PBXBuildFile; fileRef = E4EF06FC1B7DAFCA006669AC /* UIImage+NIMGIF.m */; };
-		6187F9E11B81915700EFFB3A /* UIImage+NIMMultiFormat.m */ = {isa = PBXBuildFile; fileRef = E4EF06FE1B7DAFCA006669AC /* UIImage+NIMMultiFormat.m */; };
-		6187F9E21B81915700EFFB3A /* UIView+NIMWebCacheOperation.m */ = {isa = PBXBuildFile; fileRef = E4EF07001B7DAFCA006669AC /* UIView+NIMWebCacheOperation.m */; };
-		6187F9E31B81915700EFFB3A /* NIMMediaItem.m */ = {isa = PBXBuildFile; fileRef = E4EF074D1B7DB3A2006669AC /* NIMMediaItem.m */; };
-		6187F9E51B81915700EFFB3A /* NIMMessageModel.m */ = {isa = PBXBuildFile; fileRef = E4EF07371B7DB2B9006669AC /* NIMMessageModel.m */; };
-		6187F9E61B81915700EFFB3A /* NIMKitEvent.m */ = {isa = PBXBuildFile; fileRef = 61592B7E1B7E05E300BC38C0 /* NIMKitEvent.m */; };
-		6187F9E71B81915700EFFB3A /* NIMKitUtil.m */ = {isa = PBXBuildFile; fileRef = 61B1F7A31B7866160065FEFB /* NIMKitUtil.m */; };
-		6187F9E81B81915700EFFB3A /* NIMBadgeView.m */ = {isa = PBXBuildFile; fileRef = E4EF072D1B7DB285006669AC /* NIMBadgeView.m */; };
-		6187F9E91B81915700EFFB3A /* NIMCustomLeftBarView.m */ = {isa = PBXBuildFile; fileRef = 6114BBC71B78F7C100D5AD02 /* NIMCustomLeftBarView.m */; };
-		6187F9EA1B81915700EFFB3A /* NIMAvatarImageView.m */ = {isa = PBXBuildFile; fileRef = 619AF5C01B788E5E0073623F /* NIMAvatarImageView.m */; };
-		6187F9EB1B81915700EFFB3A /* NIMPageView.m */ = {isa = PBXBuildFile; fileRef = 61DFDA7F1B764FAE00DD5F2A /* NIMPageView.m */; };
-		6187F9EC1B81915700EFFB3A /* NIMInputEmoticonParser.m */ = {isa = PBXBuildFile; fileRef = 61B1F7B71B7885B50065FEFB /* NIMInputEmoticonParser.m */; };
-		6187F9ED1B81915700EFFB3A /* NIMInputMoreContainerView.m */ = {isa = PBXBuildFile; fileRef = 61DFDA681B764E9600DD5F2A /* NIMInputMoreContainerView.m */; };
-		6187F9EE1B81915700EFFB3A /* NIMInputTextView.m */ = {isa = PBXBuildFile; fileRef = 61DFDA6A1B764E9600DD5F2A /* NIMInputTextView.m */; };
-		6187F9EF1B81915700EFFB3A /* NIMInputView.m */ = {isa = PBXBuildFile; fileRef = 61DFDA6C1B764E9600DD5F2A /* NIMInputView.m */; };
-		6187F9F01B81915700EFFB3A /* NIMInputToolBar.m */ = {isa = PBXBuildFile; fileRef = 614B711D1B78C22E00F02B1B /* NIMInputToolBar.m */; };
-		6187F9F11B81915700EFFB3A /* NIMInputEmoticonContainerView.m */ = {isa = PBXBuildFile; fileRef = 615E0C091B76573200B404FB /* NIMInputEmoticonContainerView.m */; };
-		6187F9F21B81915700EFFB3A /* NIMInputEmoticonButton.m */ = {isa = PBXBuildFile; fileRef = 615E0C0F1B7659BB00B404FB /* NIMInputEmoticonButton.m */; };
-		6187F9F31B81915700EFFB3A /* NIMInputEmoticonManager.m */ = {isa = PBXBuildFile; fileRef = 615E0C161B765C5B00B404FB /* NIMInputEmoticonManager.m */; };
-		6187F9F41B81915700EFFB3A /* NIMInputEmoticonTabView.m */ = {isa = PBXBuildFile; fileRef = 6198A5D51B766494001757B6 /* NIMInputEmoticonTabView.m */; };
-		6187F9F51B81915700EFFB3A /* NIMInputAudioRecordIndicatorView.m */ = {isa = PBXBuildFile; fileRef = 6198A5EA1B7712FA001757B6 /* NIMInputAudioRecordIndicatorView.m */; };
-		6187F9F61B81915700EFFB3A /* NIMSessionViewController.m */ = {isa = PBXBuildFile; fileRef = E4EF07421B7DB2F7006669AC /* NIMSessionViewController.m */; };
-		6187F9F71B81915700EFFB3A /* NIMSessionMessageContentView.m */ = {isa = PBXBuildFile; fileRef = E4EF07461B7DB31D006669AC /* NIMSessionMessageContentView.m */; };
-		6187F9F81B81915700EFFB3A /* NIMSessionTimestampCell.m */ = {isa = PBXBuildFile; fileRef = 614B71171B78A34700F02B1B /* NIMSessionTimestampCell.m */; };
-		6187F9F91B81915700EFFB3A /* NIMMessageCell.m */ = {isa = PBXBuildFile; fileRef = 6191674C1B7788D300B5A31C /* NIMMessageCell.m */; };
-		6187F9FA1B81915700EFFB3A /* NIMSessionAudioContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB9641B7836B400355B95 /* NIMSessionAudioContentView.m */; };
-		6187F9FB1B81915700EFFB3A /* NIMSessionFileTransContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB9681B7836B400355B95 /* NIMSessionFileTransContentView.m */; };
-		6187F9FC1B81915700EFFB3A /* NIMSessionImageContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB96A1B7836B400355B95 /* NIMSessionImageContentView.m */; };
-		6187F9FD1B81915700EFFB3A /* NIMSessionLocationContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB96E1B7836B400355B95 /* NIMSessionLocationContentView.m */; };
-		6187F9FE1B81915700EFFB3A /* NIMSessionNetChatNotifyContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB9721B7836B400355B95 /* NIMSessionNetChatNotifyContentView.m */; };
-		6187F9FF1B81915700EFFB3A /* NIMSessionNotificationContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB9741B7836B400355B95 /* NIMSessionNotificationContentView.m */; };
-		6187FA001B81915700EFFB3A /* NIMSessionTextContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB9781B7836B400355B95 /* NIMSessionTextContentView.m */; };
-		6187FA011B81915700EFFB3A /* NIMSessionUnknowContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB97A1B7836B400355B95 /* NIMSessionUnknowContentView.m */; };
-		6187FA021B81915700EFFB3A /* NIMSessionVideoContentView.m */ = {isa = PBXBuildFile; fileRef = 61FAB97C1B7836B400355B95 /* NIMSessionVideoContentView.m */; };
-		6187FA041B81915700EFFB3A /* NIMCellLayoutDefaultConfig.m */ = {isa = PBXBuildFile; fileRef = 61F1B2A31B7B948B009097EC /* NIMCellLayoutDefaultConfig.m */; };
-		6187FA071B81915800EFFB3A /* NIMSessionMsgDatasource.m */ = {isa = PBXBuildFile; fileRef = 61DFDA711B764E9600DD5F2A /* NIMSessionMsgDatasource.m */; };
-		6187FA081B81915800EFFB3A /* NIMMessageCellMaker.m */ = {isa = PBXBuildFile; fileRef = 61F1B29C1B7B5B79009097EC /* NIMMessageCellMaker.m */; };
-		6187FA091B81915800EFFB3A /* NIMSessionViewLayoutManager.m */ = {isa = PBXBuildFile; fileRef = 6198A5DC1B7669D9001757B6 /* NIMSessionViewLayoutManager.m */; };
-		6187FA0A1B81915800EFFB3A /* NIMTimestampModel.m */ = {isa = PBXBuildFile; fileRef = 61DFDA731B764E9600DD5F2A /* NIMTimestampModel.m */; };
-		6187FA0B1B81915800EFFB3A /* NIMMessageMaker.m */ = {isa = PBXBuildFile; fileRef = 6114BBCB1B78FBA300D5AD02 /* NIMMessageMaker.m */; };
-		6187FA0C1B81915800EFFB3A /* NIMDefaultValueMaker.m */ = {isa = PBXBuildFile; fileRef = 613D35D51B7AF13B0078B09D /* NIMDefaultValueMaker.m */; };
-		6187FA0D1B81915800EFFB3A /* NIMSessionListViewController.m */ = {isa = PBXBuildFile; fileRef = E4EF074A1B7DB356006669AC /* NIMSessionListViewController.m */; };
-		6187FA0E1B81915800EFFB3A /* NIMSessionListDefaultConfig.m */ = {isa = PBXBuildFile; fileRef = 613D35C51B79EA7E0078B09D /* NIMSessionListDefaultConfig.m */; };
-		6187FA0F1B81915800EFFB3A /* NIMSessionListCell.m */ = {isa = PBXBuildFile; fileRef = 613D35C01B79E9480078B09D /* NIMSessionListCell.m */; };
-		6187FA111B81915800EFFB3A /* UIView+NIM.m */ = {isa = PBXBuildFile; fileRef = 615E0C0C1B76583000B404FB /* UIView+NIM.m */; };
-		6187FA121B81915800EFFB3A /* UIImage+NIM.m */ = {isa = PBXBuildFile; fileRef = 615E0C121B765A9F00B404FB /* UIImage+NIM.m */; };
-		6187FA131B81915800EFFB3A /* NSString+NIM.m */ = {isa = PBXBuildFile; fileRef = 6198A5D01B765E2A001757B6 /* NSString+NIM.m */; };
-		6187FA141B81915800EFFB3A /* NIMAttributedLabel+NIMKit.m */ = {isa = PBXBuildFile; fileRef = 61B1F7B31B7885040065FEFB /* NIMAttributedLabel+NIMKit.m */; };
-		61A2C8911BA6BFE2006304F9 /* NIMContactSelectViewController.m */ = {isa = PBXBuildFile; fileRef = 61A2C8901BA6BFE2006304F9 /* NIMContactSelectViewController.m */; };
-		61A2C8941BA6C2A1006304F9 /* NIMContactPickedView.m */ = {isa = PBXBuildFile; fileRef = 61A2C8931BA6C2A1006304F9 /* NIMContactPickedView.m */; };
-		61A2C8971BA6C8B9006304F9 /* NIMContactSelectConfig.m */ = {isa = PBXBuildFile; fileRef = 61A2C8961BA6C8B9006304F9 /* NIMContactSelectConfig.m */; };
-		61A2C8A91BA6D797006304F9 /* NIMGroupedDataCollection.m */ = {isa = PBXBuildFile; fileRef = 61A2C8A51BA6D797006304F9 /* NIMGroupedDataCollection.m */; };
-		61A2C8AA1BA6D797006304F9 /* NIMGroupedUsrInfo.m */ = {isa = PBXBuildFile; fileRef = 61A2C8A71BA6D797006304F9 /* NIMGroupedUsrInfo.m */; };
-		61A2C8B01BA6DC4F006304F9 /* NIMPinyinConverter.m */ = {isa = PBXBuildFile; fileRef = 61A2C8AD1BA6DC4F006304F9 /* NIMPinyinConverter.m */; };
-		61A2C8B11BA6DC4F006304F9 /* NIMSpellingCenter.m */ = {isa = PBXBuildFile; fileRef = 61A2C8AF1BA6DC4F006304F9 /* NIMSpellingCenter.m */; };
-		61BED5D71CE42BC4002E635C /* NIMKitDevice.m */ = {isa = PBXBuildFile; fileRef = 61BED5D61CE42BC4002E635C /* NIMKitDevice.m */; };
-		61D99FB11BAFF4770059D369 /* NIMCreateTeamAnnouncement.m */ = {isa = PBXBuildFile; fileRef = 61D99F9D1BAFF4770059D369 /* NIMCreateTeamAnnouncement.m */; };
-		61D99FB21BAFF4770059D369 /* NIMNormalTeamCardViewController.m */ = {isa = PBXBuildFile; fileRef = 61D99FA01BAFF4770059D369 /* NIMNormalTeamCardViewController.m */; };
-		61D99FB31BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m */ = {isa = PBXBuildFile; fileRef = 61D99FA21BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m */; };
-		61D99FB41BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m */ = {isa = PBXBuildFile; fileRef = 61D99FA51BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m */; };
-		61D99FB61BAFF4770059D369 /* NIMTeamMemberCardViewController.m */ = {isa = PBXBuildFile; fileRef = 61D99FAA1BAFF4770059D369 /* NIMTeamMemberCardViewController.m */; };
-		61D99FB71BAFF4770059D369 /* NIMTeamMemberListViewController.m */ = {isa = PBXBuildFile; fileRef = 61D99FAD1BAFF4770059D369 /* NIMTeamMemberListViewController.m */; };
-		61D99FC81BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m */ = {isa = PBXBuildFile; fileRef = 61D99FBC1BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m */; };
-		61D99FC91BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m */ = {isa = PBXBuildFile; fileRef = 61D99FBE1BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m */; };
-		61D99FCA1BAFF48A0059D369 /* NIMTeamCardHeaderCell.m */ = {isa = PBXBuildFile; fileRef = 61D99FC11BAFF48A0059D369 /* NIMTeamCardHeaderCell.m */; };
-		61D99FCB1BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m */ = {isa = PBXBuildFile; fileRef = 61D99FC31BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m */; };
-		61D99FCC1BAFF48A0059D369 /* NIMTimePickerView.m */ = {isa = PBXBuildFile; fileRef = 61D99FC61BAFF48A0059D369 /* NIMTimePickerView.m */; };
-		61D99FD91BAFF6190059D369 /* NIMCardMemberItem.m */ = {isa = PBXBuildFile; fileRef = 61D99FD01BAFF6190059D369 /* NIMCardMemberItem.m */; };
-		61D99FDA1BAFF6190059D369 /* NIMTeamCardOperationItem.m */ = {isa = PBXBuildFile; fileRef = 61D99FD21BAFF6190059D369 /* NIMTeamCardOperationItem.m */; };
-		61D99FDB1BAFF6190059D369 /* NIMTeamCardRowItem.m */ = {isa = PBXBuildFile; fileRef = 61D99FD41BAFF6190059D369 /* NIMTeamCardRowItem.m */; };
-		61D99FDC1BAFF6190059D369 /* NIMTeamInfoData.m */ = {isa = PBXBuildFile; fileRef = 61D99FD61BAFF6190059D369 /* NIMTeamInfoData.m */; };
-		61D99FDD1BAFF6190059D369 /* NIMUsrInfoData.m */ = {isa = PBXBuildFile; fileRef = 61D99FD81BAFF6190059D369 /* NIMUsrInfoData.m */; };
-		61D99FF21BAFFA760059D369 /* NIMIndefiniteAnimatedView.m */ = {isa = PBXBuildFile; fileRef = 61D99FE61BAFFA760059D369 /* NIMIndefiniteAnimatedView.m */; };
-		61D99FF31BAFFA760059D369 /* NIMProgressHUD.m */ = {isa = PBXBuildFile; fileRef = 61D99FE91BAFFA760059D369 /* NIMProgressHUD.m */; };
-		61D99FF51BAFFA760059D369 /* UIView+NIMKitToast.m */ = {isa = PBXBuildFile; fileRef = 61D99FF01BAFFA760059D369 /* UIView+NIMKitToast.m */; };
-		61D99FFB1BB008490059D369 /* NIMContactDataItem.m */ = {isa = PBXBuildFile; fileRef = 61D99FFA1BB008490059D369 /* NIMContactDataItem.m */; };
-		61E906021BCF4EBE006DBDA6 /* NIMMemberGroupView.m */ = {isa = PBXBuildFile; fileRef = 61E906011BCF4EBE006DBDA6 /* NIMMemberGroupView.m */; };
-		61F4E55F1CE1AF6F000AD2A9 /* NIMCommonTableData.m */ = {isa = PBXBuildFile; fileRef = 61F4E55C1CE1AF6F000AD2A9 /* NIMCommonTableData.m */; };
-		61F4E5601CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m */ = {isa = PBXBuildFile; fileRef = 61F4E55E1CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m */; };
-		61F4E5641CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m */ = {isa = PBXBuildFile; fileRef = 61F4E5631CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m */; };
-		61F4E5691CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m */ = {isa = PBXBuildFile; fileRef = 61F4E5661CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m */; };
-		61F4E56A1CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m */ = {isa = PBXBuildFile; fileRef = 61F4E5681CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m */; };
-		6F9C4F69BD40D3928CF67AA3 /* libNIMSDK.a */ = {isa = PBXBuildFile; fileRef = AC884F9DA0A79CB57202F1E6 /* libNIMSDK.a */; };
-		E465D3B01B84704C004F3A07 /* NIMUIConfig.m */ = {isa = PBXBuildFile; fileRef = E465D3AF1B84704C004F3A07 /* NIMUIConfig.m */; };
-		E479641E1CCDB95600A4534A /* NIMExtensionHelper.m */ = {isa = PBXBuildFile; fileRef = E479641D1CCDB95600A4534A /* NIMExtensionHelper.m */; };
-		E4EA43471BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA43461BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m */; };
-		E4EA434A1BA7EA20003FC1BA /* NIMUnsupportContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA43491BA7EA20003FC1BA /* NIMUnsupportContentConfig.m */; };
-		E4EA434D1BA7EA72003FC1BA /* NIMTextContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA434C1BA7EA72003FC1BA /* NIMTextContentConfig.m */; };
-		E4EA43501BA7EA7F003FC1BA /* NIMImageContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA434F1BA7EA7F003FC1BA /* NIMImageContentConfig.m */; };
-		E4EA43531BA7EA96003FC1BA /* NIMAudioContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA43521BA7EA96003FC1BA /* NIMAudioContentConfig.m */; };
-		E4EA43561BA7EAA3003FC1BA /* NIMVideoContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA43551BA7EAA3003FC1BA /* NIMVideoContentConfig.m */; };
-		E4EA43591BA7EAB1003FC1BA /* NIMFileContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA43581BA7EAB1003FC1BA /* NIMFileContentConfig.m */; };
-		E4EA435C1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA435B1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m */; };
-		E4EA435F1BA7EAD8003FC1BA /* NIMLocationContentConfig.m */ = {isa = PBXBuildFile; fileRef = E4EA435E1BA7EAD8003FC1BA /* NIMLocationContentConfig.m */; };
-		E4EB3B1A1C55EB6300A47C41 /* NIMKit.m */ = {isa = PBXBuildFile; fileRef = E4EB3B191C55EB6300A47C41 /* NIMKit.m */; };
+		3195DE171D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */; };
+		610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m in Sources */ = {isa = PBXBuildFile; fileRef = 610D71A01D0E5A9C00FCE25A /* NIMKitNotificationFirer.m */; };
+		6110D8AF1C24001300805BA4 /* UITableView+NIMScrollToBottom.m in Sources */ = {isa = PBXBuildFile; fileRef = 6110D8AE1C24001300805BA4 /* UITableView+NIMScrollToBottom.m */; };
+		611B65DA1BA8591700038641 /* NIMContactSelectTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 611B65D91BA8591700038641 /* NIMContactSelectTabView.m */; };
+		6132C7141BA7C47C00897DDB /* NIMContactDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6132C7101BA7C47C00897DDB /* NIMContactDataCell.m */; };
+		614B8E351C5209940091BF28 /* NIMTipContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 614B8E341C5209940091BF28 /* NIMTipContentConfig.m */; };
+		6157802E1B8F246F00C441F2 /* NIMKitTimerHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 6157802D1B8F246F00C441F2 /* NIMKitTimerHolder.m */; };
+		615BD0F31B85A6A2000F174B /* NIMLoadProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 615BD0F21B85A6A2000F174B /* NIMLoadProgressView.m */; };
+		6187F9D41B81915700EFFB3A /* NIMAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06E11B7DAFCA006669AC /* NIMAttributedLabel.m */; };
+		6187F9D51B81915700EFFB3A /* NIMAttributedLabelAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06E31B7DAFCA006669AC /* NIMAttributedLabelAttachment.m */; };
+		6187F9D61B81915700EFFB3A /* NIMAttributedLabelURL.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06E61B7DAFCA006669AC /* NIMAttributedLabelURL.m */; };
+		6187F9D71B81915700EFFB3A /* NSMutableAttributedString+NIM.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06E81B7DAFCA006669AC /* NSMutableAttributedString+NIM.m */; };
+		6187F9D81B81915700EFFB3A /* NIMImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06EB1B7DAFCA006669AC /* NIMImageCache.m */; };
+		6187F9D91B81915700EFFB3A /* NIMWebImageCompat.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06ED1B7DAFCA006669AC /* NIMWebImageCompat.m */; };
+		6187F9DA1B81915700EFFB3A /* NIMWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06EF1B7DAFCA006669AC /* NIMWebImageDecoder.m */; };
+		6187F9DB1B81915700EFFB3A /* NIMWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06F11B7DAFCA006669AC /* NIMWebImageDownloader.m */; };
+		6187F9DC1B81915700EFFB3A /* NIMWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06F31B7DAFCA006669AC /* NIMWebImageDownloaderOperation.m */; };
+		6187F9DD1B81915700EFFB3A /* NIMWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06F51B7DAFCA006669AC /* NIMWebImageManager.m */; };
+		6187F9DE1B81915700EFFB3A /* NIMWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06F81B7DAFCA006669AC /* NIMWebImagePrefetcher.m */; };
+		6187F9DF1B81915700EFFB3A /* NSData+NIMImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06FA1B7DAFCA006669AC /* NSData+NIMImageContentType.m */; };
+		6187F9E01B81915700EFFB3A /* UIImage+NIMGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06FC1B7DAFCA006669AC /* UIImage+NIMGIF.m */; };
+		6187F9E11B81915700EFFB3A /* UIImage+NIMMultiFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF06FE1B7DAFCA006669AC /* UIImage+NIMMultiFormat.m */; };
+		6187F9E21B81915700EFFB3A /* UIView+NIMWebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF07001B7DAFCA006669AC /* UIView+NIMWebCacheOperation.m */; };
+		6187F9E31B81915700EFFB3A /* NIMMediaItem.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF074D1B7DB3A2006669AC /* NIMMediaItem.m */; };
+		6187F9E51B81915700EFFB3A /* NIMMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF07371B7DB2B9006669AC /* NIMMessageModel.m */; };
+		6187F9E61B81915700EFFB3A /* NIMKitEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 61592B7E1B7E05E300BC38C0 /* NIMKitEvent.m */; };
+		6187F9E71B81915700EFFB3A /* NIMKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B1F7A31B7866160065FEFB /* NIMKitUtil.m */; };
+		6187F9E81B81915700EFFB3A /* NIMBadgeView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF072D1B7DB285006669AC /* NIMBadgeView.m */; };
+		6187F9E91B81915700EFFB3A /* NIMCustomLeftBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6114BBC71B78F7C100D5AD02 /* NIMCustomLeftBarView.m */; };
+		6187F9EA1B81915700EFFB3A /* NIMAvatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 619AF5C01B788E5E0073623F /* NIMAvatarImageView.m */; };
+		6187F9EB1B81915700EFFB3A /* NIMPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA7F1B764FAE00DD5F2A /* NIMPageView.m */; };
+		6187F9EC1B81915700EFFB3A /* NIMInputEmoticonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B1F7B71B7885B50065FEFB /* NIMInputEmoticonParser.m */; };
+		6187F9ED1B81915700EFFB3A /* NIMInputMoreContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA681B764E9600DD5F2A /* NIMInputMoreContainerView.m */; };
+		6187F9EE1B81915700EFFB3A /* NIMInputTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA6A1B764E9600DD5F2A /* NIMInputTextView.m */; };
+		6187F9EF1B81915700EFFB3A /* NIMInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA6C1B764E9600DD5F2A /* NIMInputView.m */; };
+		6187F9F01B81915700EFFB3A /* NIMInputToolBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 614B711D1B78C22E00F02B1B /* NIMInputToolBar.m */; };
+		6187F9F11B81915700EFFB3A /* NIMInputEmoticonContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 615E0C091B76573200B404FB /* NIMInputEmoticonContainerView.m */; };
+		6187F9F21B81915700EFFB3A /* NIMInputEmoticonButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 615E0C0F1B7659BB00B404FB /* NIMInputEmoticonButton.m */; };
+		6187F9F31B81915700EFFB3A /* NIMInputEmoticonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 615E0C161B765C5B00B404FB /* NIMInputEmoticonManager.m */; };
+		6187F9F41B81915700EFFB3A /* NIMInputEmoticonTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A5D51B766494001757B6 /* NIMInputEmoticonTabView.m */; };
+		6187F9F51B81915700EFFB3A /* NIMInputAudioRecordIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A5EA1B7712FA001757B6 /* NIMInputAudioRecordIndicatorView.m */; };
+		6187F9F61B81915700EFFB3A /* NIMSessionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF07421B7DB2F7006669AC /* NIMSessionViewController.m */; };
+		6187F9F71B81915700EFFB3A /* NIMSessionMessageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF07461B7DB31D006669AC /* NIMSessionMessageContentView.m */; };
+		6187F9F81B81915700EFFB3A /* NIMSessionTimestampCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 614B71171B78A34700F02B1B /* NIMSessionTimestampCell.m */; };
+		6187F9F91B81915700EFFB3A /* NIMMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6191674C1B7788D300B5A31C /* NIMMessageCell.m */; };
+		6187F9FA1B81915700EFFB3A /* NIMSessionAudioContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB9641B7836B400355B95 /* NIMSessionAudioContentView.m */; };
+		6187F9FB1B81915700EFFB3A /* NIMSessionFileTransContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB9681B7836B400355B95 /* NIMSessionFileTransContentView.m */; };
+		6187F9FC1B81915700EFFB3A /* NIMSessionImageContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB96A1B7836B400355B95 /* NIMSessionImageContentView.m */; };
+		6187F9FD1B81915700EFFB3A /* NIMSessionLocationContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB96E1B7836B400355B95 /* NIMSessionLocationContentView.m */; };
+		6187F9FE1B81915700EFFB3A /* NIMSessionNetChatNotifyContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB9721B7836B400355B95 /* NIMSessionNetChatNotifyContentView.m */; };
+		6187F9FF1B81915700EFFB3A /* NIMSessionNotificationContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB9741B7836B400355B95 /* NIMSessionNotificationContentView.m */; };
+		6187FA001B81915700EFFB3A /* NIMSessionTextContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB9781B7836B400355B95 /* NIMSessionTextContentView.m */; };
+		6187FA011B81915700EFFB3A /* NIMSessionUnknowContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB97A1B7836B400355B95 /* NIMSessionUnknowContentView.m */; };
+		6187FA021B81915700EFFB3A /* NIMSessionVideoContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61FAB97C1B7836B400355B95 /* NIMSessionVideoContentView.m */; };
+		6187FA041B81915700EFFB3A /* NIMCellLayoutDefaultConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F1B2A31B7B948B009097EC /* NIMCellLayoutDefaultConfig.m */; };
+		6187FA071B81915800EFFB3A /* NIMSessionMsgDatasource.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA711B764E9600DD5F2A /* NIMSessionMsgDatasource.m */; };
+		6187FA081B81915800EFFB3A /* NIMMessageCellMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F1B29C1B7B5B79009097EC /* NIMMessageCellMaker.m */; };
+		6187FA091B81915800EFFB3A /* NIMSessionViewLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A5DC1B7669D9001757B6 /* NIMSessionViewLayoutManager.m */; };
+		6187FA0A1B81915800EFFB3A /* NIMTimestampModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 61DFDA731B764E9600DD5F2A /* NIMTimestampModel.m */; };
+		6187FA0B1B81915800EFFB3A /* NIMMessageMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 6114BBCB1B78FBA300D5AD02 /* NIMMessageMaker.m */; };
+		6187FA0C1B81915800EFFB3A /* NIMDefaultValueMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 613D35D51B7AF13B0078B09D /* NIMDefaultValueMaker.m */; };
+		6187FA0D1B81915800EFFB3A /* NIMSessionListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EF074A1B7DB356006669AC /* NIMSessionListViewController.m */; };
+		6187FA0E1B81915800EFFB3A /* NIMSessionListDefaultConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 613D35C51B79EA7E0078B09D /* NIMSessionListDefaultConfig.m */; };
+		6187FA0F1B81915800EFFB3A /* NIMSessionListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 613D35C01B79E9480078B09D /* NIMSessionListCell.m */; };
+		6187FA111B81915800EFFB3A /* UIView+NIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 615E0C0C1B76583000B404FB /* UIView+NIM.m */; };
+		6187FA121B81915800EFFB3A /* UIImage+NIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 615E0C121B765A9F00B404FB /* UIImage+NIM.m */; };
+		6187FA131B81915800EFFB3A /* NSString+NIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 6198A5D01B765E2A001757B6 /* NSString+NIM.m */; };
+		6187FA141B81915800EFFB3A /* NIMAttributedLabel+NIMKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 61B1F7B31B7885040065FEFB /* NIMAttributedLabel+NIMKit.m */; };
+		61A2C8911BA6BFE2006304F9 /* NIMContactSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8901BA6BFE2006304F9 /* NIMContactSelectViewController.m */; };
+		61A2C8941BA6C2A1006304F9 /* NIMContactPickedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8931BA6C2A1006304F9 /* NIMContactPickedView.m */; };
+		61A2C8971BA6C8B9006304F9 /* NIMContactSelectConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8961BA6C8B9006304F9 /* NIMContactSelectConfig.m */; };
+		61A2C8A91BA6D797006304F9 /* NIMGroupedDataCollection.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8A51BA6D797006304F9 /* NIMGroupedDataCollection.m */; };
+		61A2C8AA1BA6D797006304F9 /* NIMGroupedUsrInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8A71BA6D797006304F9 /* NIMGroupedUsrInfo.m */; };
+		61A2C8B01BA6DC4F006304F9 /* NIMPinyinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8AD1BA6DC4F006304F9 /* NIMPinyinConverter.m */; };
+		61A2C8B11BA6DC4F006304F9 /* NIMSpellingCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 61A2C8AF1BA6DC4F006304F9 /* NIMSpellingCenter.m */; };
+		61BED5D71CE42BC4002E635C /* NIMKitDevice.m in Sources */ = {isa = PBXBuildFile; fileRef = 61BED5D61CE42BC4002E635C /* NIMKitDevice.m */; };
+		61D99FB11BAFF4770059D369 /* NIMCreateTeamAnnouncement.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99F9D1BAFF4770059D369 /* NIMCreateTeamAnnouncement.m */; };
+		61D99FB21BAFF4770059D369 /* NIMNormalTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FA01BAFF4770059D369 /* NIMNormalTeamCardViewController.m */; };
+		61D99FB31BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FA21BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m */; };
+		61D99FB41BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FA51BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m */; };
+		61D99FB61BAFF4770059D369 /* NIMTeamMemberCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FAA1BAFF4770059D369 /* NIMTeamMemberCardViewController.m */; };
+		61D99FB71BAFF4770059D369 /* NIMTeamMemberListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FAD1BAFF4770059D369 /* NIMTeamMemberListViewController.m */; };
+		61D99FC81BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FBC1BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m */; };
+		61D99FC91BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FBE1BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m */; };
+		61D99FCA1BAFF48A0059D369 /* NIMTeamCardHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FC11BAFF48A0059D369 /* NIMTeamCardHeaderCell.m */; };
+		61D99FCB1BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FC31BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m */; };
+		61D99FCC1BAFF48A0059D369 /* NIMTimePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FC61BAFF48A0059D369 /* NIMTimePickerView.m */; };
+		61D99FD91BAFF6190059D369 /* NIMCardMemberItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FD01BAFF6190059D369 /* NIMCardMemberItem.m */; };
+		61D99FDA1BAFF6190059D369 /* NIMTeamCardOperationItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FD21BAFF6190059D369 /* NIMTeamCardOperationItem.m */; };
+		61D99FDB1BAFF6190059D369 /* NIMTeamCardRowItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FD41BAFF6190059D369 /* NIMTeamCardRowItem.m */; };
+		61D99FDC1BAFF6190059D369 /* NIMTeamInfoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FD61BAFF6190059D369 /* NIMTeamInfoData.m */; };
+		61D99FDD1BAFF6190059D369 /* NIMUsrInfoData.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FD81BAFF6190059D369 /* NIMUsrInfoData.m */; };
+		61D99FF21BAFFA760059D369 /* NIMIndefiniteAnimatedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FE61BAFFA760059D369 /* NIMIndefiniteAnimatedView.m */; };
+		61D99FF31BAFFA760059D369 /* NIMProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FE91BAFFA760059D369 /* NIMProgressHUD.m */; };
+		61D99FF51BAFFA760059D369 /* UIView+NIMKitToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FF01BAFFA760059D369 /* UIView+NIMKitToast.m */; };
+		61D99FFB1BB008490059D369 /* NIMContactDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 61D99FFA1BB008490059D369 /* NIMContactDataItem.m */; };
+		61E906021BCF4EBE006DBDA6 /* NIMMemberGroupView.m in Sources */ = {isa = PBXBuildFile; fileRef = 61E906011BCF4EBE006DBDA6 /* NIMMemberGroupView.m */; };
+		61F4E55F1CE1AF6F000AD2A9 /* NIMCommonTableData.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F4E55C1CE1AF6F000AD2A9 /* NIMCommonTableData.m */; };
+		61F4E5601CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F4E55E1CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m */; };
+		61F4E5641CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F4E5631CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m */; };
+		61F4E5691CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F4E5661CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m */; };
+		61F4E56A1CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 61F4E5681CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m */; };
+		6F9C4F69BD40D3928CF67AA3 /* libNIMSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AC884F9DA0A79CB57202F1E6 /* libNIMSDK.a */; };
+		E465D3B01B84704C004F3A07 /* NIMUIConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E465D3AF1B84704C004F3A07 /* NIMUIConfig.m */; };
+		E479641E1CCDB95600A4534A /* NIMExtensionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = E479641D1CCDB95600A4534A /* NIMExtensionHelper.m */; };
+		E4EA43471BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA43461BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m */; };
+		E4EA434A1BA7EA20003FC1BA /* NIMUnsupportContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA43491BA7EA20003FC1BA /* NIMUnsupportContentConfig.m */; };
+		E4EA434D1BA7EA72003FC1BA /* NIMTextContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA434C1BA7EA72003FC1BA /* NIMTextContentConfig.m */; };
+		E4EA43501BA7EA7F003FC1BA /* NIMImageContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA434F1BA7EA7F003FC1BA /* NIMImageContentConfig.m */; };
+		E4EA43531BA7EA96003FC1BA /* NIMAudioContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA43521BA7EA96003FC1BA /* NIMAudioContentConfig.m */; };
+		E4EA43561BA7EAA3003FC1BA /* NIMVideoContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA43551BA7EAA3003FC1BA /* NIMVideoContentConfig.m */; };
+		E4EA43591BA7EAB1003FC1BA /* NIMFileContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA43581BA7EAB1003FC1BA /* NIMFileContentConfig.m */; };
+		E4EA435C1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA435B1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m */; };
+		E4EA435F1BA7EAD8003FC1BA /* NIMLocationContentConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EA435E1BA7EAD8003FC1BA /* NIMLocationContentConfig.m */; };
+		E4EB3B1A1C55EB6300A47C41 /* NIMKit.m in Sources */ = {isa = PBXBuildFile; fileRef = E4EB3B191C55EB6300A47C41 /* NIMKit.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -145,6 +146,8 @@
 		311042A2A8E14387EBC90789 /* NIMTeam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTeam.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Team/NIMTeam.h; sourceTree = SOURCE_ROOT; };
 		311E4CFFB58DDFEAEB897895 /* NIMTipObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTipObject.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/MessageObject/NIMTipObject.h; sourceTree = SOURCE_ROOT; };
 		31564AA993F38932000B507A /* NIMTeamManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTeamManagerProtocol.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Protocol/NIMTeamManagerProtocol.h; sourceTree = SOURCE_ROOT; };
+		3195DE151D5719B1001BD2B4 /* NIMSessionListCell+SAMC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NIMSessionListCell+SAMC.h"; sourceTree = "<group>"; };
+		3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIMSessionListCell+SAMC.m"; sourceTree = "<group>"; };
 		33FF4C8087DADDBDA0AC960A /* NIMFileObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMFileObject.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/MessageObject/NIMFileObject.h; sourceTree = SOURCE_ROOT; };
 		3D324E07BE94676E137C3745 /* NIMSDKConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMSDKConfig.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/NIMSDKConfig.h; sourceTree = SOURCE_ROOT; };
 		452241378C96737500C53270 /* NIMChatManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMChatManagerProtocol.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Protocol/NIMChatManagerProtocol.h; sourceTree = SOURCE_ROOT; };
@@ -441,7 +444,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F9C4F69BD40D3928CF67AA3 /* libNIMSDK.a */,
+				6F9C4F69BD40D3928CF67AA3 /* libNIMSDK.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -475,7 +478,7 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		61344C081B720CB2005A96AE /*  */ = {
+		61344C081B720CB2005A96AE = {
 			isa = PBXGroup;
 			children = (
 				61344C131B720CB2005A96AE /* NIMKit */,
@@ -506,6 +509,8 @@
 			children = (
 				613D35BF1B79E9480078B09D /* NIMSessionListCell.h */,
 				613D35C01B79E9480078B09D /* NIMSessionListCell.m */,
+				3195DE151D5719B1001BD2B4 /* NIMSessionListCell+SAMC.h */,
+				3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1114,7 +1119,7 @@
 			name = NIMKit;
 			productName = NIMKit;
 			productReference = 6187F91F1B818ED800EFFB3A /* libNIMKit.a */;
-			productType = com.apple.product-type.library.static;
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -1130,14 +1135,14 @@
 					};
 				};
 			};
-			buildConfigurationList = 61344C0C1B720CB2005A96AE /* Build configuration list for PBXProject "Unity-iPhone" */;
+			buildConfigurationList = 61344C0C1B720CB2005A96AE /* Build configuration list for PBXProject "NIMKit" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 61344C081B720CB2005A96AE /*  */;
+			mainGroup = 61344C081B720CB2005A96AE;
 			productRefGroup = 61344C121B720CB2005A96AE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1152,119 +1157,120 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61D99FDA1BAFF6190059D369 /* NIMTeamCardOperationItem.m */,
-				61D99FC91BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m */,
-				6187F9D41B81915700EFFB3A /* NIMAttributedLabel.m */,
-				6187F9D51B81915700EFFB3A /* NIMAttributedLabelAttachment.m */,
-				61D99FF31BAFFA760059D369 /* NIMProgressHUD.m */,
-				61D99FCB1BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m */,
-				61D99FF21BAFFA760059D369 /* NIMIndefiniteAnimatedView.m */,
-				614B8E351C5209940091BF28 /* NIMTipContentConfig.m */,
-				6187F9D61B81915700EFFB3A /* NIMAttributedLabelURL.m */,
-				6187F9D71B81915700EFFB3A /* NSMutableAttributedString+NIM.m */,
-				6187F9D81B81915700EFFB3A /* NIMImageCache.m */,
-				61D99FB11BAFF4770059D369 /* NIMCreateTeamAnnouncement.m */,
-				6187F9D91B81915700EFFB3A /* NIMWebImageCompat.m */,
-				61F4E56A1CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m */,
-				E4EA435F1BA7EAD8003FC1BA /* NIMLocationContentConfig.m */,
-				6187F9DA1B81915700EFFB3A /* NIMWebImageDecoder.m */,
-				6187F9DB1B81915700EFFB3A /* NIMWebImageDownloader.m */,
-				6187F9DC1B81915700EFFB3A /* NIMWebImageDownloaderOperation.m */,
-				61F4E55F1CE1AF6F000AD2A9 /* NIMCommonTableData.m */,
-				6187F9DD1B81915700EFFB3A /* NIMWebImageManager.m */,
-				E4EB3B1A1C55EB6300A47C41 /* NIMKit.m */,
-				61A2C8911BA6BFE2006304F9 /* NIMContactSelectViewController.m */,
-				E4EA434A1BA7EA20003FC1BA /* NIMUnsupportContentConfig.m */,
-				61D99FB41BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m */,
-				61F4E5641CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m */,
-				6187F9DE1B81915700EFFB3A /* NIMWebImagePrefetcher.m */,
-				61E906021BCF4EBE006DBDA6 /* NIMMemberGroupView.m */,
-				6187F9DF1B81915700EFFB3A /* NSData+NIMImageContentType.m */,
-				61D99FDC1BAFF6190059D369 /* NIMTeamInfoData.m */,
-				6187F9E01B81915700EFFB3A /* UIImage+NIMGIF.m */,
-				E4EA434D1BA7EA72003FC1BA /* NIMTextContentConfig.m */,
-				6187F9E11B81915700EFFB3A /* UIImage+NIMMultiFormat.m */,
-				6187F9E21B81915700EFFB3A /* UIView+NIMWebCacheOperation.m */,
-				61D99FB61BAFF4770059D369 /* NIMTeamMemberCardViewController.m */,
-				6187F9E31B81915700EFFB3A /* NIMMediaItem.m */,
-				6187F9E51B81915700EFFB3A /* NIMMessageModel.m */,
-				6187F9E61B81915700EFFB3A /* NIMKitEvent.m */,
-				61BED5D71CE42BC4002E635C /* NIMKitDevice.m */,
-				6187F9E71B81915700EFFB3A /* NIMKitUtil.m */,
-				6187F9E81B81915700EFFB3A /* NIMBadgeView.m */,
-				61D99FF51BAFFA760059D369 /* UIView+NIMKitToast.m */,
-				6157802E1B8F246F00C441F2 /* NIMKitTimerHolder.m */,
-				61D99FD91BAFF6190059D369 /* NIMCardMemberItem.m */,
-				6187F9E91B81915700EFFB3A /* NIMCustomLeftBarView.m */,
-				E4EA43531BA7EA96003FC1BA /* NIMAudioContentConfig.m */,
-				6187F9EA1B81915700EFFB3A /* NIMAvatarImageView.m */,
-				6187F9EB1B81915700EFFB3A /* NIMPageView.m */,
-				6187F9EC1B81915700EFFB3A /* NIMInputEmoticonParser.m */,
-				6187F9ED1B81915700EFFB3A /* NIMInputMoreContainerView.m */,
-				61A2C8971BA6C8B9006304F9 /* NIMContactSelectConfig.m */,
-				61D99FCA1BAFF48A0059D369 /* NIMTeamCardHeaderCell.m */,
-				6187F9EE1B81915700EFFB3A /* NIMInputTextView.m */,
-				6187F9EF1B81915700EFFB3A /* NIMInputView.m */,
-				6187F9F01B81915700EFFB3A /* NIMInputToolBar.m */,
-				E479641E1CCDB95600A4534A /* NIMExtensionHelper.m */,
-				6187F9F11B81915700EFFB3A /* NIMInputEmoticonContainerView.m */,
-				61A2C8B01BA6DC4F006304F9 /* NIMPinyinConverter.m */,
-				6187F9F21B81915700EFFB3A /* NIMInputEmoticonButton.m */,
-				E4EA435C1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m */,
-				6187F9F31B81915700EFFB3A /* NIMInputEmoticonManager.m */,
-				6187F9F41B81915700EFFB3A /* NIMInputEmoticonTabView.m */,
-				61F4E5691CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m */,
-				61A2C8941BA6C2A1006304F9 /* NIMContactPickedView.m */,
-				6187F9F51B81915700EFFB3A /* NIMInputAudioRecordIndicatorView.m */,
-				61F4E5601CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m */,
-				6187F9F61B81915700EFFB3A /* NIMSessionViewController.m */,
-				61D99FDB1BAFF6190059D369 /* NIMTeamCardRowItem.m */,
-				6187F9F71B81915700EFFB3A /* NIMSessionMessageContentView.m */,
-				6187F9F81B81915700EFFB3A /* NIMSessionTimestampCell.m */,
-				6187F9F91B81915700EFFB3A /* NIMMessageCell.m */,
-				6187F9FA1B81915700EFFB3A /* NIMSessionAudioContentView.m */,
-				E4EA43471BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m */,
-				6187F9FB1B81915700EFFB3A /* NIMSessionFileTransContentView.m */,
-				61D99FC81BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m */,
-				61A2C8AA1BA6D797006304F9 /* NIMGroupedUsrInfo.m */,
-				6187F9FC1B81915700EFFB3A /* NIMSessionImageContentView.m */,
-				61A2C8A91BA6D797006304F9 /* NIMGroupedDataCollection.m */,
-				61D99FB31BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m */,
-				6187F9FD1B81915700EFFB3A /* NIMSessionLocationContentView.m */,
-				6110D8AF1C24001300805BA4 /* UITableView+NIMScrollToBottom.m */,
-				6187F9FE1B81915700EFFB3A /* NIMSessionNetChatNotifyContentView.m */,
-				6187F9FF1B81915700EFFB3A /* NIMSessionNotificationContentView.m */,
-				6187FA001B81915700EFFB3A /* NIMSessionTextContentView.m */,
-				61A2C8B11BA6DC4F006304F9 /* NIMSpellingCenter.m */,
-				6187FA011B81915700EFFB3A /* NIMSessionUnknowContentView.m */,
-				E465D3B01B84704C004F3A07 /* NIMUIConfig.m */,
-				6187FA021B81915700EFFB3A /* NIMSessionVideoContentView.m */,
-				610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m */,
-				6187FA041B81915700EFFB3A /* NIMCellLayoutDefaultConfig.m */,
-				6132C7141BA7C47C00897DDB /* NIMContactDataCell.m */,
-				E4EA43591BA7EAB1003FC1BA /* NIMFileContentConfig.m */,
-				6187FA071B81915800EFFB3A /* NIMSessionMsgDatasource.m */,
-				E4EA43561BA7EAA3003FC1BA /* NIMVideoContentConfig.m */,
-				6187FA081B81915800EFFB3A /* NIMMessageCellMaker.m */,
-				E4EA43501BA7EA7F003FC1BA /* NIMImageContentConfig.m */,
-				61D99FB21BAFF4770059D369 /* NIMNormalTeamCardViewController.m */,
-				6187FA091B81915800EFFB3A /* NIMSessionViewLayoutManager.m */,
-				61D99FFB1BB008490059D369 /* NIMContactDataItem.m */,
-				6187FA0A1B81915800EFFB3A /* NIMTimestampModel.m */,
-				6187FA0B1B81915800EFFB3A /* NIMMessageMaker.m */,
-				6187FA0C1B81915800EFFB3A /* NIMDefaultValueMaker.m */,
-				615BD0F31B85A6A2000F174B /* NIMLoadProgressView.m */,
-				611B65DA1BA8591700038641 /* NIMContactSelectTabView.m */,
-				6187FA0D1B81915800EFFB3A /* NIMSessionListViewController.m */,
-				61D99FCC1BAFF48A0059D369 /* NIMTimePickerView.m */,
-				61D99FDD1BAFF6190059D369 /* NIMUsrInfoData.m */,
-				6187FA0E1B81915800EFFB3A /* NIMSessionListDefaultConfig.m */,
-				6187FA0F1B81915800EFFB3A /* NIMSessionListCell.m */,
-				61D99FB71BAFF4770059D369 /* NIMTeamMemberListViewController.m */,
-				6187FA111B81915800EFFB3A /* UIView+NIM.m */,
-				6187FA121B81915800EFFB3A /* UIImage+NIM.m */,
-				6187FA131B81915800EFFB3A /* NSString+NIM.m */,
-				6187FA141B81915800EFFB3A /* NIMAttributedLabel+NIMKit.m */,
+				61D99FDA1BAFF6190059D369 /* NIMTeamCardOperationItem.m in Sources */,
+				61D99FC91BAFF48A0059D369 /* NIMTeamAnnouncementListCell.m in Sources */,
+				6187F9D41B81915700EFFB3A /* NIMAttributedLabel.m in Sources */,
+				6187F9D51B81915700EFFB3A /* NIMAttributedLabelAttachment.m in Sources */,
+				61D99FF31BAFFA760059D369 /* NIMProgressHUD.m in Sources */,
+				61D99FCB1BAFF48A0059D369 /* NIMTeamSwitchTableViewCell.m in Sources */,
+				61D99FF21BAFFA760059D369 /* NIMIndefiniteAnimatedView.m in Sources */,
+				614B8E351C5209940091BF28 /* NIMTipContentConfig.m in Sources */,
+				6187F9D61B81915700EFFB3A /* NIMAttributedLabelURL.m in Sources */,
+				6187F9D71B81915700EFFB3A /* NSMutableAttributedString+NIM.m in Sources */,
+				6187F9D81B81915700EFFB3A /* NIMImageCache.m in Sources */,
+				61D99FB11BAFF4770059D369 /* NIMCreateTeamAnnouncement.m in Sources */,
+				6187F9D91B81915700EFFB3A /* NIMWebImageCompat.m in Sources */,
+				61F4E56A1CE1DBC0000AD2A9 /* NIMKitSwitcherCell.m in Sources */,
+				E4EA435F1BA7EAD8003FC1BA /* NIMLocationContentConfig.m in Sources */,
+				6187F9DA1B81915700EFFB3A /* NIMWebImageDecoder.m in Sources */,
+				6187F9DB1B81915700EFFB3A /* NIMWebImageDownloader.m in Sources */,
+				6187F9DC1B81915700EFFB3A /* NIMWebImageDownloaderOperation.m in Sources */,
+				61F4E55F1CE1AF6F000AD2A9 /* NIMCommonTableData.m in Sources */,
+				6187F9DD1B81915700EFFB3A /* NIMWebImageManager.m in Sources */,
+				E4EB3B1A1C55EB6300A47C41 /* NIMKit.m in Sources */,
+				61A2C8911BA6BFE2006304F9 /* NIMContactSelectViewController.m in Sources */,
+				E4EA434A1BA7EA20003FC1BA /* NIMUnsupportContentConfig.m in Sources */,
+				61D99FB41BAFF4770059D369 /* NIMTeamAnnouncementListViewController.m in Sources */,
+				61F4E5641CE1C40D000AD2A9 /* NIMTeamMemberCardHeaderCell.m in Sources */,
+				6187F9DE1B81915700EFFB3A /* NIMWebImagePrefetcher.m in Sources */,
+				61E906021BCF4EBE006DBDA6 /* NIMMemberGroupView.m in Sources */,
+				6187F9DF1B81915700EFFB3A /* NSData+NIMImageContentType.m in Sources */,
+				61D99FDC1BAFF6190059D369 /* NIMTeamInfoData.m in Sources */,
+				6187F9E01B81915700EFFB3A /* UIImage+NIMGIF.m in Sources */,
+				E4EA434D1BA7EA72003FC1BA /* NIMTextContentConfig.m in Sources */,
+				6187F9E11B81915700EFFB3A /* UIImage+NIMMultiFormat.m in Sources */,
+				6187F9E21B81915700EFFB3A /* UIView+NIMWebCacheOperation.m in Sources */,
+				61D99FB61BAFF4770059D369 /* NIMTeamMemberCardViewController.m in Sources */,
+				6187F9E31B81915700EFFB3A /* NIMMediaItem.m in Sources */,
+				6187F9E51B81915700EFFB3A /* NIMMessageModel.m in Sources */,
+				6187F9E61B81915700EFFB3A /* NIMKitEvent.m in Sources */,
+				61BED5D71CE42BC4002E635C /* NIMKitDevice.m in Sources */,
+				6187F9E71B81915700EFFB3A /* NIMKitUtil.m in Sources */,
+				6187F9E81B81915700EFFB3A /* NIMBadgeView.m in Sources */,
+				61D99FF51BAFFA760059D369 /* UIView+NIMKitToast.m in Sources */,
+				6157802E1B8F246F00C441F2 /* NIMKitTimerHolder.m in Sources */,
+				61D99FD91BAFF6190059D369 /* NIMCardMemberItem.m in Sources */,
+				6187F9E91B81915700EFFB3A /* NIMCustomLeftBarView.m in Sources */,
+				E4EA43531BA7EA96003FC1BA /* NIMAudioContentConfig.m in Sources */,
+				6187F9EA1B81915700EFFB3A /* NIMAvatarImageView.m in Sources */,
+				6187F9EB1B81915700EFFB3A /* NIMPageView.m in Sources */,
+				6187F9EC1B81915700EFFB3A /* NIMInputEmoticonParser.m in Sources */,
+				6187F9ED1B81915700EFFB3A /* NIMInputMoreContainerView.m in Sources */,
+				61A2C8971BA6C8B9006304F9 /* NIMContactSelectConfig.m in Sources */,
+				61D99FCA1BAFF48A0059D369 /* NIMTeamCardHeaderCell.m in Sources */,
+				6187F9EE1B81915700EFFB3A /* NIMInputTextView.m in Sources */,
+				6187F9EF1B81915700EFFB3A /* NIMInputView.m in Sources */,
+				6187F9F01B81915700EFFB3A /* NIMInputToolBar.m in Sources */,
+				E479641E1CCDB95600A4534A /* NIMExtensionHelper.m in Sources */,
+				6187F9F11B81915700EFFB3A /* NIMInputEmoticonContainerView.m in Sources */,
+				61A2C8B01BA6DC4F006304F9 /* NIMPinyinConverter.m in Sources */,
+				6187F9F21B81915700EFFB3A /* NIMInputEmoticonButton.m in Sources */,
+				E4EA435C1BA7EAC3003FC1BA /* NIMNotificationContentConfig.m in Sources */,
+				6187F9F31B81915700EFFB3A /* NIMInputEmoticonManager.m in Sources */,
+				6187F9F41B81915700EFFB3A /* NIMInputEmoticonTabView.m in Sources */,
+				61F4E5691CE1DBC0000AD2A9 /* NIMKitColorButtonCell.m in Sources */,
+				61A2C8941BA6C2A1006304F9 /* NIMContactPickedView.m in Sources */,
+				6187F9F51B81915700EFFB3A /* NIMInputAudioRecordIndicatorView.m in Sources */,
+				61F4E5601CE1AF6F000AD2A9 /* NIMCommonTableDelegate.m in Sources */,
+				6187F9F61B81915700EFFB3A /* NIMSessionViewController.m in Sources */,
+				61D99FDB1BAFF6190059D369 /* NIMTeamCardRowItem.m in Sources */,
+				6187F9F71B81915700EFFB3A /* NIMSessionMessageContentView.m in Sources */,
+				6187F9F81B81915700EFFB3A /* NIMSessionTimestampCell.m in Sources */,
+				6187F9F91B81915700EFFB3A /* NIMMessageCell.m in Sources */,
+				6187F9FA1B81915700EFFB3A /* NIMSessionAudioContentView.m in Sources */,
+				E4EA43471BA7E5E5003FC1BA /* NIMBaseSessionContentConfig.m in Sources */,
+				6187F9FB1B81915700EFFB3A /* NIMSessionFileTransContentView.m in Sources */,
+				61D99FC81BAFF48A0059D369 /* NIMAdvancedTeamMemberCell.m in Sources */,
+				61A2C8AA1BA6D797006304F9 /* NIMGroupedUsrInfo.m in Sources */,
+				6187F9FC1B81915700EFFB3A /* NIMSessionImageContentView.m in Sources */,
+				61A2C8A91BA6D797006304F9 /* NIMGroupedDataCollection.m in Sources */,
+				61D99FB31BAFF4770059D369 /* NIMAdvancedTeamCardViewController.m in Sources */,
+				6187F9FD1B81915700EFFB3A /* NIMSessionLocationContentView.m in Sources */,
+				6110D8AF1C24001300805BA4 /* UITableView+NIMScrollToBottom.m in Sources */,
+				6187F9FE1B81915700EFFB3A /* NIMSessionNetChatNotifyContentView.m in Sources */,
+				6187F9FF1B81915700EFFB3A /* NIMSessionNotificationContentView.m in Sources */,
+				6187FA001B81915700EFFB3A /* NIMSessionTextContentView.m in Sources */,
+				61A2C8B11BA6DC4F006304F9 /* NIMSpellingCenter.m in Sources */,
+				6187FA011B81915700EFFB3A /* NIMSessionUnknowContentView.m in Sources */,
+				E465D3B01B84704C004F3A07 /* NIMUIConfig.m in Sources */,
+				6187FA021B81915700EFFB3A /* NIMSessionVideoContentView.m in Sources */,
+				610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m in Sources */,
+				6187FA041B81915700EFFB3A /* NIMCellLayoutDefaultConfig.m in Sources */,
+				3195DE171D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m in Sources */,
+				6132C7141BA7C47C00897DDB /* NIMContactDataCell.m in Sources */,
+				E4EA43591BA7EAB1003FC1BA /* NIMFileContentConfig.m in Sources */,
+				6187FA071B81915800EFFB3A /* NIMSessionMsgDatasource.m in Sources */,
+				E4EA43561BA7EAA3003FC1BA /* NIMVideoContentConfig.m in Sources */,
+				6187FA081B81915800EFFB3A /* NIMMessageCellMaker.m in Sources */,
+				E4EA43501BA7EA7F003FC1BA /* NIMImageContentConfig.m in Sources */,
+				61D99FB21BAFF4770059D369 /* NIMNormalTeamCardViewController.m in Sources */,
+				6187FA091B81915800EFFB3A /* NIMSessionViewLayoutManager.m in Sources */,
+				61D99FFB1BB008490059D369 /* NIMContactDataItem.m in Sources */,
+				6187FA0A1B81915800EFFB3A /* NIMTimestampModel.m in Sources */,
+				6187FA0B1B81915800EFFB3A /* NIMMessageMaker.m in Sources */,
+				6187FA0C1B81915800EFFB3A /* NIMDefaultValueMaker.m in Sources */,
+				615BD0F31B85A6A2000F174B /* NIMLoadProgressView.m in Sources */,
+				611B65DA1BA8591700038641 /* NIMContactSelectTabView.m in Sources */,
+				6187FA0D1B81915800EFFB3A /* NIMSessionListViewController.m in Sources */,
+				61D99FCC1BAFF48A0059D369 /* NIMTimePickerView.m in Sources */,
+				61D99FDD1BAFF6190059D369 /* NIMUsrInfoData.m in Sources */,
+				6187FA0E1B81915800EFFB3A /* NIMSessionListDefaultConfig.m in Sources */,
+				6187FA0F1B81915800EFFB3A /* NIMSessionListCell.m in Sources */,
+				61D99FB71BAFF4770059D369 /* NIMTeamMemberListViewController.m in Sources */,
+				6187FA111B81915800EFFB3A /* UIView+NIM.m in Sources */,
+				6187FA121B81915800EFFB3A /* UIImage+NIM.m in Sources */,
+				6187FA131B81915800EFFB3A /* NSString+NIM.m in Sources */,
+				6187FA141B81915800EFFB3A /* NIMAttributedLabel+NIMKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1312,9 +1318,7 @@
 					"$(SRCROOT)/../NIMLib/NIMLib/ExportHeaders",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1339,7 +1343,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1356,9 +1360,7 @@
 					"$(SRCROOT)/../NIMLib/NIMLib/ExportHeaders",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1368,9 +1370,9 @@
 		6187F9311B818ED800EFFB3A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = compiler-default;
-				CLANG_CXX_LIBRARY = compiler-default;
-				DEBUG_INFORMATION_FORMAT = dwarf-with-dsym;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1384,12 +1386,10 @@
 					"$(SRCROOT)/../NIMLib/NIMLib/ExportHeaders/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					-ObjC,
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1399,8 +1399,8 @@
 		6187F9321B818ED800EFFB3A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_CXX_LANGUAGE_STANDARD = compiler-default;
-				CLANG_CXX_LIBRARY = compiler-default;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
 				HEADER_SEARCH_PATHS = (
@@ -1409,12 +1409,10 @@
 					"$(SRCROOT)/../NIMLib/NIMLib/ExportHeaders/**",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				LIBRARY_SEARCH_PATHS = (
-					"$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK",
-				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/NIMKit/Vendors/NIMSDK";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
-					-ObjC,
+					"-ObjC",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -1424,7 +1422,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		61344C0C1B720CB2005A96AE /* Build configuration list for PBXProject "Unity-iPhone" */ = {
+		61344C0C1B720CB2005A96AE /* Build configuration list for PBXProject "NIMKit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				61344C221B720CB2005A96AE /* Debug */,
