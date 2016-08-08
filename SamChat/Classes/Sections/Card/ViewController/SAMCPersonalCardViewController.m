@@ -54,7 +54,9 @@
     [super viewDidLoad];
     [self setUpNav];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserInfoHasUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onUserInfoHasUpdatedNotification:)
+                                                 name:NIMKitUserInfoHasUpdatedNotification object:nil];
     
     __weak typeof(self) wself = self;
     self.delegator = [[NIMCommonTableDelegate alloc] initWithTableData:^NSArray *{
@@ -84,7 +86,10 @@
 - (void)setUpNav{
     self.navigationItem.title = @"个人名片";
     if ([self.userId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStyleDone target:self action:@selector(onActionEditMyInfo:)];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑"
+                                                                                  style:UIBarButtonItemStyleDone
+                                                                                 target:self
+                                                                                 action:@selector(onActionEditMyInfo:)];
         self.navigationItem.rightBarButtonItem.tintColor = [UIColor blackColor];
     }
 }
@@ -256,7 +261,8 @@
     UISwitch *switcher = sender;
     [SVProgressHUD show];
     __weak typeof(self) wself = self;
-    [[NIMSDK sharedSDK].userManager updateNotifyState:switcher.on forUser:self.userId completion:^(NSError *error) {            [SVProgressHUD dismiss];
+    [[NIMSDK sharedSDK].userManager updateNotifyState:switcher.on forUser:self.userId completion:^(NSError *error) {
+        [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
             [wself refresh];
@@ -305,7 +311,11 @@
 
 - (void)deleteFriend{
     __weak typeof(self) wself = self;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除好友" message:@"删除好友后，将同时解除双方的好友关系" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除好友"
+                                                    message:@"删除好友后，将同时解除双方的好友关系"
+                                                   delegate:nil
+                                          cancelButtonTitle:@"取消"
+                                          otherButtonTitles:@"确定", nil];
     [alert showAlertWithCompletionHandler:^(NSInteger index) {
         if (index == 1) {
             [SVProgressHUD show];
@@ -335,7 +345,11 @@
 - (void)onLongPressNavbar:(UIGestureRecognizer *)gesture{
     if (gesture.state == UIGestureRecognizerStateBegan) {
         NSString *title = self.user.description;
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"个人信息" message:title delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"个人信息"
+                                                        message:title
+                                                       delegate:nil
+                                              cancelButtonTitle:@"确定"
+                                              otherButtonTitles:nil, nil];
         [alert show];
     }
 }
