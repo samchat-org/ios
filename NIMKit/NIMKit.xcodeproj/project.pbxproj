@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3195DE171D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */; };
 		610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m in Sources */ = {isa = PBXBuildFile; fileRef = 610D71A01D0E5A9C00FCE25A /* NIMKitNotificationFirer.m */; };
 		6110D8AF1C24001300805BA4 /* UITableView+NIMScrollToBottom.m in Sources */ = {isa = PBXBuildFile; fileRef = 6110D8AE1C24001300805BA4 /* UITableView+NIMScrollToBottom.m */; };
 		611B65DA1BA8591700038641 /* NIMContactSelectTabView.m in Sources */ = {isa = PBXBuildFile; fileRef = 611B65D91BA8591700038641 /* NIMContactSelectTabView.m */; };
@@ -146,8 +145,6 @@
 		311042A2A8E14387EBC90789 /* NIMTeam.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTeam.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Team/NIMTeam.h; sourceTree = SOURCE_ROOT; };
 		311E4CFFB58DDFEAEB897895 /* NIMTipObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTipObject.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/MessageObject/NIMTipObject.h; sourceTree = SOURCE_ROOT; };
 		31564AA993F38932000B507A /* NIMTeamManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMTeamManagerProtocol.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Protocol/NIMTeamManagerProtocol.h; sourceTree = SOURCE_ROOT; };
-		3195DE151D5719B1001BD2B4 /* NIMSessionListCell+SAMC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NIMSessionListCell+SAMC.h"; sourceTree = "<group>"; };
-		3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NIMSessionListCell+SAMC.m"; sourceTree = "<group>"; };
 		33FF4C8087DADDBDA0AC960A /* NIMFileObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMFileObject.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/MessageObject/NIMFileObject.h; sourceTree = SOURCE_ROOT; };
 		3D324E07BE94676E137C3745 /* NIMSDKConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMSDKConfig.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/NIMSDKConfig.h; sourceTree = SOURCE_ROOT; };
 		452241378C96737500C53270 /* NIMChatManagerProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NIMChatManagerProtocol.h; path = ./NIMKit/Vendors/NIMSDK/ExportHeaders/Protocol/NIMChatManagerProtocol.h; sourceTree = SOURCE_ROOT; };
@@ -509,8 +506,6 @@
 			children = (
 				613D35BF1B79E9480078B09D /* NIMSessionListCell.h */,
 				613D35C01B79E9480078B09D /* NIMSessionListCell.m */,
-				3195DE151D5719B1001BD2B4 /* NIMSessionListCell+SAMC.h */,
-				3195DE161D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1246,7 +1241,6 @@
 				6187FA021B81915700EFFB3A /* NIMSessionVideoContentView.m in Sources */,
 				610D71A11D0E5A9C00FCE25A /* NIMKitNotificationFirer.m in Sources */,
 				6187FA041B81915700EFFB3A /* NIMCellLayoutDefaultConfig.m in Sources */,
-				3195DE171D5719B1001BD2B4 /* NIMSessionListCell+SAMC.m in Sources */,
 				6132C7141BA7C47C00897DDB /* NIMContactDataCell.m in Sources */,
 				E4EA43591BA7EAB1003FC1BA /* NIMFileContentConfig.m in Sources */,
 				6187FA071B81915800EFFB3A /* NIMSessionMsgDatasource.m in Sources */,
