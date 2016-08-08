@@ -101,7 +101,7 @@
         FMResultSet *s = [db executeQuery:@"SELECT unread_count FROM session_table WHERE session_mode = ? AND session_id = ?",
                           @(sessionMode), sessionId];
         // 2. update unread count or insert session
-        if ([s next] && (unreadCount != 0)) {
+        if ([s next]) {
             unreadCount = [s intForColumn:@"unread_count"] + unreadCount;
             [db executeUpdate:@"UPDATE session_table SET unread_count = ?, last_msg_id = ? WHERE session_mode = ? AND session_id = ?",
              @(unreadCount),lastMessage.messageId,@(sessionMode),sessionId];
