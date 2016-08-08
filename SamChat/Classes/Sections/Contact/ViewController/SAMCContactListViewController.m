@@ -25,6 +25,8 @@
 #import "NIMContactDataCell.h"
 #import "NIMContactSelectViewController.h"
 #import "NTESUserUtil.h"
+#import "SAMCSession.h"
+#import "SAMCPreferenceManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,NIMLoginManagerDelegate>
@@ -215,7 +217,9 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
                     [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
                         [SVProgressHUD dismiss];
                         if (!error) {
-                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+//                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
                             SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
                             [wself.navigationController pushViewController:vc animated:YES];
                         }else{
@@ -238,7 +242,9 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
                     [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
                         [SVProgressHUD dismiss];
                         if (!error) {
-                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+//                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
                             SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
                             [wself.navigationController pushViewController:vc animated:YES];
                         }else{

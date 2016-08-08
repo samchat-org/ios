@@ -56,15 +56,17 @@ NIMUserManagerDelegate>
 @property (nonatomic,strong) NSMutableArray *pendingMessages;   //缓存的插入消息,聊天室需要在另外个线程计算高度,减少UI刷新
 @property (nonatomic,readwrite)   NIMMessage *messageForMenu;
 @property (nonatomic,strong) NSIndexPath *lastVisibleIndexPathBeforeRotation;
+@property (nonatomic,assign) SAMCUserModeType currentUserMode;
 
 @end
 
 @implementation SAMCNIMSessionViewController
 
-- (instancetype)initWithSession:(NIMSession *)session{
+- (instancetype)initWithSession:(SAMCSession *)session{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        _session = session;
+        _session = [NIMSession session:session.sessionId type:session.sessionType];
+        _currentUserMode = session.sessionMode;
         _pendingMessages = [[NSMutableArray alloc] init];
     }
     return self;
@@ -272,8 +274,7 @@ NIMUserManagerDelegate>
 - (void)sendMessage:(NIMMessage *)message
 {
     id usermodeValue = nil;
-    SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-    if (mode == SAMCUserModeTypeSP) {
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
     } else {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
@@ -284,12 +285,12 @@ NIMUserManagerDelegate>
     
     SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
                                                type:self.session.sessionType
-                                               mode:mode];
+                                               mode:self.currentUserMode];
     SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]
-                                                          sessionMode:mode
+                                                          sessionMode:self.currentUserMode
                                                                unread:NO];
         //        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]];
         dispatch_async(dispatch_get_main_queue(), ^{

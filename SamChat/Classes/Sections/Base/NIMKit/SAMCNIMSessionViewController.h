@@ -14,6 +14,7 @@
 #import "NIMSessionMsgDatasource.h"
 #import "NIMSessionViewLayoutManager.h"
 #import "SAMCChatManagerDelegate.h"
+#import "SAMCSession.h"
 
 @interface SAMCNIMSessionViewController : UIViewController<NIMInputActionDelegate,NIMMessageCellDelegate,NIMSessionMsgDatasourceDelegate,SAMCChatManagerDelegate,UITableViewDataSource,UITableViewDelegate>
 
@@ -43,7 +44,7 @@
  *
  *  @return 会话页实例
  */
-- (instancetype)initWithSession:(NIMSession *)session;
+- (instancetype)initWithSession:(SAMCSession *)session;
 
 
 #pragma mark - 界面
