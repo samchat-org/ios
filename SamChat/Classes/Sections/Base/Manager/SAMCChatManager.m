@@ -97,6 +97,7 @@
                                                        mode:SAMCUserModeTypeSP];
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
+                samcmessage.nimMessage = message;
                 [spMessages addObject:samcmessage];
             }
         } else {
@@ -105,6 +106,7 @@
                                                        mode:SAMCUserModeTypeCustom];
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
+                samcmessage.nimMessage = message;
                 [customMessages addObject:samcmessage];
             }
         }

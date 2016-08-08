@@ -13,7 +13,7 @@
 #import "Reachability.h"
 #import "UIActionSheet+NTESBlock.h"
 #import "NTESCustomSysNotificationSender.h"
-#import "NTESSessionConfig.h"
+#import "SAMCSessionConfig.h"
 #import "NIMMediaItem.h"
 #import "NTESSessionMsgConverter.h"
 #import "NTESFileLocationHelper.h"
@@ -65,7 +65,7 @@ NTESTimerHolderDelegate,
 NIMContactSelectDelegate>
 
 @property (nonatomic,strong)    NTESCustomSysNotificationSender *notificaionSender;
-@property (nonatomic,strong)    NTESSessionConfig       *sessionConfig;
+@property (nonatomic,strong)    SAMCSessionConfig       *sessionConfig;
 @property (nonatomic,strong)    UIImagePickerController *imagePicker;
 @property (nonatomic,assign)    NTESImagePickerMode      mode;
 @property (nonatomic,strong)    NTESTimerHolder         *titleTimer;
@@ -117,8 +117,8 @@ NIMContactSelectDelegate>
 - (id<NIMSessionConfig>)sessionConfig
 {
     if (_sessionConfig == nil) {
-        _sessionConfig = [[NTESSessionConfig alloc] init];
-        _sessionConfig.session = self.session;
+        _sessionConfig = [[SAMCSessionConfig alloc] initWithSession:self.session userMode:self.currentUserMode];
+//        _sessionConfig.session = self.session;
     }
     return _sessionConfig;
 }

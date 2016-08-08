@@ -21,7 +21,13 @@
 
 - (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode;
 
+- (NSArray<NIMMessage *> *)messagesInSession:(NIMSession *)session
+                                    userMode:(SAMCUserModeType)userMode
+                                     message:(NIMMessage *)message
+                                       limit:(NSInteger)limit;
+
 - (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 - (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
+
 
 @end

@@ -56,6 +56,20 @@
     return [[SAMCDataBaseManager sharedManager].messageDB allSessionsOfUserMode:userMode];
 }
 
+- (void)fetchMessagesInSession:(NIMSession *)session
+                      userMode:(SAMCUserModeType)userMode
+                       message:(NIMMessage *)message
+                         limit:(NSInteger)limit
+                        result:(void(^)(NSError *error, NSArray *messages))handler
+{
+    // TODO: change to async dispatch ?
+    NSArray<NIMMessage *> *messages = [[SAMCDataBaseManager sharedManager].messageDB messagesInSession:session
+                                                                                              userMode:userMode
+                                                                                               message:message
+                                                                                                 limit:limit];
+    handler(nil, messages);
+}
+
 #pragma mark - NIMConversationManagerDelegate
 - (void)didAddRecentSession:(NIMRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount

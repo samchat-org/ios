@@ -22,4 +22,10 @@
 - (void)addDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 - (void)removeDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 
+- (void)fetchMessagesInSession:(NIMSession *)session
+                      userMode:(SAMCUserModeType)userMode
+                       message:(NIMMessage *)message
+                         limit:(NSInteger)limit
+                        result:(void(^)(NSError *error, NSArray *messages))handler;
+
 @end

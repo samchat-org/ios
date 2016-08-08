@@ -15,6 +15,7 @@
 #import "SAMCRecentSession.h"
 #import "SAMCSession.h"
 #import "SAMCMessage.h"
+#import "NIMSDK.h"
 
 @interface SAMCMessageDB ()
 
@@ -112,19 +113,19 @@
         }
         
         // 3. insert messages
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (msg_id TEXT NOT NULL UNIQUE)",sessionName]];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_id TEXT NOT NULL UNIQUE)",sessionName]];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_index' ON '%@'(msg_id)",sessionName,sessionName]];
         
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_id) VALUES(?)", sessionName];
         for (SAMCMessage *message in messages) {
             [db executeUpdate:sql, message.messageId];
         }
         // 4. get all current session_mode unreadcount
-        s = [db executeQuery:@"select sum(unread_count) from session_table where session_mode = ?",@(sessionMode)];
+        s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(sessionMode)];
         if ([s next]) {
             totalUnreadCount = [s intForColumnIndex:0];
         }
         // 5. notify the event
-        [lastMessage loadNIMMessage];
         SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
                                                                 lastMessage:lastMessage
                                                                 unreadCount:unreadCount];
@@ -162,6 +163,31 @@
     return sessions;
 }
 
+- (NSArray<NIMMessage *> *)messagesInSession:(NIMSession *)session
+                                    userMode:(SAMCUserModeType)userMode
+                                     message:(NIMMessage *)message
+                                       limit:(NSInteger)limit
+{
+    NSString *tableName = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode].tableName;
+    __block NSArray *messages = nil;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = nil;
+        if (message == nil) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
+            s = [db executeQuery:sql, @(limit)];
+        } else {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE serial<(SELECT serial FROM '%@' WHERE msg_id = ?) ORDER BY serial DESC LIMIT ?", tableName, tableName];
+            s = [db executeQuery:sql,message.messageId, @(limit)];
+        }
+        NSMutableArray *messageIds = [[NSMutableArray alloc] init];
+        while ([s next]) {
+            NSString *messageId = [s stringForColumn:@"msg_id"];
+            [messageIds addObject:messageId];
+        }
+        messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:messageIds];
+    }];
+    return messages;
+}
 
 
 @end
