@@ -53,6 +53,8 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 @property (nonatomic,copy)  NSDictionary *configs;
 
+@property (nonatomic, assign) SAMCUserModeType currentUserMode;
+
 @end
 
 @implementation NTESMainTabController
@@ -67,14 +69,20 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     }
 }
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setUpSubNav];
     [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
     extern NSString *NTESCustomNotificationCountChanged;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCustomNotifyChanged:) name:NTESCustomNotificationCountChanged object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onCustomNotifyChanged:)
+                                                 name:NTESCustomNotificationCountChanged object:nil];
+    
+    extern NSString * const SAMCUserModeSwitchNotification;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(switchToUserMode:)
+                                                 name:SAMCUserModeSwitchNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -94,9 +102,16 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)switchToUserMode:(NSNotification *)notification
+{
+    extern NSString * const SAMCSwitchToUserModeKey;
+    SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
+    self.sessionUnreadCount = [[SAMCConversationManager sharedManager] allUnreadCountOfUserMode:mode];
+    [self refreshSessionBadge];
+}
+
 - (NSArray*)tabbars{
-    SAMCUserModeType userMode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-    self.sessionUnreadCount = [[SAMCConversationManager sharedManager] allUnreadCountOfUserMode:userMode];
+    self.sessionUnreadCount = [[SAMCConversationManager sharedManager] allUnreadCountOfUserMode:self.currentUserMode];
     self.systemUnreadCount   = [NIMSDK sharedSDK].systemNotificationManager.allUnreadCount;
     self.customSystemUnreadCount = [[NTESCustomNotificationDB sharedInstance] unreadCount];
     NSMutableArray *items = [[NSMutableArray alloc] init];
@@ -210,8 +225,6 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     [self refreshSettingBadge];
 }
 
-
-
 - (void)refreshSessionBadge{
     UINavigationController *nav = self.viewControllers[NTESMainTabTypeMessageList];
     nav.tabBarItem.badgeValue = self.sessionUnreadCount ? @(self.sessionUnreadCount).stringValue : nil;
@@ -315,10 +328,14 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 }
 
 #pragma mark - Private
+- (SAMCUserModeType)currentUserMode
+{
+    return [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+}
+
 - (BOOL)isCurrentModeSession:(SAMCSession *)session
 {
-    SAMCUserModeType currentUserMode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-    return (session.sessionMode == currentUserMode);
+    return (session.sessionMode == self.currentUserMode);
 }
 
 

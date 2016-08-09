@@ -63,7 +63,7 @@ NSString * const SAMCSwitchToUserModeKey = @"SAMCSwitchToUserModeKey";
                                                       userInfo:userInfo];
 }
 
-- (void)switchToUserMode:(NSDictionary *)notification
+- (void)switchToUserMode:(NSNotification *)notification
 {
 }
 

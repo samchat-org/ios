@@ -111,6 +111,7 @@
             [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count, last_msg_id) VALUES (?,?,?,?,?,?)",
              sessionName,sessionId,@(sessionMode),@(sessionType),@(unreadCount),lastMessage.messageId];
         }
+        [s close];
         
         // 3. insert messages
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_id TEXT NOT NULL UNIQUE)",sessionName]];
@@ -125,6 +126,7 @@
         if ([s next]) {
             totalUnreadCount = [s intForColumnIndex:0];
         }
+        [s close];
         // 5. notify the event
         SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
                                                                 lastMessage:lastMessage
@@ -159,6 +161,7 @@
                                                                     unreadCount:unreadCount];
             [sessions addObject:recentSession];
         }
+        [s close];
     }];
     return sessions;
 }
@@ -184,6 +187,7 @@
             NSString *messageId = [s stringForColumn:@"msg_id"];
             [messageIds addObject:messageId];
         }
+        [s close];
         messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:messageIds];
     }];
     return messages;
@@ -197,6 +201,7 @@
         if ([s next]) {
             unreadCount = [s intForColumnIndex:0];
         }
+        [s close];
     }];
     return unreadCount;
 }
