@@ -11,7 +11,6 @@
 #import "SVProgressHUD.h"
 #import "UIView+NTES.h"
 #import "NTESSessionViewController.h"
-#import "NTESMainTabController.h"
 
 @interface NTESAudio2TextViewController ()
 @property (weak, nonatomic) IBOutlet UITextView *textView;

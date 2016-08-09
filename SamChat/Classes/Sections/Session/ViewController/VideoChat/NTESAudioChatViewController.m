@@ -10,7 +10,6 @@
 #import "NTESVideoChatViewController.h"
 #import "NTESTimerHolder.h"
 #import "NetCallChatInfo.h"
-#import "NTESMainTabController.h"
 #import "NTESSessionUtil.h"
 #import "UIView+Toast.h"
 #import "UIAlertView+NTESBlock.h"

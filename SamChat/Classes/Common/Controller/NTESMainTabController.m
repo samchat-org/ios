@@ -21,6 +21,7 @@
 #import "SAMCChatListViewController.h"
 #import "SAMCContactListViewController.h"
 #import "SAMCSettingViewController.h"
+#import "SAMCConversationManager.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -40,7 +41,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 
 
-@interface NTESMainTabController ()<NIMSystemNotificationManagerDelegate,NIMConversationManagerDelegate>
+@interface NTESMainTabController ()<NIMSystemNotificationManagerDelegate,SAMCConversationManagerDelegate>
 
 //@property (nonatomic,strong) NSArray *navigationHandlers;
 
@@ -71,7 +72,8 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     [super viewDidLoad];
     [self setUpSubNav];
     [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
-    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+//    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
+    [[SAMCConversationManager sharedManager] addDelegate:self];
     extern NSString *NTESCustomNotificationCountChanged;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCustomNotifyChanged:) name:NTESCustomNotificationCountChanged object:nil];
 }
@@ -89,7 +91,8 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
-    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+//    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+    [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -145,32 +148,50 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 }
 
 
-#pragma mark - NIMConversationManagerDelegate
-- (void)didAddRecentSession:(NIMRecentSession *)recentSession
-           totalUnreadCount:(NSInteger)totalUnreadCount{
+#pragma mark - SAMCConversationManagerDelegate
+- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
+           totalUnreadCount:(NSInteger)totalUnreadCount
+{
+    if (![self isCurrentModeSession:recentSession.session]) {
+        return;
+    }
     self.sessionUnreadCount = totalUnreadCount;
     [self refreshSessionBadge];
 }
 
 
-- (void)didUpdateRecentSession:(NIMRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount{
+- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
+              totalUnreadCount:(NSInteger)totalUnreadCount
+{
+    if (![self isCurrentModeSession:recentSession.session]) {
+        return;
+    }
     self.sessionUnreadCount = totalUnreadCount;
     [self refreshSessionBadge];
 }
 
 
-- (void)didRemoveRecentSession:(NIMRecentSession *)recentSession totalUnreadCount:(NSInteger)totalUnreadCount{
+- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession
+              totalUnreadCount:(NSInteger)totalUnreadCount
+{
+    if (![self isCurrentModeSession:recentSession.session]) {
+        return;
+    }
     self.sessionUnreadCount = totalUnreadCount;
     [self refreshSessionBadge];
 }
 
-- (void)messagesDeletedInSession:(NIMSession *)session{
+- (void)messagesDeletedInSession:(SAMCSession *)session
+{
+    if (![self isCurrentModeSession:session]) {
+        return;
+    }
     self.sessionUnreadCount = [NIMSDK sharedSDK].conversationManager.allUnreadCount;
     [self refreshSessionBadge];
 }
 
-- (void)allMessagesDeleted{
+- (void)allMessagesDeleted
+{
     self.sessionUnreadCount = 0;
     [self refreshSessionBadge];
 }
@@ -294,7 +315,12 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     return _configs[@(type)];
 }
 
-
+#pragma mark - Private
+- (BOOL)isCurrentModeSession:(SAMCSession *)session
+{
+    SAMCUserModeType currentUserMode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+    return (session.sessionMode == currentUserMode);
+}
 
 
 
