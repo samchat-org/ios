@@ -25,6 +25,7 @@
                                     userMode:(SAMCUserModeType)userMode
                                      message:(NIMMessage *)message
                                        limit:(NSInteger)limit;
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
 
 - (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 - (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;

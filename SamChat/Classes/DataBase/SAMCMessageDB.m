@@ -189,5 +189,16 @@
     return messages;
 }
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
+{
+    __block NSInteger unreadCount = 0;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(userMode)];
+        if ([s next]) {
+            unreadCount = [s intForColumnIndex:0];
+        }
+    }];
+    return unreadCount;
+}
 
 @end

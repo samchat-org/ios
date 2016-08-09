@@ -28,4 +28,6 @@
                          limit:(NSInteger)limit
                         result:(void(^)(NSError *error, NSArray *messages))handler;
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
+
 @end

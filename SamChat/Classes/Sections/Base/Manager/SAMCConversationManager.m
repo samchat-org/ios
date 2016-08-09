@@ -70,6 +70,11 @@
     handler(nil, messages);
 }
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
+{
+    return [[SAMCDataBaseManager sharedManager].messageDB allUnreadCountOfUserMode:userMode];
+}
+
 #pragma mark - NIMConversationManagerDelegate
 - (void)didAddRecentSession:(NIMRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount

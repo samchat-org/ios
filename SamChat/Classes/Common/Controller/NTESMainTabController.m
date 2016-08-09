@@ -72,7 +72,6 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     [super viewDidLoad];
     [self setUpSubNav];
     [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
-//    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
     extern NSString *NTESCustomNotificationCountChanged;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onCustomNotifyChanged:) name:NTESCustomNotificationCountChanged object:nil];
@@ -91,13 +90,13 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
-//    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
     [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSArray*)tabbars{
-    self.sessionUnreadCount  = [NIMSDK sharedSDK].conversationManager.allUnreadCount;
+    SAMCUserModeType userMode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+    self.sessionUnreadCount = [[SAMCConversationManager sharedManager] allUnreadCountOfUserMode:userMode];
     self.systemUnreadCount   = [NIMSDK sharedSDK].systemNotificationManager.allUnreadCount;
     self.customSystemUnreadCount = [[NTESCustomNotificationDB sharedInstance] unreadCount];
     NSMutableArray *items = [[NSMutableArray alloc] init];
