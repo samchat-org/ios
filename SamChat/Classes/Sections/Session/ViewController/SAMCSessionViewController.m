@@ -20,11 +20,8 @@
 #import "NTESSessionMsgConverter.h"
 #import "UIView+Toast.h"
 #import "NTESLocationViewController.h"
-#import "NTESSnapchatAttachment.h"
-#import "NTESJanKenPonAttachment.h"
 #import "NTESFileTransSelectViewController.h"
 #import "NTESAudioChatViewController.h"
-#import "NTESWhiteboardViewController.h"
 #import "NTESVideoChatViewController.h"
 #import "NTESChartletAttachment.h"
 #import "NTESGalleryViewController.h"
@@ -40,7 +37,6 @@
 #import "UIView+NTES.h"
 #import "NTESBundleSetting.h"
 #import "NTESPersonalCardViewController.h"
-#import "NTESSessionSnapchatContentView.h"
 #import "NTESSessionLocalHistoryViewController.h"
 #import "NIMContactSelectViewController.h"
 #import "SVProgressHUD.h"
@@ -48,11 +44,9 @@
 #import "NTESFPSLabel.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESDataManager.h"
-#import "NTESWhiteboardAttachment.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
-    NTESImagePickerModeSnapChat,
 } NTESImagePickerMode;
 
 @interface SAMCSessionViewController ()
@@ -69,7 +63,6 @@ NIMContactSelectDelegate>
 @property (nonatomic,strong)    UIImagePickerController *imagePicker;
 @property (nonatomic,assign)    NTESImagePickerMode      mode;
 @property (nonatomic,strong)    NTESTimerHolder         *titleTimer;
-@property (nonatomic,strong)    UIView *currentSingleSnapView;
 @property (nonatomic,strong)    NTESFPSLabel *fpsLabel;
 @end
 
@@ -227,14 +220,6 @@ NIMContactSelectDelegate>
     [self sendMessage:[NTESSessionMsgConverter msgWithLocation:locationPoint]];
 }
 
-#pragma mark - 石头剪子布
-- (void)mediaJankenponPressed
-{
-    NTESJanKenPonAttachment *attachment = [[NTESJanKenPonAttachment alloc] init];
-    attachment.value = arc4random() % 3 + 1;
-    [self sendMessage:[NTESSessionMsgConverter msgWithJenKenPon:attachment]];
-}
-
 #pragma mark - 实时语音
 - (void)mediaAudioChatPressed
 {
@@ -286,64 +271,6 @@ NIMContactSelectDelegate>
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
-
-#pragma mark - 阅后即焚
-- (void)mediaSnapchatPressed
-{
-    [self initImagePicker];
-    UIActionSheet *sheet;
-    BOOL isCamraAvailable = [UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera];
-    if (isCamraAvailable) {
-        sheet = [[UIActionSheet alloc] initWithTitle:@"请选择" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选取",nil];
-    }else{
-        sheet = [[UIActionSheet alloc] initWithTitle:@"请选择" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"从相册中选取",nil];
-    }
-    __weak typeof(self) wself = self;
-    [sheet showInView:self.view completionHandler:^(NSInteger index) {
-        UIImagePickerControllerSourceType type;
-        switch (index) {
-            case 0:
-                //相册
-                if (isCamraAvailable) {
-                    type =  UIImagePickerControllerSourceTypeCamera;
-                }else{
-                    type =  UIImagePickerControllerSourceTypePhotoLibrary;
-                }
-                break;
-            case 1:
-                //相机
-                if (isCamraAvailable) {
-                    type =  UIImagePickerControllerSourceTypePhotoLibrary;
-                    break;
-                }
-            default:
-                return;
-        }
-        wself.imagePicker.sourceType = type;
-        wself.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
-        wself.mode = NTESImagePickerModeSnapChat;
-        [wself presentViewController:_imagePicker animated:YES completion:nil];
-    }];
-}
-
-- (void)sendSnapchatMessage:(UIImage *)image
-{
-    NTESSnapchatAttachment *attachment = [[NTESSnapchatAttachment alloc] init];
-    [attachment setImage:image];
-    [self sendMessage:[NTESSessionMsgConverter msgWithSnapchatAttachment:attachment]];
-}
-
-#pragma mark - 白板
-- (void)mediaWhiteBoardPressed
-{
-    NTESWhiteboardViewController *vc = [[NTESWhiteboardViewController alloc] initWithSessionID:nil
-                                                                                        peerID:self.session.sessionId
-                                                                                         types:NIMRTSServiceReliableTransfer | NIMRTSServiceAudio
-                                                                                          info:@"白板演示"];
-    [self presentViewController:vc animated:NO completion:nil];
-}
-
-
 
 #pragma mark - 提醒消息
 - (void)mediaTipPressed
@@ -438,9 +365,6 @@ NIMContactSelectDelegate>
         switch (_mode) {
             case NTESImagePickerModeImage:
                 [self sendMessage:[NTESSessionMsgConverter msgWithImage:orgImage]];
-                break;
-            case NTESImagePickerModeSnapChat:
-                [self sendSnapchatMessage:orgImage];
                 break;
             default:
                 break;
@@ -558,42 +482,6 @@ NIMContactSelectDelegate>
                     duration:2
                     position:CSToastPositionCenter];
         handled = YES;
-    }
-    else if([eventName isEqualToString:NIMDemoEventNameOpenSnapPicture])
-    {
-        NIMCustomObject *object = event.messageModel.message.messageObject;
-        NTESSnapchatAttachment *attachment = (NTESSnapchatAttachment *)object.attachment;
-        if(attachment.isFired){
-            return;
-        }
-        UIView *sender = event.data;
-        self.currentSingleSnapView = [NTESGalleryViewController alertSingleSnapViewWithMessage:object.message baseView:sender];
-        handled = YES;
-    }
-    else if([eventName isEqualToString:NIMDemoEventNameCloseSnapPicture])
-    {
-        //点击很快的时候可能会触发两次查看，所以这里不管有没有查看过 先强直销毁掉
-        NIMCustomObject *object = event.messageModel.message.messageObject;
-        UIView *senderView = event.data;
-        [senderView dismissPresentedView:YES complete:nil];
-        
-        NTESSnapchatAttachment *attachment = (NTESSnapchatAttachment *)object.attachment;
-        if(attachment.isFired){
-            return;
-        }
-        attachment.isFired  = YES;
-        NIMMessage *message = object.message;
-        if ([NTESBundleSetting sharedConfig].autoRemoveSnapMessage) {
-            [[NIMSDK sharedSDK].conversationManager deleteMessage:message];
-            [self uiDeleteMessage:message];
-            
-        }else{
-            [[NIMSDK sharedSDK].conversationManager updateMessage:message forSession:message.session completion:nil];
-            [self uiUpdateMessage:message];
-        }
-        [[NSFileManager defaultManager] removeItemAtPath:attachment.filepath error:nil];
-        handled = YES;
-        self.currentSingleSnapView = nil;
     }
     
     if (!handled) {
@@ -840,9 +728,7 @@ NIMContactSelectDelegate>
         return NO;
     }
     id<NIMMessageObject> messageobject = message.messageObject;
-    if ([messageobject isKindOfClass:[NIMCustomObject class]]
-        && ([[(NIMCustomObject *)messageobject attachment] isKindOfClass:[NTESSnapchatAttachment class]]
-            || [[(NIMCustomObject *)messageobject attachment] isKindOfClass:[NTESWhiteboardAttachment class]])) {
+    if ([messageobject isKindOfClass:[NIMCustomObject class]]) {
             return NO;
         }
     if ([messageobject isKindOfClass:[NIMNotificationObject class]]) {
@@ -860,12 +746,9 @@ NIMContactSelectDelegate>
         actions = @{@(NTESMediaButtonPicture)   : @"mediaPicturePressed",
                     @(NTESMediaButtonShoot)     : @"mediaShootPressed",
                     @(NTESMediaButtonLocation)  : @"mediaLocationPressed",
-                    @(NTESMediaButtonJanKenPon) : @"mediaJankenponPressed",
                     @(NTESMediaButtonVideoChat) : @"mediaVideoChatPressed",
                     @(NTESMediaButtonAudioChat) : @"mediaAudioChatPressed",
                     @(NTESMediaButtonFileTrans) : @"mediaFileTransPressed",
-                    @(NTESMediaButtonSnapchat)  : @"mediaSnapchatPressed",
-                    @(NTESMediaButtonWhiteBoard): @"mediaWhiteBoardPressed",
                     @(NTESMediaButtonTip)       : @"mediaTipPressed"};
     });
     return actions;
@@ -924,7 +807,7 @@ NIMContactSelectDelegate>
 }
 
 - (BOOL)shouldAutorotate{
-    return !self.currentSingleSnapView;
+    return YES;
 }
 
 @end
