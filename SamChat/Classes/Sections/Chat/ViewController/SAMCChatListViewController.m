@@ -201,6 +201,9 @@
 - (void)didAddRecentSession:(SAMCRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount
 {
+    if (![self isCurrentModeSession:recentSession.session]) {
+        return;
+    }
     [self.recentSessions addObject:recentSession];
     [self sort];
     [self reload];
@@ -210,6 +213,9 @@
 - (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount
 {
+    if (![self isCurrentModeSession:recentSession.session]) {
+        return;
+    }
     for (NIMRecentSession *recent in self.recentSessions) {
         if ([recentSession.session.sessionId isEqualToString:recent.session.sessionId]) {
             [self.recentSessions removeObject:recent];
@@ -223,6 +229,9 @@
 
 - (void)messagesDeletedInSession:(SAMCSession *)session
 {
+    if (![self isCurrentModeSession:session]) {
+        return;
+    }
     _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
 }
@@ -379,6 +388,12 @@
 - (void)onTeamMembersHasUpdatedNotification:(NSNotification *)notification
 {
     [self reload];
+}
+
+#pragma mark - Private
+- (BOOL)isCurrentModeSession:(SAMCSession *)session
+{
+    return (session.sessionMode == self.currentUserMode);
 }
 
 @end
