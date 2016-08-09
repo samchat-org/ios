@@ -661,6 +661,7 @@ NIMUserManagerDelegate>
                                                mode:self.currentUserMode];
     SAMCMessage *samcmessage = [SAMCMessage message:message.messageId
                                             session:samcsession];
+    samcmessage.nimMessage = message;
     [self.conversationManager deleteMessage:samcmessage];
 }
 

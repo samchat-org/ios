@@ -221,12 +221,18 @@
         if ([s next]) {
             unreadCount = [s intForColumnIndex:0];
         }
+        [s close];
         [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:unreadCount];
     }];
 }
 
 - (void)deleteMessage:(SAMCMessage *)message
 {
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE msg_id = ?", message.session.tableName];
+        [db executeUpdate:sql, message.messageId];
+        [[NIMSDK sharedSDK].conversationManager deleteMessage:message.nimMessage];
+    }];
 }
 
 @end
