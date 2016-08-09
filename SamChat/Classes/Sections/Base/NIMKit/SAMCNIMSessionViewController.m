@@ -26,8 +26,7 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCChatManager.h"
-#import "SAMCSession.h"
-#import "SAMCMessage.h"
+#import "SAMCConversationManager.h"
 
 
 static const void * const SAMCDispatchMessageDataPrepareSpecificKey = &SAMCDispatchMessageDataPrepareSpecificKey;
@@ -44,7 +43,7 @@ dispatch_queue_t SAMCMessageDataPrepareQueue()
 
 @interface SAMCNIMSessionViewController ()
 <
-NIMConversationManagerDelegate,
+SAMCConversationManagerDelegate,
 NIMTeamManagerDelegate,
 NIMMediaManagerDelgate,
 NIMMessageCellDelegate,
@@ -144,7 +143,7 @@ NIMUserManagerDelegate>
     }
     _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:_session dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
     _sessionDatasource.sessionConfig = [self sessionConfig];
-    [self.conversationManager markAllMessagesReadInSession:_session];
+    [self.conversationManager markAllMessagesReadInSession:_session userMode:self.currentUserMode];
     
     _sessionDatasource.delegate = self;
     
@@ -191,7 +190,7 @@ NIMUserManagerDelegate>
 
 
 - (void)viewDidLayoutSubviews{
-    [self changeLeftBarBadge:self.conversationManager.allUnreadCount];
+    [self changeLeftBarBadge:[self.conversationManager allUnreadCountOfUserMode:self.currentUserMode]];
     BOOL isFirstLayout = CGRectEqualToRect(_layoutManager.viewRect, CGRectZero);
     if (isFirstLayout) {
         [self.tableView nim_scrollToBottom:NO];
@@ -348,7 +347,7 @@ NIMUserManagerDelegate>
     }
     else{
         [self uiAddMessages:messages];
-        [self.conversationManager markAllMessagesReadInSession:self.session];
+        [self.conversationManager markAllMessagesReadInSession:self.session userMode:self.currentUserMode];
     }
     
     [self sendMessageReceipt:messages];
@@ -381,29 +380,29 @@ NIMUserManagerDelegate>
 }
 
 
-#pragma mark - NIMConversationManagerDelegate
-- (void)messagesDeletedInSession:(NIMSession *)session{
+#pragma mark - SAMCConversationManagerDelegate
+- (void)messagesDeletedInSession:(SAMCSession *)session{
     [self.sessionDatasource resetMessages:nil];
     [self.tableView reloadData];
 }
 
-- (void)didAddRecentSession:(NIMRecentSession *)recentSession
+- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount{
     [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
 }
 
-- (void)didUpdateRecentSession:(NIMRecentSession *)recentSession
+- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount{
     [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
 }
 
-- (void)didRemoveRecentSession:(NIMRecentSession *)recentSession
+- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount{
     [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
 }
 
 
-- (void)changeUnreadCount:(NIMRecentSession *)recentSession
+- (void)changeUnreadCount:(SAMCRecentSession *)recentSession
          totalUnreadCount:(NSInteger)totalUnreadCount{
     if ([recentSession.session isEqual:self.session]) {
         return;
@@ -657,7 +656,12 @@ NIMUserManagerDelegate>
 {
     NIMMessage *message    = [self messageForMenu];
     [self uiDeleteMessage:message];
-    [self.conversationManager deleteMessage:message];
+    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
+                                               type:self.session.sessionType
+                                               mode:self.currentUserMode];
+    SAMCMessage *samcmessage = [SAMCMessage message:message.messageId
+                                            session:samcsession];
+    [self.conversationManager deleteMessage:samcmessage];
 }
 
 - (void)menuDidHide:(NSNotification *)notification
@@ -878,7 +882,7 @@ NIMUserManagerDelegate>
     }];
 }
 
-- (id<NIMConversationManager>)conversationManager{
+- (SAMCConversationManager *)conversationManager{
     switch (self.session.sessionType) {
         case NIMSessionTypeChatroom:
             return nil;
@@ -886,7 +890,8 @@ NIMUserManagerDelegate>
         case NIMSessionTypeP2P:
         case NIMSessionTypeTeam:
         default:
-            return [NIMSDK sharedSDK].conversationManager;
+//            return [NIMSDK sharedSDK].conversationManager;
+            return [SAMCConversationManager sharedManager];
     }
 }
 

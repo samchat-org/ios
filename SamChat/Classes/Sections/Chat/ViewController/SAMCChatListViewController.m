@@ -61,6 +61,7 @@
     if (!self.recentSessions.count) {
         _recentSessions = [NSMutableArray array];
     }
+    [self sort];
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
 //    self.searchBar.delegate = self;
@@ -116,6 +117,7 @@
 {
     _recentSessions = [self allCurrentUserModeRecentSessions];
     [self reload];
+    [self sort];
 }
 
 - (void)reload
@@ -216,8 +218,12 @@
     if (![self isCurrentModeSession:recentSession.session]) {
         return;
     }
-    for (NIMRecentSession *recent in self.recentSessions) {
+    for (SAMCRecentSession *recent in self.recentSessions) {
         if ([recentSession.session.sessionId isEqualToString:recent.session.sessionId]) {
+            if (recentSession.lastMessage == nil) {
+                // if local operation update recent session, then lastMessage remain unchanged
+                recentSession.lastMessage = recent.lastMessage;
+            }
             [self.recentSessions removeObject:recent];
             break;
         }

@@ -206,4 +206,27 @@
     return unreadCount;
 }
 
+- (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"UPDATE session_table SET unread_count = 0 WHERE session_mode = ? AND session_id = ?",
+         @(userMode),session.sessionId];
+        SAMCSession *samcsession = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode];
+        
+        SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:samcsession
+                                                                lastMessage:nil
+                                                                unreadCount:0];
+        NSInteger unreadCount = 0;
+        FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(userMode)];
+        if ([s next]) {
+            unreadCount = [s intForColumnIndex:0];
+        }
+        [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:unreadCount];
+    }];
+}
+
+- (void)deleteMessage:(SAMCMessage *)message
+{
+}
+
 @end

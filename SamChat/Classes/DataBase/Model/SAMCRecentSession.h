@@ -16,11 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SAMCRecentSession : NSObject
 
 @property (nullable,nonatomic,readonly,copy) SAMCSession *session;
-@property (nullable,nonatomic,readonly,strong) SAMCMessage *lastMessage;
+@property (nullable,nonatomic,strong) SAMCMessage *lastMessage;
 @property (nonatomic,readonly,assign) NSInteger unreadCount;
 
 + (instancetype)recentSession:(SAMCSession *)session
-                  lastMessage:(SAMCMessage *)message
+                  lastMessage:(nullable SAMCMessage *)message
                   unreadCount:(NSInteger)count;
 
 @end

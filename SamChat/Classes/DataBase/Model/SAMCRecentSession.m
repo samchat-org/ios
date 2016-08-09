@@ -11,7 +11,6 @@
 @interface SAMCRecentSession ()
 
 @property (nullable,nonatomic,copy) SAMCSession *session;
-@property (nullable,nonatomic,strong) SAMCMessage *lastMessage;
 @property (nonatomic,assign) NSInteger unreadCount;
 
 @end

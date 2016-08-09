@@ -29,5 +29,8 @@
                         result:(void(^)(NSError *error, NSArray *messages))handler;
 
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
+- (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode;
+
+- (void)deleteMessage:(SAMCMessage *)message;
 
 @end
