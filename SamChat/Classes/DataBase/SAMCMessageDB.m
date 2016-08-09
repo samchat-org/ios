@@ -228,10 +228,47 @@
 
 - (void)deleteMessage:(SAMCMessage *)message
 {
-    [self.queue inDatabase:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE msg_id = ?", message.session.tableName];
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        NSString *tableName = message.session.tableName;
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE msg_id = ?", tableName];
         [db executeUpdate:sql, message.messageId];
         [[NIMSDK sharedSDK].conversationManager deleteMessage:message.nimMessage];
+        // if delete the last message, need update recent session
+        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id FROM session_table WHERE session_mode = ? AND session_id = ?",
+                          @(message.session.sessionMode),message.session.sessionId];
+        NSString *lastMsgId = nil;
+        if ([s next]) {
+            lastMsgId = [s stringForColumnIndex:0];
+        }
+        [s close];
+        if ([message.messageId isEqual:lastMsgId]) {
+            // get the new last message id
+            sql = [NSString stringWithFormat:@"SELECT msg_id FROM '%@' ORDER BY serial DESC LIMIT 1", tableName];
+            s = [db executeQuery:sql];
+            if ([s next]) {
+                lastMsgId = [s stringForColumnIndex:0];
+            } else {
+                lastMsgId = @"";
+            }
+            [s close];
+            // update last message id to session table
+            [db executeUpdate:@"update session_table set last_msg_id = ? where session_mode = ? and session_id = ?",
+             lastMsgId, @(message.session.sessionMode), message.session.sessionId];
+            SAMCSession *session = [message.session copy];
+            SAMCMessage *lastMessage = [SAMCMessage message:lastMsgId session:session];
+            [lastMessage loadNIMMessage];
+            NSInteger totalUnreadCount = 0;
+            // get total unread count
+            s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(message.session.sessionMode)];
+            if ([s next]) {
+                totalUnreadCount = [s intForColumnIndex:0];
+            }
+            [s close];
+            SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
+                                                                    lastMessage:lastMessage
+                                                                    unreadCount:0];
+            [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:totalUnreadCount];
+        }
     }];
 }
 
