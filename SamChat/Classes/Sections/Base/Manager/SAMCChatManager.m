@@ -83,6 +83,7 @@
 {
     // the messages belongs to the same session
     if (([messages count] == 0) || (messages.firstObject.session.sessionType != NIMSessionTypeP2P)) {
+        [self.multicastDelegate onRecvMessages:messages];
         return;
     }
     

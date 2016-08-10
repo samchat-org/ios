@@ -21,6 +21,7 @@
 {
     self = [super init];
     if (self) {
+        self.session = session;
         self.provider = [[SAMCSessionMessageDataProvider alloc] initWithSession:session userMode:userMode];
     }
     return self;
@@ -66,6 +67,9 @@
 
 - (id<NIMKitMessageProvider>)messageDataProvider
 {
+    if (self.session.sessionType != NIMSessionTypeP2P) {
+        return nil;
+    }
     return self.provider;
 }
 

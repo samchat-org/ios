@@ -237,6 +237,7 @@
 		3195DE211D585FE2001BD2B4 /* SAMCPersonalCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE201D585FE2001BD2B4 /* SAMCPersonalCardViewController.m */; };
 		3195DE241D5877F6001BD2B4 /* SAMCSessionConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE231D5877F6001BD2B4 /* SAMCSessionConfig.m */; };
 		3195DE281D587932001BD2B4 /* SAMCSessionMessageDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE271D587932001BD2B4 /* SAMCSessionMessageDataProvider.m */; };
+		3195DE2E1D5AC152001BD2B4 /* SAMCSessionCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE2D1D5AC152001BD2B4 /* SAMCSessionCardViewController.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -679,6 +680,8 @@
 		3195DE231D5877F6001BD2B4 /* SAMCSessionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSessionConfig.m; sourceTree = "<group>"; };
 		3195DE261D587932001BD2B4 /* SAMCSessionMessageDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSessionMessageDataProvider.h; path = Other/SAMCSessionMessageDataProvider.h; sourceTree = "<group>"; };
 		3195DE271D587932001BD2B4 /* SAMCSessionMessageDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSessionMessageDataProvider.m; path = Other/SAMCSessionMessageDataProvider.m; sourceTree = "<group>"; };
+		3195DE2C1D5AC152001BD2B4 /* SAMCSessionCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSessionCardViewController.h; sourceTree = "<group>"; };
+		3195DE2D1D5AC152001BD2B4 /* SAMCSessionCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSessionCardViewController.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -914,6 +917,8 @@
 				312C1AE61D35D85B00242906 /* NTESTeamListViewController.xib */,
 				3195DE1F1D585FE2001BD2B4 /* SAMCPersonalCardViewController.h */,
 				3195DE201D585FE2001BD2B4 /* SAMCPersonalCardViewController.m */,
+				3195DE2C1D5AC152001BD2B4 /* SAMCSessionCardViewController.h */,
+				3195DE2D1D5AC152001BD2B4 /* SAMCSessionCardViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2193,6 +2198,7 @@
 				314444EA1D49A5590062B797 /* SAMCTextField.m in Sources */,
 				3195DDE41D52CF51001BD2B4 /* SAMCChatManager.m in Sources */,
 				312C1C461D35D85B00242906 /* NTESNavigationAnimator.m in Sources */,
+				3195DE2E1D5AC152001BD2B4 /* SAMCSessionCardViewController.m in Sources */,
 				312C1CDE1D35D85B00242906 /* NTESPinyinConverter.m in Sources */,
 				312C1C591D35D85B00242906 /* NTESChatroomTextContentConfig.m in Sources */,
 				312C1CA11D35D85B00242906 /* NTESWhiteboardViewController.m in Sources */,

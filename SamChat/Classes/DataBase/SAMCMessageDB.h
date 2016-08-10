@@ -19,6 +19,7 @@
            sessionMode:(SAMCUserModeType)sessionMode
                 unread:(BOOL)unreadFlag;
 
+// conversation manager
 - (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode;
 
 - (NSArray<NIMMessage *> *)messagesInSession:(NIMSession *)session
@@ -35,5 +36,6 @@
 - (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 - (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 
+- (void)updateTeamNIMRecentSession:(NIMRecentSession *)recentSession mode:(SAMCUserModeType)sessionMode;
 
 @end

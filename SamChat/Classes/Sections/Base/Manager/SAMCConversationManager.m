@@ -101,11 +101,19 @@
 - (void)didAddRecentSession:(NIMRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount
 {
+    if (recentSession.session.sessionType != NIMSessionTypeTeam) {
+        return;
+    }
+    [self updateTeamNIMRecentSession:recentSession];
 }
 
 - (void)didUpdateRecentSession:(NIMRecentSession *)recentSession
               totalUnreadCount:(NSInteger)totalUnreadCount
 {
+    if (recentSession.session.sessionType != NIMSessionTypeTeam) {
+        return;
+    }
+    [self updateTeamNIMRecentSession:recentSession];
 }
 
 - (void)didRemoveRecentSession:(NIMRecentSession *)recentSession
@@ -119,6 +127,18 @@
 
 - (void)allMessagesDeleted
 {
+}
+
+#pragma mark - Private
+- (void)updateTeamNIMRecentSession:(NIMRecentSession *)recentSession
+{
+    NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
+    NSString *currentAccount = [[NIMSDK sharedSDK].loginManager currentAccount];
+    SAMCUserModeType mode = SAMCUserModeTypeCustom;
+    if ([team.owner isEqualToString:currentAccount]) {
+        mode = SAMCUserModeTypeSP;
+    }
+    [[SAMCDataBaseManager sharedManager].messageDB updateTeamNIMRecentSession:recentSession mode:mode];
 }
 
 @end

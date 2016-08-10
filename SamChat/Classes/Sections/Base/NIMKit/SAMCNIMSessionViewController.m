@@ -970,6 +970,9 @@ NIMUserManagerDelegate>
 
 - (BOOL)isCurrentModeMessage:(NIMMessage *)message
 {
+    if (message.session.sessionType != NIMSessionTypeP2P) {
+        return YES;
+    }
     id ext = message.remoteExt;
     SAMCUserModeType messageMode = SAMCUserModeTypeCustom;
     if (([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM])) {

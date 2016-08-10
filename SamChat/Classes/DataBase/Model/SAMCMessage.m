@@ -36,7 +36,12 @@
 {
     if (_nimMessage == nil) {
         NIMSession *nimSession = [NIMSession session:_session.sessionId type:_session.sessionType];
-        NSArray *messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession messageIds:@[_messageId]];
+        NSArray *messages = nil;
+        if ((_messageId == nil) || ([_messageId isEqualToString:@""])) {
+            messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession message:nil limit:1];
+        } else {
+            messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:nimSession messageIds:@[_messageId]];
+        }
         _nimMessage = [messages firstObject];
     }
 }

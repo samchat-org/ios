@@ -17,6 +17,7 @@
 #import "SAMCMessage.h"
 #import "NIMSDK.h"
 
+
 @interface SAMCMessageDB ()
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCConversationManagerDelegate> *conversationDelegate;
@@ -141,7 +142,7 @@
 
 - (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode
 {
-    NSMutableArray *sessions = [[NSMutableArray alloc] init];
+    __block NSMutableArray *sessions = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE session_mode = ?", @(userMode)];
         while ([s next]) {
@@ -208,7 +209,17 @@
 
 - (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
 {
+    // just mark the session as read
+    [[NIMSDK sharedSDK].conversationManager markAllMessagesReadInSession:session];
     [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_mode = ? AND session_id = ?",
+                          @(userMode),session.sessionId];
+        [s next];
+        int count = [s intForColumnIndex:0];
+        [s close];
+        if (count == 0) {
+            return;
+        }
         [db executeUpdate:@"UPDATE session_table SET unread_count = 0 WHERE session_mode = ? AND session_id = ?",
          @(userMode),session.sessionId];
         SAMCSession *samcsession = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode];
@@ -217,7 +228,7 @@
                                                                 lastMessage:nil
                                                                 unreadCount:0];
         NSInteger unreadCount = 0;
-        FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(userMode)];
+        s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(userMode)];
         if ([s next]) {
             unreadCount = [s intForColumnIndex:0];
         }
@@ -275,11 +286,11 @@
 - (void)deleteRecentSession:(SAMCRecentSession *)recentSession
 {
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        [db executeUpdate:@"delete from session_table where session_mode = ? and session_id = ?",
+        [db executeUpdate:@"DELETE FROM SESSION_TABLE WHERE session_mode = ? AND session_id = ?",
          @(recentSession.session.sessionMode),recentSession.session.sessionId];
         NSString *sql = [NSString stringWithFormat:@"drop table %@",recentSession.session.tableName];
         [db executeUpdate:sql];
-        FMResultSet *s = [db executeQuery:@"select count(*) from session_table where session_id = ?",
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_id = ?",
                           recentSession.session.sessionId];
         if ([s next]) {
             int count = [s intForColumnIndex:0];
@@ -291,6 +302,44 @@
             }
         }
         [s close];
+    }];
+}
+
+- (void)updateTeamNIMRecentSession:(NIMRecentSession *)recentSession mode:(SAMCUserModeType)sessionMode
+{
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        SAMCSession *samcsession = [SAMCSession session:recentSession.session.sessionId type:recentSession.session.sessionType mode:sessionMode];
+        FMResultSet *s = [db executeQuery:@"select count(*) from session_table where session_mode = ? and session_id = ?",
+                          @(sessionMode),recentSession.session.sessionId];
+        [s next];
+        int count = [s intForColumnIndex:0];
+        [s close];
+        BOOL isNewSession = false;
+        if (count == 0) { // new
+            isNewSession = true;
+            [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count, last_msg_id) VALUES (?,?,?,?,?,?)",
+             samcsession.tableName,recentSession.session.sessionId,@(sessionMode),@(samcsession.sessionType),@(recentSession.unreadCount),@""];
+        } else {
+            [db executeUpdate:@"update session_table set unread_count = ? where session_mode = ? and session_id = ?",
+             @(recentSession.unreadCount),@(sessionMode),recentSession.session.sessionId];
+        }
+        SAMCMessage *message = [SAMCMessage message:recentSession.lastMessage.messageId session:samcsession];
+        message.nimMessage = recentSession.lastMessage;
+        SAMCRecentSession *samcRecentSession = [SAMCRecentSession recentSession:samcsession
+                                                                    lastMessage:message
+                                                                    unreadCount:recentSession.unreadCount];
+        NSInteger totalUnreadCount = 0;
+        // get total unread count
+        s = [db executeQuery:@"SELECT SUM(unread_count) FROM session_table WHERE session_mode = ?",@(sessionMode)];
+        if ([s next]) {
+            totalUnreadCount = [s intForColumnIndex:0];
+        }
+        [s close];
+        if (isNewSession) {
+            [_conversationDelegate didAddRecentSession:samcRecentSession totalUnreadCount:totalUnreadCount];
+        } else {
+            [_conversationDelegate didUpdateRecentSession:samcRecentSession totalUnreadCount:totalUnreadCount];
+        }
     }];
 }
 

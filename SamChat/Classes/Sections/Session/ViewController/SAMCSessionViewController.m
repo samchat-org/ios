@@ -40,7 +40,7 @@
 #import "NTESSessionLocalHistoryViewController.h"
 #import "NIMContactSelectViewController.h"
 #import "SVProgressHUD.h"
-#import "NTESSessionCardViewController.h"
+#import "SAMCSessionCardViewController.h"
 #import "NTESFPSLabel.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESDataManager.h"
@@ -562,7 +562,8 @@ NIMContactSelectDelegate>
 
 #pragma mark - 导航按钮
 - (void)onTouchUpInfoBtn:(id)sender{
-    NTESSessionCardViewController *vc = [[NTESSessionCardViewController alloc] initWithSession:self.session];
+    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId type:self.session.sessionType mode:self.currentUserMode];
+    SAMCSessionCardViewController *vc = [[SAMCSessionCardViewController alloc] initWithSession:samcsession];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
