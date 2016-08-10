@@ -142,21 +142,7 @@
     option.type = NIMTeamTypeNormal;
     __weak typeof(self) wself = self;
     [SVProgressHUD show];
-//    [[SAMCTeamManager sharedManager] createTeam:option
-//                                          users:users
-//                                     completion:^(NSError * _Nullable error, NSString * _Nullable teamId) {
-//                                         [SVProgressHUD dismiss];
-//                                         if (!error) {
-//                                             SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:SAMCUserModeTypeSP];
-//                                             UINavigationController *nav = wself.navigationController;
-//                                             [nav popToRootViewControllerAnimated:NO];
-//                                             SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-//                                             [nav pushViewController:vc animated:YES];
-//                                         }else{
-//                                             [wself.view makeToast:@"创建讨论组失败" duration:2.0 position:CSToastPositionCenter];
-//                                         }
-//    }];
-    
+
     [[NIMSDK sharedSDK].teamManager createTeam:option
                                          users:users
                                     completion:^(NSError *error, NSString *teamId) {
