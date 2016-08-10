@@ -33,4 +33,6 @@
 
 - (void)deleteMessage:(SAMCMessage *)message;
 
+- (void)deleteRecentSession:(SAMCRecentSession *)recentSession;
+
 @end

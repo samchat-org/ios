@@ -85,7 +85,16 @@
 
 - (void)deleteMessage:(SAMCMessage *)message
 {
-    [[SAMCDataBaseManager sharedManager].messageDB deleteMessage:message];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].messageDB deleteMessage:message];
+    });
+}
+
+- (void)deleteRecentSession:(SAMCRecentSession *)recentSession
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].messageDB deleteRecentSession:recentSession];
+    });
 }
 
 #pragma mark - NIMConversationManagerDelegate

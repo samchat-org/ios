@@ -39,7 +39,7 @@
 @property (nonatomic, strong) UISearchDisplayController *searchResultController;
 @property (nonatomic, strong) UISearchBar *searchBar;
 
-@property (nonatomic,readonly) NSMutableArray * recentSessions;
+@property (nonatomic,readonly) NSMutableArray<SAMCRecentSession *> * recentSessions;
 
 @end
 
@@ -153,18 +153,13 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NIMRecentSession *recentSession = self.recentSessions[indexPath.row];
+    SAMCRecentSession *recentSession = self.recentSessions[indexPath.row];
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        id<NIMConversationManager> manager = [[NIMSDK sharedSDK] conversationManager];
+        [[SAMCConversationManager sharedManager] deleteRecentSession:recentSession];
         
-        [manager deleteRecentSession:recentSession];
-        
-        //清理本地数据
         [self.recentSessions removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         
-        //如果删除本地会话后就不允许漫游当前会话，则需要进行一次删除服务器会话的操作
-        [manager deleteRemoteSessions:@[recentSession.session] completion:nil];
         self.emptyTipLabel.hidden = self.recentSessions.count;
     }
 }

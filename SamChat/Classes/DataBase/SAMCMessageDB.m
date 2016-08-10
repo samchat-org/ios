@@ -252,7 +252,7 @@
             }
             [s close];
             // update last message id to session table
-            [db executeUpdate:@"update session_table set last_msg_id = ? where session_mode = ? and session_id = ?",
+            [db executeUpdate:@"UPDATE session_table SET last_msg_id = ? WHERE session_mode = ? AND session_id = ?",
              lastMsgId, @(message.session.sessionMode), message.session.sessionId];
             SAMCSession *session = [message.session copy];
             SAMCMessage *lastMessage = [SAMCMessage message:lastMsgId session:session];
@@ -269,6 +269,28 @@
                                                                     unreadCount:0];
             [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:totalUnreadCount];
         }
+    }];
+}
+
+- (void)deleteRecentSession:(SAMCRecentSession *)recentSession
+{
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        [db executeUpdate:@"delete from session_table where session_mode = ? and session_id = ?",
+         @(recentSession.session.sessionMode),recentSession.session.sessionId];
+        NSString *sql = [NSString stringWithFormat:@"drop table %@",recentSession.session.tableName];
+        [db executeUpdate:sql];
+        FMResultSet *s = [db executeQuery:@"select count(*) from session_table where session_id = ?",
+                          recentSession.session.sessionId];
+        if ([s next]) {
+            int count = [s intForColumnIndex:0];
+            // the sesssion on both user mode has been deleted, then delete it
+            if (count == 0) {
+                NIMSession *nimsession = [NIMSession session:recentSession.session.sessionId type:recentSession.session.sessionType];
+                [[NIMSDK sharedSDK].conversationManager deleteAllmessagesInSession:nimsession removeRecentSession:YES];
+                [[NIMSDK sharedSDK].conversationManager deleteRemoteSessions:@[nimsession] completion:nil];
+            }
+        }
+        [s close];
     }];
 }
 

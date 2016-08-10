@@ -30,6 +30,8 @@
 
 - (void)deleteMessage:(SAMCMessage *)message;
 
+- (void)deleteRecentSession:(SAMCRecentSession *)recentSession;
+
 - (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 - (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate;
 
