@@ -18,12 +18,8 @@
 #import "NTESBundleSetting.h"
 #import "NTESListHeader.h"
 #import "NTESClientsTableViewController.h"
-#import "NTESSnapchatAttachment.h"
-#import "NTESJanKenPonAttachment.h"
-#import "NTESChartletAttachment.h"
-#import "NTESWhiteboardAttachment.h"
 #import "NTESSessionUtil.h"
-#import "NTESPersonalCardViewController.h"
+#import "SAMCPersonalCardViewController.h"
 #import "NIMCellConfig.h"
 #import "NIMSDK.h"
 #import "SAMCConversationManager.h"
@@ -368,9 +364,9 @@
     }
     UITableViewCell *cell  = (UITableViewCell *)view;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    NIMRecentSession *recent = self.recentSessions[indexPath.row];
+    SAMCRecentSession *recent = self.recentSessions[indexPath.row];
     if (recent.session.sessionType == NIMSessionTypeP2P) {
-        NTESPersonalCardViewController *vc = [[NTESPersonalCardViewController alloc] initWithUserId:recent.session.sessionId];
+        SAMCPersonalCardViewController *vc = [[SAMCPersonalCardViewController alloc] initWithUserId:recent.session.sessionId];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
