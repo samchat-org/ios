@@ -309,7 +309,7 @@
 {
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         SAMCSession *samcsession = [SAMCSession session:recentSession.session.sessionId type:recentSession.session.sessionType mode:sessionMode];
-        FMResultSet *s = [db executeQuery:@"select count(*) from session_table where session_mode = ? and session_id = ?",
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_mode = ? AND session_id = ?",
                           @(sessionMode),recentSession.session.sessionId];
         [s next];
         int count = [s intForColumnIndex:0];
@@ -320,7 +320,7 @@
             [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count, last_msg_id) VALUES (?,?,?,?,?,?)",
              samcsession.tableName,recentSession.session.sessionId,@(sessionMode),@(samcsession.sessionType),@(recentSession.unreadCount),@""];
         } else {
-            [db executeUpdate:@"update session_table set unread_count = ? where session_mode = ? and session_id = ?",
+            [db executeUpdate:@"UPDATE session_table SET unread_count = ? WHERE session_mode = ? AND session_id = ?",
              @(recentSession.unreadCount),@(sessionMode),recentSession.session.sessionId];
         }
         SAMCMessage *message = [SAMCMessage message:recentSession.lastMessage.messageId session:samcsession];
