@@ -85,9 +85,13 @@
 
 - (void)deleteMessage:(SAMCMessage *)message
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].messageDB deleteMessage:message];
-    });
+    if (message.session.sessionType == NIMSessionTypeP2P) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[SAMCDataBaseManager sharedManager].messageDB deleteMessage:message];
+        });
+    } else {
+        [[NIMSDK sharedSDK].conversationManager deleteMessage:message.nimMessage];
+    }
 }
 
 - (void)deleteRecentSession:(SAMCRecentSession *)recentSession
