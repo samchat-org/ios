@@ -175,7 +175,16 @@
     NSString *tableName = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode].tableName;
     __block NSArray *messages = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = nil;
+        NSString *checkTableSql = [NSString stringWithFormat:@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name='%@'",tableName];
+        FMResultSet *s = [db executeQuery:checkTableSql];
+        [s next];
+        int count = [s intForColumnIndex:0];
+        [s close];
+        // table not found, first time enter the session, e.g. enter a new session from contact list
+        if (count == 0) {
+            return;
+        }
+        
         if (message == nil) {
             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
             s = [db executeQuery:sql, @(limit)];
