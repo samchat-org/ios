@@ -101,7 +101,7 @@
                 samcmessage.nimMessage = message;
                 [spMessages addObject:samcmessage];
             }
-        } else {
+        } else if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP]) {
             SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
                                                        type:message.session.sessionType
                                                        mode:SAMCUserModeTypeCustom];
@@ -110,6 +110,8 @@
                 samcmessage.nimMessage = message;
                 [customMessages addObject:samcmessage];
             }
+        } else {
+            DDLogWarn(@"receive unknow message: %@", message);
         }
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
