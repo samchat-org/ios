@@ -288,7 +288,7 @@
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         [db executeUpdate:@"DELETE FROM SESSION_TABLE WHERE session_mode = ? AND session_id = ?",
          @(recentSession.session.sessionMode),recentSession.session.sessionId];
-        NSString *sql = [NSString stringWithFormat:@"drop table %@",recentSession.session.tableName];
+        NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS '%@'",recentSession.session.tableName];
         [db executeUpdate:sql];
         FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_id = ?",
                           recentSession.session.sessionId];
