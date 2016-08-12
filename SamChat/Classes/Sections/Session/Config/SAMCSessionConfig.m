@@ -73,4 +73,8 @@
     return self.provider;
 }
 
+- (BOOL)shouldHandleReceipt{
+    return NO;
+}
+
 @end
