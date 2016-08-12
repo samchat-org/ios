@@ -131,16 +131,25 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
 
     if ([self shouldResponseBusy]){
         [[NIMSDK sharedSDK].netCallManager control:callID type:NIMNetCallControlTypeBusyLine];
+
+        [self saveCallMessageFrom:caller messageExt:extendMessage];
     }
     else {
         UIViewController *vc;
+        SAMCUserModeType userMode = SAMCUserModeTypeCustom;
+        if ([extendMessage isEqualToString:CALL_MESSAGE_EXTERN_FROM_CUSTOM]) {
+            userMode = SAMCUserModeTypeSP;
+        }
+        
         switch (type) {
             case NIMNetCallTypeVideo:{
                 vc = [[NTESVideoChatViewController alloc] initWithCaller:caller callId:callID];
+                [((NTESVideoChatViewController *)vc) setUserMode:userMode];
             }
                 break;
             case NIMNetCallTypeAudio:{
                 vc = [[NTESAudioChatViewController alloc] initWithCaller:caller callId:callID];
+                [((NTESAudioChatViewController *)vc) setUserMode:userMode];
             }
                 break;
             default:
@@ -201,5 +210,25 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
     return [nav.topViewController isKindOfClass:[NTESNetChatViewController class]] || [tabVC.presentedViewController isKindOfClass:[NTESWhiteboardViewController class]];
 }
 
+- (void)saveCallMessageFrom:(NSString *)from messageExt:(NSString *)extendMessage
+{
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.text = @"占线未接通";
+    message.from = from;
+    NSString *sessionId = from;
+    id usermodeValue = nil;
+    if ([extendMessage isEqualToString:CALL_MESSAGE_EXTERN_FROM_CUSTOM]) {
+        usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
+    } else {
+        usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
+    }
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+    [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:usermodeValue,
+                                    MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO}];
+    message.remoteExt = ext;
+    NIMSession *session = [NIMSession session:sessionId type:NIMSessionTypeP2P];
+    
+    [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:nil];
+}
 
 @end

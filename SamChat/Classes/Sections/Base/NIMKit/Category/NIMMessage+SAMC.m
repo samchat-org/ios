@@ -56,6 +56,19 @@
     }
 }
 
+- (SAMCUserModeType)localUserMode
+{
+    if (([[self.remoteExt valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM] && (![self isOutgoingMsg])) ||
+        ([[self.remoteExt valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP] && ([self isOutgoingMsg]))) {
+        return SAMCUserModeTypeSP;
+    } else if (([[self.remoteExt valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP] && (![self isOutgoingMsg])) ||
+               ([[self.remoteExt valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM] && ([self isOutgoingMsg]))) {
+        return SAMCUserModeTypeCustom;
+    } else {
+        return SAMCUserModeTypeUnknow;
+    }
+}
+
 #pragma mark - Private
 - (NSString *)customMessageContent
 {

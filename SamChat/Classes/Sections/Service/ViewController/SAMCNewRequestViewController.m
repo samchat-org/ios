@@ -45,6 +45,7 @@
     self.sendButton.backgroundColor = [UIColor greenColor];
     self.sendButton.layer.cornerRadius = 6.0f;
     self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.sendButton addTarget:self action:@selector(sendRequest:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.sendButton];
     
     self.requestTextField = [[UITextField alloc] init];
@@ -96,6 +97,11 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_popularTabeView)]];
+}
+
+- (void)sendRequest:(UIButton *)sender
+{
+    DDLogDebug(@"sendRequest");
 }
 
 @end

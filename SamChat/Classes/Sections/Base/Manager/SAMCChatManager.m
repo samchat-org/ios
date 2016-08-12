@@ -11,6 +11,7 @@
 #import "SAMCSession.h"
 #import "SAMCDataBaseManager.h"
 #import "GCDMulticastDelegate.h"
+#import "NIMMessage+SAMC.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate>
 
@@ -88,10 +89,13 @@
     }
     
     NSMutableArray<SAMCMessage *> *customMessages = [[NSMutableArray alloc] init];
+    NSMutableArray<SAMCMessage *> *customUnreadMessages = [[NSMutableArray alloc] init];
     NSMutableArray<SAMCMessage *> *spMessages = [[NSMutableArray alloc] init];
+    NSMutableArray<SAMCMessage *> *spUnreadMessages = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages) {
         id ext = message.remoteExt;
-        if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM]) {
+        SAMCUserModeType localUserMode = [message localUserMode];
+        if (localUserMode == SAMCUserModeTypeSP) {
             // from custom user mode, local should display in sp mode
             SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
                                                        type:message.session.sessionType
@@ -99,25 +103,35 @@
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
                 samcmessage.nimMessage = message;
-                [spMessages addObject:samcmessage];
+                if ([[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
+                    [spMessages addObject:samcmessage];
+                } else {
+                    [spUnreadMessages addObject:samcmessage];
+                }
             }
-        } else if ([[ext valueForKey:MESSAGE_EXT_FROM_USER_MODE_KEY] isEqual:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP]) {
+        } else if (localUserMode == SAMCUserModeTypeCustom) {
             SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
                                                        type:message.session.sessionType
                                                        mode:SAMCUserModeTypeCustom];
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
                 samcmessage.nimMessage = message;
-                [customMessages addObject:samcmessage];
+                if ([[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
+                    [customMessages addObject:samcmessage];
+                } else {
+                    [customUnreadMessages addObject:samcmessage];
+                }
             }
         } else {
             DDLogWarn(@"receive unknow message: %@", message);
+            return;
         }
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unread:YES];
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unread:YES];
-        //TODO: add SAMCChatManagerDelegate
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unread:NO];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customUnreadMessages sessionMode:SAMCUserModeTypeCustom unread:YES];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unread:NO];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spUnreadMessages sessionMode:SAMCUserModeTypeSP unread:YES];
         [self.multicastDelegate onRecvMessages:messages];
     });
 }

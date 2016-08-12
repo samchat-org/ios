@@ -226,6 +226,7 @@ NIMContactSelectDelegate>
     if ([self checkCondition]) {
         //由于音视频聊天里头有音频和视频聊天界面的切换，直接用present的话页面过渡会不太自然，这里还是用push，然后做出present的效果
         NTESAudioChatViewController *vc = [[NTESAudioChatViewController alloc] initWithCallee:self.session.sessionId];
+        [vc setUserMode:self.currentUserMode];
         CATransition *transition = [CATransition animation];
         transition.duration = 0.25;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
@@ -244,6 +245,7 @@ NIMContactSelectDelegate>
     if ([self checkCondition]) {
         //由于音视频聊天里头有音频和视频聊天界面的切换，直接用present的话页面过渡会不太自然，这里还是用push，然后做出present的效果
         NTESVideoChatViewController *vc = [[NTESVideoChatViewController alloc] initWithCallee:self.session.sessionId];
+        [vc setUserMode:self.currentUserMode];
         CATransition *transition = [CATransition animation];
         transition.duration = 0.25;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];

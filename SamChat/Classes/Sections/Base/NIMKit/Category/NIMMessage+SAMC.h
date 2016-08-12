@@ -12,4 +12,6 @@
 
 - (NSString *)messageContent;
 
+- (SAMCUserModeType)localUserMode;
+
 @end

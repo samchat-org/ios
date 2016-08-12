@@ -78,9 +78,17 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 #define MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM @(0)
 #define MESSAGE_EXT_FROM_USER_MODE_VALUE_SP     @(1)
 
+#define MESSAGE_EXT_UNREAD_FLAG_KEY         @"unread_flag"
+#define MESSAGE_EXT_UNREAD_FLAG_YES         @(YES)
+#define MESSAGE_EXT_UNREAD_FLAG_NO          @(NO)
+
+#define CALL_MESSAGE_EXTERN_FROM_CUSTOM     @"customer"
+#define CALL_MESSAGE_EXTERN_FROM_SP         @"sp"
+
 typedef NS_ENUM(NSInteger,SAMCUserModeType) {
     SAMCUserModeTypeCustom,
-    SAMCUserModeTypeSP
+    SAMCUserModeTypeSP,
+    SAMCUserModeTypeUnknow
 };
 
 #endif /* SAMCGlobalMacro_h */

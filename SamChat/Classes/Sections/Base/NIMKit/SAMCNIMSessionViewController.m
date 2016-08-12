@@ -338,7 +338,7 @@ NIMUserManagerDelegate>
 {
     NIMMessage *message = messages.firstObject;
     NIMSession *session = message.session;
-    if (![session isEqual:self.session] || !messages.count){
+    if (![session.sessionId isEqual:self.session.sessionId] || !messages.count){
         return;
     }
     

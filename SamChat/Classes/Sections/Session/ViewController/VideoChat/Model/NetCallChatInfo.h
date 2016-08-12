@@ -30,4 +30,6 @@
 
 @property(nonatomic,assign) BOOL localRecording;
 
+@property(nonatomic,assign) SAMCUserModeType userMode;
+
 @end

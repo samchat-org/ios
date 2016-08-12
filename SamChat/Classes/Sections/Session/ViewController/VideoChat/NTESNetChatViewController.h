@@ -24,6 +24,7 @@
 - (instancetype)initWithCaller:(NSString *)caller
                         callId:(uint64_t)callID;
 
+- (void)setUserMode:(SAMCUserModeType)userMode;
 
 //主叫方开始界面回调
 - (void)startByCaller;

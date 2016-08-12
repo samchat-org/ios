@@ -121,6 +121,11 @@ NTES_FORBID_INTERACTIVE_POP
     [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
+- (void)setUserMode:(SAMCUserModeType)userMode
+{
+    self.callInfo.userMode = userMode;
+}
+
 - (void)afterCheckService{
     if (self.callInfo.isStart) {
         [self.timer startTimer:0.5 delegate:self repeats:YES];
@@ -156,7 +161,11 @@ NTES_FORBID_INTERACTIVE_POP
         NSArray *callees = [NSArray arrayWithObjects:wself.callInfo.callee, nil];
         
         NIMNetCallOption *option = [[NIMNetCallOption alloc] init];
-        option.extendMessage = @"音视频请求扩展信息";
+        if (self.callInfo.userMode == SAMCUserModeTypeCustom) {
+            option.extendMessage = CALL_MESSAGE_EXTERN_FROM_CUSTOM;
+        } else {
+            option.extendMessage = CALL_MESSAGE_EXTERN_FROM_SP;
+        }
         option.preferredVideoQuality = [[NTESBundleSetting sharedConfig] preferredVideoQuality];
         option.autoRotateRemoteVideo = [[NTESBundleSetting sharedConfig] videochatAutoRotateRemoteVideo];
         option.apnsContent = [NSString stringWithFormat:@"%@请求", wself.callInfo.callType == NIMNetCallTypeAudio ? @"网络通话" : @"视频聊天"];
@@ -260,7 +269,51 @@ NTES_FORBID_INTERACTIVE_POP
     }
 }
 
+- (NSString *)callMessageText
+{
+    if (!self.callInfo.startTime) {
+        return @"未接通";
+    }
+    NSTimeInterval time = [NSDate date].timeIntervalSince1970;
+    NSTimeInterval duration = time - self.callInfo.startTime;
+    return [NSString stringWithFormat:@"通话时长 %02d:%02d",(int)duration/60,(int)duration%60];
+}
+
+- (void)saveCallMessage
+{
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.text = [self callMessageText];
+    message.from = self.callInfo.caller;
+    NSString *sessionId = nil;
+    id usermodeValue = nil;
+    if ([self.callInfo.caller isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
+        sessionId = self.callInfo.callee;
+        if (self.callInfo.userMode == SAMCUserModeTypeSP) {
+            usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
+        } else {
+            usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
+        }
+    } else {
+        sessionId = self.callInfo.caller;
+        if (self.callInfo.userMode == SAMCUserModeTypeSP) {
+            usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
+        } else {
+            usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
+        }
+    }
+    // set unread flag extention
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+    [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:usermodeValue,
+                                    MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO}];
+    message.remoteExt = ext;
+    NIMSession *session = [NIMSession session:sessionId type:NIMSessionTypeP2P];
+    
+    [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:nil];
+}
+
 - (void)dismiss:(void (^)(void))completion{
+    // insert call message to db
+    [self saveCallMessage];
     //由于音视频聊天里头有音频和视频聊天界面的切换，直接用present的话页面过渡会不太自然，这里还是用push，然后做出present的效果
     CATransition *transition = [CATransition animation];
     transition.duration = 0.25;
