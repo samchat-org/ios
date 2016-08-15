@@ -128,9 +128,9 @@
             return;
         }
         SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
-        vc.signupOperation = self.isSignupOperation;
-        vc.countryCode = self.phoneTextField.leftButton.titleLabel.text;
-        vc.phoneNumber = self.phoneNumber;
+        vc.signupOperation = wself.isSignupOperation;
+        vc.countryCode = countryCode;
+        vc.phoneNumber = wself.phoneNumber;
         [wself.navigationController pushViewController:vc animated:YES];
     }];
 }
