@@ -10,6 +10,10 @@
 #import "SAMCCountryCodeViewController.h"
 #import "SAMCTextField.h"
 #import "SAMCConfirmPhoneCodeViewController.h"
+#import "SAMCAccountManager.h"
+#import "UIView+NIMKitToast.h"
+#import "SVProgressHUD.h"
+#import "SAMCDeviceUtil.h"
 
 @interface SAMCConfirmPhoneNumViewController ()
 
@@ -107,13 +111,28 @@
 #pragma mark - Action
 - (void)sendConfirmationCode:(UIButton *)sender
 {
-    self.phoneNumber = self.phoneTextField.rightTextField.text;
     // TODO: add phone no. check
-    SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
-    vc.signupOperation = self.isSignupOperation;
-    vc.countryCode = self.phoneTextField.leftButton.titleLabel.text;
-    vc.phoneNumber = self.phoneNumber;
-    [self.navigationController pushViewController:vc animated:YES];
+    self.phoneNumber = self.phoneTextField.rightTextField.text;
+    NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    DDLogDebug(@"sendConfirmationCode");
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:countryCode
+                                                                 cellPhone:self.phoneNumber
+                                                                  deviceId:deviceId
+                                                                completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view nimkit_makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            return;
+        }
+        SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
+        vc.signupOperation = self.isSignupOperation;
+        vc.countryCode = self.phoneTextField.leftButton.titleLabel.text;
+        vc.phoneNumber = self.phoneNumber;
+        [wself.navigationController pushViewController:vc animated:YES];
+    }];
 }
 
 #pragma mark - UIKeyBoard Notification
