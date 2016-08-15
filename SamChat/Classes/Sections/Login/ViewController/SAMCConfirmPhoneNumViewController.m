@@ -11,7 +11,7 @@
 #import "SAMCTextField.h"
 #import "SAMCConfirmPhoneCodeViewController.h"
 #import "SAMCAccountManager.h"
-#import "UIView+NIMKitToast.h"
+#import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCDeviceUtil.h"
 
@@ -124,7 +124,7 @@
                                                                 completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
-            [wself.view nimkit_makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
             return;
         }
         SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
