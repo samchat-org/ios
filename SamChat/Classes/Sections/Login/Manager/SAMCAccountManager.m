@@ -54,8 +54,8 @@
     NSString *urlStr = [SAMCServerAPI urlRegisterCodeRequestWithCountryCode:countryCode
                                                                   cellPhone:cellPhone
                                                                    deviceId:deviceId];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     DDLogDebug(@"%@",urlStr);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
@@ -74,6 +74,38 @@
     }];
     
 }
+
+- (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               verifyCode:(NSString *)verifyCode
+                                 deviceId:(NSString *)deviceId
+                               completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSString *urlStr = [SAMCServerAPI urlRegisterCodeVerifyWithCountryCode:countryCode
+                                                                 cellPhone:cellPhone
+                                                                verifyCode:verifyCode
+                                                                  deviceId:deviceId];
+    DDLogDebug(@"%@",urlStr);
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 //
 //- (void)signup:(NSString *)account
 //      password:(NSString *)password

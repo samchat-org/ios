@@ -34,6 +34,12 @@ NS_ASSUME_NONNULL_BEGIN
                                   deviceId:(NSString *)deviceId
                                 completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               verifyCode:(NSString *)verifyCode
+                                 deviceId:(NSString *)deviceId
+                               completion:(void (^)(NSError * __nullable error))completion;
+
 //- (void)signup:(NSString *)account
 //      password:(NSString *)password
 //     cellphone:(NSString *)cellphone

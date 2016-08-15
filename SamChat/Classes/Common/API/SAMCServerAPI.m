@@ -52,4 +52,35 @@
     return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_REGISTER_CODE_REQUEST data:data];
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "signup-code-verify",
+//    },
+//    "body":
+//    {
+//        "countrycode" :
+//        "cellphone"	: “”
+//        "verifycode" : “”
+//        "deviceid" :””
+//    }
+//}
++ (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
+                                         cellPhone:(NSString *)cellPhone
+                                        verifyCode:(NSString *)verifyCode
+                                          deviceId:(NSString *)deviceId
+{
+    countryCode = countryCode ?:@"";
+    cellPhone = cellPhone ?:@"";
+    verifyCode = verifyCode ?:@"";
+    deviceId = deviceId ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_SIGNUP_CODE_VERIFY};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_CELLPHONE:cellPhone,
+                           SAMC_VERIFYCODE:verifyCode,
+                           SAMC_DEVICEID:deviceId};
+    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
+    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_SIGNUP_CODE_VERIFY data:data];
+}
+
 @end

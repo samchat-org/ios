@@ -16,4 +16,9 @@
                                           cellPhone:(NSString *)cellPhone
                                            deviceId:(NSString *)deviceId;
 
++ (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
+                                         cellPhone:(NSString *)cellPhone
+                                        verifyCode:(NSString *)verifyCode
+                                          deviceId:(NSString *)deviceId;
+
 @end
