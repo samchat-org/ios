@@ -13,12 +13,15 @@
 
 #pragma mark - Register
 + (NSString *)urlRegisterCodeRequestWithCountryCode:(NSString *)countryCode
-                                          cellPhone:(NSString *)cellPhone
-                                           deviceId:(NSString *)deviceId;
+                                          cellPhone:(NSString *)cellPhone;
 
 + (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
                                          cellPhone:(NSString *)cellPhone
-                                        verifyCode:(NSString *)verifyCode
-                                          deviceId:(NSString *)deviceId;
+                                        verifyCode:(NSString *)verifyCode;
 
++ (NSString *)registerWithCountryCode:(NSString *)countryCode
+                            cellPhone:(NSString *)cellPhone
+                           verifyCode:(NSString *)verifyCode
+                             username:(NSString *)username
+                             password:(NSString *)password;
 @end

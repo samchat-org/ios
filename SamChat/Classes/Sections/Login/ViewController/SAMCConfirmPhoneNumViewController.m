@@ -13,7 +13,6 @@
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
-#import "SAMCDeviceUtil.h"
 
 @interface SAMCConfirmPhoneNumViewController ()
 
@@ -125,13 +124,12 @@
     // TODO: add phone no. check
     self.phoneNumber = self.phoneTextField.rightTextField.text;
     NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
-    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     DDLogDebug(@"sendConfirmationCode");
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
     [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:countryCode
                                                                  cellPhone:self.phoneNumber
-                                                                  deviceId:deviceId
                                                                 completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {

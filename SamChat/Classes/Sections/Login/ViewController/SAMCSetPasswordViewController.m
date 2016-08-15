@@ -8,6 +8,10 @@
 
 #import "SAMCSetPasswordViewController.h"
 #import "SAMCTextField.h"
+#import "SAMCAccountManager.h"
+#import "SAMCDeviceUtil.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -109,6 +113,7 @@
     [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_doneButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [_doneButton addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventTouchUpInside];
+    _doneButton.enabled = false;
     [self.view addSubview:_doneButton];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_doneButton]-20-|"
                                                                       options:0
@@ -140,11 +145,36 @@
 - (void)touchAgreeButton:(UIButton *)sender
 {
     _agreeButton.selected = !_agreeButton.selected;
+    self.doneButton.enabled = _agreeButton.selected;
 }
 
 - (void)touchDoneButton:(UIButton *)sender
 {
-    DDLogDebug(@"touch done button");
+    if (self.isSignupOperation) {
+        [self signUp];
+    } else {
+        [self resetPassword];
+    }
+}
+
+- (void)signUp
+{
+    NSString *username = self.usernameTextField.rightTextField.text;
+    NSString *password = self.passwordTextField.rightTextField.text;
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:@"signing up" maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCAccountManager sharedManager] registerWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode username:username password:password completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            return;
+        }
+        DDLogDebug(@"sign up success");
+    }];
+}
+
+- (void)resetPassword
+{
 }
 
 #pragma mark - UIKeyBoard Notification

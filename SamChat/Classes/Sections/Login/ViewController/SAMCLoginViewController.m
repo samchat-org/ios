@@ -171,6 +171,7 @@ NTES_USE_CLEAR_BAR
 
 - (void)signin:(UIButton *)sender
 {
+    // countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     extern NSString *SAMCLoginNotification;
     extern NSString *SAMCLoginUserDataKey;
     [_usernameTextField.rightTextField resignFirstResponder];

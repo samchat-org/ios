@@ -31,14 +31,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)registerCodeRequestWithCountryCode:(NSString *)countryCode
                                  cellPhone:(NSString *)cellPhone
-                                  deviceId:(NSString *)deviceId
                                 completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
                                 cellPhone:(NSString *)cellPhone
                                verifyCode:(NSString *)verifyCode
-                                 deviceId:(NSString *)deviceId
                                completion:(void (^)(NSError * __nullable error))completion;
+
+- (void)registerWithCountryCode:(NSString *)countryCode
+                      cellPhone:(NSString *)cellPhone
+                     verifyCode:(NSString *)verifyCode
+                       username:(NSString *)username
+                       password:(NSString *)password
+                     completion:(void (^)(NSError * __nullable error))completion;
 
 //- (void)signup:(NSString *)account
 //      password:(NSString *)password

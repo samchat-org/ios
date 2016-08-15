@@ -12,7 +12,7 @@
 
 @property (nonatomic, getter=isSignupOperation) BOOL signupOperation;
 
-@property (nonatomic, strong) NSString *countryCode;
-@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, copy) NSString *countryCode;
+@property (nonatomic, copy) NSString *phoneNumber;
 
 @end

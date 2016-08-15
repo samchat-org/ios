@@ -7,6 +7,7 @@
 //
 
 #import "SAMCServerAPI.h"
+#import "SAMCDeviceUtil.h"
 
 @implementation SAMCServerAPI
 
@@ -39,11 +40,10 @@
 //}
 + (NSString *)urlRegisterCodeRequestWithCountryCode:(NSString *)countryCode
                                           cellPhone:(NSString *)cellPhone
-                                           deviceId:(NSString *)deviceId
 {
     cellPhone = cellPhone ?:@"";
     countryCode = countryCode ?:@"";
-    deviceId = deviceId ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
     NSDictionary *header = @{SAMC_ACTION:SAMC_REGISTER_CODE_REQUEST};
     NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
                            SAMC_CELLPHONE:cellPhone,
@@ -68,12 +68,11 @@
 + (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
                                          cellPhone:(NSString *)cellPhone
                                         verifyCode:(NSString *)verifyCode
-                                          deviceId:(NSString *)deviceId
 {
     countryCode = countryCode ?:@"";
     cellPhone = cellPhone ?:@"";
     verifyCode = verifyCode ?:@"";
-    deviceId = deviceId ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
     NSDictionary *header = @{SAMC_ACTION:SAMC_SIGNUP_CODE_VERIFY};
     NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
                            SAMC_CELLPHONE:cellPhone,
@@ -81,6 +80,44 @@
                            SAMC_DEVICEID:deviceId};
     NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
     return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_SIGNUP_CODE_VERIFY data:data];
+}
+
+//{
+//    "header":
+//    {
+//        "action" : "register"
+//    },
+//    "body" :
+//    {
+//        “countrycode”		:86
+//        “cellphone”		:“1381196123”
+//        “verifycode”      : 332682
+//        “username”		:”Kevin Dong”
+//        “pwd”             :”123456”
+//        “deviceid”		:”14EF65” //(IMEI/MEID last 6 byte)
+//    }
+//}
++ (NSString *)registerWithCountryCode:(NSString *)countryCode
+                            cellPhone:(NSString *)cellPhone
+                           verifyCode:(NSString *)verifyCode
+                             username:(NSString *)username
+                             password:(NSString *)password
+{
+    countryCode = countryCode ?:@"";
+    cellPhone = cellPhone ?:@"";
+    verifyCode = verifyCode ?:@"";
+    username = username ?:@"";
+    password = password ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_REGISTER};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_CELLPHONE:cellPhone,
+                           SAMC_VERIFYCODE:verifyCode,
+                           SAMC_USERNAME:username,
+                           SAMC_PWD:password,
+                           SAMC_DEVICEID:deviceId};
+    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
+    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_REGISTER data:data];
 }
 
 @end

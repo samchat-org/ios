@@ -11,7 +11,6 @@
 #import "SAMCPhoneCodeView.h"
 #import "SAMCSetPasswordViewController.h"
 #import "SAMCAccountManager.h"
-#import "SAMCDeviceUtil.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 
@@ -72,21 +71,19 @@
 - (void)phonecodeCompleteInput:(SAMCPhoneCodeView *)view
 {
     DDLogDebug(@"phone code:%@", view.phoneCode);
-    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSString *verifyCode = view.phoneCode;
     [SVProgressHUD showWithStatus:@"Verifing" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCAccountManager sharedManager] registerCodeVerifyWithCountryCode:self.countryCode
-                                                                cellPhone:self.phoneNumber
-                                                               verifyCode:view.phoneCode
-                                                                 deviceId:deviceId
-                                                               completion:^(NSError * _Nullable error) {
-        [SVProgressHUD dismiss];
+    [[SAMCAccountManager sharedManager] registerCodeVerifyWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:verifyCode completion:^(NSError * _Nullable error) { [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
             return;
         }
         SAMCSetPasswordViewController *vc = [[SAMCSetPasswordViewController alloc] init];
         vc.signupOperation = wself.isSignupOperation;
+        vc.countryCode = self.countryCode;
+        vc.phoneNumber = self.phoneNumber;
+        vc.verifyCode = verifyCode;
         [self.navigationController pushViewController:vc animated:YES];
     }];
 }

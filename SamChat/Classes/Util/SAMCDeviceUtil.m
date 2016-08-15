@@ -12,8 +12,15 @@
 
 + (NSString *)deviceId
 {
-    NSString *idfv = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
-    return idfv;
+    NSString *deviceId = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
+    deviceId  = [deviceId stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    if (deviceId.length <= 6) {
+        DDLogError(@"get device id error");
+        return @"AABBCC";
+    }
+    deviceId = [deviceId substringWithRange:NSMakeRange(deviceId.length-6,6)];
+    DDLogDebug(@"device id: %@", deviceId);
+    return deviceId;
 }
 
 @end
