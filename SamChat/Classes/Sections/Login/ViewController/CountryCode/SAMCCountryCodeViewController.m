@@ -30,6 +30,7 @@
 
 - (void)setupSubviews
 {
+    self.navigationItem.title = @"Region";
     self.countryCodeTableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     self.countryCodeTableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.countryCodeTableView.dataSource = self;

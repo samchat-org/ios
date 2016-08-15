@@ -65,6 +65,7 @@
     self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.phoneTextField.leftButton setTitle:self.countryCode?:@"+1" forState:UIControlStateNormal];
+    [self.phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
     self.phoneTextField.rightTextField.placeholder = @"Your phone number";
     self.phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
     [self.view addSubview:self.phoneTextField];
@@ -109,6 +110,16 @@
 }
 
 #pragma mark - Action
+- (void)selectCountryCode:(UIButton *)sender
+{
+    SAMCCountryCodeViewController *countryCodeController = [[SAMCCountryCodeViewController alloc] init];
+    __weak typeof(self) weakSelf = self;
+    countryCodeController.selectBlock = ^(NSString *text){
+        [weakSelf.phoneTextField.leftButton setTitle:text forState:UIControlStateNormal];
+    };
+    [self.navigationController pushViewController:countryCodeController animated:YES];
+}
+
 - (void)sendConfirmationCode:(UIButton *)sender
 {
     // TODO: add phone no. check
