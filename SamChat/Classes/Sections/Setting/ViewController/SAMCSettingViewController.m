@@ -10,6 +10,7 @@
 #import "NIMCommonTableData.h"
 #import "NIMCommonTableViewCell.h"
 #import "UIAlertView+NTESBlock.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -271,11 +272,10 @@
     [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
         switch (alertIndex) {
             case 1:
-                [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error)
-                 {
+                [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
                      extern NSString *NTESNotificationLogout;
                      [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-                 }];
+                }];
                 break;
             default:
                 break;

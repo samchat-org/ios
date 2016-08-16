@@ -29,4 +29,7 @@
                            account:(NSString *)account
                           password:(NSString *)password;
 
++ (NSString *)logout:(NSString *)account
+               token:(NSString *)token;
+
 @end

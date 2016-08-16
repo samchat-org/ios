@@ -150,4 +150,25 @@
     return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_LOGIN data:data];
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "logout",
+//        "token": ""
+//    },
+//    "body" :
+//    {
+//    }
+//}
++ (NSString *)logout:(NSString *)account
+               token:(NSString *)token
+{
+    account = account ?:@"";
+    token = token ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_LOGOUT,SAMC_TOKEN:token};
+    NSDictionary *body = @{};
+    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
+    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_LOGOUT data:data];
+}
+
 @end

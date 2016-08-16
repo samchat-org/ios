@@ -50,6 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
                     password:(NSString *)password
                   completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)logout:(void (^)(NSError * __nullable error))completion;
+
 //- (void)signup:(NSString *)account
 //      password:(NSString *)password
 //     cellphone:(NSString *)cellphone

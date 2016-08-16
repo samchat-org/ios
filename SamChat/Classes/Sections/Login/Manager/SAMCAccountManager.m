@@ -16,7 +16,6 @@
 #import "SAMCDeviceUtil.h"
 #import "NTESLoginManager.h"
 
-
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCLoginManagerDelegate> *multicastDelegate;
@@ -172,6 +171,27 @@
     }];
 }
 
+- (void)logout:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    LoginData *loginData = [[NTESLoginManager sharedManager] currentLoginData];
+    NSString *urlStr = [SAMCServerAPI logout:loginData.username token:loginData.token];
+    DDLogDebug(@"%@",urlStr);
+    [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        [manager GET:urlStr parameters:nil progress:^(NSProgress *downloadProgress){
+        } success:^(NSURLSessionDataTask *task, id responseObject){
+            if([responseObject isKindOfClass:[NSDictionary class]]) {
+                DDLogDebug(@"%@", responseObject);
+            }
+        } failure:^(NSURLSessionDataTask *task, NSError *error){
+            DDLogDebug(@"Logout Error: %@", error);
+        }];
+        [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
+//      [[SAMCUserProfileManager sharedManager] setCurrentLoginData:nil];
+        completion(nil);
+    }];
+}
 //- (void)login:(NSString *)account
 //     password:(NSString *)password
 //   completion:(void (^)(NSError *error))completion

@@ -151,6 +151,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     }
     else
     {
+        [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
         [self setupLoginViewController];
     }
 }
@@ -201,8 +202,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)doLogout
 {
-    [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
-    [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCDataBaseManager sharedManager] close];
     [self setupLoginViewController];

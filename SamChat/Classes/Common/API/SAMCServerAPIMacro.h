@@ -30,6 +30,7 @@
 #define SAMC_SIGNUP_CODE_VERIFY         @"signup-code-verify"
 #define SAMC_REGISTER                   @"register"
 #define SAMC_LOGIN                      @"login"
+#define SAMC_LOGOUT                     @"logout"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
