@@ -15,6 +15,7 @@
 #import "GCDMulticastDelegate.h"
 #import "SAMCDeviceUtil.h"
 #import "NTESLoginManager.h"
+#import "SAMCDataPostSerializer.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
@@ -52,12 +53,11 @@
                                 completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSString *urlStr = [SAMCServerAPI urlRegisterCodeRequestWithCountryCode:countryCode
-                                                                  cellPhone:cellPhone];
-    DDLogDebug(@"%@",urlStr);
+    NSDictionary *parameters = [SAMCServerAPI registerCodeRequestWithCountryCode:countryCode
+                                                                       cellPhone:cellPhone];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_REGISTER_CODE_REQUEST parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
@@ -72,7 +72,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
-    
 }
 
 - (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
@@ -81,13 +80,12 @@
                                completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSString *urlStr = [SAMCServerAPI urlRegisterCodeVerifyWithCountryCode:countryCode
-                                                                 cellPhone:cellPhone
-                                                                verifyCode:verifyCode];
-    DDLogDebug(@"%@",urlStr);
+    NSDictionary *parameters = [SAMCServerAPI registerCodeVerifyWithCountryCode:countryCode
+                                                                      cellPhone:cellPhone
+                                                                     verifyCode:verifyCode];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_SIGNUP_CODE_VERIFY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
@@ -112,15 +110,14 @@
                      completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSString *urlStr = [SAMCServerAPI registerWithCountryCode:countryCode
-                                                    cellPhone:cellPhone
-                                                   verifyCode:verifyCode
-                                                     username:username
-                                                     password:password];
-    DDLogDebug(@"%@",urlStr);
+    NSDictionary *paramters = [SAMCServerAPI registerWithCountryCode:countryCode
+                                                           cellPhone:cellPhone
+                                                          verifyCode:verifyCode
+                                                            username:username
+                                                            password:password];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_REGISTER parameters:paramters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
@@ -135,7 +132,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
-    
 }
 
 - (void)loginWithCountryCode:(NSString *)countryCode
@@ -144,13 +140,12 @@
                   completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSString *urlStr = [SAMCServerAPI loginWithCountryCode:countryCode
-                                                   account:account
-                                                  password:password];
-    DDLogDebug(@"%@",urlStr);
+    
+    DDLogDebug(SAMC_URL_USER_LOGIN);
+    NSDictionary *parameters = [SAMCServerAPI loginWithCountryCode:countryCode account:account password:password];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_LOGIN parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
@@ -175,16 +170,15 @@
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *loginData = [[NTESLoginManager sharedManager] currentLoginData];
-    NSString *urlStr = [SAMCServerAPI logout:loginData.username token:loginData.token];
-    DDLogDebug(@"%@",urlStr);
+    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username token:loginData.token];
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        [manager GET:urlStr parameters:nil progress:^(NSProgress *downloadProgress){
-        } success:^(NSURLSessionDataTask *task, id responseObject){
+        manager.requestSerializer = [SAMCDataPostSerializer serializer];
+        [manager POST:SAMC_URL_USER_LOGOUT parameters:paramers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if([responseObject isKindOfClass:[NSDictionary class]]) {
                 DDLogDebug(@"%@", responseObject);
             }
-        } failure:^(NSURLSessionDataTask *task, NSError *error){
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             DDLogDebug(@"Logout Error: %@", error);
         }];
         [[NTESLoginManager sharedManager] setCurrentLoginData:nil];

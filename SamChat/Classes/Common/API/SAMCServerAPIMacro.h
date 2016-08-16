@@ -17,6 +17,12 @@
 #define SAMC_API_USER_LOGIN             @"api_1.0_user_login.do"
 #define SAMC_API_USER_LOGOUT            @"api_1.0_user_logout.do"
 
+#define SAMC_URL_REGISTER_CODE_REQUEST  SAMC_API_PREFIX@""SAMC_API_REGISTER_CODE_REQUEST
+#define SAMC_URL_SIGNUP_CODE_VERIFY     SAMC_API_PREFIX@""SAMC_API_SIGNUP_CODE_VERIFY
+#define SAMC_URL_USER_REGISTER          SAMC_API_PREFIX@""SAMC_API_USER_REGISTER
+#define SAMC_URL_USER_LOGIN             SAMC_API_PREFIX@""SAMC_API_USER_LOGIN
+#define SAMC_URL_USER_LOGOUT            SAMC_API_PREFIX@""SAMC_API_USER_LOGOUT
+
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
 

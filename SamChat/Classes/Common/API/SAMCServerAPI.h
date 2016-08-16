@@ -12,24 +12,24 @@
 @interface SAMCServerAPI : NSObject
 
 #pragma mark - Register
-+ (NSString *)urlRegisterCodeRequestWithCountryCode:(NSString *)countryCode
-                                          cellPhone:(NSString *)cellPhone;
++ (NSDictionary *)registerCodeRequestWithCountryCode:(NSString *)countryCode
+                                           cellPhone:(NSString *)cellPhone;
 
-+ (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
-                                         cellPhone:(NSString *)cellPhone
-                                        verifyCode:(NSString *)verifyCode;
++ (NSDictionary *)registerCodeVerifyWithCountryCode:(NSString *)countryCode
+                                          cellPhone:(NSString *)cellPhone
+                                         verifyCode:(NSString *)verifyCode;
 
-+ (NSString *)registerWithCountryCode:(NSString *)countryCode
-                            cellPhone:(NSString *)cellPhone
-                           verifyCode:(NSString *)verifyCode
-                             username:(NSString *)username
-                             password:(NSString *)password;
++ (NSDictionary *)registerWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               verifyCode:(NSString *)verifyCode
+                                 username:(NSString *)username
+                                 password:(NSString *)password;
 
-+ (NSString *)loginWithCountryCode:(NSString *)countryCode
-                           account:(NSString *)account
-                          password:(NSString *)password;
++ (NSDictionary *)loginWithCountryCode:(NSString *)countryCode
+                               account:(NSString *)account
+                              password:(NSString *)password;
 
-+ (NSString *)logout:(NSString *)account
-               token:(NSString *)token;
++ (NSDictionary *)logout:(NSString *)account
+                   token:(NSString *)token;
 
 @end

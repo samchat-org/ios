@@ -11,21 +11,6 @@
 
 @implementation SAMCServerAPI
 
-+ (NSString *)generateUrlStringWithAPI:(NSString *)api data:(NSDictionary *)data
-{
-    NSString *urlStr = SAMC_API_PREFIX;
-    if ([NSJSONSerialization isValidJSONObject:data]) {
-        NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data
-                                                           options:NSJSONWritingPrettyPrinted
-                                                             error:&error];
-        NSString *json = [[NSString alloc] initWithData:jsonData
-                                               encoding:NSUTF8StringEncoding];
-        urlStr = [NSString stringWithFormat:@"%@%@?data=%@",SAMC_API_PREFIX, api, json];
-    }
-    return [urlStr stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-}
-
 //{
 //    "header":
 //    {
@@ -38,8 +23,8 @@
 //        "deviceid"	: “”
 //    }
 //}
-+ (NSString *)urlRegisterCodeRequestWithCountryCode:(NSString *)countryCode
-                                          cellPhone:(NSString *)cellPhone
++ (NSDictionary *)registerCodeRequestWithCountryCode:(NSString *)countryCode
+                                           cellPhone:(NSString *)cellPhone
 {
     cellPhone = cellPhone ?:@"";
     countryCode = countryCode ?:@"";
@@ -48,8 +33,7 @@
     NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
                            SAMC_CELLPHONE:cellPhone,
                            SAMC_DEVICEID:deviceId};
-    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
-    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_REGISTER_CODE_REQUEST data:data];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
 //{
@@ -65,9 +49,9 @@
 //        "deviceid" :””
 //    }
 //}
-+ (NSString *)urlRegisterCodeVerifyWithCountryCode:(NSString *)countryCode
-                                         cellPhone:(NSString *)cellPhone
-                                        verifyCode:(NSString *)verifyCode
++ (NSDictionary *)registerCodeVerifyWithCountryCode:(NSString *)countryCode
+                                          cellPhone:(NSString *)cellPhone
+                                         verifyCode:(NSString *)verifyCode
 {
     countryCode = countryCode ?:@"";
     cellPhone = cellPhone ?:@"";
@@ -78,8 +62,7 @@
                            SAMC_CELLPHONE:cellPhone,
                            SAMC_VERIFYCODE:verifyCode,
                            SAMC_DEVICEID:deviceId};
-    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
-    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_SIGNUP_CODE_VERIFY data:data];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
 //{
@@ -97,11 +80,11 @@
 //        “deviceid”		:”14EF65” //(IMEI/MEID last 6 byte)
 //    }
 //}
-+ (NSString *)registerWithCountryCode:(NSString *)countryCode
-                            cellPhone:(NSString *)cellPhone
-                           verifyCode:(NSString *)verifyCode
-                             username:(NSString *)username
-                             password:(NSString *)password
++ (NSDictionary *)registerWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               verifyCode:(NSString *)verifyCode
+                                 username:(NSString *)username
+                                 password:(NSString *)password
 {
     countryCode = countryCode ?:@"";
     cellPhone = cellPhone ?:@"";
@@ -116,8 +99,7 @@
                            SAMC_USERNAME:username,
                            SAMC_PWD:password,
                            SAMC_DEVICEID:deviceId};
-    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
-    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_REGISTER data:data];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
 //{
@@ -133,9 +115,9 @@
 //        “deviceid”	:”14EF65” //(IMEI/MEID last 6 byte)
 //    }
 //}
-+ (NSString *)loginWithCountryCode:(NSString *)countryCode
-                           account:(NSString *)account
-                          password:(NSString *)password
++ (NSDictionary *)loginWithCountryCode:(NSString *)countryCode
+                               account:(NSString *)account
+                              password:(NSString *)password
 {
     countryCode = countryCode ?:@"";
     account = account ?:@"";
@@ -146,8 +128,7 @@
                            SAMC_ACCOUNT:account,
                            SAMC_PWD:password,
                            SAMC_DEVICEID:deviceId};
-    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
-    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_LOGIN data:data];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
 //{
@@ -160,15 +141,14 @@
 //    {
 //    }
 //}
-+ (NSString *)logout:(NSString *)account
-               token:(NSString *)token
++ (NSDictionary *)logout:(NSString *)account
+                   token:(NSString *)token
 {
     account = account ?:@"";
     token = token ?:@"";
     NSDictionary *header = @{SAMC_ACTION:SAMC_LOGOUT,SAMC_TOKEN:token};
     NSDictionary *body = @{};
-    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
-    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_LOGOUT data:data];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
 @end
