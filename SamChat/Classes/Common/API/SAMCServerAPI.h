@@ -24,4 +24,9 @@
                            verifyCode:(NSString *)verifyCode
                              username:(NSString *)username
                              password:(NSString *)password;
+
++ (NSString *)loginWithCountryCode:(NSString *)countryCode
+                           account:(NSString *)account
+                          password:(NSString *)password;
+
 @end

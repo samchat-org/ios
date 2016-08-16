@@ -17,6 +17,7 @@
 #import "NSString+NTES.h"
 #import "UIView+Toast.h"
 #import "NTESService.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCLoginViewController ()
 
@@ -171,45 +172,24 @@ NTES_USE_CLEAR_BAR
 
 - (void)signin:(UIButton *)sender
 {
-    // countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     extern NSString *SAMCLoginNotification;
-    extern NSString *SAMCLoginUserDataKey;
     [_usernameTextField.rightTextField resignFirstResponder];
     [_passwordTextField.rightTextField resignFirstResponder];
     
-    NSString *username = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSString *countryCode = _usernameTextField.leftButton.titleLabel.text;
+    countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = _passwordTextField.rightTextField.text;
-    [SVProgressHUD show];
+    [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
     
-    NSString *loginAccount = username;
-    NSString *loginToken   = [password tokenByPassword];
-    
-    //NIM SDK 只提供消息通道，并不依赖用户业务逻辑，开发者需要为每个APP用户指定一个NIM帐号，NIM只负责验证NIM的帐号即可(在服务器端集成)
-    //用户APP的帐号体系和 NIM SDK 并没有直接关系
-    //DEMO中使用 username 作为 NIM 的account ，md5(password) 作为 token
-    //开发者需要根据自己的实际情况配置自身用户系统和 NIM 用户系统的关系
-    
-    [[[NIMSDK sharedSDK] loginManager] login:loginAccount
-                                       token:loginToken
-                                  completion:^(NSError *error) {
-                                      [SVProgressHUD dismiss];
-                                      if (error == nil)
-                                      {
-                                          LoginData *loginData= [[LoginData alloc] init];
-                                          loginData.account   = loginAccount;
-                                          loginData.token     = loginToken;
-                                          NSDictionary *userInfo = @{SAMCLoginUserDataKey:loginData};
-                                          [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification
-                                                                                              object:nil
-                                                                                            userInfo:userInfo];
-                                      }
-                                      else
-                                      {
-                                          NSString *toast = [NSString stringWithFormat:@"登录失败 code: %zd",error.code];
-                                          [self.view makeToast:toast duration:2.0 position:CSToastPositionCenter];
-                                      }
-                                  }];
-    
+    [[SAMCAccountManager sharedManager] loginWithCountryCode:countryCode account:account password:password completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [self.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];
+    }];
 }
 
 - (void)signup:(UIButton *)sender

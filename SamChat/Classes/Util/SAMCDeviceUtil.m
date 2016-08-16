@@ -20,6 +20,7 @@
     }
     deviceId = [deviceId substringWithRange:NSMakeRange(deviceId.length-6,6)];
     DDLogDebug(@"device id: %@", deviceId);
+    deviceId = @"CCDDEE"; // TODO: delete, for test
     return deviceId;
 }
 

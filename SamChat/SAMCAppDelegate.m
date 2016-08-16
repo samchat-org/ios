@@ -26,10 +26,10 @@
 #import "SAMCLoginViewController.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCChatManager.h"
+#import "SAMCPreferenceManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
-NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 @interface SAMCAppDelegate ()<NIMLoginManagerDelegate>
 @property (nonatomic,strong) NTESSDKConfig *config;
 @end
@@ -140,7 +140,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 {
     LoginData *data = [[NTESLoginManager sharedManager] currentLoginData];
     NSString *account = [data account];
-    NSString *token = [data token];
+    NSString *token = [data nimToken];
     
     //如果有缓存用户名密码推荐使用自动登录
     if ([account length] && [token length])
@@ -190,9 +190,6 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 #pragma mark - 主动登录
 - (void)login:(NSNotification *)notification
 {
-    LoginData *data = [[notification userInfo] objectForKey:SAMCLoginUserDataKey];
-    [[NTESLoginManager sharedManager] setCurrentLoginData:data];
-    
     [self setupMainViewController];
 }
 
@@ -204,6 +201,7 @@ NSString * const SAMCLoginUserDataKey = @"SAMCLoginUserDataKey";
 
 - (void)doLogout
 {
+    [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCDataBaseManager sharedManager] close];

@@ -120,4 +120,34 @@
     return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_REGISTER data:data];
 }
 
+//{
+//    "header":
+//    {
+//        “action”: “login”
+//    },
+//    "body" :
+//    {
+//        “countrycode”	:86
+//        “account”		:“1381196123”
+//        “pwd”			:”123456”
+//        “deviceid”	:”14EF65” //(IMEI/MEID last 6 byte)
+//    }
+//}
++ (NSString *)loginWithCountryCode:(NSString *)countryCode
+                           account:(NSString *)account
+                          password:(NSString *)password
+{
+    countryCode = countryCode ?:@"";
+    account = account ?:@"";
+    password = password ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_LOGIN};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_ACCOUNT:account,
+                           SAMC_PWD:password,
+                           SAMC_DEVICEID:deviceId};
+    NSDictionary *data = @{SAMC_HEADER:header,SAMC_BODY:body};
+    return [SAMCServerAPI generateUrlStringWithAPI:SAMC_API_USER_LOGIN data:data];
+}
+
 @end
