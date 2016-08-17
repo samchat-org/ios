@@ -125,8 +125,11 @@
 - (void)sendConfirmationCode:(UIButton *)sender
 {
     if ([sender.currentTitle isEqualToString:SAMC_SEND_CONFIRMATION_CODE]) {
-        // TODO: add phone no. check
         self.phoneNumber = self.phoneTextField.rightTextField.text;
+        if (![self isValidCellphone:self.phoneNumber]) {
+            [self.view makeToast:@"Invalid Phone Number" duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
         NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
         self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
         
@@ -153,6 +156,18 @@
     vc.countryCode = self.countryCode;
     vc.phoneNumber = self.phoneNumber;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (BOOL)isValidCellphone:(NSString *)cellphone
+{
+    if ((cellphone.length<5) || (cellphone.length>11)) {
+        return false;
+    }
+    cellphone = [cellphone stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if (cellphone.length > 0) {
+        return false;
+    }
+    return true;
 }
 
 #pragma mark - UIKeyBoard Notification
