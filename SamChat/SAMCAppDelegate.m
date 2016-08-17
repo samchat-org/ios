@@ -151,7 +151,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     }
     else
     {
-        [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
         [self setupLoginViewController];
     }
 }
@@ -181,6 +180,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)setupLoginViewController
 {
+    [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
 //        NTESLoginViewController *loginController = [[NTESLoginViewController alloc] init];
     SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
