@@ -187,6 +187,7 @@ NTES_USE_CLEAR_BAR
         if (error) {
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
             [self.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            return;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];
     }];
