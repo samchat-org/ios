@@ -47,6 +47,7 @@
     _rightTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _rightTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _rightTextField.backgroundColor = [UIColor clearColor];
+    [_rightTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     [self addSubview:_rightTextField];
     
     [_leftButton addConstraint:[NSLayoutConstraint constraintWithItem:_leftButton
@@ -75,5 +76,10 @@
     [_leftButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    // fix the issue: text bounces after resigning first responder
+    [textField layoutIfNeeded];
+}
 
 @end
