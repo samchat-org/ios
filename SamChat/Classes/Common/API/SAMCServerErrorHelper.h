@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,
     SAMCServerErrorUnknowError = 3,
+    SAMCServerErrorNetEaseLoginFailed = 4,
 };
 
 #define SAMC_SERVER_ERROR_DOMAIN    @"com.github.gknows.samchat"

@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)logout:(void (^)(NSError * __nullable error))completion;
 
+- (void)loginNetEaseUsername:(NSString *)username
+                      userId:(NSString *)userId
+                       token:(NSString *)token
+                  completion:(void (^)(NSError *error))completion;
+
 //- (void)signup:(NSString *)account
 //      password:(NSString *)password
 //     cellphone:(NSString *)cellphone

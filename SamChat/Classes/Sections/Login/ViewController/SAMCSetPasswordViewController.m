@@ -12,6 +12,9 @@
 #import "SAMCDeviceUtil.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCServerErrorHelper.h"
+#import "SAMCPreferenceManager.h"
+#import "SAMCLoginViewController.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -166,15 +169,32 @@
     [[SAMCAccountManager sharedManager] registerWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode username:username password:password completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
-            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            if (error.code == SAMCServerErrorNetEaseLoginFailed) {
+                [wself setupLoginViewController];
+            } else {
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            }
             return;
         }
-        DDLogDebug(@"sign up success");
+        extern NSString *SAMCLoginNotification;
+        [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];
     }];
 }
 
 - (void)resetPassword
 {
+}
+
+- (void)setupLoginViewController
+{
+    [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
+    SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+    nav.navigationBar.translucent = NO;
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    window.rootViewController = nav;
+    NSString *toast = @"注册成功，尝试登录失败，请重新登录";
+    [window makeToast:toast duration:2.0 position:CSToastPositionCenter];
 }
 
 #pragma mark - UIKeyBoard Notification

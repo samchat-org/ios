@@ -89,6 +89,9 @@
         case SAMCServerErrorContactNotAdded: // 还未添加此联系人
             localizedDescription = @"还未添加此联系人";
             break;
+        case SAMCServerErrorNetEaseLoginFailed:
+            localizedDescription = @"登录失败";
+            break;
         default:
             break;
     }

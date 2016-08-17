@@ -124,7 +124,12 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                completion(nil);
+//                completion(nil);
+                NSString *token = response[SAMC_TOKEN];
+                NSDictionary *userInfo = response[SAMC_USER];
+                NSString *username = userInfo[SAMC_USERNAME];
+                NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
+                [self loginNetEaseUsername:username userId:userId token:token completion:completion];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -301,7 +306,6 @@
     [self.multicastDelegate onMultiLoginClientsChanged];
 }
 
-#pragma mark - private
 // netease account is the id of samchat
 - (void)loginNetEaseUsername:(NSString *)username
                       userId:(NSString *)userId
@@ -319,7 +323,7 @@
            [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
            completion(nil);
        }else{
-           completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+           completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
        }
    }];
 }
