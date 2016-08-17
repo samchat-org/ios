@@ -13,6 +13,9 @@
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "UIButton+SAMC.h"
+
+#define SAMC_SEND_CONFIRMATION_CODE @"Send Confirmation Code"
 
 @interface SAMCConfirmPhoneNumViewController ()
 
@@ -21,7 +24,7 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *sendButtonBottomContraint;
 
-@property (nonatomic, strong) NSString *phoneNumber;
+@property (nonatomic, copy) NSString *phoneNumber;
 
 @end
 
@@ -73,7 +76,7 @@
     self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.sendButton.layer.cornerRadius = 5.0f;
     self.sendButton.backgroundColor = [UIColor grayColor];
-    [self.sendButton setTitle:@"Send Confirmation Code" forState:UIControlStateNormal];
+    [self.sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [self.sendButton addTarget:self action:@selector(sendConfirmationCode:) forControlEvents:UIControlEventTouchUpInside];
@@ -121,27 +124,35 @@
 
 - (void)sendConfirmationCode:(UIButton *)sender
 {
-    // TODO: add phone no. check
-    self.phoneNumber = self.phoneTextField.rightTextField.text;
-    NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
-    countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
-    DDLogDebug(@"sendConfirmationCode");
-    __weak typeof(self) wself = self;
-    [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
-    [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:countryCode
-                                                                 cellPhone:self.phoneNumber
-                                                                completion:^(NSError * _Nullable error) {
-        [SVProgressHUD dismiss];
-        if (error) {
-            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
-            return;
-        }
-        SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
-        vc.signupOperation = wself.isSignupOperation;
-        vc.countryCode = countryCode;
-        vc.phoneNumber = wself.phoneNumber;
-        [wself.navigationController pushViewController:vc animated:YES];
-    }];
+    if ([sender.currentTitle isEqualToString:SAMC_SEND_CONFIRMATION_CODE]) {
+        // TODO: add phone no. check
+        self.phoneNumber = self.phoneTextField.rightTextField.text;
+        NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
+        self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+        
+        [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
+        __weak typeof(self) wself = self;
+        [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:self.countryCode cellPhone:self.phoneNumber completion:^(NSError * _Nullable error) {
+            [SVProgressHUD dismiss];
+            if (error) {
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+                return;
+            }
+            [wself pushToConfirmPhoneCodeView];
+            [sender startWithCountDownSeconds:60 title:@"Next"];
+        }];
+    } else {
+        [self pushToConfirmPhoneCodeView];
+    }
+}
+
+- (void)pushToConfirmPhoneCodeView
+{
+    SAMCConfirmPhoneCodeViewController *vc = [[SAMCConfirmPhoneCodeViewController alloc] init];
+    vc.signupOperation = self.isSignupOperation;
+    vc.countryCode = self.countryCode;
+    vc.phoneNumber = self.phoneNumber;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UIKeyBoard Notification
