@@ -76,7 +76,7 @@
     __weak typeof(self) wself = self;
     [[SAMCAccountManager sharedManager] registerCodeVerifyWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:verifyCode completion:^(NSError * _Nullable error) { [SVProgressHUD dismiss];
         if (error) {
-            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
             return;
         }
         SAMCSetPasswordViewController *vc = [[SAMCSetPasswordViewController alloc] init];

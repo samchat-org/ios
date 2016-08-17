@@ -164,6 +164,10 @@
 {
     NSString *username = self.usernameTextField.rightTextField.text;
     NSString *password = self.passwordTextField.rightTextField.text;
+    if ([self isPasswordFormatOK:password]) {
+        [self.view makeToast:@"password format wrong" duration:2.0f position:CSToastPositionCenter];
+        return;
+    }
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"signing up" maskType:SVProgressHUDMaskTypeBlack];
     [[SAMCAccountManager sharedManager] registerWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode username:username password:password completion:^(NSError * _Nullable error) {
@@ -172,7 +176,7 @@
             if (error.code == SAMCServerErrorNetEaseLoginFailed) {
                 [wself setupLoginViewController];
             } else {
-                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey]];
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
             }
             return;
         }
@@ -195,6 +199,11 @@
     window.rootViewController = nav;
     NSString *toast = @"注册成功，尝试登录失败，请重新登录";
     [window makeToast:toast duration:2.0 position:CSToastPositionCenter];
+}
+
+- (BOOL)isPasswordFormatOK:(NSString *)password
+{
+    return ([password rangeOfString:@" "].location != NSNotFound);
 }
 
 #pragma mark - UIKeyBoard Notification
