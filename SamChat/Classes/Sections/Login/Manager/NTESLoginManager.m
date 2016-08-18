@@ -44,7 +44,7 @@
     }
 }
 
-- (NSString *)nimToken
+- (NSString *)finalToken
 {
     return [_token stringByAppendingString:[SAMCDeviceUtil deviceId]];
 }

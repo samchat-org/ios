@@ -13,7 +13,7 @@
 @property (nonatomic,copy) NSString *account;
 @property (nonatomic,copy) NSString *token;
 
-- (NSString *)nimToken;
+- (NSString *)finalToken;
 @end
 
 @interface NTESLoginManager : NSObject

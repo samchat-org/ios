@@ -175,13 +175,13 @@
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *loginData = [[NTESLoginManager sharedManager] currentLoginData];
-    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username token:loginData.token];
+    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username token:loginData.finalToken];
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [SAMCDataPostSerializer serializer];
         [manager POST:SAMC_URL_USER_LOGOUT parameters:paramers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if([responseObject isKindOfClass:[NSDictionary class]]) {
-                DDLogDebug(@"%@", responseObject);
+                DDLogDebug(@"Logout: %@", responseObject);
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             DDLogDebug(@"Logout Error: %@", error);
@@ -317,7 +317,7 @@
     sdkData.username = username;
     sdkData.account = userId;
     sdkData.token = token;
-    [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData nimToken] completion:^(NSError *error) {
+    [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
        if (error == nil) {
 //        [[SAMCUserProfileManager sharedManager] setCurrentLoginData:sdkData];
            [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];

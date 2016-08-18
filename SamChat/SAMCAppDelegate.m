@@ -140,7 +140,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 {
     LoginData *data = [[NTESLoginManager sharedManager] currentLoginData];
     NSString *account = [data account];
-    NSString *token = [data nimToken];
+    NSString *token = [data finalToken];
     
     //如果有缓存用户名密码推荐使用自动登录
     if ([account length] && [token length])
