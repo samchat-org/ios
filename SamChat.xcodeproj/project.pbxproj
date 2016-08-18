@@ -246,6 +246,7 @@
 		3195DE461D60702E001BD2B4 /* SAMCDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE451D60702E001BD2B4 /* SAMCDeviceUtil.m */; };
 		3195DE4E1D63137E001BD2B4 /* SAMCDataPostSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE4D1D63137E001BD2B4 /* SAMCDataPostSerializer.m */; };
 		3195DE511D642E80001BD2B4 /* UIButton+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */; };
+		31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B761D6589E900832CC8 /* SAMCPushManager.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -707,6 +708,8 @@
 		3195DE4D1D63137E001BD2B4 /* SAMCDataPostSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCDataPostSerializer.m; path = AFNetworking/SAMCDataPostSerializer.m; sourceTree = "<group>"; };
 		3195DE4F1D642E80001BD2B4 /* UIButton+SAMC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SAMC.h"; sourceTree = "<group>"; };
 		3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SAMC.m"; sourceTree = "<group>"; };
+		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
+		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -1784,6 +1787,8 @@
 				3195DDE31D52CF51001BD2B4 /* SAMCChatManager.m */,
 				3195DE0D1D56C56D001BD2B4 /* SAMCConversationManager.h */,
 				3195DE0E1D56C56D001BD2B4 /* SAMCConversationManager.m */,
+				31E37B751D6589E900832CC8 /* SAMCPushManager.h */,
+				31E37B761D6589E900832CC8 /* SAMCPushManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2301,6 +2306,7 @@
 				312C1C751D35D85B00242906 /* NTESCustomNotificationDB.m in Sources */,
 				611FE9EE1BB02320005E8E45 /* (null) in Sources */,
 				312C1CB61D35D85B00242906 /* NTESLogUploader.m in Sources */,
+				31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */,
 				3195DE281D587932001BD2B4 /* SAMCSessionMessageDataProvider.m in Sources */,
 				312C1C441D35D85B00242906 /* UIViewController+Swizzling.m in Sources */,
 				312C1C8D1D35D85B00242906 /* NTESSessionTipConfig.m in Sources */,

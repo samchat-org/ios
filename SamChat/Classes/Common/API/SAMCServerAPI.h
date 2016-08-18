@@ -32,4 +32,6 @@
 + (NSDictionary *)logout:(NSString *)account
                    token:(NSString *)token;
 
++ (NSDictionary *)getAppKey:(NSString *)token;
+
 @end
