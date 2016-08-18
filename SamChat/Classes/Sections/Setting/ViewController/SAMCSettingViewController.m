@@ -11,6 +11,7 @@
 #import "NIMCommonTableViewCell.h"
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCAccountManager.h"
+#import "SAMCCSAStepOneViewController.h"
 
 @interface SAMCSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -85,6 +86,14 @@
                                       RowHeight     : @(100),
                                       CellAction    : @"onActionTouchPortrait:",
                                       ShowAccessory : @(NO)
+                                      },
+                                  @{
+                                      Title         : @"Create Service Account",
+                                      CellClass     : @"NTESColorButtonCell",
+                                      RowHeight     : @(60),
+                                      CellAction    : @"createSamPros:",
+                                      ExtraInfo     : @(1),
+                                      ForbidSelect  : @(YES)
                                       },
                                   ],
                           FooterTitle:@""
@@ -281,6 +290,12 @@
                 break;
         }
     }];
+}
+
+- (void)createSamPros:(id)sender
+{
+    SAMCCSAStepOneViewController *vc = [[SAMCCSAStepOneViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

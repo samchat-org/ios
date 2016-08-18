@@ -151,4 +151,56 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "appkey-get",
+//        "token": ""
+//    },
+//    "body" :
+//    {
+//    }
+//}
++ (NSDictionary *)getAppKey:(NSString *)token
+{
+    token = token ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_APPKEY_GET,SAMC_TOKEN:token};
+    NSDictionary *body = @{};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
+//        "action" : "create-sam-pros",
+//        "token": "token"
+//    },
+//    "body":
+//    {
+//        "company_name"	: “”
+//        "service_category"	: ””
+//        "service_description"	: “”
+//        “countrycode”: // option
+//        “phone”: // option
+//        “email”: // option
+//        "location" :{
+//            "location_info":{ //option
+//                “longitude”:
+//                “latitude”
+//            } 
+//            "place_id": " "//option
+//            "address": " "//option
+//        }
+//    }
+//}
++ (NSDictionary *)createSamPros:(NSDictionary *)info
+                          token:(NSString *)token
+{
+    NSAssert(info != nil, @"create sam pros info should not be nil");
+    token = token ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_CREATE_SAM_PROS,SAMC_TOKEN:token};
+    return @{SAMC_HEADER:header,SAMC_BODY:info};
+}
+
+
 @end

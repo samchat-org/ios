@@ -17,6 +17,7 @@
 #define SAMC_API_USER_LOGIN             @"api_1.0_user_login.do"
 #define SAMC_API_USER_LOGOUT            @"api_1.0_user_logout.do"
 #define SAMC_API_PROFILE_APP_KEY_GET    @"api_1.0_profile_appkeyGet.do"
+#define SAMC_API_USER_CREATE_SAM_PROS   @"api_1.0_user_createSamPros.do"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST  SAMC_API_PREFIX@""SAMC_API_REGISTER_CODE_REQUEST
 #define SAMC_URL_SIGNUP_CODE_VERIFY     SAMC_API_PREFIX@""SAMC_API_SIGNUP_CODE_VERIFY
@@ -24,6 +25,7 @@
 #define SAMC_URL_USER_LOGIN             SAMC_API_PREFIX@""SAMC_API_USER_LOGIN
 #define SAMC_URL_USER_LOGOUT            SAMC_API_PREFIX@""SAMC_API_USER_LOGOUT
 #define SAMC_URL_PROFILE_APP_KEY_GET    SAMC_API_PREFIX@""SAMC_API_PROFILE_APP_KEY_GET
+#define SAMC_URL_USER_CREATE_SAM_PROS   SAMC_API_PREFIX@""SAMC_API_USER_CREATE_SAM_PROS
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -39,6 +41,8 @@
 #define SAMC_REGISTER                   @"register"
 #define SAMC_LOGIN                      @"login"
 #define SAMC_LOGOUT                     @"logout"
+#define SAMC_APPKEY_GET                 @"appkey-get"
+#define SAMC_CREATE_SAM_PROS            @"create-sam-pros"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -48,5 +52,17 @@
 #define SAMC_PWD                        @"pwd"
 #define SAMC_ACCOUNT                    @"account"
 #define SAMC_ID                         @"id"
+
+#define SAMC_COMPANY_NAME               @"company_name"
+#define SAMC_SERVICE_CATEGORY           @"service_category"
+#define SAMC_SERVICE_DESCRIPTION        @"service_description"
+#define SAMC_PHONE                      @"phone"
+#define SAMC_EMAIL                      @"email"
+#define SAMC_LOCATION                   @"location"
+#define SAMC_LOCATION_INFO              @"location_info"
+#define SAMC_LONGITUDE                  @"longitude"
+#define SAMC_LATITUDE                   @"latitude"
+#define SAMC_PLACE_ID                   @"place_id"
+#define SAMC_ADDRESS                    @"address"
 
 #endif /* SAMCServerAPIMacro_h */

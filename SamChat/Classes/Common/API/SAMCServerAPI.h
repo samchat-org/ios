@@ -34,4 +34,7 @@
 
 + (NSDictionary *)getAppKey:(NSString *)token;
 
++ (NSDictionary *)createSamPros:(NSDictionary *)info
+                          token:(NSString *)token;
+
 @end
