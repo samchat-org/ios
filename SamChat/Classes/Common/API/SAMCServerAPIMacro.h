@@ -11,20 +11,20 @@
 
 #define SAMC_API_PREFIX                 @"http://ec2-54-222-170-218.cn-north-1.compute.amazonaws.com.cn:8081/sam_svr/"
 
-#define SAMC_API_REGISTER_CODE_REQUEST  @"api_1.0_user_registerCodeRequest.do"
-#define SAMC_API_SIGNUP_CODE_VERIFY     @"api_1.0_user_signupCodeVerify.do"
-#define SAMC_API_USER_REGISTER          @"api_1.0_user_register.do"
-#define SAMC_API_USER_LOGIN             @"api_1.0_user_login.do"
-#define SAMC_API_USER_LOGOUT            @"api_1.0_user_logout.do"
-#define SAMC_API_PROFILE_APP_KEY_GET    @"api_1.0_profile_appkeyGet.do"
-#define SAMC_API_USER_CREATE_SAM_PROS   @"api_1.0_user_createSamPros.do"
+#define SAMC_API_USER_REGISTER_CODE_REQUEST @"api_1.0_user_registerCodeRequest.do"
+#define SAMC_API_USER_SIGNUP_CODE_VERIFY    @"api_1.0_user_signupCodeVerify.do"
+#define SAMC_API_USER_REGISTER              @"api_1.0_user_register.do"
+#define SAMC_API_USER_LOGIN                 @"api_1.0_user_login.do"
+#define SAMC_API_USER_LOGOUT                @"api_1.0_user_logout.do"
+#define SAMC_API_PROFILE_APP_KEY_GET        @"api_1.0_profile_appkeyGet.do"
+#define SAMC_API_USER_CREATE_SAM_PROS       @"api_1.0_user_createSamPros.do"
 #define SAMC_API_USER_FIND_PWD_CODE_REQUEST @"api_1.0_user_findpwdCodeRequest.do"
 #define SAMC_API_USER_FIND_PWD_CODE_VERIFY  @"api_1.0_user_findpwdCodeVerify.do"
 #define SAMC_API_USER_FIND_PWD_UPDATE       @"api_1.0_user_findpwdUpdate.do"
 #define SAMC_API_USER_PWD_UPDATE            @"api_1.0_user_pwdUpdate.do"
 
-#define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@""SAMC_API_REGISTER_CODE_REQUEST
-#define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@""SAMC_API_SIGNUP_CODE_VERIFY
+#define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@""SAMC_API_USER_REGISTER_CODE_REQUEST
+#define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@""SAMC_API_USER_SIGNUP_CODE_VERIFY
 #define SAMC_URL_USER_REGISTER              SAMC_API_PREFIX@""SAMC_API_USER_REGISTER
 #define SAMC_URL_USER_LOGIN                 SAMC_API_PREFIX@""SAMC_API_USER_LOGIN
 #define SAMC_URL_USER_LOGOUT                SAMC_API_PREFIX@""SAMC_API_USER_LOGOUT
