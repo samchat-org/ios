@@ -27,7 +27,6 @@
 
 - (void)dealloc
 {
-    DDLogDebug(@"delloc");
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UITextViewTextDidChangeNotification
                                                   object:self];
@@ -36,6 +35,7 @@
 - (void)setupSubviews
 {
     self.font = [UIFont systemFontOfSize:17.0f];
+    self.textContainerInset = UIEdgeInsetsMake(10, 20, 10, 20);
     _placeholderLabel = [[UILabel alloc] init];
     _placeholderLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _placeholderLabel.backgroundColor = [UIColor clearColor];
@@ -44,11 +44,11 @@
     _placeholderLabel.textColor = [UIColor lightGrayColor];
     [self addSubview:_placeholderLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_placeholderLabel]-0-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_placeholderLabel]-20-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_placeholderLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_placeholderLabel]-0-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_placeholderLabel]"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_placeholderLabel)]];

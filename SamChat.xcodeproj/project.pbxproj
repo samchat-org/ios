@@ -251,6 +251,7 @@
 		31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B801D65B17000832CC8 /* SAMCTextView.m */; };
 		31E37B841D65B83F00832CC8 /* SAMCCSAStepOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B831D65B83F00832CC8 /* SAMCCSAStepOneViewController.m */; };
 		31E37B871D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B861D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m */; };
+		31E37B8A1D66950C00832CC8 /* SAMCCSADoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B891D66950C00832CC8 /* SAMCCSADoneViewController.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -722,6 +723,8 @@
 		31E37B831D65B83F00832CC8 /* SAMCCSAStepOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCSAStepOneViewController.m; path = ViewController/SAMCCSAStepOneViewController.m; sourceTree = "<group>"; };
 		31E37B851D65D94B00832CC8 /* SAMCCSAStepTwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCSAStepTwoViewController.h; path = ViewController/SAMCCSAStepTwoViewController.h; sourceTree = "<group>"; };
 		31E37B861D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCSAStepTwoViewController.m; path = ViewController/SAMCCSAStepTwoViewController.m; sourceTree = "<group>"; };
+		31E37B881D66950C00832CC8 /* SAMCCSADoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCSADoneViewController.h; path = ViewController/SAMCCSADoneViewController.h; sourceTree = "<group>"; };
+		31E37B891D66950C00832CC8 /* SAMCCSADoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCSADoneViewController.m; path = ViewController/SAMCCSADoneViewController.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -1771,6 +1774,8 @@
 				31E37B831D65B83F00832CC8 /* SAMCCSAStepOneViewController.m */,
 				31E37B851D65D94B00832CC8 /* SAMCCSAStepTwoViewController.h */,
 				31E37B861D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m */,
+				31E37B881D66950C00832CC8 /* SAMCCSADoneViewController.h */,
+				31E37B891D66950C00832CC8 /* SAMCCSADoneViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -2354,6 +2359,7 @@
 				312C1C9F1D35D85B00242906 /* NTESSessionRemoteHistoryViewController.m in Sources */,
 				314444C81D45F6B80062B797 /* SAMCTabViewController.m in Sources */,
 				312C1C5A1D35D85B00242906 /* NTESChatroomManager.m in Sources */,
+				31E37B8A1D66950C00832CC8 /* SAMCCSADoneViewController.m in Sources */,
 				312C1CA01D35D85B00242906 /* NTESSessionViewController.m in Sources */,
 				312C1C841D35D85B00242906 /* NTESCustomAttachmentDecoder.m in Sources */,
 				3195DE4E1D63137E001BD2B4 /* SAMCDataPostSerializer.m in Sources */,

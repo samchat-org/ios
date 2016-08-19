@@ -74,7 +74,8 @@
     NSString *verifyCode = view.phoneCode;
     [SVProgressHUD showWithStatus:@"Verifing" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCAccountManager sharedManager] registerCodeVerifyWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:verifyCode completion:^(NSError * _Nullable error) { [SVProgressHUD dismiss];
+    [[SAMCAccountManager sharedManager] registerCodeVerifyWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:verifyCode completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
             return;

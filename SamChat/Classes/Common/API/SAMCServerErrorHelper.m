@@ -89,6 +89,15 @@
         case SAMCServerErrorContactNotAdded: // 还未添加此联系人
             localizedDescription = @"还未添加此联系人";
             break;
+        case SAMCServerErrorNetworkUnavailable:
+            localizedDescription = @"网络连接错误";
+            break;
+        case SAMCServerErrorServerNotReachable:
+            localizedDescription = @"服务器连接错误";
+            break;
+        case SAMCServerErrorUnknowError:
+            localizedDescription = @"未知错误";
+            break;
         case SAMCServerErrorNetEaseLoginFailed:
             localizedDescription = @"登录失败";
             break;

@@ -48,7 +48,7 @@
         }
         
         NSMutableData *data = [NSMutableData dataWithData:[@"data=" dataUsingEncoding:NSUTF8StringEncoding]];
-        DDLogDebug(@"%@",parameters);
+        DDLogDebug(@"SerializerResult: %@",parameters);
         [data appendData:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
         [mutableRequest setHTTPBody:data];
     }
