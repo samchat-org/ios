@@ -227,5 +227,33 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "findpwd-code-verify",
+//    },
+//    "body":
+//    {
+//        "countrycode" :
+//        "cellphone"	: “”
+//        "verifycode" : “”
+//        "deviceid" :””
+//    }
+//}
++ (NSDictionary *)findPWDCodeVerifyWithCountryCode:(NSString *)countryCode
+                                         cellPhone:(NSString *)cellPhone
+                                        verifyCode:(NSString *)verifyCode
+{
+    countryCode = countryCode ?:@"";
+    cellPhone = cellPhone ?:@"";
+    verifyCode = verifyCode ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_FINDPWD_CODE_VERIFY};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_CELLPHONE:cellPhone,
+                           SAMC_VERIFYCODE:verifyCode,
+                           SAMC_DEVICEID:deviceId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
 
 @end

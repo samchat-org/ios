@@ -76,23 +76,19 @@
     NSDictionary *parameters = [SAMCServerAPI registerCodeVerifyWithCountryCode:countryCode
                                                                       cellPhone:cellPhone
                                                                      verifyCode:verifyCode];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_SIGNUP_CODE_VERIFY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode) {
-                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
-            } else {
-                completion(nil);
-            }
-        } else {
-            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
-    }];
+    [self codeVerify:SAMC_URL_SIGNUP_CODE_VERIFY parameters:parameters completion:completion];
+}
+
+- (void)findPWDCodeVerifyWithCountryCode:(NSString *)countryCode
+                               cellPhone:(NSString *)cellPhone
+                              verifyCode:(NSString *)verifyCode
+                              completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI findPWDCodeVerifyWithCountryCode:countryCode
+                                                                     cellPhone:cellPhone
+                                                                    verifyCode:verifyCode];
+    [self codeVerify:SAMC_URL_USER_FIND_PWD_CODE_VERIFY parameters:parameters completion:completion];
 }
 
 - (void)registerWithCountryCode:(NSString *)countryCode
@@ -353,4 +349,28 @@
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
 }
+
+- (void)codeVerify:(NSString *)url
+        parameters:(id)parameters
+        completion:(void (^)(NSError * __nullable error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 @end

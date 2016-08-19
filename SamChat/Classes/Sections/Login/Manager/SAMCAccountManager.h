@@ -40,6 +40,10 @@ NS_ASSUME_NONNULL_BEGIN
                                 cellPhone:(NSString *)cellPhone
                                verifyCode:(NSString *)verifyCode
                                completion:(void (^)(NSError * __nullable error))completion;
+- (void)findPWDCodeVerifyWithCountryCode:(NSString *)countryCode
+                               cellPhone:(NSString *)cellPhone
+                              verifyCode:(NSString *)verifyCode
+                              completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)registerWithCountryCode:(NSString *)countryCode
                       cellPhone:(NSString *)cellPhone
