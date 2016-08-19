@@ -116,7 +116,9 @@
     [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_doneButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [_doneButton addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventTouchUpInside];
-    _doneButton.enabled = false;
+    if (self.isSignupOperation) {
+        _doneButton.enabled = false;
+    }
     [self.view addSubview:_doneButton];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_doneButton]-20-|"
                                                                       options:0
@@ -187,6 +189,26 @@
 
 - (void)resetPassword
 {
+    NSString *password = self.passwordTextField.rightTextField.text;
+    if ([self isPasswordFormatOK:password]) {
+        [self.view makeToast:@"password format wrong" duration:2.0f position:CSToastPositionCenter];
+        return;
+    }
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:@"resetting password" maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCAccountManager sharedManager] findPWDUpdateWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode password:password completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            if (error.code == SAMCServerErrorNetEaseLoginFailed) {
+                [wself setupLoginViewController];
+            } else {
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+            }
+            return;
+        }
+        extern NSString *SAMCLoginNotification;
+        [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];
+    }];
 }
 
 - (void)setupLoginViewController
@@ -197,7 +219,7 @@
     nav.navigationBar.translucent = NO;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = nav;
-    NSString *toast = @"注册成功，尝试登录失败，请重新登录";
+    NSString *toast = @"尝试登录失败，请重新登录";
     [window makeToast:toast duration:2.0 position:CSToastPositionCenter];
 }
 

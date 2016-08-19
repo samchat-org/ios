@@ -256,4 +256,37 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "findpwd-update",
+//    },
+//    "body":
+//    {
+//        "countrycode" :
+//        "cellphone"	: “”
+//        " verifycode " :
+//        "pwd" : “”
+//        "deviceid" :””
+//    }
+//}
++ (NSDictionary *)findPWDUpdateWithCountryCode:(NSString *)countryCode
+                                     cellPhone:(NSString *)cellPhone
+                                    verifyCode:(NSString *)verifyCode
+                                      password:(NSString *)password
+{
+    countryCode = countryCode ?:@"";
+    cellPhone = cellPhone ?:@"";
+    verifyCode = verifyCode ?:@"";
+    password = password ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_FINDPWD_UPDATE};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_CELLPHONE:cellPhone,
+                           SAMC_VERIFYCODE:verifyCode,
+                           SAMC_PWD:password,
+                           SAMC_DEVICEID:deviceId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 @end

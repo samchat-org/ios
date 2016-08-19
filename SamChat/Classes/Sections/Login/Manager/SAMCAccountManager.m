@@ -128,6 +128,41 @@
     }];
 }
 
+- (void)findPWDUpdateWithCountryCode:(NSString *)countryCode
+                           cellPhone:(NSString *)cellPhone
+                          verifyCode:(NSString *)verifyCode
+                            password:(NSString *)password
+                          completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *paramters = [SAMCServerAPI findPWDUpdateWithCountryCode:countryCode
+                                                                cellPhone:cellPhone
+                                                               verifyCode:verifyCode
+                                                                 password:password];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_FIND_PWD_UPDATE parameters:paramters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                //                completion(nil);
+                NSString *token = response[SAMC_TOKEN];
+                NSDictionary *userInfo = response[SAMC_USER];
+                NSString *username = userInfo[SAMC_USERNAME];
+                NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
+                [self loginNetEaseUsername:username userId:userId token:token completion:completion];
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (void)loginWithCountryCode:(NSString *)countryCode
                      account:(NSString *)account
                     password:(NSString *)password

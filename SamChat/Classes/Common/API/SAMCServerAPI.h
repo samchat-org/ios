@@ -42,5 +42,9 @@
 + (NSDictionary *)findPWDCodeVerifyWithCountryCode:(NSString *)countryCode
                                          cellPhone:(NSString *)cellPhone
                                         verifyCode:(NSString *)verifyCode;
++ (NSDictionary *)findPWDUpdateWithCountryCode:(NSString *)countryCode
+                                     cellPhone:(NSString *)cellPhone
+                                    verifyCode:(NSString *)verifyCode
+                                      password:(NSString *)password;
 
 @end

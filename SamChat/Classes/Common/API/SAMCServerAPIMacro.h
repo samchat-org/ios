@@ -52,6 +52,7 @@
 #define SAMC_CREATE_SAM_PROS            @"create-sam-pros"
 #define SAMC_FINDPWD_CODE_REQUEST       @"findpwd-code-request"
 #define SAMC_FINDPWD_CODE_VERIFY        @"findpwd-code-verify"
+#define SAMC_FINDPWD_UPDATE             @"findpwd-update"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"

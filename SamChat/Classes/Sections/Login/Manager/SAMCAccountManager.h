@@ -51,6 +51,11 @@ NS_ASSUME_NONNULL_BEGIN
                        username:(NSString *)username
                        password:(NSString *)password
                      completion:(void (^)(NSError * __nullable error))completion;
+- (void)findPWDUpdateWithCountryCode:(NSString *)countryCode
+                           cellPhone:(NSString *)cellPhone
+                          verifyCode:(NSString *)verifyCode
+                            password:(NSString *)password
+                          completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)loginWithCountryCode:(NSString *)countryCode
                      account:(NSString *)account
