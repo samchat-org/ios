@@ -176,7 +176,7 @@
         [SVProgressHUD dismiss];
         if (error) {
             if (error.code == SAMCServerErrorNetEaseLoginFailed) {
-                [wself setupLoginViewController];
+                [wself setupLoginViewControllerWithToast:@"register success, login now"];
             } else {
                 [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
             }
@@ -199,19 +199,14 @@
     [[SAMCAccountManager sharedManager] findPWDUpdateWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode password:password completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
-            if (error.code == SAMCServerErrorNetEaseLoginFailed) {
-                [wself setupLoginViewController];
-            } else {
-                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
-            }
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
             return;
         }
-        extern NSString *SAMCLoginNotification;
-        [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];
+        [wself setupLoginViewControllerWithToast:@"reset password success, login now"];
     }];
 }
 
-- (void)setupLoginViewController
+- (void)setupLoginViewControllerWithToast:(NSString *)toast
 {
     [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
     SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
@@ -219,7 +214,6 @@
     nav.navigationBar.translucent = NO;
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     window.rootViewController = nav;
-    NSString *toast = @"尝试登录失败，请重新登录";
     [window makeToast:toast duration:2.0 position:CSToastPositionCenter];
 }
 

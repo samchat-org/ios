@@ -116,7 +116,6 @@
 //                completion(nil);
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
-                NSString *username = userInfo[SAMC_USERNAME];
                 NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
                 [self loginNetEaseUsername:username userId:userId token:token completion:completion];
             }
@@ -148,12 +147,7 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                //                completion(nil);
-                NSString *token = response[SAMC_TOKEN];
-                NSDictionary *userInfo = response[SAMC_USER];
-                NSString *username = userInfo[SAMC_USERNAME];
-                NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
-                [self loginNetEaseUsername:username userId:userId token:token completion:completion];
+                completion(nil);
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
