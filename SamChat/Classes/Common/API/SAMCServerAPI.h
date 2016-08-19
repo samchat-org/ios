@@ -32,8 +32,6 @@
 + (NSDictionary *)logout:(NSString *)account
                    token:(NSString *)token;
 
-+ (NSDictionary *)getAppKey:(NSString *)token;
-
 + (NSDictionary *)createSamPros:(NSDictionary *)info
                           token:(NSString *)token;
 

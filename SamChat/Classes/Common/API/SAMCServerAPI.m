@@ -154,24 +154,6 @@
 //{
 //    "header":
 //    {
-//        "action" : "appkey-get",
-//        "token": ""
-//    },
-//    "body" :
-//    {
-//    }
-//}
-+ (NSDictionary *)getAppKey:(NSString *)token
-{
-    token = token ?:@"";
-    NSDictionary *header = @{SAMC_ACTION:SAMC_APPKEY_GET,SAMC_TOKEN:token};
-    NSDictionary *body = @{};
-    return @{SAMC_HEADER:header,SAMC_BODY:body};
-}
-
-//{
-//    "header":
-//    {
 //        "action" : "create-sam-pros",
 //        "token": "token"
 //    },
