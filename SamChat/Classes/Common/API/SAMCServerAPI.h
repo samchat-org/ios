@@ -37,4 +37,7 @@
 + (NSDictionary *)createSamPros:(NSDictionary *)info
                           token:(NSString *)token;
 
++ (NSDictionary *)findPWDCodeRequestWithCountryCode:(NSString *)countryCode
+                                          cellPhone:(NSString *)cellPhone;
+
 @end

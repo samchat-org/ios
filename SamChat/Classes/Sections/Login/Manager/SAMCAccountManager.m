@@ -55,23 +55,16 @@
     NSAssert(completion != nil, @"completion block should not be nil");
     NSDictionary *parameters = [SAMCServerAPI registerCodeRequestWithCountryCode:countryCode
                                                                        cellPhone:cellPhone];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_REGISTER_CODE_REQUEST parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode) {
-                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
-            } else {
-                completion(nil);
-            }
-        } else {
-            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
-    }];
+    [self codeRequest:SAMC_URL_REGISTER_CODE_REQUEST parameters:parameters completion:completion];
+}
+
+- (void)findPWDCodeRequestWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *paramters = [SAMCServerAPI findPWDCodeRequestWithCountryCode:countryCode cellPhone:cellPhone];
+    [self codeRequest:SAMC_URL_USER_FIND_PWD_CODE_REQUEST parameters:paramters completion:completion];
 }
 
 - (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
@@ -337,4 +330,27 @@
     return _multicastDelegate;
 }
 
+#pragma mark - Private
+- (void)codeRequest:(NSString *)url
+         parameters:(id)parameters
+         completion:(void (^)(NSError * __nullable error))completion
+{
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:url parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
 @end

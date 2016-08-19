@@ -32,6 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)registerCodeRequestWithCountryCode:(NSString *)countryCode
                                  cellPhone:(NSString *)cellPhone
                                 completion:(void (^)(NSError * __nullable error))completion;
+- (void)findPWDCodeRequestWithCountryCode:(NSString *)countryCode
+                                cellPhone:(NSString *)cellPhone
+                               completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)registerCodeVerifyWithCountryCode:(NSString *)countryCode
                                 cellPhone:(NSString *)cellPhone
@@ -57,15 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
                        token:(NSString *)token
                   completion:(void (^)(NSError *error))completion;
 
-//- (void)signup:(NSString *)account
-//      password:(NSString *)password
-//     cellphone:(NSString *)cellphone
-//   countryCode:(NSNumber *)countrycode
-//    completion:(void (^)(NSError *error))completion;
-//
-//- (void)login:(NSString *)account
-//     password:(NSString *)password
-//   completion:(void (^)(NSError *error))completion;
+
 //
 //- (void)autoLogin:(NSString *)account
 //            token:(NSString *)token;

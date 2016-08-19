@@ -202,5 +202,30 @@
     return @{SAMC_HEADER:header,SAMC_BODY:info};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "findpwd-code-request",
+//    },
+//    "body":
+//    {
+//        "countrycode" : “”
+//        "cellphone"	: “”
+//        "deviceid" :””
+//    }
+//}
++ (NSDictionary *)findPWDCodeRequestWithCountryCode:(NSString *)countryCode
+                                          cellPhone:(NSString *)cellPhone
+{
+    cellPhone = cellPhone ?:@"";
+    countryCode = countryCode ?:@"";
+    NSString *deviceId = [SAMCDeviceUtil deviceId];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_FINDPWD_CODE_REQUEST};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
+                           SAMC_CELLPHONE:cellPhone,
+                           SAMC_DEVICEID:deviceId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 
 @end

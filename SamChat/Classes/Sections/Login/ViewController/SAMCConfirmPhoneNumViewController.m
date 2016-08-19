@@ -135,7 +135,8 @@
         
         [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
         __weak typeof(self) wself = self;
-        [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:self.countryCode cellPhone:self.phoneNumber completion:^(NSError * _Nullable error) {
+        
+        void (^completionBlock)(NSError *) = ^(NSError * _Nullable error){
             [SVProgressHUD dismiss];
             if (error) {
                 [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
@@ -143,7 +144,16 @@
             }
             [wself pushToConfirmPhoneCodeView];
             [sender startWithCountDownSeconds:60 title:@"Next"];
-        }];
+        };
+        if (self.isSignupOperation) {
+            [[SAMCAccountManager sharedManager] registerCodeRequestWithCountryCode:self.countryCode
+                                                                         cellPhone:self.phoneNumber
+                                                                        completion:completionBlock];
+        } else {
+            [[SAMCAccountManager sharedManager] findPWDCodeRequestWithCountryCode:self.countryCode
+                                                                        cellPhone:self.phoneNumber
+                                                                       completion:completionBlock];
+        }
     } else {
         [self pushToConfirmPhoneCodeView];
     }
