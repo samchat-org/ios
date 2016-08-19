@@ -24,10 +24,11 @@
 #import "NIMSDK.h"
 #import "SAMCConversationManager.h"
 #import "NIMMessage+SAMC.h"
+#import "SAMCAccountManager.h"
 
 #define SessionListTitle @"Chat"
 
-@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,NIMLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic,strong) UILabel *emptyTipLabel;
 @property (nonatomic,strong) NTESListHeader *header;
@@ -84,7 +85,7 @@
     
 //    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
-    [[NIMSDK sharedSDK].loginManager addDelegate:self];
+    [[SAMCAccountManager sharedManager] addDelegate:self];
     
     extern NSString *const NIMKitTeamInfoHasUpdatedNotification;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamInfoHasUpdatedNotification:) name:NIMKitTeamInfoHasUpdatedNotification object:nil];
@@ -100,7 +101,7 @@
 {
 //    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
     [[SAMCConversationManager sharedManager] removeDelegate:self];
-    [[NIMSDK sharedSDK].loginManager removeDelegate:self];
+    [[SAMCAccountManager sharedManager] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -239,7 +240,7 @@
     [self reload];
 }
 
-#pragma mark - NIMLoginManagerDelegate
+#pragma mark - SAMCLoginManagerDelegate
 - (void)onLogin:(NIMLoginStep)step
 {
     if (step == NIMLoginStepSyncOK) {

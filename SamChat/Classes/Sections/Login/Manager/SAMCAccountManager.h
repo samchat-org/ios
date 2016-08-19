@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "NTESLoginManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -69,12 +70,7 @@ NS_ASSUME_NONNULL_BEGIN
                        token:(NSString *)token
                   completion:(void (^)(NSError *error))completion;
 
-
-//
-//- (void)autoLogin:(NSString *)account
-//            token:(NSString *)token;
-//
-//- (void)logout:(void (^)(NSError *error))completion;
+- (void)autoLogin:(LoginData *)loginData;
 
 - (void)kickOtherClient:(NIMLoginClient *)client
              completion:(NIMLoginHandler)completion;

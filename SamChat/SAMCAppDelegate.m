@@ -27,10 +27,11 @@
 #import "SAMCDataBaseManager.h"
 #import "SAMCChatManager.h"
 #import "SAMCPreferenceManager.h"
+#import "SAMCAccountManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
-@interface SAMCAppDelegate ()<NIMLoginManagerDelegate>
+@interface SAMCAppDelegate ()<SAMCLoginManagerDelegate>
 @property (nonatomic,strong) NTESSDKConfig *config;
 @end
 
@@ -80,7 +81,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
+    [[SAMCAccountManager sharedManager] removeDelegate:self];
 }
 
 
@@ -140,13 +141,11 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 {
     LoginData *data = [[NTESLoginManager sharedManager] currentLoginData];
     NSString *account = [data account];
-    NSString *token = [data finalToken];
+    NSString *token = [data token];
     
-    //如果有缓存用户名密码推荐使用自动登录
     if ([account length] && [token length])
     {
-        [[[NIMSDK sharedSDK] loginManager] autoLogin:account
-                                               token:token];
+        [[SAMCAccountManager sharedManager] autoLogin:data];
         [self setupMainViewController];
     }
     else
@@ -175,7 +174,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
                                              selector:@selector(login:)
                                                  name:SAMCLoginNotification
                                                object:nil];
-    [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
+    [[SAMCAccountManager sharedManager] addDelegate:self];
 }
 
 - (void)setupLoginViewController
@@ -208,7 +207,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 }
 
 
-#pragma NIMLoginManagerDelegate
+#pragma SAMCLoginManagerDelegate
 -(void)onKick:(NIMKickReason)code clientType:(NIMLoginClientType)clientType
 {
     NSString *reason = @"你被踢下线";
@@ -225,7 +224,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
         default:
             break;
     }
-    [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
+    [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
         [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下线通知" message:reason delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];

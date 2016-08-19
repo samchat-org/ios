@@ -27,9 +27,10 @@
 #import "NTESUserUtil.h"
 #import "SAMCSession.h"
 #import "SAMCPreferenceManager.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
-NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,NIMLoginManagerDelegate>
+NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
 {
     NTESGroupedContacts *_contacts;
 }
@@ -51,7 +52,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     
     [self prepareData];
     [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
-    [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
+    [[SAMCAccountManager sharedManager] addDelegate:self];
     
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         [self prepareCustomModeContacts];
@@ -63,7 +64,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[[NIMSDK sharedSDK] systemNotificationManager] removeDelegate:self];
-    [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
+    [[SAMCAccountManager sharedManager] removeDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -385,7 +386,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     [self.tableView reloadData];
 }
 
-#pragma mark - NIMLoginManagerDelegate
+#pragma mark - SAMCLoginManagerDelegate
 - (void)onLogin:(NIMLoginStep)step
 {
     if (step == NIMLoginStepSyncOK) {

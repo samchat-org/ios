@@ -113,7 +113,6 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-//                completion(nil);
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
                 NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
@@ -189,6 +188,28 @@
     }];
 }
 
+// netease account is the id of samchat
+- (void)loginNetEaseUsername:(NSString *)username
+                      userId:(NSString *)userId
+                       token:(NSString *)token
+                  completion:(void (^)(NSError *error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    LoginData *sdkData = [[LoginData alloc] init];
+    sdkData.username = username;
+    sdkData.account = userId;
+    sdkData.token = token;
+    [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
+        if (error == nil) {
+            //        [[SAMCUserProfileManager sharedManager] setCurrentLoginData:sdkData];
+            [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
+            completion(nil);
+        }else{
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
+        }
+    }];
+}
+
 - (void)logout:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
@@ -209,67 +230,11 @@
         completion(nil);
     }];
 }
-//- (void)login:(NSString *)account
-//     password:(NSString *)password
-//   completion:(void (^)(NSError *error))completion
-//{
-//    NSAssert(completion != nil, @"completion block should not be nil");
-//    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//    [manager GET:[SAMCSkyWorldAPI urlLoginWithUsername:account passWord:@"pass00002"] // TODO: change to password
-//      parameters:nil progress:^(NSProgress *downloadProgress) {
-//      } success:^(NSURLSessionDataTask *task, id responseObject) {
-//          if([responseObject isKindOfClass:[NSDictionary class]]){
-//              NSDictionary *response = responseObject;
-//              NSInteger errorCode = [(NSNumber *)response[SKYWORLD_RET] integerValue];
-//              if(errorCode){
-//                  completion([SAMCSkyWorldErrorHelper errorWithCode:errorCode]);
-//              }else{
-//                  DDLogDebug(@"login: %@", response);
-//                  [self loginNetEase:account
-//                               token:password // TODO:change to token
-//                          completion:completion];
-//#warning 11111111111111111111111111111
-//                  //SCUserProfileManager *userProfileManager = [SCUserProfileManager sharedInstance];
-//                  //[userProfileManager saveCurrentLoginUserInformationWithSkyWorldResponse:response
-//                  //   andOtherInfo:@{SKYWORLD_PWD:password}];
-//                  //[SAMCAccountManager loginEaseMobWithUsername:username password:password completion:completion];
-//              }
-//          }else{
-//              completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorUnknowError]);
-//          }
-//      } failure:^(NSURLSessionDataTask *task, NSError *error) {
-//          completion([SAMCSkyWorldErrorHelper errorWithCode:SCSkyWorldErrorServerNotReachable]);
-//      }];
-//}
-//
-//- (void)autoLogin:(NSString *)account
-//            token:(NSString *)token
-//{
-//    //TODO: add skyworld autologin
-//    [[[NIMSDK sharedSDK] loginManager] autoLogin:account
-//                                           token:token];
-//}
-//
-//- (void)logout:(void (^)(NSError *error))completion
-//{
-//    NSAssert(completion != nil, @"completion block should not be nil");
-//    [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
-//        extern NSString *NTESNotificationLogout;
-//        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-//        [manager GET:[SAMCSkyWorldAPI urlLogout]
-//          parameters:nil progress:^(NSProgress *downloadProgress){
-//          } success:^(NSURLSessionDataTask *task, id responseObject){
-//              if([responseObject isKindOfClass:[NSDictionary class]]) {
-//                  DDLogDebug(@"%@", responseObject);
-//              }
-//          } failure:^(NSURLSessionDataTask *task, NSError *error){
-//              DDLogDebug(@"Logout Error: %@", error);
-//          }];
-//        [[SAMCUserProfileManager sharedManager] setCurrentLoginData:nil];
-//        completion(nil);
-//    }];
-//}
 
+- (void)autoLogin:(LoginData *)loginData
+{
+    [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];
+}
 
 - (void)kickOtherClient:(NIMLoginClient *)client
              completion:(NIMLoginHandler)completion
@@ -322,28 +287,6 @@
 - (void)onMultiLoginClientsChanged
 {
     [self.multicastDelegate onMultiLoginClientsChanged];
-}
-
-// netease account is the id of samchat
-- (void)loginNetEaseUsername:(NSString *)username
-                      userId:(NSString *)userId
-                       token:(NSString *)token
-                  completion:(void (^)(NSError *error))completion
-{
-    NSAssert(completion != nil, @"completion block should not be nil");
-    LoginData *sdkData = [[LoginData alloc] init];
-    sdkData.username = username;
-    sdkData.account = userId;
-    sdkData.token = token;
-    [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
-       if (error == nil) {
-//        [[SAMCUserProfileManager sharedManager] setCurrentLoginData:sdkData];
-           [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
-           completion(nil);
-       }else{
-           completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
-       }
-   }];
 }
 
 #pragma mark - lazy load
