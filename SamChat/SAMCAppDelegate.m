@@ -201,6 +201,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)doLogout
 {
+    [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCDataBaseManager sharedManager] close];
     [self setupLoginViewController];

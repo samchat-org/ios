@@ -224,7 +224,7 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             DDLogDebug(@"Logout Error: %@", error);
         }];
-        [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
+//        [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
 //      [[SAMCUserProfileManager sharedManager] setCurrentLoginData:nil];
         completion(nil);
     }];
