@@ -110,6 +110,7 @@
 {
     _doneButton = [[UIButton alloc] init];
     _doneButton.translatesAutoresizingMaskIntoConstraints = NO;
+    _doneButton.exclusiveTouch = YES;
     _doneButton.backgroundColor = [UIColor grayColor];
     _doneButton.layer.cornerRadius = 5.0f;
     [_doneButton setTitle:@"DONE" forState:UIControlStateNormal];
@@ -275,6 +276,7 @@
     if (_agreeButton == nil) {
         _agreeButton = [[UIButton alloc] init];
         _agreeButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _agreeButton.exclusiveTouch = YES;
         [_agreeButton addTarget:self action:@selector(touchAgreeButton:) forControlEvents:UIControlEventTouchUpInside];
         [_agreeButton setBackgroundImage:[UIImage imageNamed:@"icon_checkbox_background"] forState:UIControlStateNormal];
         [_agreeButton setBackgroundImage:[UIImage imageNamed:@"icon_checkbox_selected"] forState:UIControlStateSelected];
@@ -287,6 +289,7 @@
     if (_agreeLabel == nil) {
         _agreeLabel = [[UILabel alloc] init];
         _agreeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _agreeLabel.numberOfLines = 0;
         _agreeLabel.textColor = [UIColor grayColor];
         [_agreeLabel setText:@"I agree with SamChat User Agreement"];
     }

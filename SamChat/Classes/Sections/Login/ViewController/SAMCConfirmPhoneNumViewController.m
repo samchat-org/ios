@@ -74,6 +74,7 @@
     
     self.sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.sendButton.exclusiveTouch = YES;
     self.sendButton.layer.cornerRadius = 5.0f;
     self.sendButton.backgroundColor = [UIColor grayColor];
     [self.sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];

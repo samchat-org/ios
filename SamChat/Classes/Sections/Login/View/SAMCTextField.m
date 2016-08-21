@@ -32,6 +32,7 @@
     
     _leftButton = [[UIButton alloc] init];
     _leftButton.translatesAutoresizingMaskIntoConstraints = NO;
+    _leftButton.exclusiveTouch = YES;
     [_leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_leftButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     _leftButton.backgroundColor = [UIColor clearColor];

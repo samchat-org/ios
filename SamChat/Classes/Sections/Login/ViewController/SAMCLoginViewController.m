@@ -75,6 +75,7 @@ NTES_USE_CLEAR_BAR
     
     self.signinButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.signinButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.signinButton.exclusiveTouch = YES;
     self.signinButton.layer.cornerRadius = 5.0f;
     self.signinButton.backgroundColor = [UIColor grayColor];
     [self.signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -85,6 +86,7 @@ NTES_USE_CLEAR_BAR
     
     self.signupButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.signupButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.signupButton.exclusiveTouch = YES;
     self.signupButton.backgroundColor = [UIColor clearColor];
     [self.signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
     [self.signupButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
@@ -94,6 +96,7 @@ NTES_USE_CLEAR_BAR
     
     self.forgotPasswordButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.forgotPasswordButton.exclusiveTouch = YES;
     self.forgotPasswordButton.backgroundColor = [UIColor clearColor];
     self.forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.forgotPasswordButton setTitle:@"Forgot password?" forState:UIControlStateNormal];
