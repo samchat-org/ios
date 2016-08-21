@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "SAMCMessageDB.h"
-
+#import "SAMCUserInfoDB.h"
 
 @interface SAMCDataBaseManager : NSObject
 
 @property (nonatomic, strong) SAMCMessageDB *messageDB;
+@property (nonatomic, strong) SAMCUserInfoDB *userInfoDB;
 
 + (instancetype)sharedManager;
 - (void)open;

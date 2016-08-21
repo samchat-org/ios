@@ -73,5 +73,18 @@
 #define SAMC_LATITUDE                   @"latitude"
 #define SAMC_PLACE_ID                   @"place_id"
 #define SAMC_ADDRESS                    @"address"
+#define SAMC_TYPE                       @"type"
+#define SAMC_LASTUPDATE                 @"lastupdate"
+
+#define SAMC_AVATAR_ORIGIN              @"avatar.origin"
+#define SAMC_AVATAR_THUMB               @"avatar.thumb"
+
+#define SAMC_SAM_PROS_INFO_COMPANY_NAME         @"sam_pros_info.company_name"
+#define SAMC_SAM_PROS_INFO_SERVICE_CATEGORY     @"sam_pros_info.service_category"
+#define SAMC_SAM_PROS_INFO_SERVICE_DESCRIPTION  @"sam_pros_info.service_description"
+#define SAMC_SAM_PROS_INFO_COUNTRYCODE          @"sam_pros_info.countrycode"
+#define SAMC_SAM_PROS_INFO_PHONE                @"sam_pros_info.phone"
+#define SAMC_SAM_PROS_INFO_EMAIL                @"sam_pros_info.email"
+#define SAMC_SAM_PROS_INFO_ADDRESS              @"sam_pros_info.address"
 
 #endif /* SAMCServerAPIMacro_h */

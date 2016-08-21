@@ -65,11 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)logout:(void (^)(NSError * __nullable error))completion;
 
-- (void)loginNetEaseUsername:(NSString *)username
-                      userId:(NSString *)userId
-                       token:(NSString *)token
-                  completion:(void (^)(NSError *error))completion;
-
 - (void)autoLogin:(LoginData *)loginData;
 
 - (void)kickOtherClient:(NIMLoginClient *)client
@@ -84,6 +79,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addDelegate:(id<SAMCLoginManagerDelegate>)delegate;
 
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate;
+
+- (void)updateUser:(NSDictionary *)userInfo;
 
 @end
 

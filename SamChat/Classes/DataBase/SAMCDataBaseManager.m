@@ -35,12 +35,18 @@
 
 - (void)open
 {
-    _messageDB = [[SAMCMessageDB alloc] init];
+    if (_messageDB == nil) {
+        _messageDB = [[SAMCMessageDB alloc] init];
+    }
+    if (_userInfoDB == nil) {
+        _userInfoDB = [[SAMCUserInfoDB alloc] init];
+    }
 }
 
 - (void)close
 {
     _messageDB = nil;
+    _userInfoDB = nil;
 }
 
 @end

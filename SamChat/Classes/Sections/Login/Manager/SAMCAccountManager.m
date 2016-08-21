@@ -16,6 +16,7 @@
 #import "SAMCDeviceUtil.h"
 #import "NTESLoginManager.h"
 #import "SAMCDataPostSerializer.h"
+#import "SAMCDataBaseManager.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
@@ -115,8 +116,7 @@
             } else {
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
-                NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
-                [self loginNetEaseUsername:username userId:userId token:token completion:completion];
+                [self loginNetEase:userInfo token:token completion:completion];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -176,9 +176,7 @@
             } else {
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
-                NSString *username = userInfo[SAMC_USERNAME];
-                NSString *userId = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
-                [self loginNetEaseUsername:username userId:userId token:token completion:completion];
+                [self loginNetEase:userInfo token:token completion:completion];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -188,21 +186,22 @@
     }];
 }
 
-// netease account is the id of samchat
-- (void)loginNetEaseUsername:(NSString *)username
-                      userId:(NSString *)userId
-                       token:(NSString *)token
-                  completion:(void (^)(NSError *error))completion
+- (void)loginNetEase:(NSDictionary *)userInfo
+               token:(NSString *)token
+          completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *sdkData = [[LoginData alloc] init];
-    sdkData.username = username;
-    sdkData.account = userId;
+    sdkData.username = userInfo[SAMC_USERNAME] ?:@"";
+    // netease account is the id of samchat
+    sdkData.account = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
     sdkData.token = token;
     [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
         if (error == nil) {
             //        [[SAMCUserProfileManager sharedManager] setCurrentLoginData:sdkData];
             [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
+            [[SAMCDataBaseManager sharedManager] open];
+            [self updateUser:userInfo];
             completion(nil);
         }else{
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
@@ -266,6 +265,14 @@
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate
 {
     [self.multicastDelegate removeDelegate:delegate];
+}
+
+#pragma mark - UserInfoDB
+- (void)updateUser:(NSDictionary *)userInfo
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:userInfo];
+    });
 }
 
 #pragma mark - NIMLoginManagerDelegate
@@ -344,5 +351,7 @@
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
 }
+
+
 
 @end
