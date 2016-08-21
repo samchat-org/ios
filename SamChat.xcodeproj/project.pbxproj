@@ -253,6 +253,7 @@
 		31E37B871D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B861D65D94B00832CC8 /* SAMCCSAStepTwoViewController.m */; };
 		31E37B8A1D66950C00832CC8 /* SAMCCSADoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B891D66950C00832CC8 /* SAMCCSADoneViewController.m */; };
 		31E37B8D1D670B0300832CC8 /* SAMCUserInfoDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B8C1D670B0300832CC8 /* SAMCUserInfoDB.m */; };
+		31E37B911D69727E00832CC8 /* SAMCQuestionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B901D69727E00832CC8 /* SAMCQuestionManager.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -728,6 +729,8 @@
 		31E37B891D66950C00832CC8 /* SAMCCSADoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCSADoneViewController.m; path = ViewController/SAMCCSADoneViewController.m; sourceTree = "<group>"; };
 		31E37B8B1D670B0300832CC8 /* SAMCUserInfoDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUserInfoDB.h; path = DataBase/SAMCUserInfoDB.h; sourceTree = "<group>"; };
 		31E37B8C1D670B0300832CC8 /* SAMCUserInfoDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUserInfoDB.m; path = DataBase/SAMCUserInfoDB.m; sourceTree = "<group>"; };
+		31E37B8F1D69727E00832CC8 /* SAMCQuestionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCQuestionManager.h; path = Service/Manager/SAMCQuestionManager.h; sourceTree = "<group>"; };
+		31E37B901D69727E00832CC8 /* SAMCQuestionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCQuestionManager.m; path = Service/Manager/SAMCQuestionManager.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -775,6 +778,7 @@
 		3124116D1D45A2AA008B2A35 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				31E37B8E1D69723C00832CC8 /* Manager */,
 				3195DDB91D4F48BF001BD2B4 /* View */,
 				314444B81D45B1DD0062B797 /* ViewController */,
 				3195DDC01D502B76001BD2B4 /* Other */,
@@ -1986,6 +1990,15 @@
 			name = Manager;
 			sourceTree = "<group>";
 		};
+		31E37B8E1D69723C00832CC8 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				31E37B8F1D69727E00832CC8 /* SAMCQuestionManager.h */,
+				31E37B901D69727E00832CC8 /* SAMCQuestionManager.m */,
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
 		5176189D0086B38FE643A26A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -2343,6 +2356,7 @@
 				312C1C391D35D85B00242906 /* UIAlertView+NTESBlock.m in Sources */,
 				312C1CC21D35D85B00242906 /* NTESBirthSettingViewController.m in Sources */,
 				312C1CDB1D35D85B00242906 /* NTESSessionUtil.m in Sources */,
+				31E37B911D69727E00832CC8 /* SAMCQuestionManager.m in Sources */,
 				314444F61D49F6820062B797 /* SAMCPhoneCodeView.m in Sources */,
 				312C1C4E1D35D85B00242906 /* NTESColorButtonCell.m in Sources */,
 				312C1C711D35D85B00242906 /* NTESBlackListViewController.m in Sources */,

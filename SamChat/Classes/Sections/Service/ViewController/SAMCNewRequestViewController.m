@@ -7,6 +7,10 @@
 //
 
 #import "SAMCNewRequestViewController.h"
+#import "SAMCServerAPIMacro.h"
+#import "SAMCQuestionManager.h"
+#import "SVProgressHUD.h"
+#import "UIView+Toast.h"
 
 @interface SAMCNewRequestViewController ()
 
@@ -102,6 +106,19 @@
 - (void)sendRequest:(UIButton *)sender
 {
     DDLogDebug(@"sendRequest");
+    NSString *question = self.requestTextField.text;
+    NSDictionary *location = @{SAMC_ADDRESS:self.locationTextField.text}; // TODO: change to real one
+    [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        [wself.view makeToast:@"send request successful" duration:2.0f position:CSToastPositionCenter];
+    }];
 }
 
 @end

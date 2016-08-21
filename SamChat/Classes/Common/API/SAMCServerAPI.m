@@ -8,6 +8,7 @@
 
 #import "SAMCServerAPI.h"
 #import "SAMCDeviceUtil.h"
+#import "NTESLoginManager.h"
 
 @implementation SAMCServerAPI
 
@@ -176,10 +177,9 @@
 //    }
 //}
 + (NSDictionary *)createSamPros:(NSDictionary *)info
-                          token:(NSString *)token
 {
     NSAssert(info != nil, @"create sam pros info should not be nil");
-    token = token ?:@"";
+    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
     NSDictionary *header = @{SAMC_ACTION:SAMC_CREATE_SAM_PROS,SAMC_TOKEN:token};
     return @{SAMC_HEADER:header,SAMC_BODY:info};
 }
@@ -268,6 +268,39 @@
                            SAMC_VERIFYCODE:verifyCode,
                            SAMC_PWD:password,
                            SAMC_DEVICEID:deviceId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
+//        "action": "question",
+//        "token":"95189486473904140"
+//    },
+//    "body":
+//    {
+//        "opt":[0/1]  0:发送问题   1:TBD,
+//        "question" :"aaa"
+//        "location" :{
+//            "location_info":{ //option
+//                “longitude”:
+//                “latitude”
+//            }
+//            "place_id": " "//option
+//            "address": " "//option
+//        }
+//    }
+//}
++ (NSDictionary *)sendQuestion:(NSString *)question
+                      location:(NSDictionary *)location
+{
+    question = question ?:@"";
+    location = location ?:@{};
+    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUESTION,SAMC_TOKEN:token};
+    NSDictionary *body = @{SAMC_OPT:@(0),
+                           SAMC_QUESTION:question,
+                           SAMC_LOCATION:location};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

@@ -181,12 +181,12 @@ NTES_USE_CLEAR_BAR
     NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = _passwordTextField.rightTextField.text;
     [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
-    
+    __weak typeof(self) wself = self;
     [[SAMCAccountManager sharedManager] loginWithCountryCode:countryCode account:account password:password completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
-            [self.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
             return;
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:SAMCLoginNotification object:nil userInfo:nil];

@@ -1,26 +1,26 @@
 //
-//  SAMCSettingManager.m
+//  SAMCQuestionManager.m
 //  SamChat
 //
-//  Created by HJ on 8/18/16.
+//  Created by HJ on 8/21/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCSettingManager.h"
+#import "SAMCQuestionManager.h"
 #import "SAMCServerAPI.h"
 #import "SAMCServerErrorHelper.h"
 #import "AFNetworking.h"
-#import "NTESLoginManager.h"
 #import "SAMCDataPostSerializer.h"
+#import "SAMCDataBaseManager.h"
 
-@implementation SAMCSettingManager
+@implementation SAMCQuestionManager
 
 + (instancetype)sharedManager
 {
-    static SAMCSettingManager *instance = nil;
+    static SAMCQuestionManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[SAMCSettingManager alloc] init];
+        instance = [[SAMCQuestionManager alloc] init];
     });
     return instance;
 }
@@ -32,14 +32,15 @@
     return self;
 }
 
-- (void)createSamPros:(NSDictionary *)info
-           completion:(void (^)(NSError * __nullable error))completion
+- (void)sendQuestion:(NSString *)question
+            location:(NSDictionary *)location
+          completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI createSamPros:info];
+    NSDictionary *parameters = [SAMCServerAPI sendQuestion:question location:location];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_USER_CREATE_SAM_PROS parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:SAMC_URL_QUESTION_QUESTION parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];

@@ -32,8 +32,7 @@
 + (NSDictionary *)logout:(NSString *)account
                    token:(NSString *)token;
 
-+ (NSDictionary *)createSamPros:(NSDictionary *)info
-                          token:(NSString *)token;
++ (NSDictionary *)createSamPros:(NSDictionary *)info;
 
 + (NSDictionary *)findPWDCodeRequestWithCountryCode:(NSString *)countryCode
                                           cellPhone:(NSString *)cellPhone;
@@ -44,5 +43,8 @@
                                      cellPhone:(NSString *)cellPhone
                                     verifyCode:(NSString *)verifyCode
                                       password:(NSString *)password;
+
++ (NSDictionary *)sendQuestion:(NSString *)question
+                      location:(NSDictionary *)location;
 
 @end
