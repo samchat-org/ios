@@ -209,6 +209,7 @@
 		314444F31D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */; };
 		314444F61D49F6820062B797 /* SAMCPhoneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F51D49F6820062B797 /* SAMCPhoneCodeView.m */; };
 		314444FA1D4A41A50062B797 /* SAMCSetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */; };
+		314D5D1F1D6A9CED004B3DE4 /* FMDBMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 314D5D1E1D6A9CED004B3DE4 /* FMDBMigrationManager.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -640,6 +641,8 @@
 		314444F51D49F6820062B797 /* SAMCPhoneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPhoneCodeView.m; path = View/SAMCPhoneCodeView.m; sourceTree = "<group>"; };
 		314444F81D4A41A50062B797 /* SAMCSetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSetPasswordViewController.h; sourceTree = "<group>"; };
 		314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSetPasswordViewController.m; sourceTree = "<group>"; };
+		314D5D1D1D6A9CED004B3DE4 /* FMDBMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDBMigrationManager.h; path = DataBase/Migration/FMDBMigrationManager.h; sourceTree = "<group>"; };
+		314D5D1E1D6A9CED004B3DE4 /* FMDBMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDBMigrationManager.m; path = DataBase/Migration/FMDBMigrationManager.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -1801,6 +1804,8 @@
 		314D5D191D6A9B1F004B3DE4 /* Migration */ = {
 			isa = PBXGroup;
 			children = (
+				314D5D1D1D6A9CED004B3DE4 /* FMDBMigrationManager.h */,
+				314D5D1E1D6A9CED004B3DE4 /* FMDBMigrationManager.m */,
 			);
 			name = Migration;
 			sourceTree = "<group>";
@@ -2241,6 +2246,7 @@
 				312C1C901D35D85B00242906 /* NTESSessionChartletContentView.m in Sources */,
 				312C1C671D35D85B00242906 /* NTESLiveMasterInfoView.m in Sources */,
 				312C1C621D35D85B00242906 /* NTESChatroomListCell.m in Sources */,
+				314D5D1F1D6A9CED004B3DE4 /* FMDBMigrationManager.m in Sources */,
 				312C1CAC1D35D85B00242906 /* NTESGLView.m in Sources */,
 				312C1CDA1D35D85B00242906 /* NTESService.m in Sources */,
 				3195DDB31D4EE004001BD2B4 /* SAMCPreferenceManager.m in Sources */,
