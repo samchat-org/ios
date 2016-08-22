@@ -34,6 +34,7 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorFollowListLimit = -506, // 关注人数超过最大值
     SAMCServerErrorUnfollowed = -507, // 还未关注此商家
     SAMCServerErrorContactNotAdded = -508, // 还未添加此联系人
+    SAMCServerErrorQuestionTooOften = -509, // 发送问题过于频繁
     
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,

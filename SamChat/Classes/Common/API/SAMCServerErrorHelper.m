@@ -89,6 +89,9 @@
         case SAMCServerErrorContactNotAdded: // 还未添加此联系人
             localizedDescription = @"还未添加此联系人";
             break;
+        case SAMCServerErrorQuestionTooOften: // 发送问题过于频繁
+            localizedDescription = @"发送问题过于频繁";
+            break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
             break;
