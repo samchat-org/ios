@@ -1798,6 +1798,13 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		314D5D191D6A9B1F004B3DE4 /* Migration */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Migration;
+			sourceTree = "<group>";
+		};
 		31799EB51D4064EA00878058 /* CountryCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -1874,6 +1881,7 @@
 		3195DDD71D51BE30001BD2B4 /* DataBase */ = {
 			isa = PBXGroup;
 			children = (
+				314D5D191D6A9B1F004B3DE4 /* Migration */,
 				3195DDE51D52D9E9001BD2B4 /* Model */,
 				3195DDD91D51C116001BD2B4 /* SAMCDataBaseManager.h */,
 				3195DDDA1D51C116001BD2B4 /* SAMCDataBaseManager.m */,
