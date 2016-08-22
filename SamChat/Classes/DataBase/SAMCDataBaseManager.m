@@ -76,4 +76,13 @@
     return true;
 }
 
+- (void)doMigrationCompletion:(void (^)(BOOL success))completion
+{
+    __weak typeof(self) wself = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        BOOL result = [wself doMigration];
+        completion(result);
+    });
+}
+
 @end

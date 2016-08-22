@@ -21,4 +21,6 @@
 - (BOOL)needsMigration;
 - (BOOL)doMigration;
 
+- (void)doMigrationCompletion:(void (^)(BOOL success))completion;
+
 @end
