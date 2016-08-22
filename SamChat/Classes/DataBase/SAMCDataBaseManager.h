@@ -18,5 +18,7 @@
 + (instancetype)sharedManager;
 - (void)open;
 - (void)close;
+- (BOOL)needsMigration;
+- (BOOL)doMigration;
 
 @end

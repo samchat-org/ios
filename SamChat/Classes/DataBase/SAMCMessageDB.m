@@ -16,7 +16,7 @@
 #import "SAMCSession.h"
 #import "SAMCMessage.h"
 #import "NIMSDK.h"
-
+#import "SAMCMessageDB_2016082201.h"
 
 @interface SAMCMessageDB ()
 
@@ -30,7 +30,7 @@
 {
     self = [super initWithName:@"samcmessage.db"];
     if (self) {
-        [self createDataBaseIfNeccessary];
+        [self createMigrationInfo];
     }
     return self;
 }
@@ -59,24 +59,14 @@
 }
 
 #pragma mark - Create DB
-- (void)createDataBaseIfNeccessary
+- (void)createMigrationInfo
 {
-    // | name | session_id | session_mode | session_type | unread_count | tag |
-    [self.queue inDatabase:^(FMDatabase *db) {
-//        NSArray *sqls = @[@"create table if not exists sessiontag(id integer primary key autoincrement, \
-//                          sessionid text not null, custom integer, sp integer)",
-//                          @"create index if not exists customindex on sessiontag(custom)",
-//                          @"create index if not exists spindex on sessiontag(sp)"];
-        NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS session_table(name TEXT NOT NULL UNIQUE, \
-                          session_id TEXT NOT NULL, session_mode INTEGER DEFAULT 0, \
-                          session_type INTEGER DEFAULT 0, last_msg_id text, unread_count INTEGER DEFAULT 0, tag INTEGER DEFAULT 0)",
-                          @"CREATE INDEX IF NOT EXISTS session_id_index ON session_table(session_id)"];
-        for (NSString *sql in sqls) {
-            if (![db executeUpdate:sql]) {
-                DDLogError(@"error: execute sql %@ failed error %@",sql,db.lastError);
-            }
-        }
-    }];
+    self.migrationManager = [SAMCMigrationManager managerWithDatabaseQueue:self.queue];
+    NSArray *migrations = @[[SAMCMessageDB_2016082201 new]];
+    [self.migrationManager addMigrations:migrations];
+    if (![self.migrationManager hasMigrationsTable]) {
+        [self.migrationManager createMigrationsTable:NULL];
+    }
 }
 
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages

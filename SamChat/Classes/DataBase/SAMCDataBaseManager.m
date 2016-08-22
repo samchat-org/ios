@@ -49,4 +49,31 @@
     _userInfoDB = nil;
 }
 
+- (BOOL)needsMigration
+{
+    if ([_messageDB needsMigration]) {
+        return YES;
+    }
+    if ([_userInfoDB needsMigration]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)doMigration
+{
+    [NSThread sleepForTimeInterval:6]; // TODO: for test, delete it later
+    if ([_messageDB needsMigration]) {
+        if (![_messageDB doMigration]) {
+            return false;
+        }
+    }
+    if ([_userInfoDB needsMigration]) {
+        if (![_userInfoDB doMigration]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 @end

@@ -156,10 +156,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)setupMainViewController
 {
-    [[NTESServiceManager sharedManager] start];
-    [[SAMCDataBaseManager sharedManager] open];
-    [SAMCChatManager sharedManager];
-    
     NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
     self.window.rootViewController = mainTab;
 }

@@ -8,6 +8,7 @@
 
 #import "SAMCUserInfoDB.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCUserInfoDB_2016082201.h"
 
 @implementation SAMCUserInfoDB
 
@@ -15,31 +16,20 @@
 {
     self = [super initWithName:@"userinfo.db"];
     if (self) {
-        [self createDataBaseIfNeccessary];
+        [self createMigrationInfo];
     }
     return self;
 }
 
 #pragma mark - Create DB
-- (void)createDataBaseIfNeccessary
+- (void)createMigrationInfo
 {
-    // | serial(primary)| unique_id | username | usertype | lastupdate | avatar | avatar_original | countrycode |
-    // | cellphone | email | address | sp_company_name | sp_service_category | sp_service_desciption | sp_countrycode |
-    // | sp_phone | sp_address |
-    [self.queue inDatabase:^(FMDatabase *db) {
-        NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS userinfo(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
-                          unique_id INTEGER UNIQUE, username TEXT NOT NULL, usertype INTEGER, lastupdate INTEGER, \
-                          avatar TEXT, avatar_original TEXT, countrycode TEXT, cellphone TEXT, \
-                          email TEXT, address TEXT, sp_company_name TEXT, sp_service_category TEXT, \
-                          sp_service_description TEXT, sp_countrycode TEXT, sp_phone TEXT, sp_address TEXT)",
-                          @"CREATE INDEX IF NOT EXISTS unique_id_index ON userinfo(unique_id)",
-                          @"CREATE index IF NOT EXISTS username_index ON userinfo(username)"];
-        for (NSString *sql in sqls) {
-            if (![db executeUpdate:sql]) {
-                DDLogError(@"error: execute sql %@ failed error %@",sql,db.lastError);
-            }
-        }
-    }];
+    self.migrationManager = [SAMCMigrationManager managerWithDatabaseQueue:self.queue];
+    NSArray *migrations = @[[SAMCUserInfoDB_2016082201 new]];
+    [self.migrationManager addMigrations:migrations];
+    if (![self.migrationManager hasMigrationsTable]) {
+        [self.migrationManager createMigrationsTable:NULL];
+    }
 }
 
 - (void)updateUser:(NSDictionary *)userInfo

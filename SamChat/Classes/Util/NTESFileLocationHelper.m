@@ -9,6 +9,7 @@
 #import "NTESFileLocationHelper.h"
 #import <sys/stat.h>
 #import "NTESDemoConfig.h"
+#import "SAMCAccountManager.h"
 
 #define RDVideo    (@"video")
 #define RDImage    (@"image")
@@ -64,7 +65,8 @@
 + (NSString *)userDirectory
 {
     NSString *documentPath = [NTESFileLocationHelper getAppDocumentPath];
-    NSString *userID = [NIMSDK sharedSDK].loginManager.currentAccount;
+//    NSString *userID = [NIMSDK sharedSDK].loginManager.currentAccount;
+    NSString *userID = [SAMCAccountManager sharedManager].currentAccount;
     if ([userID length] == 0)
     {
         DDLogError(@"Error: Get User Directory While UserID Is Empty");

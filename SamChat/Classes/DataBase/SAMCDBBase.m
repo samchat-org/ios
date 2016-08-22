@@ -31,7 +31,25 @@
 {
     NSString *filepath = [[NTESFileLocationHelper userDirectory] stringByAppendingString:name];
     DDLogDebug(@"filepath %@", filepath);
-    self.queue = [FMDatabaseQueue databaseQueueWithPath:filepath];
+    _queue = [FMDatabaseQueue databaseQueueWithPath:filepath];
+}
+
+- (BOOL)needsMigration
+{
+    return [_migrationManager needsMigration];
+}
+
+- (BOOL)doMigration
+{
+    DDLogDebug(@"Has `schema_migrations` table?: %@", _migrationManager.hasMigrationsTable ? @"YES" : @"NO");
+    DDLogDebug(@"Origin Version: %llu", _migrationManager.originVersion);
+    DDLogDebug(@"Current version: %llu", _migrationManager.currentVersion);
+    DDLogDebug(@"All migrations: %@", _migrationManager.migrations);
+    DDLogDebug(@"Applied versions: %@", _migrationManager.appliedVersions);
+    DDLogDebug(@"Pending versions: %@", _migrationManager.pendingVersions);
+    BOOL result = [_migrationManager migrateDatabaseToVersion:INT64_MAX progress:nil error:NULL];
+    _migrationManager = nil; // no need after migration
+    return result;
 }
 
 @end

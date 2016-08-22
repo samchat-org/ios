@@ -8,11 +8,17 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+#import "SAMCMigrationManager.h"
 
 @interface SAMCDBBase : NSObject
 
 @property (nonatomic, strong) FMDatabaseQueue *queue;
+@property (nonatomic, strong) SAMCMigrationManager *migrationManager;
 
 - (instancetype)initWithName:(NSString *)name;
+
+- (BOOL)needsMigration;
+
+- (BOOL)doMigration;
 
 @end
