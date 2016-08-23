@@ -28,6 +28,7 @@
 #import "SAMCSession.h"
 #import "SAMCPreferenceManager.h"
 #import "SAMCAccountManager.h"
+#import "SAMCAddContactViewController.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
@@ -197,74 +198,77 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 #pragma mark - Action
 - (void)onOpera:(id)sender{
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"添加好友",@"创建高级群",@"创建讨论组",@"搜索高级群", nil];
-    __weak typeof(self) wself = self;
-    NSString *currentUserId = [[NIMSDK sharedSDK].loginManager currentAccount];
-    [sheet showInView:self.view completionHandler:^(NSInteger index) {
-        UIViewController *vc;
-        switch (index) {
-            case 0:
-                vc = [[NTESContactAddFriendViewController alloc] initWithNibName:nil bundle:nil];
-                break;
-            case 1:{  //创建高级群
-                [wself presentMemberSelector:^(NSArray *uids) {
-                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
-                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-                    option.name       = @"高级群";
-                    option.type       = NIMTeamTypeAdvanced;
-                    option.joinMode   = NIMTeamJoinModeNoAuth;
-                    option.postscript = @"邀请你加入群组";
-                    [SVProgressHUD show];
-                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
-                        [SVProgressHUD dismiss];
-                        if (!error) {
-//                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
-                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-                            [wself.navigationController pushViewController:vc animated:YES];
-                        }else{
-                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
-                        }
-                    }];
-                }];
-                break;
-            }
-            case 2:{ //创建讨论组
-                [wself presentMemberSelector:^(NSArray *uids) {
-                    if (!uids.count) {
-                        return; //讨论组必须除自己外必须要有一个群成员
-                    }
-                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
-                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-                    option.name       = @"讨论组";
-                    option.type       = NIMTeamTypeNormal;
-                    [SVProgressHUD show];
-                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
-                        [SVProgressHUD dismiss];
-                        if (!error) {
-//                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
-                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-                            [wself.navigationController pushViewController:vc animated:YES];
-                        }else{
-                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
-                        }
-                    }];
-                }];
-                break;
-            }
-            case 3:
-                vc = [[NTESSearchTeamViewController alloc] initWithNibName:nil bundle:nil];
-                break;
-            default:
-                break;
-        }
-        if (vc) {
-            [wself.navigationController pushViewController:vc animated:YES];
-        }
-    }];
+    SAMCAddContactViewController *vc = [[SAMCAddContactViewController alloc] init];
+    vc.currentUserMode = self.currentUserMode;
+    [self.navigationController pushViewController:vc animated:YES];
+//    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"添加好友",@"创建高级群",@"创建讨论组",@"搜索高级群", nil];
+//    __weak typeof(self) wself = self;
+//    NSString *currentUserId = [[NIMSDK sharedSDK].loginManager currentAccount];
+//    [sheet showInView:self.view completionHandler:^(NSInteger index) {
+//        UIViewController *vc;
+//        switch (index) {
+//            case 0:
+//                vc = [[NTESContactAddFriendViewController alloc] initWithNibName:nil bundle:nil];
+//                break;
+//            case 1:{  //创建高级群
+//                [wself presentMemberSelector:^(NSArray *uids) {
+//                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
+//                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
+//                    option.name       = @"高级群";
+//                    option.type       = NIMTeamTypeAdvanced;
+//                    option.joinMode   = NIMTeamJoinModeNoAuth;
+//                    option.postscript = @"邀请你加入群组";
+//                    [SVProgressHUD show];
+//                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
+//                        [SVProgressHUD dismiss];
+//                        if (!error) {
+////                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+//                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+//                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
+//                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
+//                            [wself.navigationController pushViewController:vc animated:YES];
+//                        }else{
+//                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
+//                        }
+//                    }];
+//                }];
+//                break;
+//            }
+//            case 2:{ //创建讨论组
+//                [wself presentMemberSelector:^(NSArray *uids) {
+//                    if (!uids.count) {
+//                        return; //讨论组必须除自己外必须要有一个群成员
+//                    }
+//                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
+//                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
+//                    option.name       = @"讨论组";
+//                    option.type       = NIMTeamTypeNormal;
+//                    [SVProgressHUD show];
+//                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
+//                        [SVProgressHUD dismiss];
+//                        if (!error) {
+////                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+//                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+//                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
+//                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
+//                            [wself.navigationController pushViewController:vc animated:YES];
+//                        }else{
+//                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
+//                        }
+//                    }];
+//                }];
+//                break;
+//            }
+//            case 3:
+//                vc = [[NTESSearchTeamViewController alloc] initWithNibName:nil bundle:nil];
+//                break;
+//            default:
+//                break;
+//        }
+//        if (vc) {
+//            [wself.navigationController pushViewController:vc animated:YES];
+//        }
+//    }];
 }
 
 #pragma mark - UITableViewDelegate
