@@ -47,7 +47,7 @@
         NSNumber *status = @(1); // TODO: change later
         NSNumber *datetime = questionInfo[SAMC_DATETIME] ?:@(0);
         NSNumber *last_answer_time = @(0);
-        [db executeUpdate:@"Insert or ignore into send_question(question_id,question,address,status,datetime,last_answer_time) values(?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time];
+        [db executeUpdate:@"INSERT OR IGNORE INTO send_question(question_id,question,address,status,datetime,last_answer_time) VALUES(?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time];
     }];
 }
 

@@ -9,6 +9,7 @@
 #import "SAMCPreferenceManager.h"
 
 #define SAMC_CURRENTUSERMODE_KEY    @"samc_currentusermode_key"
+#define SAMC_GETUIBINDEDALIAS_KEY   @"samc_getuibindedalias_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -19,6 +20,7 @@
 @implementation SAMCPreferenceManager
 
 @synthesize currentUserMode = _currentUserMode;
+@synthesize getuiBindedAlias = _getuiBindedAlias;
 
 + (instancetype)sharedManager
 {
@@ -58,6 +60,27 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = currentUserMode;
         [[NSUserDefaults standardUserDefaults] setValue:currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
+    });
+}
+
+#pragma mark - getuiBindedAlias
+- (NSString *)getuiBindedAlias
+{
+    __block NSString *alias;
+    dispatch_sync(_syncQueue, ^{
+        if (_getuiBindedAlias) {
+            _getuiBindedAlias = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_GETUIBINDEDALIAS_KEY];
+        }
+        alias = _getuiBindedAlias;
+    });
+    return alias;
+}
+
+- (void)setGetuiBindedAlias:(NSString *)getuiBindedAlias
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _getuiBindedAlias = getuiBindedAlias;
+        [[NSUserDefaults standardUserDefaults] setValue:getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
     });
 }
 

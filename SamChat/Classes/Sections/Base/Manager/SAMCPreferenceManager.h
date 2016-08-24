@@ -10,7 +10,8 @@
 
 @interface SAMCPreferenceManager : NSObject
 
-@property (nonatomic, assign) NSNumber *currentUserMode;
+@property (nonatomic, strong) NSNumber *currentUserMode;
+@property (nonatomic, copy) NSString *getuiBindedAlias;
 
 + (instancetype)sharedManager;
 

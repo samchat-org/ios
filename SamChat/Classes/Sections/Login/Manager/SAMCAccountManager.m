@@ -19,6 +19,7 @@
 #import "SAMCDataBaseManager.h"
 #import "NTESService.h"
 #import "SAMCChatManager.h"
+#import "SAMCPushManager.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
@@ -208,6 +209,7 @@
             }
             [SAMCChatManager sharedManager];
             [[SAMCAccountManager sharedManager] updateUser:userInfo];
+            [[SAMCPushManager sharedManager] open];
             completion(nil);
         }else{
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
@@ -244,6 +246,7 @@
         [[SAMCDataBaseManager sharedManager] doMigration];
     }
     [SAMCChatManager sharedManager];
+    [[SAMCPushManager sharedManager] open];
     [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];
 }
 

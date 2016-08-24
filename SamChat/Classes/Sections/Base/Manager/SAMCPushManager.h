@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "GeTuiSdk.h"
 
 @interface SAMCPushManager : NSObject
+
++ (instancetype)sharedManager;
+- (void)open;
+- (void)close;
 
 @end
