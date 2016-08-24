@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "SAMCMessageDB.h"
 #import "SAMCUserInfoDB.h"
+#import "SAMCQuestionDB.h"
 
 @interface SAMCDataBaseManager : NSObject
 
 @property (nonatomic, strong) SAMCMessageDB *messageDB;
 @property (nonatomic, strong) SAMCUserInfoDB *userInfoDB;
+@property (nonatomic, strong) SAMCQuestionDB *questionDB;
 
 + (instancetype)sharedManager;
 - (void)open;
