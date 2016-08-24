@@ -79,6 +79,8 @@
 #define SAMC_ADDRESS                    @"address"
 #define SAMC_TYPE                       @"type"
 #define SAMC_LASTUPDATE                 @"lastupdate"
+#define SAMC_QUESTION_ID                @"question_id"
+#define SAMC_DATETIME                   @"datetime"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

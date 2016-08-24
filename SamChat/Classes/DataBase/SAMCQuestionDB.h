@@ -10,4 +10,6 @@
 
 @interface SAMCQuestionDB : SAMCDBBase
 
+- (void)insertSendQuestion:(NSDictionary *)questionInfo;
+
 @end

@@ -47,6 +47,10 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
+                NSDictionary *questionInfo = [[NSMutableDictionary alloc] initWithDictionary:parameters[SAMC_BODY]];
+                [questionInfo setValue:response[SAMC_QUESTION_ID] forKey:SAMC_QUESTION_ID];
+                [questionInfo setValue:response[SAMC_DATETIME] forKey:SAMC_DATETIME];
+                [self insertSendQuestion:questionInfo];
                 completion(nil);
             }
         } else {
@@ -55,6 +59,14 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
+}
+
+#pragma mark - QuestionDB
+- (void)insertSendQuestion:(NSDictionary *)questionInfo
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB insertSendQuestion:questionInfo];
+    });
 }
 
 @end
