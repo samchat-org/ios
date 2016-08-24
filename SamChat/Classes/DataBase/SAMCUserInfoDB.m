@@ -71,7 +71,7 @@
             lastupdate = lastupdate ?:@([s intForColumn:@"lastupdate"]);
             sp_company_name = sp_company_name ?:[s stringForColumn:@"sp_company_name"];
             sp_service_category = sp_service_category ?:[s stringForColumn:@"sp_service_category"];
-            sp_service_description = sp_service_description ?:[s stringForColumn:sp_service_description];
+            sp_service_description = sp_service_description ?:[s stringForColumn:@"sp_service_description"];
             sp_countrycode = sp_countrycode ?:[s stringForColumn:@"sp_countrycode"];
             sp_phone = sp_phone ?:[s stringForColumn:@"sp_phone"];
             sp_address = sp_address ?:[s stringForColumn:@"sp_address"];
