@@ -65,9 +65,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     
     [NIMCustomObject registerCustomDecoder:[NTESCustomAttachmentDecoder new]];
     
-    // 个推注册
-    [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
-    
     
     [self setupServices];
     [self registerAPNs];
@@ -172,6 +169,8 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)setupMainViewController
 {
+    // 个推注册
+    [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
     NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];
     self.window.rootViewController = mainTab;
 }
@@ -192,7 +191,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 - (void)setupLoginViewController
 {
     [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
-//        NTESLoginViewController *loginController = [[NTESLoginViewController alloc] init];
     SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.navigationBar.translucent = NO;
@@ -203,6 +201,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 - (void)login:(NSNotification *)notification
 {
     [self setupMainViewController];
+    [GeTuiSdk bindAlias:[[[NTESLoginManager sharedManager] currentLoginData] getuiAlias]];
 }
 
 #pragma mark - 注销
@@ -213,6 +212,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)doLogout
 {
+    [GeTuiSdk destroy];
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCDataBaseManager sharedManager] close];
@@ -290,7 +290,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     }
     
     NSString *msg = [NSString stringWithFormat:@"taskId=%@,messageId:%@,payloadMsg:%@%@", taskId, msgId, payloadMsg, offLine ? @"<离线消息>" : @""];
-    DDLogDebug(@"\n>>>[GexinSdk ReceivePayload]:%@\n\n", msg);
+    DDLogDebug(@"\n>>>[GexinSdk ReceivePayload]:\n%@\n\n", msg);
 }
 
 /** SDK收到sendMessage消息回调 */

@@ -9,7 +9,7 @@
 #import "NTESLoginManager.h"
 #import "NTESFileLocationHelper.h"
 #import "SAMCDeviceUtil.h"
-
+#import "NSString+NIM.h"
 
 #define SAMCUsername    @"username"
 #define NIMAccount      @"account"
@@ -47,6 +47,11 @@
 - (NSString *)finalToken
 {
     return [_token stringByAppendingString:[SAMCDeviceUtil deviceId]];
+}
+
+- (NSString *)getuiAlias
+{
+    return [_account nim_MD5String];
 }
 
 @end
