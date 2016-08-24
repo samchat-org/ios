@@ -108,7 +108,7 @@
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
     NSDictionary *location = @{SAMC_ADDRESS:self.locationTextField.text}; // TODO: change to real one
-    [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];

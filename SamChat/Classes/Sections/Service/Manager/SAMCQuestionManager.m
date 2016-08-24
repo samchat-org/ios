@@ -64,8 +64,21 @@
 #pragma mark - QuestionDB
 - (void)insertSendQuestion:(NSDictionary *)questionInfo
 {
+    if ((questionInfo == nil) || (![questionInfo isKindOfClass:[NSDictionary class]])) {
+        return;
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].questionDB insertSendQuestion:questionInfo];
+    });
+}
+
+- (void)insertReceivedQuestion:(NSDictionary *)questionInfo
+{
+    if ((questionInfo == nil) || (![questionInfo isKindOfClass:[NSDictionary class]])) {
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB insertReceivedQuestion:questionInfo];
     });
 }
 

@@ -84,6 +84,10 @@
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
+#define SAMC_HEADER_CATEGORY            @"header.category"
+#define SAMC_USER_ID                    @"user.id"
+
+#define SAMC_PUSHCATEGORY_NEWQUESTION   @"1"
 
 #define SAMC_SAM_PROS_INFO_COMPANY_NAME         @"sam_pros_info.company_name"
 #define SAMC_SAM_PROS_INFO_SERVICE_CATEGORY     @"sam_pros_info.service_category"

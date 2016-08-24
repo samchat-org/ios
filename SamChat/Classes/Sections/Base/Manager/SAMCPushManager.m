@@ -9,6 +9,9 @@
 #import "SAMCPushManager.h"
 #import "SAMCPreferenceManager.h"
 #import "NTESLoginManager.h"
+#import "SAMCQuestionDB.h"
+#import "SAMCServerAPIMacro.h"
+#import "SAMCQuestionManager.h"
 
 #define SAMCGeTuiAppId        @"e56px9TMay6OJRDrwE21P9"
 #define SAMCGeTuiAppKey       @"PUnNqMKGxaAdRoWFDmaTX5"
@@ -78,9 +81,9 @@
     if (payloadData) {
         payloadMsg = [[NSString alloc] initWithBytes:payloadData.bytes length:payloadData.length encoding:NSUTF8StringEncoding];
     }
-    
     NSString *msg = [NSString stringWithFormat:@"taskId=%@,messageId:%@,payloadMsg:%@%@", taskId, msgId, payloadMsg, offLine ? @"<离线消息>" : @""];
     DDLogDebug(@"\n>>>[GexinSdk ReceivePayload]:\n%@\n\n", msg);
+    [self dispatchPushMessage:payloadData];
 }
 
 /** SDK收到sendMessage消息回调 */
@@ -103,6 +106,20 @@
         return;
     }
     DDLogDebug(@"\n>>>[GexinSdk SetModeOff]:%@\n\n", isModeOff ? @"开启" : @"关闭");
+}
+
+#pragma mark - Private
+- (void)dispatchPushMessage:(NSData *)payloadData
+{
+    id payloadInfo = [NSJSONSerialization JSONObjectWithData:payloadData options:0 error:NULL];
+    if (![payloadInfo isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    NSDictionary *payloadDict = payloadInfo;
+    NSString *category = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_HEADER_CATEGORY]];
+    if ([category isEqualToString:SAMC_PUSHCATEGORY_NEWQUESTION]) {
+        [[SAMCQuestionManager sharedManager] insertReceivedQuestion:payloadDict[SAMC_BODY]];
+    }
 }
 
 @end

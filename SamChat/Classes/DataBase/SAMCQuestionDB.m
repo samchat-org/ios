@@ -9,6 +9,8 @@
 #import "SAMCQuestionDB.h"
 #import "SAMCQuestionDB_2016082201.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCUserInfoDB.h"
+#import "SAMCDataBaseManager.h"
 
 @implementation SAMCQuestionDB
 
@@ -34,7 +36,7 @@
 
 - (void)insertSendQuestion:(NSDictionary *)questionInfo
 {
-    DDLogDebug(@"questionInfo: %@", questionInfo);
+    DDLogDebug(@"insertSendQuestion: %@", questionInfo);
     NSNumber *question_id = [questionInfo valueForKey:SAMC_QUESTION_ID];
     if (question_id == nil) {
         DDLogError(@"unique id should not be nil");
@@ -48,6 +50,25 @@
         NSNumber *datetime = questionInfo[SAMC_DATETIME] ?:@(0);
         NSNumber *last_answer_time = @(0);
         [db executeUpdate:@"INSERT OR IGNORE INTO send_question(question_id,question,address,status,datetime,last_answer_time) VALUES(?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time];
+    }];
+}
+
+- (void)insertReceivedQuestion:(NSDictionary *)questionInfo
+{
+    DDLogDebug(@"insertReceivedQuestion: %@", questionInfo);
+    NSNumber *question_id = [questionInfo valueForKey:SAMC_QUESTION_ID];
+    if (question_id == nil) {
+        DDLogError(@"unique id should not be nil");
+        return;
+    }
+    [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:questionInfo[SAMC_USER]];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *question = questionInfo[SAMC_QUESTION] ?:@"";
+        NSNumber *sender_unique_id = [questionInfo valueForKeyPath:SAMC_USER_ID];
+        NSNumber *status = @(0); // TODO: change later
+        NSNumber *datetime = questionInfo[SAMC_DATETIME];
+        NSString *address = questionInfo[SAMC_ADDRESS]; // TODO: change later
+        [db executeUpdate:@"insert or ignore into received_question(question_id, question, sender_unique_id, status, datetime, address) values (?,?,?,?,?,?)", question_id,question,sender_unique_id,status,datetime,address];
     }];
 }
 

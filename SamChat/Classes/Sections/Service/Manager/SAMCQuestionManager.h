@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
             location:(NSDictionary *)location
           completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
+
 @end
 
 NS_ASSUME_NONNULL_END

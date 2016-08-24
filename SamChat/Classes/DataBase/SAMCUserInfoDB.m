@@ -60,7 +60,7 @@
         NSString *sp_address = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_ADDRESS];
         
         if ([s next]) {
-            username = username ?:[s stringForColumn:@"unique_id"];
+            username = username ?:[s stringForColumn:@"username"];
             countrycode = countrycode ?:[s stringForColumn:@"countrycode"];
             cellphone = cellphone ?:[s stringForColumn:@"cellphone"];
             email = email ?:[s stringForColumn:@"email"];
