@@ -13,10 +13,21 @@
 @property (nonatomic, strong) UIImageView *avatarView;
 @property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UILabel *locationLabel;
+@property (nonatomic, strong) SAMCQuestionSession *questionSession;
 
 @end
 
 @implementation SAMCRequestDetailInfoView
+
+- (instancetype)initWithQuestionSession:(SAMCQuestionSession *)questionSession
+{
+    self = [super init];
+    if (self) {
+        _questionSession = questionSession;
+        [self setupSubviews];
+    }
+    return self;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
@@ -42,7 +53,7 @@
     _infoLabel.font = [UIFont systemFontOfSize:17.0f];
     _infoLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _infoLabel.numberOfLines = 0;
-    _infoLabel.text = @"I'm looking for a Mandarin Chinese School for 2 teens";
+    _infoLabel.text = _questionSession.question;
     [self addSubview:_infoLabel];
     
     _locationLabel = [[UILabel alloc] init];
@@ -50,7 +61,7 @@
 //    _locationLabel.backgroundColor = [UIColor purpleColor];
     _locationLabel.textColor = UIColorFromRGB(0xA7A7A7);
     _locationLabel.font = [UIFont systemFontOfSize:12.0f];
-    _locationLabel.text = @"Palo Alto, Bay Area";
+    _locationLabel.text = _questionSession.address;
     [self addSubview:_locationLabel];
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_avatarView(50)]-10-[_infoLabel]-20-|"
@@ -69,13 +80,6 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_infoLabel,_locationLabel)]];
-//    [self addConstraint:[NSLayoutConstraint constraintWithItem:_locationLabel
-//                                                     attribute:NSLayoutAttributeLeft
-//                                                     relatedBy:NSLayoutRelationEqual
-//                                                        toItem:_infoLabel
-//                                                     attribute:NSLayoutAttributeLeft
-//                                                    multiplier:1.0f
-//                                                      constant:0.0f]];
 }
 
 @end

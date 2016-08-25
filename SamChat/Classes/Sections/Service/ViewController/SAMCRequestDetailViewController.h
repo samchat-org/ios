@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCQuestionSession.h"
 
 @interface SAMCRequestDetailViewController : UIViewController
+
+@property (nonatomic, strong) SAMCQuestionSession *questionSession;
 
 @end

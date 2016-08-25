@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCQuestionSession.h"
 
 @interface SAMCRequestDetailInfoView : UIView
+
+- (instancetype)initWithQuestionSession:(SAMCQuestionSession *)questionSession;
 
 @end

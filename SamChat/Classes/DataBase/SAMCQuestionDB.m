@@ -128,7 +128,7 @@
     
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *question = questionInfo[SAMC_QUESTION] ?:@"";
-        NSString *address = @"test"; // TODO: change later
+        NSString *address = [questionInfo valueForKeyPath:SAMC_LOCATION_ADDRESS];
         NSNumber *status = @(1); // TODO: change later
         NSNumber *datetime = questionInfo[SAMC_DATETIME] ?:@(0);
         NSNumber *last_answer_time = datetime; // init with question time

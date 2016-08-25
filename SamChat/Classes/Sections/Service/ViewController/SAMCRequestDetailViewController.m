@@ -26,13 +26,12 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 - (void)setupSubviews
 {
     self.navigationItem.title = @"Request Details";
-    _requestView = [[SAMCRequestDetailInfoView alloc] init];
+    _requestView = [[SAMCRequestDetailInfoView alloc] initWithQuestionSession:_questionSession];
     _requestView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:_requestView];
     

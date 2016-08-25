@@ -87,6 +87,7 @@
 #define SAMC_HEADER_CATEGORY            @"header.category"
 #define SAMC_USER_ID                    @"user.id"
 #define SAMC_USER_USERNAME              @"user.username"
+#define SAMC_LOCATION_ADDRESS           @"location.address"
 
 #define SAMC_PUSHCATEGORY_NEWQUESTION   @"1"
 
