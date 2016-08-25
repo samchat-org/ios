@@ -67,6 +67,11 @@
     NSString *senderId = [NSString stringWithFormat:@"%@",@(questionsession.senderId)];
     SAMCSession *samcsession = [SAMCSession session:senderId type:NIMSessionTypeP2P mode:SAMCUserModeTypeSP];
     SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:samcsession];
+    // 如果问题未回复，则设置vc的问题，vc中会判断此项，如果存在，则会加入到发送消息的扩展中
+    // 并在发送消息回调中判断，发送成功时会更新数据库，同时vc中根据发送成功也会置为nil，使得之后发送的消息中不带扩展
+    if (questionsession.status != SAMCReceivedQuestionStatusResponsed) {
+        vc.questionId = @(questionsession.questionId);
+    }
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

@@ -24,6 +24,7 @@
 
 @property (nonatomic, strong, readonly) NIMSession *session;
 @property (nonatomic, assign, readonly) SAMCUserModeType currentUserMode;
+@property (nonatomic, strong) NSNumber *questionId;
 
 @property (nonatomic, strong, readonly) NIMSessionViewLayoutManager *layoutManager;
 

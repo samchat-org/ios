@@ -28,7 +28,6 @@
 #import "SAMCChatManager.h"
 #import "SAMCConversationManager.h"
 
-
 static const void * const SAMCDispatchMessageDataPrepareSpecificKey = &SAMCDispatchMessageDataPrepareSpecificKey;
 dispatch_queue_t SAMCMessageDataPrepareQueue()
 {
@@ -279,6 +278,9 @@ NIMUserManagerDelegate>
     }
     NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
     [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:usermodeValue}];
+    if (self.questionId) {
+        [ext setObject:self.questionId forKey:MESSAGE_EXT_QUESTION_ID_KEY];
+    }
     message.remoteExt = ext;
     
     SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
@@ -321,6 +323,14 @@ NIMUserManagerDelegate>
         NIMMessageModel *model = [self makeModel:message];
         NSInteger index = [self.sessionDatasource indexAtModelArray:model];
         [self.layoutManager updateCellAtIndex:index model:model];
+        if (error == nil) {
+            id ext = message.remoteExt;
+            // 如果发送的消息带有questionId，则发送成功的时候更新这个消息的status
+            NSNumber *questionId = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+            if ((questionId != nil) && ([questionId isEqual:self.questionId])) {
+                self.questionId = nil;
+            }
+        }
     }
 }
 

@@ -12,6 +12,7 @@
 #import "SAMCDataBaseManager.h"
 #import "GCDMulticastDelegate.h"
 #import "NIMMessage+SAMC.h"
+#import "SAMCQuestionManager.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate>
 
@@ -77,6 +78,15 @@
 
 - (void)sendMessage:(NIMMessage *)message didCompleteWithError:(nullable NSError *)error
 {
+    if (error == nil) {
+        id ext = message.remoteExt;
+        // 如果发送的消息带有questionId，则发送成功的时候更新这个消息的status
+        NSNumber *questionId = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+        if (questionId) {
+            [[SAMCQuestionManager sharedManager] updateReceivedQuestion:[questionId integerValue]
+                                                                 status:SAMCReceivedQuestionStatusResponsed];
+        }
+    }
     [self.multicastDelegate sendMessage:message didCompleteWithError:error];
 }
 
