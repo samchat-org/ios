@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
 
+- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status;
+
 @end
 
 NS_ASSUME_NONNULL_END

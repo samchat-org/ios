@@ -99,4 +99,10 @@ typedef NS_ENUM(NSInteger,SAMCQuestionSessionType) {
     SAMCQuestionSessionTypeReceived
 };
 
+typedef NS_ENUM(NSInteger,SAMCReceivedQuestionStatus) {
+    SAMCReceivedQuestionStatusNew,
+    SAMCReceivedQuestionStatusInserted,
+    SAMCReceivedQuestionStatusResponsed
+};
+
 #endif /* SAMCGlobalMacro_h */

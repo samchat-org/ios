@@ -156,7 +156,7 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *question = questionInfo[SAMC_QUESTION] ?:@"";
         NSNumber *sender_unique_id = [questionInfo valueForKeyPath:SAMC_USER_ID];
-        NSNumber *status = @(0); // TODO: change later
+        NSNumber *status = @(SAMCReceivedQuestionStatusNew);
         NSNumber *datetime = questionInfo[SAMC_DATETIME];
         NSString *address = questionInfo[SAMC_ADDRESS]; // TODO: change later
         NSString *sender_username = [questionInfo valueForKeyPath:SAMC_USER_USERNAME];
@@ -169,6 +169,13 @@
                                                              senderUsername:sender_username
                                                                      status:[status integerValue]];
         [self.questionDelegate didAddQuestionSession:session];
+    }];
+}
+
+- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"UPDATE received_question SET status = ? WHERE question_id = ?", @(status), @(questionId)];
     }];
 }
 

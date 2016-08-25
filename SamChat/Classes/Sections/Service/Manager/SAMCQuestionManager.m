@@ -102,4 +102,11 @@
     });
 }
 
+- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB updateReceivedQuestion:questionId status:status];
+    });
+}
+
 @end

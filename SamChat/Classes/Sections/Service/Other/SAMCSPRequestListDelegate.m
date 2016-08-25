@@ -62,6 +62,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     SAMCQuestionSession *questionsession = [self data][indexPath.row];
+    [self saveQuestionMessage:questionsession];
+    
     NSString *senderId = [NSString stringWithFormat:@"%@",@(questionsession.senderId)];
     SAMCSession *samcsession = [SAMCSession session:senderId type:NIMSessionTypeP2P mode:SAMCUserModeTypeSP];
     SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:samcsession];
@@ -90,6 +92,34 @@
     }
     [self.data addObject:questionSession];
     [self.viewController sortAndReload];
+}
+
+#pragma mark - Insert Message
+- (void)saveQuestionMessage:(SAMCQuestionSession *)questionSession
+{
+    if (questionSession.status != SAMCReceivedQuestionStatusNew) {
+        return;
+    }
+    NSString *senderId = [NSString stringWithFormat:@"%@",@(questionSession.senderId)];
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.text = questionSession.question;
+    message.from = senderId;
+
+    // set unread flag extention
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+    [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM,
+                                    MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO}];
+    message.remoteExt = ext;
+    NIMSession *session = [NIMSession session:senderId type:NIMSessionTypeP2P];
+    
+    questionSession.status = SAMCReceivedQuestionStatusInserted;
+    [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:^(NSError * _Nullable error) {
+        if (error) {
+            questionSession.status = SAMCReceivedQuestionStatusNew;
+        } else {
+            [[SAMCQuestionManager sharedManager] updateReceivedQuestion:questionSession.questionId status:SAMCReceivedQuestionStatusInserted];
+        }
+    }];
 }
 
 @end

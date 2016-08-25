@@ -19,5 +19,6 @@
 - (void)insertSendQuestion:(NSDictionary *)questionInfo;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
 
+- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status;
 
 @end
