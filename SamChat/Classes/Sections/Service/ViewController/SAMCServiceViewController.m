@@ -106,6 +106,7 @@
 - (void)setupSPModeViews
 {
     [self.data removeAllObjects];
+    [self.data addObjectsFromArray:[[SAMCQuestionManager sharedManager] allReceivedQuestion]];
     __weak typeof(self) weakSelf = self;
     self.delegator = [[SAMCSPRequestListDelegate alloc] initWithTableData:^NSMutableArray *{
         return weakSelf.data;

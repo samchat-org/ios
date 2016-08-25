@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
           completion:(void (^)(NSError * __nullable error))completion;
 
 - (NSArray<SAMCQuestionSession *> *)allSendQuestion;
+- (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
 
 @end

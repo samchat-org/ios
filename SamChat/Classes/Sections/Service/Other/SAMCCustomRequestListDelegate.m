@@ -49,7 +49,7 @@
     SAMCQuestionSession *session = [self data][indexPath.row];
     cell.messageLabel.text = session.question;
     cell.leftLabel.text = [session newResponseDescription];
-    cell.middleLabel.text = [session timestampDescription];
+    cell.middleLabel.text = [session responseTimeDescription];
     cell.rightLabel.text = session.address;
     return cell;
 }

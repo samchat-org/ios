@@ -66,7 +66,7 @@
 {
     __block NSMutableArray *questions = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"select * from send_question"];
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM send_question"];
         while ([s next]) {
             NSInteger question_id = [s longForColumn:@"question_id"];
             NSString *question = [s stringForColumn:@"question"];
@@ -74,13 +74,42 @@
             NSTimeInterval datetime = [s doubleForColumn:@"datetime"];
             NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
             NSInteger responseCount = [s longForColumn:@"new_response_count"];
-            SAMCQuestionSession *session = [SAMCQuestionSession session:question_id
-                                                               question:question
-                                                                address:address
-                                                               datetime:datetime
-                                                          responseCount:responseCount
-                                                           responsetime:lastAnswerTime
-                                                                   type:SAMCQuestionSessionTypeSend];
+            NSInteger status = [s longForColumn:@"status"];
+            SAMCQuestionSession *session = [SAMCQuestionSession sendSession:question_id
+                                                                   question:question
+                                                                    address:address
+                                                                   datetime:datetime
+                                                              responseCount:responseCount
+                                                               responsetime:lastAnswerTime
+                                                                     status:status];
+            [questions addObject:session];
+        }
+        [s close];
+    }];
+    return questions;
+}
+
+- (NSArray<SAMCQuestionSession *> *)allReceivedQuestion
+{
+    __block NSMutableArray *questions = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"select * from received_question"];
+        while ([s next]) {
+            NSInteger question_id = [s longForColumn:@"question_id"];
+            NSString *question = [s stringForColumn:@"question"];
+            NSInteger sender_unique_id = [s longForColumn:@"sender_unique_id"];
+            NSInteger status = [s longForColumn:@"status"];
+            NSInteger datetime = [s longForColumn:@"datetime"];
+            NSString *address = [s stringForColumn:@"address"];
+            NSString *sender_username = [s stringForColumn:@"sender_username"];
+            
+            SAMCQuestionSession *session = [SAMCQuestionSession receivedSession:question_id
+                                                                       question:question
+                                                                        address:address
+                                                                       datetime:datetime
+                                                                       senderId:sender_unique_id
+                                                                 senderUsername:sender_username
+                                                                         status:status];
             [questions addObject:session];
         }
         [s close];
@@ -104,13 +133,13 @@
         NSNumber *datetime = questionInfo[SAMC_DATETIME] ?:@(0);
         NSNumber *last_answer_time = datetime; // init with question time
         [db executeUpdate:@"INSERT OR IGNORE INTO send_question(question_id,question,address,status,datetime,last_answer_time,new_response_count) VALUES(?,?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time,@(0)];
-        SAMCQuestionSession *session = [SAMCQuestionSession session:[question_id integerValue]
-                                                           question:question
-                                                            address:address
-                                                           datetime:[datetime doubleValue]
-                                                      responseCount:0
-                                                       responsetime:[datetime doubleValue]
-                                                               type:SAMCQuestionSessionTypeSend];
+        SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[question_id integerValue]
+                                                               question:question
+                                                                address:address
+                                                               datetime:[datetime doubleValue]
+                                                          responseCount:0
+                                                           responsetime:[last_answer_time doubleValue]
+                                                                 status:[status integerValue]];
         [self.questionDelegate didAddQuestionSession:session];
     }];
 }
@@ -130,7 +159,8 @@
         NSNumber *status = @(0); // TODO: change later
         NSNumber *datetime = questionInfo[SAMC_DATETIME];
         NSString *address = questionInfo[SAMC_ADDRESS]; // TODO: change later
-        [db executeUpdate:@"insert or ignore into received_question(question_id, question, sender_unique_id, status, datetime, address) values (?,?,?,?,?,?)", question_id,question,sender_unique_id,status,datetime,address];
+        NSString *sender_username = [questionInfo valueForKeyPath:SAMC_USER_USERNAME];
+        [db executeUpdate:@"INSERT OR IGNORE INTO received_question(question_id, question, sender_unique_id, status, datetime, address, sender_username) VALUES (?,?,?,?,?,?,?)", question_id,question,sender_unique_id,status,datetime,address,sender_username];
     }];
 }
 

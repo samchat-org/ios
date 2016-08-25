@@ -11,22 +11,42 @@
 
 @implementation SAMCQuestionSession
 
-+ (instancetype)session:(NSInteger)questionId
-               question:(NSString *)quesion
-                address:(NSString *)address
-               datetime:(NSTimeInterval)datetime
-          responseCount:(NSInteger)count
-           responsetime:(NSTimeInterval)responsetime
-                   type:(SAMCQuestionSessionType)type
++ (instancetype)sendSession:(NSInteger)questionId
+                   question:(NSString *)quesion
+                    address:(NSString *)address
+                   datetime:(NSTimeInterval)datetime
+              responseCount:(NSInteger)count
+               responsetime:(NSTimeInterval)responsetime
+                     status:(NSInteger)status
 {
     SAMCQuestionSession *session = [[SAMCQuestionSession alloc] init];
+    session.type = SAMCQuestionSessionTypeSend;
     session.questionId = questionId;
     session.question = quesion;
     session.address = address;
     session.datetime = datetime;
     session.newResponseCount = count;
     session.lastResponseTime = responsetime;
-    session.type = type;
+    session.status = status;
+    return session;
+}
+
++ (instancetype)receivedSession:(NSInteger)quesionId
+                       question:(NSString *)question
+                        address:(NSString *)address
+                       datetime:(NSTimeInterval)datetime
+                       senderId:(NSInteger)senderId
+                 senderUsername:(NSString *)senderUsername
+                         status:(NSInteger)status
+{
+    SAMCQuestionSession *session = [[SAMCQuestionSession alloc] init];
+    session.questionId = quesionId;
+    session.question = question;
+    session.address = address;
+    session.datetime = datetime;
+    session.senderId = senderId;
+    session.senderUsername = senderUsername;
+    session.status = status;
     return session;
 }
 
@@ -35,9 +55,14 @@
     return [NSString stringWithFormat:@"%ld new responses", self.newResponseCount];
 }
 
-- (NSString *)timestampDescription
+- (NSString *)responseTimeDescription
 {
     return [NIMKitUtil showTime:self.lastResponseTime/1000 showDetail:NO];
+}
+
+- (NSString *)questionTimeDescription
+{
+    return [NIMKitUtil showTime:self.datetime/1000 showDetail:NO];
 }
 
 @end

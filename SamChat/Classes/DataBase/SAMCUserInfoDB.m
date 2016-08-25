@@ -68,7 +68,7 @@
             usertype = usertype ?:@([s intForColumn:@"usertype"]);
             avatar = avatar ?:[s stringForColumn:@"avatar"];
             avatar_original = avatar_original ?:[s stringForColumn:@"avatar_original"];
-            lastupdate = lastupdate ?:@([s intForColumn:@"lastupdate"]);
+            lastupdate = lastupdate ?:@([s longForColumn:@"lastupdate"]);
             sp_company_name = sp_company_name ?:[s stringForColumn:@"sp_company_name"];
             sp_service_category = sp_service_category ?:[s stringForColumn:@"sp_service_category"];
             sp_service_description = sp_service_description ?:[s stringForColumn:@"sp_service_description"];

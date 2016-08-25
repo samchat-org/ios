@@ -19,13 +19,13 @@
 {
     DDLogDebug(@"SAMCQuestionDB_2016082201");
     //send_question: | serial(primary) | question_id | question | address | status | datetime | last_answer_time | new_response_count |
-    //received_question: | serial(primary) | question_id | question | sender_unique_id | status | datetime | address |
+    //received_question: | serial(primary) | question_id | question | sender_unique_id | status | datetime | address | sender_username |
     NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS send_question(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                       question_id INTEGER UNIQUE, question TEXT NOT NULL, address TEXT, status INTEGER, \
                       datetime INTEGER, last_answer_time INTEGER, new_response_count INTEGER)",
                       @"CREATE TABLE IF NOT EXISTS received_question(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                       question_id INTEGER UNIQUE, question TEXT NOT NULL, sender_unique_id INTEGER, status INTEGER, \
-                      datetime INTEGER, address TEXT)"];
+                      datetime INTEGER, address TEXT, sender_username TEXT)"];
     for (NSString *sql in sqls) {
         if (![db executeUpdate:sql]) {
             DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);

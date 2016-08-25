@@ -8,14 +8,15 @@
 
 #import "SAMCSPRequestListDelegate.h"
 #import "SAMCRequestListCell.h"
+#import "SAMCQuestionManager.h"
+#import "SAMCQuestionSession.h"
 
 @implementation SAMCSPRequestListDelegate
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return [self.recentSessions count];
-    return 1;
+    return [[self data] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -26,10 +27,12 @@
         cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
-    cell.messageLabel.text = @"I need a immigration lawyer to help with my investment immigration application.";
-    cell.leftLabel.text = @"Just now";
-    cell.middleLabel.text = @"Bay Area, SF";
-    cell.rightLabel.text = @"Henry Du";
+    SAMCQuestionSession *session = [self data][indexPath.row];
+    cell.messageLabel.text = session.question;
+    cell.leftLabel.text = [session questionTimeDescription];
+    cell.middleLabel.text = session.address;
+    cell.rightLabel.text = session.senderUsername;
+    
     return cell;
 }
 

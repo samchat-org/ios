@@ -15,6 +15,7 @@
 - (void)removeQuestionDelegate:(id<SAMCQuestionManagerDelegate>)delegate;
 
 - (NSArray<SAMCQuestionSession *> *)allSendQuestion;
+- (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
 - (void)insertSendQuestion:(NSDictionary *)questionInfo;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
 

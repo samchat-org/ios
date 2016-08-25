@@ -86,6 +86,7 @@
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
 #define SAMC_HEADER_CATEGORY            @"header.category"
 #define SAMC_USER_ID                    @"user.id"
+#define SAMC_USER_USERNAME              @"user.username"
 
 #define SAMC_PUSHCATEGORY_NEWQUESTION   @"1"
 
