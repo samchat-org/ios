@@ -10,6 +10,8 @@
 #import "SAMCRequestListCell.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCQuestionSession.h"
+#import "SAMCConversationManager.h"
+#import "SAMCSessionViewController.h"
 
 @interface SAMCSPRequestListDelegate ()<SAMCQuestionManagerDelegate>
 
@@ -58,6 +60,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    SAMCQuestionSession *questionsession = [self data][indexPath.row];
+    NSString *senderId = [NSString stringWithFormat:@"%@",@(questionsession.senderId)];
+    SAMCSession *samcsession = [SAMCSession session:senderId type:NIMSessionTypeP2P mode:SAMCUserModeTypeSP];
+    SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:samcsession];
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
