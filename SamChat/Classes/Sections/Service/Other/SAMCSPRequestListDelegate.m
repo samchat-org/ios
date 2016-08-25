@@ -11,7 +11,25 @@
 #import "SAMCQuestionManager.h"
 #import "SAMCQuestionSession.h"
 
+@interface SAMCSPRequestListDelegate ()<SAMCQuestionManagerDelegate>
+
+@end
+
 @implementation SAMCSPRequestListDelegate
+
+- (instancetype) initWithTableData:(NSMutableArray *(^)(void))data viewController:(UIViewController<SAMCTableReloadDelegate> *)controller
+{
+    self = [super initWithTableData:data viewController:controller];
+    if (self) {
+        [[SAMCQuestionManager sharedManager] addDelegate:self];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [[SAMCQuestionManager sharedManager] removeDelegate:self];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -54,6 +72,16 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+}
+
+#pragma mark - SAMCQuestionManagerDelegate
+- (void)didAddQuestionSession:(SAMCQuestionSession *)questionSession
+{
+    if (questionSession.type != SAMCQuestionSessionTypeReceived) {
+        return;
+    }
+    [self.data addObject:questionSession];
+    [self.viewController sortAndReload];
 }
 
 @end

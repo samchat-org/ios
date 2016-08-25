@@ -40,6 +40,7 @@
                          status:(NSInteger)status
 {
     SAMCQuestionSession *session = [[SAMCQuestionSession alloc] init];
+    session.type = SAMCQuestionSessionTypeReceived;
     session.questionId = quesionId;
     session.question = question;
     session.address = address;

@@ -161,6 +161,14 @@
         NSString *address = questionInfo[SAMC_ADDRESS]; // TODO: change later
         NSString *sender_username = [questionInfo valueForKeyPath:SAMC_USER_USERNAME];
         [db executeUpdate:@"INSERT OR IGNORE INTO received_question(question_id, question, sender_unique_id, status, datetime, address, sender_username) VALUES (?,?,?,?,?,?,?)", question_id,question,sender_unique_id,status,datetime,address,sender_username];
+        SAMCQuestionSession *session = [SAMCQuestionSession receivedSession:[question_id integerValue]
+                                                                   question:question
+                                                                    address:address
+                                                                   datetime:[datetime doubleValue]
+                                                                   senderId:[sender_unique_id integerValue]
+                                                             senderUsername:sender_username
+                                                                     status:[status integerValue]];
+        [self.questionDelegate didAddQuestionSession:session];
     }];
 }
 
