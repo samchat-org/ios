@@ -32,6 +32,21 @@
     return self;
 }
 
+- (void)addDelegate:(id<SAMCQuestionManagerDelegate>)delegate
+{
+    [[SAMCDataBaseManager sharedManager].questionDB addQuestionDelegate:delegate];
+}
+
+- (void)removeDelegate:(id<SAMCQuestionManagerDelegate>)delegate
+{
+    [[SAMCDataBaseManager sharedManager].questionDB removeQuestionDelegate:delegate];
+}
+
+- (NSArray<SAMCQuestionSession *> *)allSendQuestion
+{
+    return [[SAMCDataBaseManager sharedManager].questionDB allSendQuestion];
+}
+
 - (void)sendQuestion:(NSString *)question
             location:(NSDictionary *)location
           completion:(void (^)(NSError * __nullable error))completion

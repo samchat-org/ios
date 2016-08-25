@@ -9,14 +9,33 @@
 #import "SAMCCustomRequestListDelegate.h"
 #import "SAMCRequestListCell.h"
 #import "SAMCRequestDetailViewController.h"
+#import "SAMCQuestionManager.h"
+#import "SAMCQuestionSession.h"
+
+@interface SAMCCustomRequestListDelegate ()<SAMCQuestionManagerDelegate>
+
+@end
 
 @implementation SAMCCustomRequestListDelegate
+
+- (instancetype) initWithTableData:(NSMutableArray *(^)(void))data viewController:(UIViewController<SAMCTableReloadDelegate> *)controller
+{
+    self = [super initWithTableData:data viewController:controller];
+    if (self) {
+        [[SAMCQuestionManager sharedManager] addDelegate:self];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    [[SAMCQuestionManager sharedManager] removeDelegate:self];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //    return [self.recentSessions count];
-    return 2;
+    return [[self data] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -27,10 +46,11 @@
         cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
-    cell.messageLabel.text = @"I need a immigration lawyer to help with my investment immigration application.";
-    cell.leftLabel.text = @"Just now";
-    cell.middleLabel.text = @"Bay Area, SF";
-    cell.rightLabel.text = @"Henry Du";
+    SAMCQuestionSession *session = [self data][indexPath.row];
+    cell.messageLabel.text = session.question;
+    cell.leftLabel.text = [session newResponseDescription];
+    cell.middleLabel.text = [session timestampDescription];
+    cell.rightLabel.text = session.address;
     return cell;
 }
 
@@ -56,5 +76,14 @@
 {
 }
 
+#pragma mark - SAMCQuestionManagerDelegate
+- (void)didAddQuestionSession:(SAMCQuestionSession *)questionSession
+{
+    if (questionSession.type != SAMCQuestionSessionTypeSend) {
+        return;
+    }
+    [self.data addObject:questionSession];
+    [self.viewController sortAndReload];
+}
 
 @end

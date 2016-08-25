@@ -10,13 +10,13 @@
 
 @interface SAMCTableViewDelegate ()
 
-@property (nonatomic, copy) NSArray *(^SAMCDataReceiver)(void);
+@property (nonatomic, copy) NSMutableArray *(^SAMCDataReceiver)(void);
 
 @end
 
 @implementation SAMCTableViewDelegate
 
-- (instancetype) initWithTableData:(NSArray *(^)(void))data viewController:(UIViewController *)controller
+- (instancetype) initWithTableData:(NSMutableArray *(^)(void))data viewController:(UIViewController<SAMCTableReloadDelegate> *)controller
 {
     self = [super init];
     if (self) {
@@ -26,7 +26,12 @@
     return self;
 }
 
-- (NSArray *)data
+- (id)init
+{
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:@"Failed to call designated initializer." userInfo:nil];
+}
+
+- (NSMutableArray *)data
 {
     return self.SAMCDataReceiver();
 }

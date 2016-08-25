@@ -7,10 +7,16 @@
 //
 
 #import "SAMCDBBase.h"
+#import "SAMCQuestionManagerDelegate.h"
 
 @interface SAMCQuestionDB : SAMCDBBase
 
+- (void)addQuestionDelegate:(id<SAMCQuestionManagerDelegate>)delegate;
+- (void)removeQuestionDelegate:(id<SAMCQuestionManagerDelegate>)delegate;
+
+- (NSArray<SAMCQuestionSession *> *)allSendQuestion;
 - (void)insertSendQuestion:(NSDictionary *)questionInfo;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
+
 
 @end

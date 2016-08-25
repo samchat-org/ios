@@ -11,8 +11,9 @@
 #import "SAMCNewRequestViewController.h"
 #import "SAMCCustomRequestListDelegate.h"
 #import "SAMCSPRequestListDelegate.h"
+#import "SAMCQuestionManager.h"
 
-@interface SAMCServiceViewController()//<UITableViewDelegate,UITableViewDataSource>
+@interface SAMCServiceViewController()<SAMCTableReloadDelegate>//<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -21,7 +22,7 @@
 @property (nonatomic, strong) NSMutableArray *recentSessions;
 
 @property (nonatomic, strong) SAMCTableViewDelegate *delegator;
-@property (nonatomic, copy) NSArray *data;
+@property (nonatomic, strong) NSMutableArray *data;
 
 @end
 
@@ -56,8 +57,10 @@
 
 - (void)setupCustomModeViews
 {
+    [self.data removeAllObjects];
+    [self.data addObjectsFromArray:[[SAMCQuestionManager sharedManager] allSendQuestion]];
     __weak typeof(self) weakSelf = self;
-    self.delegator = [[SAMCCustomRequestListDelegate alloc] initWithTableData:^NSArray *{
+    self.delegator = [[SAMCCustomRequestListDelegate alloc] initWithTableData:^NSMutableArray *{
         return weakSelf.data;
     } viewController:self];
     
@@ -102,8 +105,9 @@
 
 - (void)setupSPModeViews
 {
+    [self.data removeAllObjects];
     __weak typeof(self) weakSelf = self;
-    self.delegator = [[SAMCSPRequestListDelegate alloc] initWithTableData:^NSArray *{
+    self.delegator = [[SAMCSPRequestListDelegate alloc] initWithTableData:^NSMutableArray *{
         return weakSelf.data;
     } viewController:self];
     
@@ -140,6 +144,21 @@
 {
     SAMCNewRequestViewController *vc = [[SAMCNewRequestViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (NSMutableArray *)data
+{
+    if (_data == nil) {
+        _data = [[NSMutableArray alloc] init];
+    }
+    return _data;
+}
+
+#pragma mark - SAMCTableReloadDelegate
+- (void)sortAndReload
+{
+    // TODO: add sort
+    [self.tableView reloadData];
 }
 
 @end

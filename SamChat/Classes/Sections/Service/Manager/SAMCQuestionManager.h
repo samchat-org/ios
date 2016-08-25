@@ -7,17 +7,21 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCQuestionManagerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SAMCQuestionManager : NSObject
 
 + (instancetype)sharedManager;
+- (void)addDelegate:(id<SAMCQuestionManagerDelegate>)delegate;
+- (void)removeDelegate:(id<SAMCQuestionManagerDelegate>)delegate;
 
 - (void)sendQuestion:(NSString *)question
             location:(NSDictionary *)location
           completion:(void (^)(NSError * __nullable error))completion;
 
+- (NSArray<SAMCQuestionSession *> *)allSendQuestion;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
 
 @end

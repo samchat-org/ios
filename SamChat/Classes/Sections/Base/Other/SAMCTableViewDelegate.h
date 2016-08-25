@@ -8,11 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol SAMCTableReloadDelegate <NSObject>
+
+- (void)sortAndReload;
+
+@end
+
 @interface SAMCTableViewDelegate : NSObject<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, weak) UIViewController *viewController;
+@property (nonatomic, weak) UIViewController<SAMCTableReloadDelegate> *viewController;
 
-- (instancetype) initWithTableData:(NSArray *(^)(void))data viewController:(UIViewController *)controller;
-- (NSArray *)data;
+- (instancetype) initWithTableData:(NSMutableArray *(^)(void))data viewController:(UIViewController<SAMCTableReloadDelegate> *)controller;
+- (NSMutableArray *)data;
 
 @end
