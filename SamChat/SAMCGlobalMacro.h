@@ -84,6 +84,10 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 
 #define MESSAGE_EXT_QUESTION_ID_KEY         @"quest_id"
 
+#define MESSAGE_EXT_SAVE_FLAG_KEY           @"save_flag"
+#define MESSAGE_EXT_SAVE_FLAG_YES           @(YES)
+#define MESSAGE_EXT_SAVE_FLAG_NO            @(NO)
+
 #define CALL_MESSAGE_EXTERN_FROM_CUSTOM     @"customer"
 #define CALL_MESSAGE_EXTERN_FROM_SP         @"sp"
 

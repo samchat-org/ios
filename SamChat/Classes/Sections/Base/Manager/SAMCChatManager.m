@@ -13,6 +13,8 @@
 #import "GCDMulticastDelegate.h"
 #import "NIMMessage+SAMC.h"
 #import "SAMCQuestionManager.h"
+#import "SAMCQuestionSession.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate>
 
@@ -97,13 +99,20 @@
         [self.multicastDelegate onRecvMessages:messages];
         return;
     }
+    NSMutableArray *normalMessages = [messages mutableCopy];
     
     NSMutableArray<SAMCMessage *> *customMessages = [[NSMutableArray alloc] init];
-    NSMutableArray<SAMCMessage *> *customUnreadMessages = [[NSMutableArray alloc] init];
     NSMutableArray<SAMCMessage *> *spMessages = [[NSMutableArray alloc] init];
-    NSMutableArray<SAMCMessage *> *spUnreadMessages = [[NSMutableArray alloc] init];
+    NSInteger customUnread = 0;
+    NSInteger spUnread = 0;
     for (NIMMessage *message in messages) {
         id ext = message.remoteExt;
+        if ([[ext valueForKey:MESSAGE_EXT_SAVE_FLAG_KEY] isEqual:MESSAGE_EXT_SAVE_FLAG_NO]) {
+            [normalMessages removeObject:message];
+            DDLogWarn(@"discard message: %@", message);
+            continue;
+        }
+        
         SAMCUserModeType localUserMode = [message localUserMode];
         if (localUserMode == SAMCUserModeTypeSP) {
             // from custom user mode, local should display in sp mode
@@ -113,10 +122,9 @@
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
                 samcmessage.nimMessage = message;
-                if ([[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
-                    [spMessages addObject:samcmessage];
-                } else {
-                    [spUnreadMessages addObject:samcmessage];
+                [spMessages addObject:samcmessage];
+                if (![[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
+                    spUnread ++;
                 }
             }
         } else if (localUserMode == SAMCUserModeTypeCustom) {
@@ -126,10 +134,20 @@
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
                 samcmessage.nimMessage = message;
-                if ([[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
-                    [customMessages addObject:samcmessage];
-                } else {
-                    [customUnreadMessages addObject:samcmessage];
+                // 如果消息扩展中含有quest_id,则是商家回答问题的消息,此时需要先插入问题,再插入这条消息
+                NSNumber *questionId = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+                if (questionId) {
+                    SAMCMessage *questionMessage = [self questionMessageOfQuestionId:questionId answer:message.from];
+                    if (questionMessage) {
+                        [customMessages addObject:questionMessage];
+                        NSInteger index = [normalMessages indexOfObject:message];
+                        [normalMessages insertObject:questionMessage.nimMessage atIndex:index];
+                    }
+                }
+                
+                [customMessages addObject:samcmessage];
+                if (![[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
+                    customUnread ++;
                 }
             }
         } else {
@@ -138,11 +156,9 @@
         }
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unread:NO];
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customUnreadMessages sessionMode:SAMCUserModeTypeCustom unread:YES];
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unread:NO];
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spUnreadMessages sessionMode:SAMCUserModeTypeSP unread:YES];
-        [self.multicastDelegate onRecvMessages:messages];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unreadCount:customUnread];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unreadCount:spUnread];
+        [self.multicastDelegate onRecvMessages:normalMessages];
     });
 }
 
@@ -159,6 +175,34 @@
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(nullable NSError *)error
 {
     [self.multicastDelegate fetchMessageAttachment:message didCompleteWithError:error];
+}
+
+#pragma mark - handleMessageWithQuestionId
+- (SAMCMessage *)questionMessageOfQuestionId:(NSNumber *)questionId answer:(NSString *)answer
+{
+    SAMCMessage *quesitonMessage = nil;
+    // 查询是否是一个新的回复，如果是则更新到问题表中，同时需要插入问题到聊天消息中
+    NSString *question = [[SAMCDataBaseManager sharedManager].questionDB sendQuesion:questionId getNewResponseFromAnswer:answer update:YES];
+    if (question) {
+        NIMMessage *message = [[NIMMessage alloc] init];
+        message.text = question;
+        message.from = [SAMCAccountManager sharedManager].currentAccount;
+        // set unread_flag & save_flag extention
+        NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+        // 这个问题消息为了保证插入顺序，在下面直接插入数据库，在onRecvMessages:中丢弃
+        [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM,
+                                        MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO,
+                                        MESSAGE_EXT_SAVE_FLAG_KEY:MESSAGE_EXT_SAVE_FLAG_NO}];
+        message.remoteExt = ext;
+        NIMSession *session = [NIMSession session:answer type:NIMSessionTypeP2P];
+        [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:nil];
+        SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
+                                                   type:message.session.sessionType
+                                                   mode:SAMCUserModeTypeCustom];
+        quesitonMessage = [SAMCMessage message:message.messageId session:samcsession];
+        quesitonMessage.nimMessage = message;
+    }
+    return quesitonMessage;
 }
 
 @end

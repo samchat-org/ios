@@ -17,7 +17,7 @@
 // messages should belong to the same session
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages
            sessionMode:(SAMCUserModeType)sessionMode
-                unread:(BOOL)unreadFlag;
+           unreadCount:(NSInteger)unreadCount;
 
 // conversation manager
 - (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode;

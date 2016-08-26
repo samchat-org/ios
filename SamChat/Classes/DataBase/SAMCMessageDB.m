@@ -71,12 +71,12 @@
 
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages
            sessionMode:(SAMCUserModeType)sessionMode
-                unread:(BOOL)unreadFlag
+           unreadCount:(NSInteger)unreadCount
 {
     if ([messages count] == 0) {
         return;
     }
-    SAMCMessage *lastMessage = [messages lastObject]; 
+    SAMCMessage *lastMessage = [messages lastObject];
     // the messages belongs to the same SAMCSession
     SAMCSession *session = messages.firstObject.session;
     NSString *sessionName = session.tableName;
@@ -84,23 +84,20 @@
     NSInteger sessionType = session.sessionType;
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         NSInteger totalUnreadCount = 0;
-        NSInteger unreadCount = 0;
-        if (unreadFlag) {
-            unreadCount = [messages count];
-        }
+        NSInteger sessionUnreadCount = unreadCount;
         BOOL isNewSession = false;
         // 1. get pre unread count
         FMResultSet *s = [db executeQuery:@"SELECT unread_count FROM session_table WHERE session_mode = ? AND session_id = ?",
                           @(sessionMode), sessionId];
         // 2. update unread count or insert session
         if ([s next]) {
-            unreadCount = [s intForColumn:@"unread_count"] + unreadCount;
+            sessionUnreadCount += [s intForColumn:@"unread_count"];
             [db executeUpdate:@"UPDATE session_table SET unread_count = ?, last_msg_id = ? WHERE session_mode = ? AND session_id = ?",
-             @(unreadCount),lastMessage.messageId,@(sessionMode),sessionId];
+             @(sessionUnreadCount),lastMessage.messageId,@(sessionMode),sessionId];
         } else {
             isNewSession = true;
             [db executeUpdate:@"INSERT INTO session_table (name, session_id, session_mode, session_type, unread_count, last_msg_id) VALUES (?,?,?,?,?,?)",
-             sessionName,sessionId,@(sessionMode),@(sessionType),@(unreadCount),lastMessage.messageId];
+             sessionName,sessionId,@(sessionMode),@(sessionType),@(sessionUnreadCount),lastMessage.messageId];
         }
         [s close];
         
@@ -121,7 +118,7 @@
         // 5. notify the event
         SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
                                                                 lastMessage:lastMessage
-                                                                unreadCount:unreadCount];
+                                                                unreadCount:sessionUnreadCount];
         if (isNewSession) {
             [_conversationDelegate didAddRecentSession:recentSession totalUnreadCount:totalUnreadCount];
         } else {

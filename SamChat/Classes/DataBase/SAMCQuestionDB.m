@@ -75,13 +75,15 @@
             NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
             NSInteger responseCount = [s longForColumn:@"new_response_count"];
             NSInteger status = [s longForColumn:@"status"];
+            NSString *answersStr = [s stringForColumn:@"answers"];
             SAMCQuestionSession *session = [SAMCQuestionSession sendSession:question_id
                                                                    question:question
                                                                     address:address
                                                                    datetime:datetime
                                                               responseCount:responseCount
                                                                responsetime:lastAnswerTime
-                                                                     status:status];
+                                                                     status:status
+                                                                    answers:[self answersFromString:answersStr]];
             [questions addObject:session];
         }
         [s close];
@@ -132,14 +134,16 @@
         NSNumber *status = @(1); // TODO: change later
         NSNumber *datetime = questionInfo[SAMC_DATETIME] ?:@(0);
         NSNumber *last_answer_time = datetime; // init with question time
-        [db executeUpdate:@"INSERT OR IGNORE INTO send_question(question_id,question,address,status,datetime,last_answer_time,new_response_count) VALUES(?,?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time,@(0)];
+        NSString *answersStr = @"";
+        [db executeUpdate:@"INSERT OR IGNORE INTO send_question(question_id,question,address,status,datetime,last_answer_time,new_response_count,answers) VALUES(?,?,?,?,?,?,?,?)",question_id,question,address,status,datetime,last_answer_time,@(0),answersStr];
         SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[question_id integerValue]
                                                                question:question
                                                                 address:address
                                                                datetime:[datetime doubleValue]
                                                           responseCount:0
                                                            responsetime:[last_answer_time doubleValue]
-                                                                 status:[status integerValue]];
+                                                                 status:[status integerValue]
+                                                                answers:nil];
         [self.questionDelegate didAddQuestionSession:session];
     }];
 }
@@ -177,6 +181,76 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"UPDATE received_question SET status = ? WHERE question_id = ?", @(status), @(questionId)];
     }];
+}
+
+- (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId
+{
+    if (questionId == nil) {
+        return nil;
+    }
+    __block SAMCQuestionSession *session = nil;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM send_question where question_id = ?",questionId];
+        if ([s next]) {
+            NSString *question = [s stringForColumn:@"question"];
+            NSString *address = [s stringForColumn:@"address"];
+            NSTimeInterval datetime = [s doubleForColumn:@"datetime"];
+            NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
+            NSInteger responseCount = [s longForColumn:@"new_response_count"];
+            NSInteger status = [s longForColumn:@"status"];
+            NSString *answersStr = [s stringForColumn:@"answers"];
+            session = [SAMCQuestionSession sendSession:[questionId integerValue]
+                                              question:question
+                                               address:address
+                                              datetime:datetime
+                                         responseCount:responseCount
+                                          responsetime:lastAnswerTime
+                                                status:status
+                                               answers:[self answersFromString:answersStr]];
+        }
+        [s close];
+    }];
+    return session;
+}
+
+- (NSString *)sendQuesion:(NSNumber *)questionId getNewResponseFromAnswer:(NSString *)answer update:(BOOL)updateFlag
+{
+    if (questionId == nil) {
+        return nil;
+    }
+    __block NSString *question = nil;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *answersStr = nil;
+        FMResultSet *s = [db executeQuery:@"SELECT question,answers FROM send_question WHERE question_id = ?",questionId];
+        if ([s next]) {
+            question = [s stringForColumn:@"question"];
+            answersStr = [s stringForColumn:@"answers"];
+            NSArray *answers = [self answersFromString:answersStr];
+            for (NSString *answerIdStr in answers) {
+                if ([answerIdStr isEqualToString:answer]) {
+                    // already find, no need to insert
+                    question = nil;
+                    break;
+                }
+            }
+        }
+        [s close];
+        if (question && updateFlag) {
+            if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
+                answersStr = answer;
+            } else {
+                answersStr = [NSString stringWithFormat:@"%@,%@",answersStr,answer];
+            }
+            [db executeUpdate:@"UPDATE send_question SET answers = ? WHERE question_id = ?",answersStr,questionId];
+        }
+    }];
+    return question;
+}
+
+#pragma mark - Private
+- (NSArray<NSString *> *)answersFromString:(NSString *)answersStr
+{
+    return [answersStr componentsSeparatedByString:@","];
 }
 
 @end

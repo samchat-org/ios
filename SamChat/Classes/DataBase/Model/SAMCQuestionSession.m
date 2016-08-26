@@ -18,6 +18,7 @@
               responseCount:(NSInteger)count
                responsetime:(NSTimeInterval)responsetime
                      status:(NSInteger)status
+                    answers:(NSArray<NSString *> *)answers
 {
     SAMCQuestionSession *session = [[SAMCQuestionSession alloc] init];
     session.type = SAMCQuestionSessionTypeSend;
@@ -28,6 +29,7 @@
     session.newResponseCount = count;
     session.lastResponseTime = responsetime;
     session.status = status;
+    session.answers = answers;
     return session;
 }
 

@@ -290,9 +290,10 @@ NIMUserManagerDelegate>
     samcmessage.nimMessage = message;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // TODO: need check here, should insert message after sendMessage ok?
         [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]
                                                           sessionMode:self.currentUserMode
-                                                               unread:NO];
+                                                          unreadCount:0];
         //        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]];
         dispatch_async(dispatch_get_main_queue(), ^{
             NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];

@@ -21,6 +21,8 @@
 @property (nonatomic, assign) NSTimeInterval lastResponseTime;
 @property (nonatomic, assign) SAMCQuestionSessionType type;
 
+@property (nonatomic, strong) NSArray<NSString *> *answers;
+
 @property (nonatomic, assign) NSInteger senderId;
 @property (nonatomic, copy) NSString *senderUsername;
 
@@ -30,7 +32,8 @@
                    datetime:(NSTimeInterval)datetime
               responseCount:(NSInteger)count
                responsetime:(NSTimeInterval)responsetime
-                     status:(NSInteger)status;
+                     status:(NSInteger)status
+                    answers:(NSArray<NSString *> *)answers;
 
 + (instancetype)receivedSession:(NSInteger)quesionId
                        question:(NSString *)question

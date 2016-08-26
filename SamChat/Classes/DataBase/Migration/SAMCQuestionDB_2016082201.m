@@ -18,11 +18,11 @@
 - (BOOL)migrateDatabase:(FMDatabase *)db error:(out NSError *__autoreleasing *)error
 {
     DDLogDebug(@"SAMCQuestionDB_2016082201");
-    //send_question: | serial(primary) | question_id | question | address | status | datetime | last_answer_time | new_response_count |
+    //send_question: | serial(primary) | question_id | question | address | status | datetime | last_answer_time | new_response_count | answers |
     //received_question: | serial(primary) | question_id | question | sender_unique_id | status | datetime | address | sender_username |
     NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS send_question(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                       question_id INTEGER UNIQUE, question TEXT NOT NULL, address TEXT, status INTEGER, \
-                      datetime INTEGER, last_answer_time INTEGER, new_response_count INTEGER)",
+                      datetime INTEGER, last_answer_time INTEGER, new_response_count INTEGER, answers TEXT)",
                       @"CREATE TABLE IF NOT EXISTS received_question(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                       question_id INTEGER UNIQUE, question TEXT NOT NULL, sender_unique_id INTEGER, status INTEGER, \
                       datetime INTEGER, address TEXT, sender_username TEXT)"];
