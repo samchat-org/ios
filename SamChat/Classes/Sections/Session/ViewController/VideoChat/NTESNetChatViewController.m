@@ -286,7 +286,7 @@ NTES_FORBID_INTERACTIVE_POP
     message.from = self.callInfo.caller;
     NSString *sessionId = nil;
     id usermodeValue = nil;
-    if ([self.callInfo.caller isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
+    if ([self.callInfo.caller isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) { // TODO: change the currentAccount
         sessionId = self.callInfo.callee;
         if (self.callInfo.userMode == SAMCUserModeTypeSP) {
             usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
