@@ -91,4 +91,41 @@
 
 }
 
+- (void)updateFollowList:(NSArray *)users
+{
+    DDLogDebug(@"updateFollowList: %@", users);
+    [self resetFollowListTable];
+    // TODO: separate transaction?
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        for (NSDictionary *user in users) {
+            NSNumber *unique_id = user[SAMC_ID];
+            NSString *username = user[SAMC_USERNAME];
+            NSString *avatar = [user valueForKeyPath:SAMC_AVATAR_THUMB];
+            NSNumber *block_tag = user[SAMC_BLOCK_TAG];
+            NSNumber *favourite_tag = user[SAMC_FAVOURITE_TAG];
+            NSString *sp_service_category = [user valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_CATEGORY];
+            [db executeUpdate:@"insert or ignore into follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) values (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+        }
+    }];
+}
+
+#pragma mark - Private
+- (BOOL)resetFollowListTable
+{
+    __block BOOL result = YES;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSArray *sqls = @[@"DROP TABLE IF EXISTS follow_list",
+                          @"CREATE TABLE IF NOT EXISTS follow_list(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
+                          unique_id INTEGER UNIQUE, username TEXT NOT NULL, avatar TEXT, block_tag INTEGER, \
+                          favourite_tag INTEGER, sp_service_category TEXT)"];
+        for (NSString *sql in sqls) {
+            if (![db executeUpdate:sql]) {
+                DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);
+                result = NO;
+            }
+        }
+    }];
+    return result;
+}
+
 @end
