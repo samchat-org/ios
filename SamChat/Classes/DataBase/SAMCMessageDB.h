@@ -38,4 +38,6 @@
 
 - (void)updateTeamNIMRecentSession:(NIMRecentSession *)recentSession mode:(SAMCUserModeType)sessionMode;
 
+- (NSArray<SAMCRecentSession *> *)answerSessionsOfAnswers:(NSArray *)answers;
+
 @end

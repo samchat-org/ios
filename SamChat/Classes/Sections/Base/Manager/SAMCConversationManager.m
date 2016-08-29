@@ -101,6 +101,11 @@
     });
 }
 
+- (NSArray<SAMCRecentSession *> *)answerSessionsOfAnswers:(NSArray *)answers
+{
+    return [[SAMCDataBaseManager sharedManager].messageDB answerSessionsOfAnswers:answers];
+}
+
 #pragma mark - NIMConversationManagerDelegate
 - (void)didAddRecentSession:(NIMRecentSession *)recentSession
            totalUnreadCount:(NSInteger)totalUnreadCount

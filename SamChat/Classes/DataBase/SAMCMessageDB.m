@@ -341,6 +341,35 @@
     }];
 }
 
+- (NSArray<SAMCRecentSession *> *)answerSessionsOfAnswers:(NSArray *)answers
+{
+    __block NSMutableArray *sessions = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        for (NSString *answerId in answers) {
+            FMResultSet *s = [db executeQuery:@"SELECT * FROM session_table WHERE session_mode = ? AND session_id = ?",@(SAMCUserModeTypeCustom),answerId];
+            if ([s next]) {
+                NSString *sessionId = answerId;
+                int sessionMode = SAMCUserModeTypeCustom;
+                int sessionType = [s intForColumn:@"session_type"];
+                int unreadCount = [s intForColumn:@"unread_count"];
+                NSString *lastMsgId = [s stringForColumn:@"last_msg_id"];
+                SAMCSession *session = [SAMCSession session:sessionId
+                                                       type:sessionType
+                                                       mode:sessionMode];
+                SAMCMessage *message = [SAMCMessage message:lastMsgId session:session];
+                // get the last message for chat list view display
+                [message loadNIMMessage];
+                SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
+                                                                        lastMessage:message
+                                                                        unreadCount:unreadCount];
+                [sessions addObject:recentSession];
+            }
+            [s close];
+        }
+    }];
+    return sessions;
+}
+
 #pragma mark - Private
 - (NSArray<NIMMessage *> *)sortMessages:(NSArray<NIMMessage *> *)messages messageIds:(NSArray *)messageIds
 {

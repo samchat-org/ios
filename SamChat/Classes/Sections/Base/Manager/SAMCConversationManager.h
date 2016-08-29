@@ -35,4 +35,6 @@
 
 - (void)deleteRecentSession:(SAMCRecentSession *)recentSession;
 
+- (NSArray<SAMCRecentSession *> *)answerSessionsOfAnswers:(NSArray *)answers;
+
 @end
