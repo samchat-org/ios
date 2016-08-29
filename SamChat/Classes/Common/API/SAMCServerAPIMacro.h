@@ -58,6 +58,7 @@
 #define SAMC_FINDPWD_UPDATE             @"findpwd-update"
 #define SAMC_QUESTION                   @"question"
 #define SAMC_FOLLOW                     @"follow"
+#define SAMC_QUERY                      @"query"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -68,6 +69,8 @@
 #define SAMC_ACCOUNT                    @"account"
 #define SAMC_ID                         @"id"
 #define SAMC_OPT                        @"opt"
+#define SAMC_PARAM                      @"param"
+#define SAMC_SEARCH_KEY                 @"search_key"
 
 #define SAMC_COMPANY_NAME               @"company_name"
 #define SAMC_SERVICE_CATEGORY           @"service_category"

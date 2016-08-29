@@ -49,4 +49,7 @@
 + (NSDictionary *)follow:(BOOL)isFollow
          officialAccount:(NSNumber *)uniqueId;
 
+
++ (NSDictionary *)queryFuzzyUser:(NSString *)key;
+
 @end
