@@ -52,4 +52,7 @@
 
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
 
++ (NSDictionary *)queryPublicWithKey:(NSString *)key
+                            location:(NSDictionary *)location;
+
 @end

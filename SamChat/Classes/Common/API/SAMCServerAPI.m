@@ -348,6 +348,39 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "public-query"
+//        "token": "token",
+//    },
+//    "body":
+//    {
+//    key: //option
+//    location:{
+//        "location_info":{
+//            “longitude”:
+//            “latitude
+//        }//option
+//        "place_id": " "//option
+//        "address": " "//option
+//    }     
+//    }
+//}
++ (NSDictionary *)queryPublicWithKey:(NSString *)key
+                            location:(NSDictionary *)location
+{
+    location = location ?:@{};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_PUBLIC_QUERY,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSMutableDictionary *body = [[NSMutableDictionary alloc] init];
+    if ((key != nil) && [key length] > 0) {
+        [body setValue:key forKey:SAMC_KEY];
+    }
+    [body setValue:location forKey:SAMC_LOCATION];
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+
 #pragma mark - Token
 + (NSString *)token
 {

@@ -59,6 +59,7 @@
 #define SAMC_QUESTION                   @"question"
 #define SAMC_FOLLOW                     @"follow"
 #define SAMC_QUERY                      @"query"
+#define SAMC_PUBLIC_QUERY               @"public-query"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -71,6 +72,7 @@
 #define SAMC_OPT                        @"opt"
 #define SAMC_PARAM                      @"param"
 #define SAMC_SEARCH_KEY                 @"search_key"
+#define SAMC_KEY                        @"key"
 
 #define SAMC_COMPANY_NAME               @"company_name"
 #define SAMC_SERVICE_CATEGORY           @"service_category"
