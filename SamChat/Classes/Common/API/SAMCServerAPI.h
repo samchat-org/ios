@@ -29,8 +29,7 @@
                                account:(NSString *)account
                               password:(NSString *)password;
 
-+ (NSDictionary *)logout:(NSString *)account
-                   token:(NSString *)token;
++ (NSDictionary *)logout:(NSString *)account;
 
 + (NSDictionary *)createSamPros:(NSDictionary *)info;
 
@@ -46,5 +45,8 @@
 
 + (NSDictionary *)sendQuestion:(NSString *)question
                       location:(NSDictionary *)location;
+
++ (NSDictionary *)follow:(BOOL)isFollow
+         officialAccount:(NSNumber *)uniqueId;
 
 @end

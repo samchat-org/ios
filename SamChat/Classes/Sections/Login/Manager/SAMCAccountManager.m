@@ -221,7 +221,7 @@
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *loginData = [[NTESLoginManager sharedManager] currentLoginData];
-    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username token:loginData.finalToken];
+    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username];
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [SAMCDataPostSerializer serializer];

@@ -143,11 +143,9 @@
 //    }
 //}
 + (NSDictionary *)logout:(NSString *)account
-                   token:(NSString *)token
 {
     account = account ?:@"";
-    token = token ?:@"";
-    NSDictionary *header = @{SAMC_ACTION:SAMC_LOGOUT,SAMC_TOKEN:token};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_LOGOUT,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
@@ -179,8 +177,7 @@
 + (NSDictionary *)createSamPros:(NSDictionary *)info
 {
     NSAssert(info != nil, @"create sam pros info should not be nil");
-    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
-    NSDictionary *header = @{SAMC_ACTION:SAMC_CREATE_SAM_PROS,SAMC_TOKEN:token};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_CREATE_SAM_PROS,SAMC_TOKEN:[SAMCServerAPI token]};
     return @{SAMC_HEADER:header,SAMC_BODY:info};
 }
 
@@ -296,12 +293,44 @@
 {
     question = question ?:@"";
     location = location ?:@{};
-    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
-    NSDictionary *header = @{SAMC_ACTION:SAMC_QUESTION,SAMC_TOKEN:token};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUESTION,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:@(0),
                            SAMC_QUESTION:question,
                            SAMC_LOCATION:location};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
+//        "action" : "follow",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "opt" :  [0/1]
+//        0 :  unfollow
+//        1 :  follow
+//        "id" : unique_id_in_samchat of Sam-pros
+//    }
+//}
++ (NSDictionary *)follow:(BOOL)isFollow
+         officialAccount:(NSNumber *)uniqueId
+{
+    uniqueId = uniqueId ?:@(0);
+    NSDictionary *header = @{SAMC_ACTION:SAMC_FOLLOW,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OPT:isFollow ? @(1) : @(0),
+                           SAMC_ID:uniqueId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+
+#pragma mark - Token
++ (NSString *)token
+{
+    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
+    token = token ?:@"";
+    return token;
 }
 
 @end

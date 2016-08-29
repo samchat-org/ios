@@ -22,6 +22,7 @@
 #define SAMC_API_USER_FIND_PWD_UPDATE       @"api_1.0_user_findpwdUpdate.do"
 #define SAMC_API_USER_PWD_UPDATE            @"api_1.0_user_pwdUpdate.do"
 #define SAMC_API_QUESTION_QUESTION          @"api_1.0_question_question.do"
+#define SAMC_API_OFFICIAL_ACCOUNT_FOLLOW    @"api_1.0_officialAccount_follow.do"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@""SAMC_API_USER_REGISTER_CODE_REQUEST
 #define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@""SAMC_API_USER_SIGNUP_CODE_VERIFY
@@ -34,6 +35,7 @@
 #define SAMC_URL_USER_FIND_PWD_CODE_VERIFY  SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_CODE_VERIFY
 #define SAMC_URL_USER_FIND_PWD_UPDATE       SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_UPDATE
 #define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@""SAMC_API_QUESTION_QUESTION
+#define SAMC_URL_OFFICIAL_ACCOUNT_FOLLOW    SAMC_API_PREFIX@""SAMC_API_OFFICIAL_ACCOUNT_FOLLOW
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -55,6 +57,7 @@
 #define SAMC_FINDPWD_CODE_VERIFY        @"findpwd-code-verify"
 #define SAMC_FINDPWD_UPDATE             @"findpwd-update"
 #define SAMC_QUESTION                   @"question"
+#define SAMC_FOLLOW                     @"follow"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
