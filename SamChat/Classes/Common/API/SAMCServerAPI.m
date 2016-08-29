@@ -380,6 +380,24 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "follow-list-query"
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//    } 
+//}
++ (NSDictionary *)queryFollowList
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_FOLLOW_LIST_QUERY,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+
 
 #pragma mark - Token
 + (NSString *)token

@@ -55,4 +55,6 @@
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
                             location:(NSDictionary *)location;
 
++ (NSDictionary *)queryFollowList;
+
 @end

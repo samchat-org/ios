@@ -22,7 +22,8 @@
 #define SAMC_API_USER_FIND_PWD_UPDATE       @"api_1.0_user_findpwdUpdate.do"
 #define SAMC_API_USER_PWD_UPDATE            @"api_1.0_user_pwdUpdate.do"
 #define SAMC_API_QUESTION_QUESTION          @"api_1.0_question_question.do"
-#define SAMC_API_OFFICIAL_ACCOUNT_FOLLOW    @"api_1.0_officialAccount_follow.do"
+#define SAMC_API_OFFICIALACCOUNT_FOLLOW    @"api_1.0_officialAccount_follow.do"
+#define SAMC_API_OFFICIALACCOUNT_FOLLOW_LIST_QUERY @"api_1.0_officialAccount_followListQuery.do"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@""SAMC_API_USER_REGISTER_CODE_REQUEST
 #define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@""SAMC_API_USER_SIGNUP_CODE_VERIFY
@@ -35,7 +36,8 @@
 #define SAMC_URL_USER_FIND_PWD_CODE_VERIFY  SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_CODE_VERIFY
 #define SAMC_URL_USER_FIND_PWD_UPDATE       SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_UPDATE
 #define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@""SAMC_API_QUESTION_QUESTION
-#define SAMC_URL_OFFICIAL_ACCOUNT_FOLLOW    SAMC_API_PREFIX@""SAMC_API_OFFICIAL_ACCOUNT_FOLLOW
+#define SAMC_URL_OFFICIALACCOUNT_FOLLOW     SAMC_API_PREFIX@""SAMC_API_OFFICIALACCOUNT_FOLLOW
+#define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY SAMC_API_PREFIX@""SAMC_API_OFFICIALACCOUNT_FOLLOW_LIST_QUERY
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -60,6 +62,7 @@
 #define SAMC_FOLLOW                     @"follow"
 #define SAMC_QUERY                      @"query"
 #define SAMC_PUBLIC_QUERY               @"public-query"
+#define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -89,6 +92,9 @@
 #define SAMC_LASTUPDATE                 @"lastupdate"
 #define SAMC_QUESTION_ID                @"question_id"
 #define SAMC_DATETIME                   @"datetime"
+#define SAMC_USERS                      @"users"
+#define SAMC_BLOCK_TAG                  @"block_tag"
+#define SAMC_FAVOURITE_TAG              @"favourite_tag"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
