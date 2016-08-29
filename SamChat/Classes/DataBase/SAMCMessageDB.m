@@ -161,6 +161,7 @@
 {
     NSString *tableName = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode].tableName;
     __block NSArray *messages = nil;
+    __block NSArray *sortedMessageIds = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *checkTableSql = [NSString stringWithFormat:@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name='%@'",tableName];
         FMResultSet *s = [db executeQuery:checkTableSql];
@@ -183,11 +184,12 @@
         while ([s next]) {
             NSString *messageId = [s stringForColumn:@"msg_id"];
             [messageIds addObject:messageId];
+            sortedMessageIds = [[messageIds reverseObjectEnumerator] allObjects];
         }
         [s close];
-        messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:messageIds];
+        messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:sortedMessageIds];
     }];
-    return messages;
+    return [self sortMessages:messages messageIds:sortedMessageIds];
 }
 
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
@@ -337,6 +339,24 @@
             [_conversationDelegate didUpdateRecentSession:samcRecentSession totalUnreadCount:totalUnreadCount];
         }
     }];
+}
+
+#pragma mark - Private
+- (NSArray<NIMMessage *> *)sortMessages:(NSArray<NIMMessage *> *)messages messageIds:(NSArray *)messageIds
+{
+    if ((messages == nil) || ([messages count] <= 0)) {
+        return nil;
+    }
+    NSMutableArray *sortedMessages = [[NSMutableArray alloc] init];
+    for (NSString *messageId in messageIds) {
+        for (NIMMessage *message in messages) {
+            if ([message.messageId isEqualToString:messageId]) {
+                [sortedMessages addObject:message];
+                break;
+            }
+        }
+    }
+    return sortedMessages;
 }
 
 @end
