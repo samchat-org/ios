@@ -98,6 +98,11 @@ officialAccount:(NSNumber *)uniqueId
     });
 }
 
+- (NSArray<SAMCSPBasicInfo *> *)myFollowList
+{
+    return [[SAMCDataBaseManager sharedManager].userInfoDB myFollowList];
+}
+
 #pragma mark - Private
 - (void)queryFollowList
 {

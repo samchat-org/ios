@@ -7,9 +7,11 @@
 //
 
 #import "SAMCPublicViewController.h"
-#import "SAMCSPPublicMsgDataSource.h"
+#import "SAMCPublicSearchViewController.h"
+#import "SAMCCustomPublicListDelegate.h"
+#import "SAMCPublicManager.h"
 
-@interface SAMCPublicViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+@interface SAMCPublicViewController ()<SAMCTableReloadDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 @property (nonatomic, strong) UITableView *customTableView;
 @property (nonatomic, strong) UISearchDisplayController *customSearchResultController;
@@ -17,7 +19,8 @@
 
 @property (nonatomic, strong) UITableView *spTableView;
 
-@property (nonatomic, strong) SAMCSPPublicMsgDataSource *spPublicDataSource;
+@property (nonatomic, strong) SAMCTableViewDelegate *delegator;
+@property (nonatomic, strong) NSMutableArray *data;
 
 @end
 
@@ -51,6 +54,13 @@
 
 - (void)setupCustomModeViews
 {
+    [self.data removeAllObjects];
+    [self.data addObjectsFromArray:[[SAMCPublicManager sharedManager] myFollowList]];
+    __weak typeof(self) weakSelf = self;
+    self.delegator = [[SAMCCustomPublicListDelegate alloc] initWithTableData:^NSMutableArray *{
+        return weakSelf.data;
+    } viewController:self];
+    
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     self.spTableView = nil;
     
@@ -59,8 +69,8 @@
     self.customTableView = [[UITableView alloc] init];
     self.customTableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.customTableView.backgroundColor = [UIColor greenColor];
-    self.customTableView.dataSource = self;
-    self.customTableView.delegate = self;
+    self.customTableView.dataSource = self.delegator;
+    self.customTableView.delegate = self.delegator;
     self.customTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.customTableView.sectionIndexBackgroundColor = [UIColor clearColor];
     [self.view addSubview:self.customTableView];
@@ -70,11 +80,11 @@
     self.customSearchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.customTableView.tableHeaderView = self.customSearchBar;
     
-    self.customSearchResultController = [[UISearchDisplayController alloc] initWithSearchBar:self.customSearchBar
-                                                                          contentsController:self];
-    self.customSearchResultController.delegate = self;
-    self.customSearchResultController.searchResultsDataSource = self;
-    self.customSearchResultController.searchResultsDelegate = self;
+//    self.customSearchResultController = [[UISearchDisplayController alloc] initWithSearchBar:self.customSearchBar
+//                                                                          contentsController:self];
+//    self.customSearchResultController.delegate = self;
+//    self.customSearchResultController.searchResultsDataSource = self;
+//    self.customSearchResultController.searchResultsDelegate = self;
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_customTableView]|"
                                                                       options:0
@@ -110,62 +120,19 @@
                                                                         views:NSDictionaryOfVariableBindings(_spTableView)]];
 }
 
-#pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 0;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"CustomPublicCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
-    
-//    NSString *value = nil;
-//    if (tableView == self.countryCodeTableView) {
-//        NSString *key = self.indexArray[indexPath.section];
-//        value = [[self.countryCodeDictionary objectForKey:key] objectAtIndex:indexPath.row];
-//    } else {
-//        value = [self.searchResultArray objectAtIndex:indexPath.row];
-//    }
-//    NSArray *splitValueList = [value componentsSeparatedByString:@","];
-//    cell.textLabel.text = splitValueList[0];
-//    cell.detailTextLabel.text = [splitValueList count] > 1 ? splitValueList[1]:@"";
-    return cell;
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    if ([self.indexArray[section] isEqualToString:@"#"]) {
-//        return [self topHitTitle];
-//    }
-//    return self.indexArray[section];
-//}
-
-#pragma mark - UITableViewDelegate
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 44;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 0;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - SAMCTableReloadDelegate
+- (void)sortAndReload
 {
 }
 
 #pragma mark - UISearchBarDelegate
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
+{
+    // TODO: just for test
+    SAMCPublicSearchViewController *vc = [[SAMCPublicSearchViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
 //    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *value, NSDictionary<NSString *,id> * _Nullable bindings) {
@@ -185,6 +152,15 @@
 //        return [obj1 compare:obj2];
 //    }];
 //    [self.searchResultController.searchResultsTableView reloadData];
+}
+
+#pragma mark - lazy load
+- (NSMutableArray *)data
+{
+    if (_data == nil) {
+        _data = [[NSMutableArray alloc] init];
+    }
+    return _data;
 }
 
 @end

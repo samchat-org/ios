@@ -117,6 +117,32 @@
     return result;
 }
 
+- (NSArray<SAMCSPBasicInfo *> *)myFollowList
+{
+    __block NSMutableArray *follows = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM follow_list"];
+        while ([s next]) {
+            NSInteger unique_id = [s longForColumn:@"unique_id"];
+            NSString *username = [s stringForColumn:@"username"];
+            NSString *avatar = [s stringForColumn:@"avatar"];
+            BOOL block_tag = [s boolForColumn:@"block_tag"];
+            BOOL favourite_tag = [s boolForColumn:@"favourite_tag"];
+            NSString *sp_service_category = [s stringForColumn:@"sp_service_category"];
+            
+            SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:unique_id
+                                                       username:username
+                                                         avatar:avatar
+                                                       blockTag:block_tag
+                                                   favouriteTag:favourite_tag
+                                                       category:sp_service_category];
+            [follows addObject:info];
+        }
+        [s close];
+    }];
+    return follows;
+}
+
 #pragma mark - Private
 - (BOOL)resetFollowListTable
 {

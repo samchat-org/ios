@@ -7,11 +7,14 @@
 //
 
 #import "SAMCDBBase.h"
+#import "SAMCSPBasicInfo.h"
 
 @interface SAMCUserInfoDB : SAMCDBBase
 
 - (void)updateUser:(NSDictionary *)userInfo;
 
 - (BOOL)updateFollowList:(NSArray *)users;
+
+- (NSArray<SAMCSPBasicInfo *> *)myFollowList;
 
 @end

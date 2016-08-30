@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCSPBasicInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface SAMCPublicManager : NSObject
@@ -22,6 +23,8 @@ officialAccount:(NSNumber *)uniqueId
     completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)queryFollowListIfNecessary;
+
+- (NSArray<SAMCSPBasicInfo *> *)myFollowList;
 
 @end
 NS_ASSUME_NONNULL_END
