@@ -91,10 +91,13 @@
 
 }
 
-- (void)updateFollowList:(NSArray *)users
+- (BOOL)updateFollowList:(NSArray *)users
 {
     DDLogDebug(@"updateFollowList: %@", users);
-    [self resetFollowListTable];
+    if (![self resetFollowListTable]) {
+        return NO;
+    }
+    __block BOOL result = YES;
     // TODO: separate transaction?
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         for (NSDictionary *user in users) {
@@ -104,9 +107,14 @@
             NSNumber *block_tag = user[SAMC_BLOCK_TAG];
             NSNumber *favourite_tag = user[SAMC_FAVOURITE_TAG];
             NSString *sp_service_category = [user valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_CATEGORY];
-            [db executeUpdate:@"insert or ignore into follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) values (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+            result = [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+            if (result == NO) {
+                *rollback = YES;
+                break;
+            }
         }
     }];
+    return result;
 }
 
 #pragma mark - Private

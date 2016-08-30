@@ -12,6 +12,6 @@
 
 - (void)updateUser:(NSDictionary *)userInfo;
 
-- (void)updateFollowList:(NSArray *)users;
+- (BOOL)updateFollowList:(NSArray *)users;
 
 @end
