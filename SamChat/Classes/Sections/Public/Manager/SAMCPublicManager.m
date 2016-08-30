@@ -12,6 +12,7 @@
 #import "SAMCDataPostSerializer.h"
 #import "SAMCServerErrorHelper.h"
 #import "SAMCDataBaseManager.h"
+#import "SAMCPreferenceManager.h"
 
 @implementation SAMCPublicManager
 
@@ -87,28 +88,38 @@ officialAccount:(NSNumber *)uniqueId
     }];
 }
 
+- (void)queryFollowListIfNecessary
+{
+    if ([[SAMCPreferenceManager sharedManager].followListSyncFlag isEqual:@(YES)]) {
+        return;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [self queryFollowList];
+    });
+}
+
+#pragma mark - Private
 - (void)queryFollowList
 {
-    // TODO: add query requirement checking
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSDictionary *parameters = [SAMCServerAPI queryFollowList];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.requestSerializer = [SAMCDataPostSerializer serializer];
-        [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            if ([responseObject isKindOfClass:[NSDictionary class]]) {
-                NSDictionary *response = responseObject;
-                NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-                if (errorCode == 0) {
-                    DDLogDebug(@"response:%@",response);
-                    NSArray *users = response[SAMC_USERS];
-                    if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
-                        [[SAMCDataBaseManager sharedManager].userInfoDB updateFollowList:users];
+    NSDictionary *parameters = [SAMCServerAPI queryFollowList];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode == 0) {
+                NSArray *users = response[SAMC_USERS];
+                if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
+                    BOOL result = [[SAMCDataBaseManager sharedManager].userInfoDB updateFollowList:users];
+                    if (result) {
+                        [SAMCPreferenceManager sharedManager].followListSyncFlag = @(YES);
                     }
                 }
             }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        }];
-    });
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+    }];
 }
 
 @end

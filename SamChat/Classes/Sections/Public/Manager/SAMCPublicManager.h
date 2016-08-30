@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 officialAccount:(NSNumber *)uniqueId
     completion:(void (^)(NSError * __nullable error))completion;
 
-- (void)queryFollowList;
+- (void)queryFollowListIfNecessary;
 
 @end
 NS_ASSUME_NONNULL_END

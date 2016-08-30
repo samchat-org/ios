@@ -10,6 +10,7 @@
 
 #define SAMC_CURRENTUSERMODE_KEY    @"samc_currentusermode_key"
 #define SAMC_GETUIBINDEDALIAS_KEY   @"samc_getuibindedalias_key"
+#define SAMC_FOLLOWLISTSYNCFLAG_KEY @"samc_followlistsyncflag_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -21,6 +22,7 @@
 
 @synthesize currentUserMode = _currentUserMode;
 @synthesize getuiBindedAlias = _getuiBindedAlias;
+@synthesize followListSyncFlag = _followListSyncFlag;
 
 + (instancetype)sharedManager
 {
@@ -81,6 +83,28 @@
     dispatch_barrier_async(_syncQueue, ^{
         _getuiBindedAlias = getuiBindedAlias;
         [[NSUserDefaults standardUserDefaults] setValue:getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
+    });
+}
+
+#pragma mark - followListSyncFlag
+- (NSNumber *)followListSyncFlag
+{
+    __block NSNumber *flag;
+    dispatch_sync(_syncQueue, ^{
+        if (_followListSyncFlag == nil) {
+            _followListSyncFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
+            _followListSyncFlag = _followListSyncFlag ?:@(NO);
+        }
+        flag = _followListSyncFlag;
+    });
+    return flag;
+}
+
+- (void)setFollowListSyncFlag:(NSNumber *)followListSyncFlag
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _followListSyncFlag = followListSyncFlag;
+        [[NSUserDefaults standardUserDefaults] setValue:followListSyncFlag forKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
     });
 }
 

@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong) NSNumber *currentUserMode;
 @property (nonatomic, copy) NSString *getuiBindedAlias;
+@property (nonatomic, strong) NSNumber *followListSyncFlag;
 
 + (instancetype)sharedManager;
 
