@@ -95,7 +95,7 @@
 {
     __block NSMutableArray *questions = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"select * from received_question"];
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM received_question"];
         while ([s next]) {
             NSInteger question_id = [s longForColumn:@"question_id"];
             NSString *question = [s stringForColumn:@"question"];
