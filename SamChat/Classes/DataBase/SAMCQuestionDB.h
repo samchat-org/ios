@@ -22,6 +22,7 @@
 - (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status;
 
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session;
+- (void)deleteReceivedQuestion:(SAMCQuestionSession *)session;
 
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId;
 - (NSString *)sendQuesion:(NSNumber *)questionId getNewResponseFromAnswer:(NSString *)answer update:(BOOL)updateFlag;

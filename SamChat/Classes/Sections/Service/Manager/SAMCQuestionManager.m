@@ -112,7 +112,14 @@
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].questionDB deleteSendQuestion:(SAMCQuestionSession *)session];
+        [[SAMCDataBaseManager sharedManager].questionDB deleteSendQuestion:session];
+    });
+}
+
+- (void)deleteReceivedQuestion:(SAMCQuestionSession *)session
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB deleteReceivedQuestion:session];
     });
 }
 
