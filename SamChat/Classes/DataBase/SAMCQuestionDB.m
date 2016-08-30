@@ -183,6 +183,13 @@
     }];
 }
 
+- (void)deleteSendQuestion:(SAMCQuestionSession *)session
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"DELETE FROM send_question WHERE question_id = ?", @(session.questionId)];
+    }];
+}
+
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId
 {
     if (questionId == nil) {

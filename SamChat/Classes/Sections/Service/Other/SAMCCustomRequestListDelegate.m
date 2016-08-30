@@ -75,6 +75,12 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    SAMCQuestionSession *session = [self data][indexPath.row];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [[SAMCQuestionManager sharedManager] deleteSendQuestion:session];
+        [[self data] removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 #pragma mark - SAMCQuestionManagerDelegate
