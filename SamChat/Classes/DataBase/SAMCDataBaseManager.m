@@ -69,7 +69,7 @@
 
 - (BOOL)doMigration
 {
-    [NSThread sleepForTimeInterval:6]; // TODO: for test, delete it later
+//    [NSThread sleepForTimeInterval:6]; // just for test
     if ([_messageDB needsMigration]) {
         if (![_messageDB doMigration]) {
             return false;
