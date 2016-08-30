@@ -36,19 +36,37 @@
 {
 }
 
-- (void)searchPublicWithKey:(NSString *)key
-                   location:(NSDictionary *)location
+- (void)searchPublicWithKey:(NSString * __nullable)key
+                   location:(NSDictionary * __nullable)location
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion
 {
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI queryPublicWithKey:key location:location];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(nil, [SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(response[SAMC_USERS], nil);
+            }
+        } else {
+            completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+    
 }
 
 - (void)follow:(BOOL)isFollow
 officialAccount:(NSNumber *)uniqueId
     completion:(void (^)(NSError * __nullable error))completion
 {
-    
     NSAssert(completion != nil, @"completion block should not be nil");
-    DDLogDebug(SAMC_URL_USER_LOGIN);
     NSDictionary *parameters = [SAMCServerAPI follow:isFollow officialAccount:uniqueId];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
@@ -71,11 +89,11 @@ officialAccount:(NSNumber *)uniqueId
 
 - (void)queryFollowList
 {
+    // TODO: add query requirement checking
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSDictionary *parameters = [SAMCServerAPI queryFollowList];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [SAMCDataPostSerializer serializer];
-        DDLogDebug(SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY);
         [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *response = responseObject;

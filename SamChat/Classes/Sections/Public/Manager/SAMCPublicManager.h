@@ -13,8 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedManager;
 
-- (void)searchPublicWithKey:(NSString *)key
-                   location:(NSDictionary *)location
+- (void)searchPublicWithKey:(NSString * __nullable)key
+                   location:(NSDictionary * __nullable)location
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
 - (void)follow:(BOOL)isFollow

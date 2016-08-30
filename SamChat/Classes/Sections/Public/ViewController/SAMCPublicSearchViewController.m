@@ -7,6 +7,7 @@
 //
 
 #import "SAMCPublicSearchViewController.h"
+#import "SAMCPublicManager.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -78,7 +79,10 @@
 #pragma mark - Action
 - (void)onTouchSearch:(id)sender
 {
-    DDLogDebug(@"search");
+    NSString *key = self.searchKeyTextField.text;
+    [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        DDLogDebug(@"public: %@", users);
+    }];
 }
 
 #pragma mark - UITableViewDataSource
