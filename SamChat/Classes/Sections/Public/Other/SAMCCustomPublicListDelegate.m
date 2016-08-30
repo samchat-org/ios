@@ -8,7 +8,7 @@
 
 #import "SAMCCustomPublicListDelegate.h"
 #import "SAMCCustomPublicListCell.h"
-#import "SAMCSPBasicInfo.h"
+#import "SAMCPublicSession.h"
 
 @implementation SAMCCustomPublicListDelegate
 
@@ -38,9 +38,9 @@
         cell = [[SAMCCustomPublicListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
-    SAMCSPBasicInfo *info = [self data][indexPath.row];
-    cell.messageLabel.text = @"message text";
-    cell.nameLabel.text = info.username;
+    SAMCPublicSession *session = [self data][indexPath.row];
+    cell.messageLabel.text = session.lastMessageContent;
+    cell.nameLabel.text = session.spBasicInfo.username;
     
     return cell;
 }

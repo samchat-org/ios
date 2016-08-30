@@ -79,10 +79,14 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarImageView,_messageLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_nameLabel]-5-[_messageLabel]-5-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[_nameLabel]"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_nameLabel,_messageLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_nameLabel)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_messageLabel]-15-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_messageLabel)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeLeading
                                                      relatedBy:NSLayoutRelationEqual

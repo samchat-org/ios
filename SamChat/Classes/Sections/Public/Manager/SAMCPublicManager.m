@@ -98,7 +98,7 @@ officialAccount:(NSNumber *)uniqueId
     });
 }
 
-- (NSArray<SAMCSPBasicInfo *> *)myFollowList
+- (NSArray<SAMCPublicSession *> *)myFollowList
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB myFollowList];
 }

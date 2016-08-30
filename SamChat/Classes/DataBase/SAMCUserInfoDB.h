@@ -7,7 +7,7 @@
 //
 
 #import "SAMCDBBase.h"
-#import "SAMCSPBasicInfo.h"
+#import "SAMCPublicSession.h"
 
 @interface SAMCUserInfoDB : SAMCDBBase
 
@@ -15,6 +15,6 @@
 
 - (BOOL)updateFollowList:(NSArray *)users;
 
-- (NSArray<SAMCSPBasicInfo *> *)myFollowList;
+- (NSArray<SAMCPublicSession *> *)myFollowList;
 
 @end

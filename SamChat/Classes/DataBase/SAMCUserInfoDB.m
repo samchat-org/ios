@@ -117,7 +117,7 @@
     return result;
 }
 
-- (NSArray<SAMCSPBasicInfo *> *)myFollowList
+- (NSArray<SAMCPublicSession *> *)myFollowList
 {
     __block NSMutableArray *follows = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -129,6 +129,7 @@
             BOOL block_tag = [s boolForColumn:@"block_tag"];
             BOOL favourite_tag = [s boolForColumn:@"favourite_tag"];
             NSString *sp_service_category = [s stringForColumn:@"sp_service_category"];
+            NSString *last_message_content = [s stringForColumn:@"last_message_content"];
             
             SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:unique_id
                                                        username:username
@@ -136,7 +137,8 @@
                                                        blockTag:block_tag
                                                    favouriteTag:favourite_tag
                                                        category:sp_service_category];
-            [follows addObject:info];
+            SAMCPublicSession *session = [SAMCPublicSession session:info lastMessageContent:last_message_content];
+            [follows addObject:session];
         }
         [s close];
     }];
@@ -151,7 +153,7 @@
         NSArray *sqls = @[@"DROP TABLE IF EXISTS follow_list",
                           @"CREATE TABLE IF NOT EXISTS follow_list(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                           unique_id INTEGER UNIQUE, username TEXT NOT NULL, avatar TEXT, block_tag INTEGER, \
-                          favourite_tag INTEGER, sp_service_category TEXT)"];
+                          favourite_tag INTEGER, sp_service_category TEXT, last_message_content TEXT)"];
         for (NSString *sql in sqls) {
             if (![db executeUpdate:sql]) {
                 DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);
