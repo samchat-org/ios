@@ -160,19 +160,14 @@
                                        limit:(NSInteger)limit
 {
     NSString *tableName = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode].tableName;
+    if (![self isTableExists:tableName]) {
+        // table not found, first time enter the session, e.g. enter a new session from contact list
+        return nil;
+    }
     __block NSArray *messages = nil;
     __block NSArray *sortedMessageIds = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
-        NSString *checkTableSql = [NSString stringWithFormat:@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name='%@'",tableName];
-        FMResultSet *s = [db executeQuery:checkTableSql];
-        [s next];
-        int count = [s intForColumnIndex:0];
-        [s close];
-        // table not found, first time enter the session, e.g. enter a new session from contact list
-        if (count == 0) {
-            return;
-        }
-        
+        FMResultSet *s;
         if (message == nil) {
             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
             s = [db executeQuery:sql, @(limit)];
