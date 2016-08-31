@@ -149,15 +149,33 @@
     return follows;
 }
 
+- (void)insertToFollowList:(SAMCUserInfo *)userInfo
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+//        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",@(userInfo.uniqueId)];
+//        [s next];
+//        int count = [s intForColumnIndex:0];
+//        [s close];
+//        if (count > 0) {
+//            return; // already exist
+//        }
+        NSNumber *unique_id = @(userInfo.uniqueId);
+        NSString *username = userInfo.username;
+        NSString *avatar = userInfo.avatar;
+        NSNumber *block_tag = @(NO);
+        NSNumber *favourite_tag = @(NO);
+        NSString *sp_service_category = userInfo.spInfo.serviceCategory;
+        [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+    }];
+}
+
 #pragma mark - Private
 - (BOOL)resetFollowListTable
 {
     __block BOOL result = YES;
     [self.queue inDatabase:^(FMDatabase *db) {
         NSArray *sqls = @[@"DROP TABLE IF EXISTS follow_list",
-                          @"CREATE TABLE IF NOT EXISTS follow_list(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
-                          unique_id INTEGER UNIQUE, username TEXT NOT NULL, avatar TEXT, block_tag INTEGER, \
-                          favourite_tag INTEGER, sp_service_category TEXT, last_message_content TEXT)"];
+                          SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201];
         for (NSString *sql in sqls) {
             if (![db executeUpdate:sql]) {
                 DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);

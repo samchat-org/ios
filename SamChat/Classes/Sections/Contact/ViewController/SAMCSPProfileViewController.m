@@ -7,6 +7,8 @@
 //
 
 #import "SAMCSPProfileViewController.h"
+#import "SAMCPublicManager.h"
+#import "UIView+Toast.h"
 
 @interface SAMCSPProfileViewController ()
 
@@ -47,7 +49,18 @@
 
 - (void)touchFollow:(id)sender
 {
-    DDLogDebug(@"follow");
+    self.followButton.enabled = NO;
+    __weak typeof(self) wself = self;
+    [[SAMCPublicManager sharedManager] follow:YES officialAccount:self.userInfo completion:^(NSError * _Nullable error) {
+        NSString *toast;
+        if (error) {
+            wself.followButton.enabled = YES;
+            toast =error.userInfo[NSLocalizedDescriptionKey];
+        } else {
+            toast = @"follow success";
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+    }];
 }
 
 @end

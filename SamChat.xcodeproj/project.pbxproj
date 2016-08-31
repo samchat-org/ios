@@ -811,6 +811,7 @@
 		31F8FCBF1D76718900734068 /* SAMCSPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSPProfileViewController.m; sourceTree = "<group>"; };
 		31F8FCC41D76737F00734068 /* SAMCUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUserInfo.h; path = DataBase/Model/SAMCUserInfo.h; sourceTree = "<group>"; };
 		31F8FCC51D76737F00734068 /* SAMCUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUserInfo.m; path = DataBase/Model/SAMCUserInfo.m; sourceTree = "<group>"; };
+		31F8FCC71D7698B400734068 /* SAMCDataBaseMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCDataBaseMacro.h; path = DataBase/SAMCDataBaseMacro.h; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -2004,6 +2005,7 @@
 				3195DDE51D52D9E9001BD2B4 /* Model */,
 				3195DDD91D51C116001BD2B4 /* SAMCDataBaseManager.h */,
 				3195DDDA1D51C116001BD2B4 /* SAMCDataBaseManager.m */,
+				31F8FCC71D7698B400734068 /* SAMCDataBaseMacro.h */,
 				3195DDDC1D51CC01001BD2B4 /* SAMCMessageDB.h */,
 				3195DDDD1D51CC01001BD2B4 /* SAMCMessageDB.m */,
 				3195DDDF1D51D373001BD2B4 /* SAMCDBBase.h */,

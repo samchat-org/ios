@@ -64,13 +64,14 @@
 }
 
 - (void)follow:(BOOL)isFollow
-officialAccount:(NSNumber *)uniqueId
+officialAccount:(SAMCUserInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI follow:isFollow officialAccount:uniqueId];
+    NSDictionary *parameters = [SAMCServerAPI follow:isFollow officialAccount:@(userInfo.uniqueId)];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
@@ -79,6 +80,8 @@ officialAccount:(NSNumber *)uniqueId
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
                 DDLogDebug(@"follow response: %@", response);
+                [wself insertToFollowList:userInfo];
+                completion(nil);
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -101,6 +104,13 @@ officialAccount:(NSNumber *)uniqueId
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB myFollowList];
+}
+
+- (void)insertToFollowList:(SAMCUserInfo *)userInfo
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].userInfoDB insertToFollowList:userInfo];
+    });
 }
 
 #pragma mark - Private
