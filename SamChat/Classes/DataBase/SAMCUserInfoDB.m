@@ -120,6 +120,10 @@
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
     __block NSMutableArray *follows = [[NSMutableArray alloc] init];
+    if (![self isTableExists:@"follow_list"]) {
+        // table not found, may sync not finished
+        return follows;
+    }
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM follow_list"];
         while ([s next]) {
