@@ -9,11 +9,15 @@
 #import <Foundation/Foundation.h>
 #import "SAMCPublicSession.h"
 #import "SAMCUserInfo.h"
+#import "SAMCPublicManagerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface SAMCPublicManager : NSObject
 
 + (instancetype)sharedManager;
+
+- (void)addDelegate:(id<SAMCPublicManagerDelegate>)delegate;
+- (void)removeDelegate:(id<SAMCPublicManagerDelegate>)delegate;
 
 - (void)searchPublicWithKey:(NSString * __nullable)key
                    location:(NSDictionary * __nullable)location

@@ -123,20 +123,29 @@
 - (void)insertToFollowList:(SAMCUserInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
-        //        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",@(userInfo.uniqueId)];
-        //        [s next];
-        //        int count = [s intForColumnIndex:0];
-        //        [s close];
-        //        if (count > 0) {
-        //            return; // already exist
-        //        }
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",@(userInfo.uniqueId)];
+        [s next];
+        int count = [s intForColumnIndex:0];
+        [s close];
+        if (count > 0) {
+            return; // already exist
+        }
         NSNumber *unique_id = @(userInfo.uniqueId);
         NSString *username = userInfo.username;
         NSString *avatar = userInfo.avatar;
         NSNumber *block_tag = @(NO);
         NSNumber *favourite_tag = @(NO);
         NSString *sp_service_category = userInfo.spInfo.serviceCategory;
-        [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+//        [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+        [db executeUpdate:@"INSERT INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+        SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:userInfo.uniqueId
+                                                   username:username
+                                                     avatar:avatar
+                                                   blockTag:NO
+                                               favouriteTag:NO
+                                                   category:sp_service_category];
+        SAMCPublicSession *session = [SAMCPublicSession session:info lastMessageContent:@""];
+        [self.publicDelegate didAddPublicSession:session totalUnreadCount:0]; // TODO: get total unread count
     }];
 }
 

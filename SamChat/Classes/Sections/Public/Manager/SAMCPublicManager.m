@@ -37,6 +37,16 @@
 {
 }
 
+- (void)addDelegate:(id<SAMCPublicManagerDelegate>)delegate
+{
+    [[SAMCDataBaseManager sharedManager].publicDB addPublicDelegate:delegate];
+}
+
+- (void)removeDelegate:(id<SAMCPublicManagerDelegate>)delegate
+{
+    [[SAMCDataBaseManager sharedManager].publicDB removePublicDelegate:delegate];
+}
+
 - (void)searchPublicWithKey:(NSString * __nullable)key
                    location:(NSDictionary * __nullable)location
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion

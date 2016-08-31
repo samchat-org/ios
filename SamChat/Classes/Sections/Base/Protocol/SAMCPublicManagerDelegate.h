@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol SAMCPublicManagerDelegate <NSObject>
 
 @optional
-- (void)didAddPublicSession:(SAMCPublicSession *)recentSession
+- (void)didAddPublicSession:(SAMCPublicSession *)publicSession
            totalUnreadCount:(NSInteger)totalUnreadCount;
 
 @end

@@ -9,6 +9,11 @@
 #import "SAMCCustomPublicListDelegate.h"
 #import "SAMCCustomPublicListCell.h"
 #import "SAMCPublicSession.h"
+#import "SAMCPublicManager.h"
+
+@interface SAMCCustomPublicListDelegate ()<SAMCPublicManagerDelegate>
+
+@end
 
 @implementation SAMCCustomPublicListDelegate
 
@@ -16,12 +21,14 @@
 {
     self = [super initWithTableData:data viewController:controller];
     if (self) {
+        [[SAMCPublicManager sharedManager] addDelegate:self];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [[SAMCPublicManager sharedManager] removeDelegate:self];
 }
 
 #pragma mark - UITableViewDataSource
@@ -64,5 +71,14 @@
 //- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
 //}
+
+#pragma mark - SAMCPublicManagerDelegate
+- (void)didAddPublicSession:(SAMCPublicSession *)publicSession
+           totalUnreadCount:(NSInteger)totalUnreadCount
+{
+    [[self data] addObject:publicSession];
+    [self.viewController sortAndReload];
+}
+
 
 @end

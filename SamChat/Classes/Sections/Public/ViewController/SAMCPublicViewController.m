@@ -102,6 +102,7 @@
     self.customTableView = nil;
     self.customSearchBar = nil;
     self.customSearchResultController = nil;
+    self.delegator = nil;
     
     self.navigationItem.title = @"My Public Updates";
     
@@ -123,6 +124,11 @@
 #pragma mark - SAMCTableReloadDelegate
 - (void)sortAndReload
 {
+    // TODO: add sorting
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        [self.customTableView reloadData];
+    } else {
+    }
 }
 
 #pragma mark - UISearchBarDelegate
