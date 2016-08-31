@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "NTESLoginManager.h"
+#import "SAMCUserInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -80,7 +81,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate;
 
-- (void)updateUserWithDict:(NSDictionary *)userInfo;
+- (void)updateUser:(SAMCUserInfo *)userInfo;
 
 @end
 

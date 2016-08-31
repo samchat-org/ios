@@ -32,10 +32,10 @@
     }
 }
 
-- (void)updateUserWithDict:(NSDictionary *)userInfo
+- (void)updateUser:(SAMCUserInfo *)userInfo
 {
     DDLogDebug(@"userInfo: %@", userInfo);
-    NSNumber *unique_id = [userInfo valueForKey:SAMC_ID];
+    NSNumber *unique_id = userInfo.uniqueId;
     if (unique_id == nil) {
         DDLogError(@"unique id should not be nil");
         return;
@@ -43,21 +43,21 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM userinfo WHERE unique_id = ?", unique_id];
         
-        NSString *username = [userInfo valueForKey:SAMC_USERNAME];
-        NSString *countrycode = [NSString stringWithFormat:@"%@",[userInfo valueForKey:SAMC_COUNTRYCODE]]; 
-        NSString *cellphone = [userInfo valueForKey:SAMC_CELLPHONE];
-        NSString *email = [userInfo valueForKey:SAMC_EMAIL];
-        NSString *address = [userInfo valueForKey:SAMC_ADDRESS];
-        NSNumber *usertype = [userInfo valueForKey:SAMC_TYPE];
-        NSString *avatar = [userInfo valueForKeyPath:SAMC_AVATAR_THUMB];
-        NSString *avatar_original = [userInfo valueForKeyPath:SAMC_AVATAR_ORIGIN];
-        NSNumber *lastupdate = [userInfo valueForKey:SAMC_LASTUPDATE];
-        NSString *sp_company_name = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_COMPANY_NAME];
-        NSString *sp_service_category = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_CATEGORY];
-        NSString *sp_service_description = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_DESCRIPTION];
-        NSString *sp_countrycode = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_COUNTRYCODE];
-        NSString *sp_phone = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_PHONE];
-        NSString *sp_address = [userInfo valueForKeyPath:SAMC_SAM_PROS_INFO_ADDRESS];
+        NSString *username = userInfo.username;
+        NSString *countrycode = userInfo.countryCode;
+        NSString *cellphone = userInfo.cellPhone;
+        NSString *email = userInfo.email;
+        NSString *address = userInfo.address;
+        NSNumber *usertype = userInfo.usertype;
+        NSString *avatar = userInfo.avatar;
+        NSString *avatar_original = userInfo.avatarOriginal;
+        NSNumber *lastupdate = userInfo.lastupdate;
+        NSString *sp_company_name = userInfo.spInfo.companyName;
+        NSString *sp_service_category = userInfo.spInfo.serviceCategory;
+        NSString *sp_service_description = userInfo.spInfo.serviceDescription;
+        NSString *sp_countrycode = userInfo.spInfo.countryCode;
+        NSString *sp_phone = userInfo.spInfo.phone;
+        NSString *sp_address = userInfo.spInfo.address;
         
         if ([s next]) {
             username = username ?:[s stringForColumn:@"username"];
@@ -88,9 +88,7 @@
         }
         [s close];
     }];
-
 }
-
 
 
 @end

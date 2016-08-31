@@ -14,23 +14,23 @@
 + (instancetype)userInfoFromDict:(NSDictionary *)infoDict
 {
     SAMCUserInfo *info = [[SAMCUserInfo alloc] init];
-    info.uniqueId = [(NSNumber *)infoDict[SAMC_ID] integerValue];
+    info.uniqueId = infoDict[SAMC_ID];
     info.username = infoDict[SAMC_USERNAME];
-    info.countryCode = infoDict[SAMC_COUNTRYCODE];
+    info.countryCode = [NSString stringWithFormat:@"%@",[infoDict valueForKey:SAMC_COUNTRYCODE]];;
     info.cellPhone = infoDict[SAMC_CELLPHONE];
     info.email = infoDict[SAMC_EMAIL];
     info.address = infoDict[SAMC_ADDRESS];
-    info.usertype = [(NSNumber *)infoDict[SAMC_TYPE] integerValue];
+    info.usertype = infoDict[SAMC_TYPE];
     info.avatar = [infoDict valueForKeyPath:SAMC_AVATAR_THUMB];
     info.avatarOriginal = [infoDict valueForKeyPath:SAMC_AVATAR_ORIGIN];
-    info.lastupdate = [(NSNumber *)infoDict[SAMC_LASTUPDATE] longValue];
+    info.lastupdate = infoDict[SAMC_LASTUPDATE];
     info.spInfo = [SAMCSamProsInfo spInfoFromDict:infoDict[SAMC_SAM_PROS_INFO]];
     return info;
 }
 
 - (SAMCSPBasicInfo *)spBasicInfo
 {
-    return [SAMCSPBasicInfo infoOfUser:_uniqueId
+    return [SAMCSPBasicInfo infoOfUser:[_uniqueId integerValue]
                               username:_username
                                 avatar:_avatar
                               blockTag:NO

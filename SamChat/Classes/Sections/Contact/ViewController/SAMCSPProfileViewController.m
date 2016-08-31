@@ -9,6 +9,7 @@
 #import "SAMCSPProfileViewController.h"
 #import "SAMCPublicManager.h"
 #import "UIView+Toast.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCSPProfileViewController ()
 
@@ -58,6 +59,7 @@
             toast =error.userInfo[NSLocalizedDescriptionKey];
         } else {
             toast = @"follow success";
+            [[SAMCAccountManager sharedManager] updateUser:self.userInfo];
         }
         [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
     }];

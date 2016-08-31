@@ -209,7 +209,7 @@
                 [[SAMCDataBaseManager sharedManager] doMigration];
             }
             [SAMCChatManager sharedManager];
-            [[SAMCAccountManager sharedManager] updateUserWithDict:userInfo];
+            [[SAMCAccountManager sharedManager] updateUser:[SAMCUserInfo userInfoFromDict:userInfo]];
             [[SAMCPushManager sharedManager] open];
             [[SAMCPublicManager sharedManager] queryFollowListIfNecessary];
             completion(nil);
@@ -288,10 +288,10 @@
 }
 
 #pragma mark - UserInfoDB
-- (void)updateUserWithDict:(NSDictionary *)userInfo
+- (void)updateUser:(SAMCUserInfo *)userInfo
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].userInfoDB updateUserWithDict:userInfo];
+        [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:userInfo];
     });
 }
 

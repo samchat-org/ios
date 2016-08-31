@@ -13,10 +13,10 @@
 
 @interface SAMCUserInfo : NSObject
 
-@property (nonatomic, assign) NSInteger uniqueId;
+@property (nonatomic, strong) NSNumber *uniqueId;
 @property (nonatomic, copy) NSString *username;
-@property (nonatomic, assign) SAMCUserType usertype;
-@property (nonatomic, assign) NSTimeInterval lastupdate;
+@property (nonatomic, strong) NSNumber *usertype;
+@property (nonatomic, strong) NSNumber *lastupdate;
 @property (nonatomic, copy) NSString *avatar;
 @property (nonatomic, copy) NSString *avatarOriginal;
 @property (nonatomic, copy) NSString *countryCode;
