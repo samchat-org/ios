@@ -105,6 +105,7 @@
 #define SAMC_USER_ID                    @"user.id"
 #define SAMC_USER_USERNAME              @"user.username"
 #define SAMC_LOCATION_ADDRESS           @"location.address"
+#define SAMC_BODY_DEST_ID               @"body.dest_id"
 
 #define SAMC_PUSHCATEGORY_NEWQUESTION   @"1"
 

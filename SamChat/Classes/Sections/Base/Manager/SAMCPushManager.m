@@ -12,6 +12,7 @@
 #import "SAMCQuestionDB.h"
 #import "SAMCServerAPIMacro.h"
 #import "SAMCQuestionManager.h"
+#import "SAMCAccountManager.h"
 
 #define SAMCGeTuiAppId        @"e56px9TMay6OJRDrwE21P9"
 #define SAMCGeTuiAppKey       @"PUnNqMKGxaAdRoWFDmaTX5"
@@ -118,7 +119,10 @@
     NSDictionary *payloadDict = payloadInfo;
     NSString *category = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_HEADER_CATEGORY]];
     if ([category isEqualToString:SAMC_PUSHCATEGORY_NEWQUESTION]) {
-        [[SAMCQuestionManager sharedManager] insertReceivedQuestion:payloadDict[SAMC_BODY]];
+        NSString *destId = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_BODY_DEST_ID]];
+        if ([[SAMCAccountManager sharedManager].currentAccount isEqualToString:destId]) {
+            [[SAMCQuestionManager sharedManager] insertReceivedQuestion:payloadDict[SAMC_BODY]];
+        }
     }
 }
 
