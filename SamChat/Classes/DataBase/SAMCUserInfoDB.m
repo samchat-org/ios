@@ -32,7 +32,7 @@
     }
 }
 
-- (void)updateUser:(NSDictionary *)userInfo
+- (void)updateUserWithDict:(NSDictionary *)userInfo
 {
     DDLogDebug(@"userInfo: %@", userInfo);
     NSNumber *unique_id = [userInfo valueForKey:SAMC_ID];

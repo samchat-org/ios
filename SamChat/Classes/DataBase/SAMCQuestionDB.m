@@ -156,7 +156,7 @@
         DDLogError(@"unique id should not be nil");
         return;
     }
-    [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:questionInfo[SAMC_USER]];
+    [[SAMCDataBaseManager sharedManager].userInfoDB updateUserWithDict:questionInfo[SAMC_USER]];
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *question = questionInfo[SAMC_QUESTION] ?:@"";
         NSNumber *sender_unique_id = [questionInfo valueForKeyPath:SAMC_USER_ID];

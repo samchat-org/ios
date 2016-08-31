@@ -12,6 +12,6 @@
 
 @interface SAMCUserInfoDB : SAMCDBBase
 
-- (void)updateUser:(NSDictionary *)userInfo;
+- (void)updateUserWithDict:(NSDictionary *)userInfo;
 
 @end

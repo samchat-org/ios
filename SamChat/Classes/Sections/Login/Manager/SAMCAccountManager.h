@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate;
 
-- (void)updateUser:(NSDictionary *)userInfo;
+- (void)updateUserWithDict:(NSDictionary *)userInfo;
 
 @end
 
