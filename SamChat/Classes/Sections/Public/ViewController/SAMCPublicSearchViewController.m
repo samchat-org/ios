@@ -8,12 +8,15 @@
 
 #import "SAMCPublicSearchViewController.h"
 #import "SAMCPublicManager.h"
+#import "SAMCSPProfileViewController.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, strong) UITextField *searchKeyTextField;
 @property (nonatomic, strong) UITextField *locationTextField;
 @property (nonatomic, strong) UITableView *searchResultTabeView;
+
+@property (nonatomic, strong) NSMutableArray *data;
 
 @end
 
@@ -80,16 +83,22 @@
 - (void)onTouchSearch:(id)sender
 {
     NSString *key = self.searchKeyTextField.text;
+    [self.data removeAllObjects];
+    __weak typeof(self) wself = self;
     [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
         DDLogDebug(@"public: %@", users);
+        for (NSDictionary *user in users) {
+            SAMCUserInfo *userInfo = [SAMCUserInfo userInfoFromDict:user];
+            [wself.data addObject:userInfo];
+            [wself.searchResultTabeView reloadData];
+        }
     }];
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
-//    return [[self data] count];
+    return [[self data] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -100,7 +109,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
-    cell.textLabel.text = @"test";
+    SAMCUserInfo *userInfo = self.data[indexPath.row];
+    cell.textLabel.text = userInfo.username;
     return cell;
 }
 
@@ -108,6 +118,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    SAMCSPProfileViewController *vc = [[SAMCSPProfileViewController alloc] init];
+    vc.userInfo = self.data[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -120,5 +133,13 @@
     return NO;
 }
 
+#pragma mark - Private
+- (NSMutableArray *)data
+{
+    if (_data == nil) {
+        _data = [[NSMutableArray alloc] init];
+    }
+    return _data;
+}
 
 @end

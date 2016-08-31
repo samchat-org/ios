@@ -97,6 +97,7 @@
 #define SAMC_USERS                      @"users"
 #define SAMC_BLOCK_TAG                  @"block_tag"
 #define SAMC_FAVOURITE_TAG              @"favourite_tag"
+#define SAMC_SAM_PROS_INFO              @"sam_pros_info"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

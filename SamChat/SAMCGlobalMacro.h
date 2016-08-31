@@ -109,4 +109,9 @@ typedef NS_ENUM(NSInteger,SAMCReceivedQuestionStatus) {
     SAMCReceivedQuestionStatusResponsed
 };
 
+typedef NS_ENUM(NSInteger,SAMCUserType) {
+    SAMCUserTypeCustom,
+    SAMCuserTypeSamPros
+};
+
 #endif /* SAMCGlobalMacro_h */
