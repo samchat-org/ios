@@ -83,9 +83,9 @@
     if (error == nil) {
         id ext = message.remoteExt;
         // 如果发送的消息带有questionId，则发送成功的时候更新这个消息的status
-        NSNumber *questionId = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
-        if (questionId) {
-            [[SAMCQuestionManager sharedManager] updateReceivedQuestion:[questionId integerValue]
+        NSString *questionIdStr = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+        if (questionIdStr) {
+            [[SAMCQuestionManager sharedManager] updateReceivedQuestion:[questionIdStr intValue]
                                                                  status:SAMCReceivedQuestionStatusResponsed];
         }
     }
@@ -135,9 +135,9 @@
             if (samcmessage) {
                 samcmessage.nimMessage = message;
                 // 如果消息扩展中含有quest_id,则是商家回答问题的消息,此时需要先插入问题,再插入这条消息
-                NSNumber *questionId = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
-                if (questionId) {
-                    SAMCMessage *questionMessage = [self questionMessageOfQuestionId:questionId answer:message.from];
+                NSString *questionIdStr = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+                if (questionIdStr) {
+                    SAMCMessage *questionMessage = [self questionMessageOfQuestionId:@([questionIdStr intValue]) answer:message.from];
                     if (questionMessage) {
                         [customMessages addObject:questionMessage];
                         NSInteger index = [normalMessages indexOfObject:message];
