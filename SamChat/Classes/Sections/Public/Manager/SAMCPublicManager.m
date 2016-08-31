@@ -74,7 +74,7 @@
 }
 
 - (void)follow:(BOOL)isFollow
-officialAccount:(SAMCUserInfo *)userInfo
+officialAccount:(SAMCSPBasicInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
@@ -90,7 +90,11 @@ officialAccount:(SAMCUserInfo *)userInfo
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
                 DDLogDebug(@"follow response: %@", response);
-                [wself insertToFollowList:userInfo];
+                if (isFollow) {
+                    [wself insertToFollowList:userInfo];
+                } else {
+                    [wself deleteFromFollowList:userInfo];
+                }
                 completion(nil);
             }
         } else {
@@ -116,10 +120,17 @@ officialAccount:(SAMCUserInfo *)userInfo
     return [[SAMCDataBaseManager sharedManager].publicDB myFollowList];
 }
 
-- (void)insertToFollowList:(SAMCUserInfo *)userInfo
+- (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].publicDB insertToFollowList:userInfo];
+    });
+}
+
+- (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB deleteFromFollowList:userInfo];
     });
 }
 

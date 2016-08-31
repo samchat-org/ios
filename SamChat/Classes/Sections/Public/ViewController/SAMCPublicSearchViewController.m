@@ -84,6 +84,7 @@
 {
     NSString *key = self.searchKeyTextField.text;
     [self.data removeAllObjects];
+    [self.searchResultTabeView reloadData];
     __weak typeof(self) wself = self;
     [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
         DDLogDebug(@"public: %@", users);

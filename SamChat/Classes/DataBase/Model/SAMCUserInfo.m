@@ -28,6 +28,16 @@
     return info;
 }
 
+- (SAMCSPBasicInfo *)spBasicInfo
+{
+    return [SAMCSPBasicInfo infoOfUser:_uniqueId
+                              username:_username
+                                avatar:_avatar
+                              blockTag:NO
+                          favouriteTag:NO
+                              category:_spInfo.serviceCategory];
+}
+
 @end
 
 

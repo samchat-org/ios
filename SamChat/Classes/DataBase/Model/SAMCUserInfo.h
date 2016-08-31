@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCSPBasicInfo.h"
 
 @class SAMCSamProsInfo;
 
@@ -25,6 +26,8 @@
 @property (nonatomic, strong) SAMCSamProsInfo *spInfo;
 
 + (instancetype)userInfoFromDict:(NSDictionary *)infoDict;
+
+- (SAMCSPBasicInfo *)spBasicInfo;
 
 @end
 

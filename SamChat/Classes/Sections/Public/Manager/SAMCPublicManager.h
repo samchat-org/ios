@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SAMCPublicSession.h"
-#import "SAMCUserInfo.h"
+#import "SAMCSPBasicInfo.h"
 #import "SAMCPublicManagerDelegate.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
 - (void)follow:(BOOL)isFollow
-officialAccount:(SAMCUserInfo *)userInfo
+officialAccount:(SAMCSPBasicInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion;
 
 - (void)queryFollowListIfNecessary;

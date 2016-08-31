@@ -120,7 +120,7 @@
     return follows;
 }
 
-- (void)insertToFollowList:(SAMCUserInfo *)userInfo
+- (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",@(userInfo.uniqueId)];
@@ -133,19 +133,21 @@
         NSNumber *unique_id = @(userInfo.uniqueId);
         NSString *username = userInfo.username;
         NSString *avatar = userInfo.avatar;
-        NSNumber *block_tag = @(NO);
-        NSNumber *favourite_tag = @(NO);
-        NSString *sp_service_category = userInfo.spInfo.serviceCategory;
+        NSNumber *block_tag = @(userInfo.blockTag);
+        NSNumber *favourite_tag = @(userInfo.favouriteTag);
+        NSString *sp_service_category = userInfo.spServiceCategory;
 //        [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
         [db executeUpdate:@"INSERT INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
-        SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:userInfo.uniqueId
-                                                   username:username
-                                                     avatar:avatar
-                                                   blockTag:NO
-                                               favouriteTag:NO
-                                                   category:sp_service_category];
-        SAMCPublicSession *session = [SAMCPublicSession session:info lastMessageContent:@""];
+        SAMCPublicSession *session = [SAMCPublicSession session:userInfo lastMessageContent:@""];
         [self.publicDelegate didAddPublicSession:session totalUnreadCount:0]; // TODO: get total unread count
+    }];
+}
+
+- (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", @(userInfo.uniqueId)];
+        // TODO: update total unread count & delegate session updating
     }];
 }
 

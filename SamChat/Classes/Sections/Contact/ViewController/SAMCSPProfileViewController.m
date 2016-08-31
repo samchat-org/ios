@@ -51,7 +51,7 @@
 {
     self.followButton.enabled = NO;
     __weak typeof(self) wself = self;
-    [[SAMCPublicManager sharedManager] follow:YES officialAccount:self.userInfo completion:^(NSError * _Nullable error) {
+    [[SAMCPublicManager sharedManager] follow:YES officialAccount:self.userInfo.spBasicInfo completion:^(NSError * _Nullable error) {
         NSString *toast;
         if (error) {
             wself.followButton.enabled = YES;
