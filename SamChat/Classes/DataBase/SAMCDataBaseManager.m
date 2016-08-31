@@ -44,6 +44,9 @@
     if (_questionDB == nil) {
         _questionDB = [[SAMCQuestionDB alloc] init];
     }
+    if (_publicDB == nil) {
+        _publicDB = [[SAMCPublicDB alloc] init];
+    }
 }
 
 - (void)close
@@ -51,6 +54,7 @@
     _messageDB = nil;
     _userInfoDB = nil;
     _questionDB = nil;
+    _publicDB = nil;
 }
 
 - (BOOL)needsMigration
@@ -62,6 +66,9 @@
         return YES;
     }
     if ([_questionDB needsMigration]) {
+        return YES;
+    }
+    if ([_publicDB needsMigration]) {
         return YES;
     }
     return NO;
@@ -85,6 +92,12 @@
             return false;
         }
     }
+    if ([_publicDB needsMigration]) {
+        if (![_publicDB doMigration]) {
+            return false;
+        }
+    }
+    
     return true;
 }
 

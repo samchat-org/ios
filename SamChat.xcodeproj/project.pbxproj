@@ -283,6 +283,8 @@
 		31F8FCBD1D756C7B00734068 /* SAMCAvatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCBC1D756C7B00734068 /* SAMCAvatarImageView.m */; };
 		31F8FCC01D76718900734068 /* SAMCSPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCBF1D76718900734068 /* SAMCSPProfileViewController.m */; };
 		31F8FCC61D76737F00734068 /* SAMCUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCC51D76737F00734068 /* SAMCUserInfo.m */; };
+		31F8FCCA1D76A68100734068 /* SAMCPublicDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCC91D76A68100734068 /* SAMCPublicDB.m */; };
+		31F8FCCF1D76A9A800734068 /* SAMCPublicDB_2016082201.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCCE1D76A9A800734068 /* SAMCPublicDB_2016082201.m */; };
 		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
@@ -812,6 +814,11 @@
 		31F8FCC41D76737F00734068 /* SAMCUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUserInfo.h; path = DataBase/Model/SAMCUserInfo.h; sourceTree = "<group>"; };
 		31F8FCC51D76737F00734068 /* SAMCUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUserInfo.m; path = DataBase/Model/SAMCUserInfo.m; sourceTree = "<group>"; };
 		31F8FCC71D7698B400734068 /* SAMCDataBaseMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCDataBaseMacro.h; path = DataBase/SAMCDataBaseMacro.h; sourceTree = "<group>"; };
+		31F8FCC81D76A68100734068 /* SAMCPublicDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicDB.h; path = DataBase/SAMCPublicDB.h; sourceTree = "<group>"; };
+		31F8FCC91D76A68100734068 /* SAMCPublicDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicDB.m; path = DataBase/SAMCPublicDB.m; sourceTree = "<group>"; };
+		31F8FCCC1D76A6E200734068 /* SAMCPublicManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicManagerDelegate.h; path = Base/Protocol/SAMCPublicManagerDelegate.h; sourceTree = "<group>"; };
+		31F8FCCD1D76A9A800734068 /* SAMCPublicDB_2016082201.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicDB_2016082201.h; path = DataBase/Migration/SAMCPublicDB_2016082201.h; sourceTree = "<group>"; };
+		31F8FCCE1D76A9A800734068 /* SAMCPublicDB_2016082201.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicDB_2016082201.m; path = DataBase/Migration/SAMCPublicDB_2016082201.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
 		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
@@ -1917,6 +1924,8 @@
 				314D5D271D6ADC15004B3DE4 /* SAMCUserInfoDB_2016082201.m */,
 				31F8FC951D6D3A5800734068 /* SAMCQuestionDB_2016082201.h */,
 				31F8FC961D6D3A5800734068 /* SAMCQuestionDB_2016082201.m */,
+				31F8FCCD1D76A9A800734068 /* SAMCPublicDB_2016082201.h */,
+				31F8FCCE1D76A9A800734068 /* SAMCPublicDB_2016082201.m */,
 			);
 			name = Migration;
 			sourceTree = "<group>";
@@ -2014,6 +2023,8 @@
 				31E37B8C1D670B0300832CC8 /* SAMCUserInfoDB.m */,
 				31F8FC921D6D39FB00734068 /* SAMCQuestionDB.h */,
 				31F8FC931D6D39FB00734068 /* SAMCQuestionDB.m */,
+				31F8FCC81D76A68100734068 /* SAMCPublicDB.h */,
+				31F8FCC91D76A68100734068 /* SAMCPublicDB.m */,
 			);
 			name = DataBase;
 			sourceTree = "<group>";
@@ -2045,6 +2056,7 @@
 				3195DDF91D549124001BD2B4 /* SAMCChatManagerDelegate.h */,
 				3195DE101D56C5C8001BD2B4 /* SAMCConversationManagerDelegate.h */,
 				31F8FC9B1D6D979700734068 /* SAMCQuestionManagerDelegate.h */,
+				31F8FCCC1D76A6E200734068 /* SAMCPublicManagerDelegate.h */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";
@@ -2429,6 +2441,7 @@
 				312C1C611D35D85B00242906 /* NTESLiveViewController.m in Sources */,
 				312C1CBD1D35D85B00242906 /* NTESAboutViewController.m in Sources */,
 				312C1CB91D35D85B00242906 /* NTESNoDisturbSettingViewController.m in Sources */,
+				31F8FCCF1D76A9A800734068 /* SAMCPublicDB_2016082201.m in Sources */,
 				31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */,
 				31E37B8D1D670B0300832CC8 /* SAMCUserInfoDB.m in Sources */,
 				312C1CCB1D35D85B00242906 /* NTESSettingCheckCell.m in Sources */,
@@ -2582,6 +2595,7 @@
 				314D5D221D6AB974004B3DE4 /* SAMCMigrationManager.m in Sources */,
 				312C1C421D35D85B00242906 /* UINavigationItem+Swizzling.m in Sources */,
 				312C1C721D35D85B00242906 /* NTESContactAddFriendViewController.m in Sources */,
+				31F8FCCA1D76A68100734068 /* SAMCPublicDB.m in Sources */,
 				3195DE3F1D604F82001BD2B4 /* SAMCServerAPI.m in Sources */,
 				312C1C451D35D85B00242906 /* NTESMainTabController.m in Sources */,
 				312C1C801D35D85B00242906 /* NTESRegisterViewController.m in Sources */,

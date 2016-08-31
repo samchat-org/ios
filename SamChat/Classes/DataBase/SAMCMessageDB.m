@@ -41,16 +41,16 @@
 
 - (void)addConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate
 {
-    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+    [self.conversationDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
 }
 
 - (void)removeConversationDelegate:(id<SAMCConversationManagerDelegate>)delegate
 {
-    [self.multicastDelegate removeDelegate:delegate];
+    [self.conversationDelegate removeDelegate:delegate];
 }
 
 #pragma mark - lazy load
-- (GCDMulticastDelegate<SAMCConversationManagerDelegate> *)multicastDelegate
+- (GCDMulticastDelegate<SAMCConversationManagerDelegate> *)conversationDelegate
 {
     if (_conversationDelegate == nil) {
         _conversationDelegate = (GCDMulticastDelegate <SAMCConversationManagerDelegate> *)[[GCDMulticastDelegate alloc] init];

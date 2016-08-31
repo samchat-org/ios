@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "SAMCMigrationManager.h"
-#import "SAMCDataBaseMacro.h"
 
 @interface SAMCUserInfoDB_2016082201 : NSObject<SAMCMigrating>
 

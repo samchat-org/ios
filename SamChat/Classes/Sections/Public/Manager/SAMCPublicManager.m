@@ -103,13 +103,13 @@ officialAccount:(SAMCUserInfo *)userInfo
 
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
-    return [[SAMCDataBaseManager sharedManager].userInfoDB myFollowList];
+    return [[SAMCDataBaseManager sharedManager].publicDB myFollowList];
 }
 
 - (void)insertToFollowList:(SAMCUserInfo *)userInfo
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].userInfoDB insertToFollowList:userInfo];
+        [[SAMCDataBaseManager sharedManager].publicDB insertToFollowList:userInfo];
     });
 }
 
@@ -126,7 +126,7 @@ officialAccount:(SAMCUserInfo *)userInfo
             if (errorCode == 0) {
                 NSArray *users = response[SAMC_USERS];
                 if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
-                    BOOL result = [[SAMCDataBaseManager sharedManager].userInfoDB updateFollowList:users];
+                    BOOL result = [[SAMCDataBaseManager sharedManager].publicDB updateFollowList:users];
                     if (result) {
                         [SAMCPreferenceManager sharedManager].followListSyncFlag = @(YES);
                     }

@@ -14,10 +14,4 @@
 
 - (void)updateUser:(NSDictionary *)userInfo;
 
-- (BOOL)updateFollowList:(NSArray *)users;
-
-- (NSArray<SAMCPublicSession *> *)myFollowList;
-
-- (void)insertToFollowList:(SAMCUserInfo *)userInfo;
-
 @end

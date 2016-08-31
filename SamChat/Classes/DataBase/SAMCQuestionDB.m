@@ -34,16 +34,16 @@
 
 - (void)addQuestionDelegate:(id<SAMCQuestionManagerDelegate>)delegate
 {
-    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+    [self.questionDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
 }
 
 - (void)removeQuestionDelegate:(id<SAMCQuestionManagerDelegate>)delegate
 {
-    [self.multicastDelegate removeDelegate:delegate];
+    [self.questionDelegate removeDelegate:delegate];
 }
 
 #pragma mark - lazy load
-- (GCDMulticastDelegate<SAMCQuestionManagerDelegate> *)multicastDelegate
+- (GCDMulticastDelegate<SAMCQuestionManagerDelegate> *)questionDelegate
 {
     if (_questionDelegate == nil) {
         _questionDelegate = (GCDMulticastDelegate <SAMCQuestionManagerDelegate> *)[[GCDMulticastDelegate alloc] init];

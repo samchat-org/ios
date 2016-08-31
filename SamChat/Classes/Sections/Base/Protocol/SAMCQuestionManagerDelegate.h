@@ -16,8 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)didAddQuestionSession:(SAMCQuestionSession *)questionSession;
-//- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
-//           totalUnreadCount:(NSInteger)totalUnreadCount;
 
 @end
 
