@@ -17,11 +17,11 @@
 #import "NTESNavigationHandler.h"
 #import "NTESBundleSetting.h"
 #import "SAMCServiceViewController.h"
-#import "SAMCPublicViewController.h"
 #import "SAMCChatListViewController.h"
 #import "SAMCContactListViewController.h"
 #import "SAMCSettingViewController.h"
 #import "SAMCConversationManager.h"
+#import "SAMCPublicContainerViewController.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -281,7 +281,8 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
                              },
                      @(NTESMainTabTypePublic) : @{
-                             TabbarVC           : @"SAMCPublicViewController",
+//                             TabbarVC           : @"SAMCPublicViewController",
+                             TabbarVC           : @"SAMCPublicContainerViewController",
                              TabbarTitle        : @"Public",
                              TabbarImage        : @"icon_message_normal",
                              TabbarItemBadgeValue: @(self.sessionUnreadCount)
