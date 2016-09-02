@@ -398,6 +398,27 @@
 }
 
 
+//{
+//    "header":
+//    {
+//        "action" : "send-invite-msg",
+//        "token": "token"
+//    },
+//    "body":
+//    {
+//        "phones":[{
+//            “countrycode”: “”//option
+//            “cellphone”:””
+//        }]
+//        "msg":
+//    }
+//}
++ (NSDictionary *)sendInviteMsg:(NSArray *)phones
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_SEND_INVITE_MSG,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_PHONES:phones};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
 
 #pragma mark - Token
 + (NSString *)token

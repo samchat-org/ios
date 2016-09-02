@@ -57,4 +57,6 @@
 
 + (NSDictionary *)queryFollowList;
 
++ (NSDictionary *)sendInviteMsg:(NSArray *)phones;
+
 @end

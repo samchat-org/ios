@@ -51,6 +51,7 @@
 #define SAMC_QUERY_FUZZY                @"query-fuzzy"
 #define SAMC_PUBLIC_QUERY               @"public-query"
 #define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
+#define SAMC_SEND_INVITE_MSG            @"send-invite-msg"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -84,6 +85,7 @@
 #define SAMC_BLOCK_TAG                  @"block_tag"
 #define SAMC_FAVOURITE_TAG              @"favourite_tag"
 #define SAMC_SAM_PROS_INFO              @"sam_pros_info"
+#define SAMC_PHONES                     @"phones"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
