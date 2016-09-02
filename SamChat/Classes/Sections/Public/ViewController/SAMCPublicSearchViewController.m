@@ -9,6 +9,7 @@
 #import "SAMCPublicSearchViewController.h"
 #import "SAMCPublicManager.h"
 #import "SAMCSPProfileViewController.h"
+#import "UIView+Toast.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -87,6 +88,11 @@
     [self.searchResultTabeView reloadData];
     __weak typeof(self) wself = self;
     [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        if (error) {
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
         DDLogDebug(@"public: %@", users);
         for (NSDictionary *user in users) {
             SAMCUserInfo *userInfo = [SAMCUserInfo userInfoFromDict:user];
