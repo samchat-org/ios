@@ -10,4 +10,6 @@
 
 @interface SAMCPublicMessageViewController : UIViewController
 
+//- (instancetype)initWithSession:(SAMCSession *)session;
+
 @end
