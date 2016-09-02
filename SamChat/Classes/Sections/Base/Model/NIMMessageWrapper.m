@@ -23,10 +23,13 @@
 @synthesize localExt = _localExt;
 @synthesize messageExt = _messageExt;
 @synthesize timestamp = _timestamp;
+@synthesize deliveryState = _deliveryState;
+@synthesize attachmentDownloadState = _attachmentDownloadState;
 @synthesize isReceivedMsg = _isReceivedMsg;
 @synthesize isOutgoingMsg = _isOutgoingMsg;
 @synthesize isPlayed = _isPlayed;
 @synthesize senderName = _senderName;
+@synthesize isRemoteRead = _isRemoteRead;
 
 - (instancetype)init
 {
@@ -187,13 +190,23 @@
 #pragma mark - deliveryState
 - (NIMMessageDeliveryState)deliveryState
 {
-    return NIMMessageDeliveryStateDeliveried;
+    return _deliveryState;
+}
+
+- (void)setDeliveryState:(NIMMessageDeliveryState)deliveryState
+{
+    _deliveryState = deliveryState;
 }
 
 #pragma mark - attachmentDownloadState
 - (NIMMessageAttachmentDownloadState)attachmentDownloadState
 {
-    return NIMMessageAttachmentDownloadStateDownloaded;
+    return _attachmentDownloadState;
+}
+
+- (void)setAttachmentDownloadState:(NIMMessageAttachmentDownloadState)attachmentDownloadState
+{
+    _attachmentDownloadState = attachmentDownloadState;
 }
 
 #pragma mark - isReceivedMsg
@@ -238,7 +251,12 @@
 #pragma mark - isRemoteRead
 - (BOOL)isRemoteRead
 {
-    return YES;
+    return _isRemoteRead;
+}
+
+- (void)setIsRemoteRead:(BOOL)isRemoteRead
+{
+    _isRemoteRead = isRemoteRead;
 }
 
 #pragma mark - senderName
@@ -250,6 +268,25 @@
 - (void)setSenderName:(NSString *)senderName
 {
     _senderName = senderName;
+}
+
+- (NSString *)description
+{
+    NSMutableString *desc = [[NSString stringWithFormat:@"****** NIMMessageWrapper <%@: %p> Info ******\n",[self class],self] mutableCopy];
+    [desc appendFormat:@"messageId\t: %@\n", _messageId];
+    [desc appendFormat:@"messageType\t: %ld\n", _messageType];
+    [desc appendFormat:@"sessionId\t: %@\n", _session.sessionId];
+    [desc appendFormat:@"sessionType\t: %ld\n", _session.sessionType];
+    [desc appendFormat:@"time\t: %f\n", _timestamp];
+    [desc appendFormat:@"text\t: %@\n", _text];
+    [desc appendFormat:@"messageObject\t: %@\n", _messageObject];
+    [desc appendFormat:@"deliveryState\t: %ld\n", _deliveryState];
+    [desc appendFormat:@"attachmentDownloadState\t: %ld\n", _attachmentDownloadState];
+    [desc appendFormat:@"remote read\t: %d\n", _isRemoteRead];
+    [desc appendFormat:@"received msg\t: %d\n", _isReceivedMsg];
+    [desc appendFormat:@"outgoing msg\t: %d\n", _isOutgoingMsg];
+    [desc appendString:@"****** NIMMessageWrapper ******"];
+    return desc;
 }
 
 @end

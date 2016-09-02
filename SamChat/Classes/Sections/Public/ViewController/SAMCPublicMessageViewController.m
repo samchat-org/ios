@@ -37,7 +37,9 @@
 #import "NIMMessageCellMaker.h"
 #import "NIMUIConfig.h"
 #import "NIMKit.h"
-#import "SAMCpublicSessionConfig.h"
+#import "SAMCPublicSessionConfig.h"
+#import "SAMCPublicManager.h"
+#import "SAMCPublicMessageMaker.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -345,9 +347,10 @@ UITableViewDelegate>
 }
 
 #pragma mark - 消息收发接口
-- (void)sendMessage:(NIMMessage *)message
+- (void)sendMessage:(SAMCPublicMessage *)message
 {
     DDLogDebug(@"sendMessage: %@", message);
+    [[SAMCPublicManager sharedManager] sendPublicMessage:message error:NULL];
 }
 
 #pragma mark - SAMCChatManagerDelegate
@@ -414,7 +417,7 @@ UITableViewDelegate>
 
 - (void)onSendText:(NSString *)text
 {
-    NIMMessage *message = [NIMMessageMaker msgWithText:text];
+    SAMCPublicMessage *message = [SAMCPublicMessageMaker msgWithText:text];
     [self sendMessage:message];
 }
 

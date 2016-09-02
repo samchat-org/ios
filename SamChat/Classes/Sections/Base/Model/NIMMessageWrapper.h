@@ -25,9 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable,nonatomic,copy) NSDictionary *localExt;
 @property (nullable,nonatomic,strong) id messageExt;
 @property (nonatomic,assign) NSTimeInterval timestamp;
+@property (nonatomic,assign) NIMMessageDeliveryState deliveryState;
+@property (nonatomic,assign) NIMMessageAttachmentDownloadState attachmentDownloadState;
 @property (nonatomic,assign) BOOL isReceivedMsg;
 @property (nonatomic,assign) BOOL isOutgoingMsg;
 @property (nullable,nonatomic,copy) NSString *senderName;
+@property (nonatomic,assign) BOOL isRemoteRead;
 
 @end
 

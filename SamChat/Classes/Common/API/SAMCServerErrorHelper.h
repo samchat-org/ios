@@ -28,13 +28,14 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorTokenInvalid = -401, // token不合法
     SAMCServerErrorAlreadyBeenSP = -501, // 用户已经有Sam-pros Account
     SAMCServerErrorOldPasswordWrong = -502, // 原始密码错误
-    SAMCServerErrorNotSP = -503, // 非商家用户
+    SAMCServerErrorNotSP = -503, // 对方非商家用户
     SAMCServerErrorAdvertisementNotFound = -504, // 广告不存在
     SAMCServerErrorWaitforVerification = -505, // 等待商家后台审核
     SAMCServerErrorFollowListLimit = -506, // 关注人数超过最大值
     SAMCServerErrorUnfollowed = -507, // 还未关注此商家
     SAMCServerErrorContactNotAdded = -508, // 还未添加此联系人
     SAMCServerErrorQuestionTooOften = -509, // 发送问题过于频繁
+    SAMCServerErrorIamNotSP = -510, // 自己不是商家用户
     
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,

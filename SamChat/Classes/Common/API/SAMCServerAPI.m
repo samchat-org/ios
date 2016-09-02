@@ -420,6 +420,27 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "advertisement-write"
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//        "type":[0/1] 0: text  1:picture   2:vedio
+//        "content": text or url
+//    }
+//}
++ (NSDictionary *)writeAdvertisementType:(NIMMessageType)type
+                                 content:(NSString *)content
+{
+    content = content ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_ADVERTISEMENT_WRITE,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_TYPE:@(type),SAMC_CONTENT:content};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

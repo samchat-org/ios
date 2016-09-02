@@ -92,6 +92,9 @@
         case SAMCServerErrorQuestionTooOften: // 发送问题过于频繁
             localizedDescription = @"发送问题过于频繁";
             break;
+        case SAMCServerErrorIamNotSP: // 自己不是商家用户
+            localizedDescription = @"还未升级为商家用户";
+            break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
             break;

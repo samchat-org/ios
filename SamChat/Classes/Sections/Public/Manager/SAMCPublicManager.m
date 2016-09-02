@@ -134,6 +134,26 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     });
 }
 
+- (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error
+{
+    // TODO: handle text message now, image later
+    error = nil;
+    NSDictionary *parameters = [SAMCServerAPI writeAdvertisementType:message.messageType content:message.text];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode == 0) {
+            } else {
+            }
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        DDLogError(@"sendPublicMessage failed: %@", error);
+    }];
+}
+
 #pragma mark - Private
 - (void)queryFollowList
 {
@@ -155,6 +175,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        // TODO: check Reachability and retry
     }];
 }
 

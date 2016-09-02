@@ -10,6 +10,7 @@
 #import "SAMCPublicSession.h"
 #import "SAMCSPBasicInfo.h"
 #import "SAMCPublicManagerDelegate.h"
+#import "SAMCPublicMessage.h"
 
 NS_ASSUME_NONNULL_BEGIN
 @interface SAMCPublicManager : NSObject
@@ -30,6 +31,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 - (void)queryFollowListIfNecessary;
 
 - (NSArray<SAMCPublicSession *> *)myFollowList;
+
+- (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error;
 
 @end
 NS_ASSUME_NONNULL_END

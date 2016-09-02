@@ -25,6 +25,8 @@
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW             SAMC_API_PREFIX@"api_1.0_officialAccount_follow.do"
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  SAMC_API_PREFIX@"api_1.0_officialAccount_followListQuery.do"
 #define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@"api_1.0_officialAccount_publicQuery.do"
+#define SAMC_URL_COMMON_SEND_INVITE_MSG             SAMC_API_PREFIX@"api_1.0_common_sendInviteMsg.do"
+#define SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE  SAMC_API_PREFIX@"api_1.0_advertisement_advertisementWrite.do"
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -52,6 +54,7 @@
 #define SAMC_PUBLIC_QUERY               @"public-query"
 #define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
 #define SAMC_SEND_INVITE_MSG            @"send-invite-msg"
+#define SAMC_ADVERTISEMENT_WRITE        @"advertisement-write"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -86,6 +89,7 @@
 #define SAMC_FAVOURITE_TAG              @"favourite_tag"
 #define SAMC_SAM_PROS_INFO              @"sam_pros_info"
 #define SAMC_PHONES                     @"phones"
+#define SAMC_CONTENT                    @"content"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

@@ -59,4 +59,7 @@
 
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;
 
++ (NSDictionary *)writeAdvertisementType:(NIMMessageType)type
+                                 content:(NSString *)content;
+
 @end
