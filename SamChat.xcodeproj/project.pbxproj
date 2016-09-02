@@ -219,6 +219,7 @@
 		314D5D481D6C1FF0004B3DE4 /* SAMCQRScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 314D5D471D6C1FF0004B3DE4 /* SAMCQRScanView.m */; };
 		314D5D511D6C7AAE004B3DE4 /* SAMCMyQRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314D5D501D6C7AAE004B3DE4 /* SAMCMyQRCodeViewController.m */; };
 		3154F9461D79172D00C540EB /* SAMCPublicMessageDataProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 3154F9451D79172D00C540EB /* SAMCPublicMessageDataProvider.m */; };
+		3154F94A1D79264A00C540EB /* SAMCContactManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3154F9491D79264A00C540EB /* SAMCContactManager.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -695,6 +696,8 @@
 		314D5D501D6C7AAE004B3DE4 /* SAMCMyQRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCMyQRCodeViewController.m; sourceTree = "<group>"; };
 		3154F9441D79172D00C540EB /* SAMCPublicMessageDataProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicMessageDataProvider.h; path = Public/Other/SAMCPublicMessageDataProvider.h; sourceTree = "<group>"; };
 		3154F9451D79172D00C540EB /* SAMCPublicMessageDataProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicMessageDataProvider.m; path = Public/Other/SAMCPublicMessageDataProvider.m; sourceTree = "<group>"; };
+		3154F9481D79264A00C540EB /* SAMCContactManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCContactManager.h; path = Manager/SAMCContactManager.h; sourceTree = "<group>"; };
+		3154F9491D79264A00C540EB /* SAMCContactManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCContactManager.m; path = Manager/SAMCContactManager.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -1178,6 +1181,7 @@
 		312C1B111D35D85B00242906 /* Contact */ = {
 			isa = PBXGroup;
 			children = (
+				3154F9471D79263300C540EB /* Manager */,
 				312C1B121D35D85B00242906 /* Helper */,
 				312C1B151D35D85B00242906 /* Model */,
 				312C1B1E1D35D85B00242906 /* View */,
@@ -1950,6 +1954,15 @@
 			name = Migration;
 			sourceTree = "<group>";
 		};
+		3154F9471D79263300C540EB /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3154F9481D79264A00C540EB /* SAMCContactManager.h */,
+				3154F9491D79264A00C540EB /* SAMCContactManager.m */,
+			);
+			name = Manager;
+			sourceTree = "<group>";
+		};
 		31799EB51D4064EA00878058 /* CountryCode */ = {
 			isa = PBXGroup;
 			children = (
@@ -2406,6 +2419,7 @@
 			files = (
 				312C1CDF1D35D85B00242906 /* NTESSpellingCenter.m in Sources */,
 				312C1CD41D35D85B00242906 /* NTESDataManager.m in Sources */,
+				3154F94A1D79264A00C540EB /* SAMCContactManager.m in Sources */,
 				312C1CA61D35D85B00242906 /* NetCallChatInfo.m in Sources */,
 				3195DE431D60555A001BD2B4 /* SAMCServerErrorHelper.m in Sources */,
 				312C1C361D35D85B00242906 /* NSDictionary+NTESJson.m in Sources */,

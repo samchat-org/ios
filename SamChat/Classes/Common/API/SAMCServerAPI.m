@@ -327,7 +327,7 @@
 //{
 //    "header":
 //    {
-//        "action" : "query",
+//        "action" : "query-fuzzy",
 //        "token": "token"
 //    },
 //    "body":
@@ -342,7 +342,7 @@
 + (NSDictionary *)queryFuzzyUser:(NSString *)key
 {
     key = key ?:@"";
-    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_FUZZY,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:@(1),
                            SAMC_PARAM:@{SAMC_SEARCH_KEY:key}};
     return @{SAMC_HEADER:header,SAMC_BODY:body};

@@ -11,35 +11,20 @@
 
 #define SAMC_API_PREFIX                 @"http://ec2-54-222-170-218.cn-north-1.compute.amazonaws.com.cn:8081/sam_svr/"
 
-#define SAMC_API_USER_REGISTER_CODE_REQUEST @"api_1.0_user_registerCodeRequest.do"
-#define SAMC_API_USER_SIGNUP_CODE_VERIFY    @"api_1.0_user_signupCodeVerify.do"
-#define SAMC_API_USER_REGISTER              @"api_1.0_user_register.do"
-#define SAMC_API_USER_LOGIN                 @"api_1.0_user_login.do"
-#define SAMC_API_USER_LOGOUT                @"api_1.0_user_logout.do"
-#define SAMC_API_USER_CREATE_SAM_PROS       @"api_1.0_user_createSamPros.do"
-#define SAMC_API_USER_FIND_PWD_CODE_REQUEST @"api_1.0_user_findpwdCodeRequest.do"
-#define SAMC_API_USER_FIND_PWD_CODE_VERIFY  @"api_1.0_user_findpwdCodeVerify.do"
-#define SAMC_API_USER_FIND_PWD_UPDATE       @"api_1.0_user_findpwdUpdate.do"
-#define SAMC_API_USER_PWD_UPDATE            @"api_1.0_user_pwdUpdate.do"
-#define SAMC_API_QUESTION_QUESTION          @"api_1.0_question_question.do"
-#define SAMC_API_OFFICIALACCOUNT_FOLLOW             @"api_1.0_officialAccount_follow.do"
-#define SAMC_API_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  @"api_1.0_officialAccount_followListQuery.do"
-#define SAMC_API_OFFICIALACCOUNT_PUBLIC_QUERY       @"api_1.0_officialAccount_publicQuery.do"
-
-#define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@""SAMC_API_USER_REGISTER_CODE_REQUEST
-#define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@""SAMC_API_USER_SIGNUP_CODE_VERIFY
-#define SAMC_URL_USER_REGISTER              SAMC_API_PREFIX@""SAMC_API_USER_REGISTER
-#define SAMC_URL_USER_LOGIN                 SAMC_API_PREFIX@""SAMC_API_USER_LOGIN
-#define SAMC_URL_USER_LOGOUT                SAMC_API_PREFIX@""SAMC_API_USER_LOGOUT
-#define SAMC_URL_PROFILE_APP_KEY_GET        SAMC_API_PREFIX@""SAMC_API_PROFILE_APP_KEY_GET
-#define SAMC_URL_USER_CREATE_SAM_PROS       SAMC_API_PREFIX@""SAMC_API_USER_CREATE_SAM_PROS
-#define SAMC_URL_USER_FIND_PWD_CODE_REQUEST SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_CODE_REQUEST
-#define SAMC_URL_USER_FIND_PWD_CODE_VERIFY  SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_CODE_VERIFY
-#define SAMC_URL_USER_FIND_PWD_UPDATE       SAMC_API_PREFIX@""SAMC_API_USER_FIND_PWD_UPDATE
-#define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@""SAMC_API_QUESTION_QUESTION
-#define SAMC_URL_OFFICIALACCOUNT_FOLLOW             SAMC_API_PREFIX@""SAMC_API_OFFICIALACCOUNT_FOLLOW
-#define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  SAMC_API_PREFIX@""SAMC_API_OFFICIALACCOUNT_FOLLOW_LIST_QUERY
-#define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@""SAMC_API_OFFICIALACCOUNT_PUBLIC_QUERY
+#define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@"api_1.0_user_registerCodeRequest.do"
+#define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@"api_1.0_user_signupCodeVerify.do"
+#define SAMC_URL_USER_REGISTER              SAMC_API_PREFIX@"api_1.0_user_register.do"
+#define SAMC_URL_USER_LOGIN                 SAMC_API_PREFIX@"api_1.0_user_login.do"
+#define SAMC_URL_USER_LOGOUT                SAMC_API_PREFIX@"api_1.0_user_logout.do"
+#define SAMC_URL_USER_CREATE_SAM_PROS       SAMC_API_PREFIX@"api_1.0_user_createSamPros.do"
+#define SAMC_URL_USER_FIND_PWD_CODE_REQUEST SAMC_API_PREFIX@"api_1.0_user_findpwdCodeRequest.do"
+#define SAMC_URL_USER_FIND_PWD_CODE_VERIFY  SAMC_API_PREFIX@"api_1.0_user_findpwdCodeVerify.do"
+#define SAMC_URL_USER_FIND_PWD_UPDATE       SAMC_API_PREFIX@"api_1.0_user_findpwdUpdate.do"
+#define SAMC_URL_USER_QUERYFUZZY            SAMC_API_PREFIX@"api_1.0_user_queryFuzzy.do"
+#define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@"api_1.0_question_question.do"
+#define SAMC_URL_OFFICIALACCOUNT_FOLLOW             SAMC_API_PREFIX@"api_1.0_officialAccount_follow.do"
+#define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  SAMC_API_PREFIX@"api_1.0_officialAccount_followListQuery.do"
+#define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@"api_1.0_officialAccount_publicQuery.do"
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -63,6 +48,7 @@
 #define SAMC_QUESTION                   @"question"
 #define SAMC_FOLLOW                     @"follow"
 #define SAMC_QUERY                      @"query"
+#define SAMC_QUERY_FUZZY                @"query-fuzzy"
 #define SAMC_PUBLIC_QUERY               @"public-query"
 #define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
 

@@ -8,6 +8,8 @@
 
 #import "SAMCAddContactViewController.h"
 #import "SAMCQRCodeScanViewController.h"
+#import "SAMCContactManager.h"
+#import "UIView+Toast.h"
 
 @interface SAMCAddContactViewController ()
 
@@ -39,11 +41,17 @@
         self.navigationItem.title = @"Add Service Provider";
     }
     
+    UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
+    searchButton.backgroundColor = [UIColor grayColor];
+    [searchButton addTarget:self action:@selector(onTouchSearch:) forControlEvents:UIControlEventTouchUpInside];
+    
     _searchTextField = [[UITextField alloc] init];
     _searchTextField.translatesAutoresizingMaskIntoConstraints = NO;
     _searchTextField.backgroundColor = [UIColor lightGrayColor];
     _searchTextField.layer.cornerRadius = 5.0f;
     _searchTextField.placeholder = @"search by username, phone number";
+    _searchTextField.leftView = searchButton;
+    _searchTextField.leftViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:_searchTextField];
     
     _contactTableView = [[UITableView alloc] init];
@@ -82,6 +90,20 @@
     SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] init];
     vc.currentUserMode = self.currentUserMode;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)onTouchSearch:(id)sender
+{
+    NSString *key = self.searchTextField.text;
+    __weak typeof(self) wself = self;
+    [[SAMCContactManager sharedManager] queryFuzzyUserWithKey:key completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        if (error) {
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        DDLogDebug(@"query fuzzy users: %@", users);
+    }];
 }
 
 @end
