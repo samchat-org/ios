@@ -203,18 +203,18 @@
     }];
 }
 
-- (void)updateMessage:(SAMCPublicMessage *)message
-        deliveryState:(NIMMessageDeliveryState)state
-             serverId:(NSInteger)serverId
-            timestamp:(NSInteger)timestamp
+- (void)updateMessageStateServerIdAndTime:(SAMCPublicMessage *)message
 {
     if (message == nil) {
         return;
     }
+    NSNumber *state = @(message.deliveryState);
+    NSNumber *serverId = @(message.serverId);
+    NSNumber *timestamp = @(message.timestamp);
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *tableName = message.publicSession.tableName;
         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET msg_status = ?, server_id = ?, msg_time = ? WHERE msg_id = ?", tableName];
-        [db executeUpdate:sql, @(state), @(serverId), @(timestamp), message.messageId];
+        [db executeUpdate:sql, state, serverId, timestamp, message.messageId];
     }];
 }
 

@@ -13,6 +13,13 @@
 #import "SAMCServerErrorHelper.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCPreferenceManager.h"
+#import "GCDMulticastDelegate.h"
+
+@interface SAMCPublicManager ()
+
+@property (nonatomic, strong) GCDMulticastDelegate<SAMCPublicManagerDelegate> *publicDelegate;
+
+@end
 
 @implementation SAMCPublicManager
 
@@ -39,11 +46,13 @@
 
 - (void)addDelegate:(id<SAMCPublicManagerDelegate>)delegate
 {
+    [self.publicDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
     [[SAMCDataBaseManager sharedManager].publicDB addPublicDelegate:delegate];
 }
 
 - (void)removeDelegate:(id<SAMCPublicManagerDelegate>)delegate
 {
+    [self.publicDelegate removeDelegate:delegate];
     [[SAMCDataBaseManager sharedManager].publicDB removePublicDelegate:delegate];
 }
 
@@ -70,7 +79,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
-    
 }
 
 - (void)follow:(BOOL)isFollow
@@ -148,38 +156,42 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 
 #pragma mark - Server
-- (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error
+- (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut
 {
     // TODO: handle text message now, image later
-    error = nil;
     [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+    [self.publicDelegate willSendMessage:message];
     NSDictionary *parameters = [SAMCServerAPI writeAdvertisementType:message.messageType content:message.text];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        DDLogError(@"sendPublicMessage success: %@", responseObject);
+        NSError *sendError = nil;
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
             if (errorCode == 0) {
                 NSInteger serverId = [((NSNumber *)response[SAMC_ADV_ID]) integerValue];
                 NSInteger timestamp = [((NSNumber *)response[SAMC_PUBLISH_TIMESTAMP]) integerValue]/1000; // seconds
-                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
-                                                              deliveryState:NIMMessageDeliveryStateDeliveried
-                                                                   serverId:serverId
-                                                                  timestamp:timestamp];
+                message.serverId = serverId;
+                message.timestamp = timestamp;
+                message.deliveryState = NIMMessageDeliveryStateDeliveried;
             } else {
-                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
-                                                              deliveryState:NIMMessageDeliveryStateFailed
-                                                                   serverId:message.serverId
-                                                                  timestamp:message.timestamp];
+                message.deliveryState = NIMMessageDeliveryStateFailed;
+                sendError = [SAMCServerErrorHelper errorWithCode:errorCode];
             }
+        } else {
+            message.deliveryState = NIMMessageDeliveryStateFailed;
+            sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError];
         }
+        [[SAMCDataBaseManager sharedManager].publicDB updateMessageStateServerIdAndTime:message];
+        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         DDLogError(@"sendPublicMessage failed: %@", error);
-        [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
-                                                      deliveryState:NIMMessageDeliveryStateFailed
-                                                           serverId:message.serverId
-                                                          timestamp:message.timestamp];
+        message.deliveryState = NIMMessageDeliveryStateFailed;
+        NSError *sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable];
+        [[SAMCDataBaseManager sharedManager].publicDB updateMessageStateServerIdAndTime:message];
+        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
     }];
 }
 
@@ -208,4 +220,12 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     }];
 }
 
+#pragma mark - lazy load
+- (GCDMulticastDelegate<SAMCPublicManagerDelegate> *)publicDelegate
+{
+    if (_publicDelegate == nil) {
+        _publicDelegate = (GCDMulticastDelegate <SAMCPublicManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    }
+    return _publicDelegate;
+}
 @end

@@ -49,4 +49,14 @@
     return _tableName;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (![object isKindOfClass:[SAMCPublicSession class]]) {
+        return NO;
+    } else {
+        SAMCPublicSession *session = object;
+        return (self.isOutgoing == session.isOutgoing) && (self.spBasicInfo.uniqueId == session.spBasicInfo.uniqueId);
+    }
+}
+
 @end

@@ -48,6 +48,7 @@ UINavigationControllerDelegate,
 NIMInputActionDelegate,
 NIMMessageCellDelegate,
 SAMCPublicMsgDatasourceDelegate,
+SAMCPublicManagerDelegate,
 UITableViewDataSource,
 UITableViewDelegate>
 
@@ -76,6 +77,7 @@ UITableViewDelegate>
 {
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
+    [[SAMCPublicManager sharedManager] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -130,6 +132,8 @@ UITableViewDelegate>
         }
     }
     [self checkAttachmentState:messageArray];
+    
+    [[SAMCPublicManager sharedManager] addDelegate:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -341,36 +345,40 @@ UITableViewDelegate>
     [[SAMCPublicManager sharedManager] sendPublicMessage:message error:NULL];
 }
 
-#pragma mark - SAMCChatManagerDelegate
-//发送消息
-- (void)willSendMessage:(NIMMessage *)message
+#pragma mark - SAMCPublicManagerDelegate
+- (void)willSendMessage:(SAMCPublicMessage *)message
+{
+    if ([message.publicSession isEqual:_publicSession]) {
+        if ([self findModel:message]) {
+            [self uiUpdateMessage:message];
+        }else{
+            [self uiAddMessages:@[message]];
+        }
+    }
+}
+
+- (void)sendMessage:(SAMCPublicMessage *)message didCompleteWithError:(NSError *)error
+{
+    if ([message.publicSession isEqual:_publicSession]) {
+        NIMMessageModel *model = [self makeModel:message];
+        NSInteger index = [self.sessionDatasource indexAtModelArray:model];
+        [self.layoutManager updateCellAtIndex:index model:model];
+    }
+}
+
+-(void)sendMessage:(SAMCPublicMessage *)message progress:(CGFloat)progress
 {
 }
 
-//发送结果
-- (void)sendMessage:(NIMMessage *)message didCompleteWithError:(NSError *)error
-{
-}
-
-//发送进度
--(void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress
-{
-}
-
-//接收消息
 - (void)onRecvMessages:(NSArray *)messages
 {
 }
 
-- (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress
+- (void)fetchMessageAttachment:(SAMCPublicMessage *)message progress:(CGFloat)progress
 {
 }
 
-- (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error
-{
-}
-
-- (void)onRecvMessageReceipt:(NIMMessageReceipt *)receipt
+- (void)fetchMessageAttachment:(SAMCPublicMessage *)message didCompleteWithError:(NSError *)error
 {
 }
 
@@ -406,6 +414,7 @@ UITableViewDelegate>
 - (void)onSendText:(NSString *)text
 {
     SAMCPublicMessage *message = [SAMCPublicMessageMaker msgWithText:text];
+    message.publicSession = self.publicSession;
     [self sendMessage:message];
 }
 

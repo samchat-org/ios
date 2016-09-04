@@ -28,9 +28,6 @@
                                               limit:(NSInteger)limit;
 
 - (void)insertMessage:(SAMCPublicMessage *)message;
-- (void)updateMessage:(SAMCPublicMessage *)message
-        deliveryState:(NIMMessageDeliveryState)state
-             serverId:(NSInteger)serverId
-            timestamp:(NSInteger)timestamp;
+- (void)updateMessageStateServerIdAndTime:(SAMCPublicMessage *)message;
 
 @end

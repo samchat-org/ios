@@ -15,7 +15,6 @@
 {
     SAMCPublicMessage *textMessage = [[SAMCPublicMessage alloc] init];
     textMessage.text = text;
-    textMessage.publicSession = [SAMCPublicSession sessionOfMyself];
     return textMessage;
 }
 
