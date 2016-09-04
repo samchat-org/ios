@@ -151,6 +151,73 @@
     }];
 }
 
+- (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
+                                            message:(SAMCPublicMessage *)message
+                                              limit:(NSInteger)limit
+{
+    NSString *tableName = [session tableName];
+    if (![self isTableExists:tableName]) {
+        return nil;
+    }
+    __block NSMutableArray *messages = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s;
+        if (message == nil) {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
+            s = [db executeQuery:sql, @(limit)];
+        } else {
+            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE serial<(SELECT serial FROM '%@' WHERE msg_id = ?) ORDER BY serial DESC LIMIT ?", tableName, tableName];
+            s = [db executeQuery:sql,message.messageId,@(limit)];
+        }
+        while ([s next]) {
+            SAMCPublicMessage *message = [[SAMCPublicMessage alloc] init];
+            message.publicSession = session;
+            message.messageType = [s intForColumn:@"msg_type"];
+            message.from = [s stringForColumn:@"msg_from"];
+            message.messageId = [s stringForColumn:@"msg_id"];
+            message.serverId = [s intForColumn:@"server_id"];
+            message.text = [s stringForColumn:@"msg_text"];
+            message.deliveryState = [s intForColumn:@"msg_status"];
+            message.timestamp = [s longForColumn:@"msg_time"];
+            [messages insertObject:message atIndex:0];
+        }
+        [s close];
+    }];
+    return messages;
+}
+
+- (void)insertMessage:(SAMCPublicMessage *)message
+{
+    if (message == nil) {
+        return;
+    }
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        // TODO: add unreadCount &tableName to follow_list
+        NSString *tableName = message.publicSession.tableName;
+        // insert message
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
+        // TODO: need create index ?
+        NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_status, msg_time) VALUES(?,?,?,?,?,?,?)", tableName];
+        [db executeUpdate:sql, @(message.messageType), message.from, message.messageId ,@(message.serverId), message.text, @(message.deliveryState),@(message.timestamp)];
+        
+    }];
+}
+
+- (void)updateMessage:(SAMCPublicMessage *)message
+        deliveryState:(NIMMessageDeliveryState)state
+             serverId:(NSInteger)serverId
+            timestamp:(NSInteger)timestamp
+{
+    if (message == nil) {
+        return;
+    }
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = message.publicSession.tableName;
+        NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET msg_status = ?, server_id = ?, msg_time = ? WHERE msg_id = ?", tableName];
+        [db executeUpdate:sql, @(state), @(serverId), @(timestamp), message.messageId];
+    }];
+}
+
 #pragma mark - Private
 - (BOOL)resetFollowListTable
 {

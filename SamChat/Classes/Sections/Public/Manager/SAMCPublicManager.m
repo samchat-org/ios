@@ -134,10 +134,25 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     });
 }
 
+- (void)fetchMessagesInSession:(SAMCPublicSession *)session
+                       message:(SAMCPublicMessage * __nullable)message
+                         limit:(NSInteger)limit
+                        result:(void(^)(NSError *error, NSArray<SAMCPublicMessage *> *messages))handler
+{
+    // TODO: change to async dispatch ?
+    NSArray<SAMCPublicMessage *> *messages = [[SAMCDataBaseManager sharedManager].publicDB messagesInSession:session
+                                                                                                     message:message
+                                                                                                       limit:limit];
+    handler(nil, messages);
+}
+
+
+#pragma mark - Server
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error
 {
     // TODO: handle text message now, image later
     error = nil;
+    [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
     NSDictionary *parameters = [SAMCServerAPI writeAdvertisementType:message.messageType content:message.text];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
@@ -146,11 +161,25 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
             if (errorCode == 0) {
+                NSInteger serverId = [((NSNumber *)response[SAMC_ADV_ID]) integerValue];
+                NSInteger timestamp = [((NSNumber *)response[SAMC_PUBLISH_TIMESTAMP]) integerValue]/1000; // seconds
+                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
+                                                              deliveryState:NIMMessageDeliveryStateDeliveried
+                                                                   serverId:serverId
+                                                                  timestamp:timestamp];
             } else {
+                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
+                                                              deliveryState:NIMMessageDeliveryStateFailed
+                                                                   serverId:message.serverId
+                                                                  timestamp:message.timestamp];
             }
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         DDLogError(@"sendPublicMessage failed: %@", error);
+        [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message
+                                                      deliveryState:NIMMessageDeliveryStateFailed
+                                                           serverId:message.serverId
+                                                          timestamp:message.timestamp];
     }];
 }
 

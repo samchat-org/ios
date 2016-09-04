@@ -9,6 +9,7 @@
 #import "SAMCPublicContainerViewController.h"
 #import "SAMCPublicListViewController.h"
 #import "SAMCPublicMessageViewController.h"
+#import "SAMCPublicSession.h"
 
 @interface SAMCPublicContainerViewController ()
 
@@ -58,6 +59,7 @@
         self.pubicListVC = nil;
     }
     self.publicMessageVC = [[SAMCPublicMessageViewController alloc] init];
+    self.publicMessageVC.publicSession = [SAMCPublicSession sessionOfMyself];
     [self displayContentController:self.publicMessageVC];
 }
 

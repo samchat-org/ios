@@ -32,6 +32,11 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 - (NSArray<SAMCPublicSession *> *)myFollowList;
 
+- (void)fetchMessagesInSession:(SAMCPublicSession *)session
+                       message:(SAMCPublicMessage * __nullable)message
+                         limit:(NSInteger)limit
+                        result:(void(^)(NSError *error, NSArray<SAMCPublicMessage *> *messages))handler;
+
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error;
 
 @end

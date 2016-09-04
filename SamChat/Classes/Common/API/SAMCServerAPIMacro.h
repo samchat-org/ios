@@ -90,6 +90,8 @@
 #define SAMC_SAM_PROS_INFO              @"sam_pros_info"
 #define SAMC_PHONES                     @"phones"
 #define SAMC_CONTENT                    @"content"
+#define SAMC_ADV_ID                     @"adv_id"
+#define SAMC_PUBLISH_TIMESTAMP          @"publish_timestamp"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

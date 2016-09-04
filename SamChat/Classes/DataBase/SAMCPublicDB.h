@@ -9,6 +9,7 @@
 #import "SAMCDBBase.h"
 #import "SAMCPublicManagerDelegate.h"
 #import "SAMCSPBasicInfo.h"
+#import "SAMCPublicMessage.h"
 
 @interface SAMCPublicDB : SAMCDBBase
 
@@ -21,5 +22,15 @@
 
 - (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo;
 - (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo;
+
+- (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
+                                            message:(SAMCPublicMessage *)message
+                                              limit:(NSInteger)limit;
+
+- (void)insertMessage:(SAMCPublicMessage *)message;
+- (void)updateMessage:(SAMCPublicMessage *)message
+        deliveryState:(NIMMessageDeliveryState)state
+             serverId:(NSInteger)serverId
+            timestamp:(NSInteger)timestamp;
 
 @end

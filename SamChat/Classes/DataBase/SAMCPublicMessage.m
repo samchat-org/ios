@@ -7,6 +7,7 @@
 //
 
 #import "SAMCPublicMessage.h"
+#import "SAMCPublicSession.h"
 
 @implementation SAMCPublicMessage
 

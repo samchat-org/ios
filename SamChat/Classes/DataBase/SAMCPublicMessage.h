@@ -8,6 +8,12 @@
 
 #import "NIMMessageWrapper.h"
 
+@class SAMCPublicSession;
+
 @interface SAMCPublicMessage : NIMMessageWrapper
+
+@property (nonatomic, strong) SAMCPublicSession *publicSession;
+
+@property (nonatomic, assign) NSInteger serverId;
 
 @end

@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCPublicSession.h"
 
 @interface SAMCPublicMessageViewController : UIViewController
 
-//- (instancetype)initWithSession:(SAMCSession *)session;
+@property (nonatomic, strong) SAMCPublicSession *publicSession;
 
 @end

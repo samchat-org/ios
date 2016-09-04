@@ -13,8 +13,13 @@
 
 @property (nonatomic, strong) SAMCSPBasicInfo *spBasicInfo;
 @property (nonatomic, copy) NSString *lastMessageContent;
+@property (nonatomic, assign) BOOL isOutgoing;
+
+@property (nonatomic, copy) NSString *tableName;
 
 + (instancetype)session:(SAMCSPBasicInfo *)info
      lastMessageContent:(NSString *)messageContent;
+
++ (instancetype)sessionOfMyself;
 
 @end

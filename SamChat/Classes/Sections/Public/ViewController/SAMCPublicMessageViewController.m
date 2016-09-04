@@ -11,7 +11,6 @@
 @import MobileCoreServices;
 #import <AVFoundation/AVFoundation.h>
 #import "UIActionSheet+NTESBlock.h"
-#import "SAMCSessionConfig.h"
 #import "NIMMediaItem.h"
 #import "NTESFileLocationHelper.h"
 #import "NTESSessionMsgConverter.h"
@@ -40,13 +39,15 @@
 #import "SAMCPublicSessionConfig.h"
 #import "SAMCPublicManager.h"
 #import "SAMCPublicMessageMaker.h"
+#import "SAMCPublicMsgDataSource.h"
+#import "SAMCPublicMsgCellLayoutConfig.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
 UINavigationControllerDelegate,
 NIMInputActionDelegate,
 NIMMessageCellDelegate,
-NIMSessionMsgDatasourceDelegate,
+SAMCPublicMsgDatasourceDelegate,
 UITableViewDataSource,
 UITableViewDelegate>
 
@@ -55,10 +56,9 @@ UITableViewDelegate>
 @property (nonatomic, strong) NIMSessionViewLayoutManager *layoutManager;
 @property (nonatomic, strong) NIMInputView *sessionInputView;
 
-@property (nonatomic, strong) NIMSessionMsgDatasource *sessionDatasource;
+@property (nonatomic, strong) SAMCPublicMsgDataSource *sessionDatasource;
 @property (nonatomic, strong) NIMMessage *messageForMenu;
 
-@property (nonatomic, strong) SAMCPublicSessionConfig *sessionConfig;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
 
 @end
@@ -95,15 +95,14 @@ UITableViewDelegate>
     [self.refreshControl addTarget:self action:@selector(headerRereshing:) forControlEvents:UIControlEventValueChanged];
     
     CGRect inputViewRect = CGRectMake(0, 0, self.view.nim_width, [NIMUIConfig topInputViewHeight]);
+    
     BOOL disableInputView = NO;
-    if ([self.sessionConfig respondsToSelector:@selector(disableInputView)]) {
-        disableInputView = [self.sessionConfig disableInputView];
-    }
+    
     if (!disableInputView) {
         _sessionInputView = [[NIMInputView alloc] initWithFrame:inputViewRect];
         _sessionInputView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         self.sessionInputView.nim_bottom = self.view.nim_height;
-        [self.sessionInputView setInputConfig:[self sessionConfig]];
+        [self.sessionInputView setInputConfig:[[SAMCPublicSessionConfig alloc] init]];
         [self.sessionInputView setInputActionDelegate:self];
         [self.view addSubview:self.sessionInputView];
     }
@@ -116,23 +115,12 @@ UITableViewDelegate>
     _layoutManager = [[NIMSessionViewLayoutManager alloc] initWithInputView:self.sessionInputView tableView:self.tableView];
     
     //数据
-    id<NIMKitMessageProvider> dataProvider = [self.sessionConfig respondsToSelector:@selector(messageDataProvider)] ? [self.sessionConfig messageDataProvider] : nil;
-    NSInteger limit = [NIMUIConfig messageLimit];
-    if ([self.sessionConfig respondsToSelector:@selector(messageLimit)]) {
-        limit = self.sessionConfig.messageLimit;
-    }
+    NSInteger limit = 10;
     NSTimeInterval showTimestampInterval = [NIMUIConfig messageTimeInterval];
-    if ([self.sessionConfig respondsToSelector:@selector(showTimeInterval)]) {
-        showTimestampInterval = [self.sessionConfig showTimestampInterval];
-    }
-    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:nil dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
-    _sessionDatasource.sessionConfig = [self sessionConfig];
-    
+    _sessionDatasource = [[SAMCPublicMsgDataSource alloc] initWithSession:self.publicSession showTimeInterval:showTimestampInterval limit:limit];
     _sessionDatasource.delegate = self;
     
-    if (![self.sessionConfig respondsToSelector:@selector(autoFetchWhenOpenSession)] || self.sessionConfig.autoFetchWhenOpenSession) {
-        [_sessionDatasource resetMessages:nil];
-    }
+    [_sessionDatasource resetMessages:nil];
     
     NSMutableArray *messageArray = [[NSMutableArray alloc] init];
     for (id model in _sessionDatasource.modelArray) {
@@ -484,14 +472,6 @@ UITableViewDelegate>
 }
 
 #pragma mark - 配置项
-- (id<NIMSessionConfig>)sessionConfig
-{
-    if (_sessionConfig == nil) {
-        _sessionConfig = [[SAMCPublicSessionConfig alloc] initWithSession:nil];
-    }
-    return _sessionConfig;
-}
-
 - (NIMMessage *)messageForMenu
 {
     return _messageForMenu;
@@ -564,28 +544,18 @@ UITableViewDelegate>
 }
 
 #pragma mark - Private
-- (id<NIMCellLayoutConfig>)layoutConfigForModel:(NIMMessageModel *)model
-{
-    id<NIMCellLayoutConfig> config = nil;
-    if ([self.sessionConfig respondsToSelector:@selector(layoutConfigWithMessage:)]) {
-        config = [self.sessionConfig layoutConfigWithMessage:model.message];
-    }
-    return config ? : [[NIMDefaultValueMaker sharedMaker] cellLayoutDefaultConfig];
-}
-
 - (void)layoutConfig:(NIMMessageModel *)model
 {
-    model.sessionConfig = self.sessionConfig;
-    model.layoutConfig = [self layoutConfigForModel:model];
+    model.layoutConfig = [[SAMCPublicMsgCellLayoutConfig alloc] init];
     [model calculateContent:self.tableView.nim_width force:NO];
 }
-
 
 - (NIMMessageModel *)makeModel:(NIMMessage *)message
 {
     NIMMessageModel *model = [self findModel:message];
     if (!model) {
         model = [[NIMMessageModel alloc] initWithMessage:message];
+        model.shouldShowReadLabel = NO;
     }
     [self layoutConfig:model];
     return model;

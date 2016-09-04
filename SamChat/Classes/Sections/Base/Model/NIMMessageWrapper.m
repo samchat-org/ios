@@ -37,7 +37,9 @@
     if (self) {
         _messageType = NIMMessageTypeText;
         _text = @"";
-        _messageId = @"_messageId";
+//        _timestamp = [@([[NSDate date] timeIntervalSince1970] * 1000) longValue];
+        _timestamp = [[NSDate date] timeIntervalSince1970];
+        _messageId = [super messageId];
     }
     return self;
 }
@@ -273,7 +275,7 @@
 - (NSString *)description
 {
     NSMutableString *desc = [[NSString stringWithFormat:@"****** NIMMessageWrapper <%@: %p> Info ******\n",[self class],self] mutableCopy];
-    [desc appendFormat:@"messageId\t: %@\n", _messageId];
+    [desc appendFormat:@"messageId\t: %@\n", self.messageId];
     [desc appendFormat:@"messageType\t: %ld\n", _messageType];
     [desc appendFormat:@"sessionId\t: %@\n", _session.sessionId];
     [desc appendFormat:@"sessionType\t: %ld\n", _session.sessionType];

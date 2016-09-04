@@ -7,23 +7,17 @@
 //
 
 #import "SAMCPublicSessionConfig.h"
-#import "SAMCPublicMessageDataProvider.h"
 
 @interface SAMCPublicSessionConfig ()
-
-@property (nonatomic, strong) SAMCPublicMessageDataProvider *provider;
-@property (nonatomic, strong) SAMCPublicSession *publicSession;
 
 @end
 
 @implementation SAMCPublicSessionConfig
 
-- (instancetype)initWithSession:(SAMCPublicSession *)session
+- (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.publicSession = session;
-        self.provider = [[SAMCPublicMessageDataProvider alloc] initWithSession:session];
     }
     return self;
 }
@@ -38,7 +32,7 @@
 
 - (id<NIMKitMessageProvider>)messageDataProvider
 {
-    return self.provider;
+    return nil;
 }
 
 - (BOOL)shouldHandleReceipt{

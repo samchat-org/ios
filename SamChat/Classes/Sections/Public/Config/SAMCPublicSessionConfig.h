@@ -11,6 +11,4 @@
 
 @interface SAMCPublicSessionConfig : NTESSessionConfig
 
-- (instancetype)initWithSession:(SAMCPublicSession *)session;
-
 @end
