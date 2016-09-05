@@ -101,11 +101,11 @@
 
 - (void)refreshData:(NIMCommonTableRow *)rowData tableView:(UITableView *)tableView
 {
-//    self.textLabel.text       = rowData.title;
-//    self.detailTextLabel.text = rowData.detailTitle;
-    [self.topButton setTitle:@"Service Profile" forState:UIControlStateNormal];
-    [self.bottomButton setTitle:@"Service QR Code" forState:UIControlStateNormal];
-    NSString *uid = rowData.extraInfo;
+    NSDictionary *extraInfo = rowData.extraInfo;
+    
+    [self.topButton setTitle:extraInfo[SAMC_CELL_EXTRA_TOP_TEXT_KEY] forState:UIControlStateNormal];
+    [self.bottomButton setTitle:extraInfo[SAMC_CELL_EXTRA_BOTTOM_TEXT_KEY] forState:UIControlStateNormal];
+    NSString *uid = extraInfo[SAMC_CELL_EXTRA_UID_KEY];
     if ([uid isKindOfClass:[NSString class]]) {
         NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:uid];
         self.nameLabel.text   = info.showName ;
@@ -114,6 +114,14 @@
         [self.accountLabel sizeToFit];
         [self.avatar nim_setImageWithURL:[NSURL URLWithString:info.avatarUrlString] placeholderImage:info.avatarImage options:NIMWebImageRetryFailed];
     }
+    
+    [self.topButton removeTarget:tableView.viewController action:NULL forControlEvents:UIControlEventTouchUpInside];
+    SEL topAction = NSSelectorFromString(extraInfo[SAMC_CELL_EXTRA_TOP_ACTION_KEY]);
+    [self.topButton addTarget:tableView.viewController action:topAction forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.bottomButton removeTarget:tableView.viewController action:NULL forControlEvents:UIControlEventTouchUpInside];
+    SEL bottomAction = NSSelectorFromString(extraInfo[SAMC_CELL_EXTRA_BOTTOM_ACTION_KEY]);
+    [self.bottomButton addTarget:tableView.viewController action:bottomAction forControlEvents:UIControlEventTouchUpInside];
 }
 
 

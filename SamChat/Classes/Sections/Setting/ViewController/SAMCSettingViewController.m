@@ -12,6 +12,7 @@
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCAccountManager.h"
 #import "SAMCCSAStepOneViewController.h"
+#import "SAMCSettingPortraitCell.h"
 
 @interface SAMCSettingViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -76,12 +77,18 @@
 {
     self.tableView.backgroundColor = [UIColor whiteColor];
     NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
+    
+    NSDictionary *portraitCellExtra = @{SAMC_CELL_EXTRA_UID_KEY:uid.length ? uid : [NSNull null],
+                                        SAMC_CELL_EXTRA_TOP_TEXT_KEY:@"My Profile",
+                                        SAMC_CELL_EXTRA_BOTTOM_TEXT_KEY:@"My QR Code",
+                                        SAMC_CELL_EXTRA_TOP_ACTION_KEY:@"onTouchPortraitTop:",
+                                        SAMC_CELL_EXTRA_BOTTOM_ACTION_KEY:@"onTouchPortraitBottom:"};
     NSArray *data = @[
                       @{
                           HeaderTitle:@"Account",
                           RowContent :@[
                                   @{
-                                      ExtraInfo     : uid.length ? uid : [NSNull null],
+                                      ExtraInfo     : portraitCellExtra,
                                       CellClass     : @"SAMCSettingPortraitCell",
                                       RowHeight     : @(100),
                                       CellAction    : @"onActionTouchPortrait:",
@@ -150,12 +157,17 @@
 {
     self.tableView.backgroundColor = [UIColor whiteColor];
     NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
+    NSDictionary *portraitCellExtra = @{SAMC_CELL_EXTRA_UID_KEY:uid.length ? uid : [NSNull null],
+                                        SAMC_CELL_EXTRA_TOP_TEXT_KEY:@"Service Profile",
+                                        SAMC_CELL_EXTRA_BOTTOM_TEXT_KEY:@"Service QR Code",
+                                        SAMC_CELL_EXTRA_TOP_ACTION_KEY:@"onTouchPortraitTop:",
+                                        SAMC_CELL_EXTRA_BOTTOM_ACTION_KEY:@"onTouchPortraitBottom:"};
     NSArray *data = @[
                       @{
                           HeaderTitle:@"Service Account",
                           RowContent :@[
                                   @{
-                                      ExtraInfo     : uid.length ? uid : [NSNull null],
+                                      ExtraInfo     : portraitCellExtra,
                                       CellClass     : @"SAMCSettingPortraitCell",
                                       RowHeight     : @(100),
                                       CellAction    : @"onActionTouchPortrait:",
@@ -296,6 +308,16 @@
 {
     SAMCCSAStepOneViewController *vc = [[SAMCCSAStepOneViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)onTouchPortraitTop:(id)sender
+{
+    DDLogDebug(@"onTouchPortraitTop");
+}
+
+- (void)onTouchPortraitBottom:(id)sender
+{
+    DDLogDebug(@"onTouchPortraitBottom");
 }
 
 @end
