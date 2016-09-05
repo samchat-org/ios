@@ -28,6 +28,7 @@
 #define SAMC_URL_COMMON_SEND_INVITE_MSG             SAMC_API_PREFIX@"api_1.0_common_sendInviteMsg.do"
 #define SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE  SAMC_API_PREFIX@"api_1.0_advertisement_advertisementWrite.do"
 #define SAMC_URL_CONTACT_CONTACT_LIST_QUERY         SAMC_API_PREFIX@"api_1.0_contact_contactListQuery.do"
+#define SAMC_URL_CONTACT_CONTACT                    SAMC_API_PREFIX@"api_1.0_contact_contact.do"
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -57,6 +58,7 @@
 #define SAMC_CONTACT_LIST_QUERY         @"contact-list-query"
 #define SAMC_SEND_INVITE_MSG            @"send-invite-msg"
 #define SAMC_ADVERTISEMENT_WRITE        @"advertisement-write"
+#define SAMC_CONTACT                    @"contact"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"

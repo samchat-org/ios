@@ -115,8 +115,8 @@ typedef NS_ENUM(NSInteger,SAMCUserType) {
 };
 
 typedef NS_ENUM(NSInteger,SAMCContactListType) {
-    SAMCContactListTypeCustomer,
-    SAMCContactListTypeServicer
+    SAMCContactListTypeServicer,
+    SAMCContactListTypeCustomer
 };
 
 #endif /* SAMCGlobalMacro_h */

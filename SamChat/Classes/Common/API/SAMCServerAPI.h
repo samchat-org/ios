@@ -58,6 +58,10 @@
 + (NSDictionary *)queryFollowList;
 + (NSDictionary *)queryContactList:(SAMCContactListType)type;
 
++ (NSDictionary *)addOrRemove:(BOOL)isAdd
+                      contact:(NSInteger)uniqueId
+                         type:(SAMCContactListType)type;
+
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;
 
 + (NSDictionary *)writeAdvertisementType:(NIMMessageType)type

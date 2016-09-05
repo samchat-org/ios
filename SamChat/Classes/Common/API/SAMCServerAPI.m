@@ -418,6 +418,31 @@
 //{
 //    "header":
 //    {
+//        "action" : "contact "
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//        "opt": 0: add  1:remove
+//        "type" [0/1]: 0: add into to contact /remove contact
+//                      1:add into customer contact/ move from customer to contact
+//        "id": unique id in samchat
+//    } 
+//}
++ (NSDictionary *)addOrRemove:(BOOL)isAdd
+                      contact:(NSInteger)uniqueId
+                         type:(SAMCContactListType)type
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_CONTACT,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OPT:isAdd ? @(0):@(1),
+                           SAMC_TYPE:@(type),
+                           SAMC_ID:@(uniqueId)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action" : "send-invite-msg",
 //        "token": "token"
 //    },
