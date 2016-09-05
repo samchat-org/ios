@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
+- (void)addOrRemove:(BOOL)isAdd
+            contact:(NSInteger)uniqueId
+               type:(SAMCContactListType)type
+         completion:(void (^)(NSError * __nullable error))completion;
+
 - (void)queryContactListIfNecessary;
 
 @end

@@ -11,6 +11,9 @@
 #import "SAMCQRScanView.h"
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCMyQRCodeViewController.h"
+#import "SAMCContactManager.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCQRCodeScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -311,8 +314,35 @@
     }
     
     [SAMCQRScanner systemVibrate];
+    [self handleScanResult:strResult];
+}
+
+- (void)handleScanResult:(NSString *)strResult
+{
+#define SAMC_ADD_CONTACT_PREFIX @"SAMC_CONTACT:"
+    SAMCContactListType type = SAMCContactListTypeServicer;
+    if ([self currentUserMode] == SAMCUserModeTypeSP) {
+        type = SAMCContactListTypeCustomer;
+    }
     
-    [self popAlertMsgWithScanResult:strResult];
+    if ([strResult hasPrefix:SAMC_ADD_CONTACT_PREFIX]) {
+        [SVProgressHUD showWithStatus:@"adding ..." maskType:SVProgressHUDMaskTypeBlack];
+        strResult = [strResult substringFromIndex:[SAMC_ADD_CONTACT_PREFIX length]];
+        __weak typeof(self) wself = self;
+        [[SAMCContactManager sharedManager] addOrRemove:YES contact:[strResult integerValue] type:type completion:^(NSError * _Nullable error) {
+            [SVProgressHUD dismiss];
+            NSString *toast;
+            if (error) {
+                toast = error.userInfo[NSLocalizedDescriptionKey];
+            } else {
+                toast = @"adding success";
+            }
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            [wself reStartDevice];
+        }];
+    } else {
+        [self popAlertMsgWithScanResult:strResult];
+    }
 }
 
 - (void)popAlertMsgWithScanResult:(NSString*)strResult
