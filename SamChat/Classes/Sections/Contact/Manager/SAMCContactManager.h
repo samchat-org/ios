@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCUserInfo.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,8 +18,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
+- (void)queryAccurateUser:(NSNumber *)uniqueId
+               completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion;
+
 - (void)addOrRemove:(BOOL)isAdd
-            contact:(NSInteger)uniqueId
+            contact:(SAMCUserInfo *)user
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion;
 

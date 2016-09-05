@@ -21,6 +21,7 @@
 #define SAMC_URL_USER_FIND_PWD_CODE_VERIFY  SAMC_API_PREFIX@"api_1.0_user_findpwdCodeVerify.do"
 #define SAMC_URL_USER_FIND_PWD_UPDATE       SAMC_API_PREFIX@"api_1.0_user_findpwdUpdate.do"
 #define SAMC_URL_USER_QUERYFUZZY            SAMC_API_PREFIX@"api_1.0_user_queryFuzzy.do"
+#define SAMC_URL_USER_QUERYACCURATE         SAMC_API_PREFIX@"api_1.0_user_queryAccurate.do"
 #define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@"api_1.0_question_question.do"
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW             SAMC_API_PREFIX@"api_1.0_officialAccount_follow.do"
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  SAMC_API_PREFIX@"api_1.0_officialAccount_followListQuery.do"
@@ -36,6 +37,7 @@
 #define SAMC_RET                        @"ret"
 #define SAMC_TOKEN                      @"token"
 #define SAMC_USER                       @"user"
+#define SAMC_COUNT                      @"count"
 
 #define SAMC_ACTION                     @"action"
 
@@ -53,6 +55,7 @@
 #define SAMC_FOLLOW                     @"follow"
 #define SAMC_QUERY                      @"query"
 #define SAMC_QUERY_FUZZY                @"query-fuzzy"
+#define SAMC_QUERY_ACCURATE             @"query-accurate"
 #define SAMC_PUBLIC_QUERY               @"public-query"
 #define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
 #define SAMC_CONTACT_LIST_QUERY         @"contact-list-query"
@@ -96,6 +99,7 @@
 #define SAMC_CONTENT                    @"content"
 #define SAMC_ADV_ID                     @"adv_id"
 #define SAMC_PUBLISH_TIMESTAMP          @"publish_timestamp"
+#define SAMC_UNIQUE_ID                  @"unique_id"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

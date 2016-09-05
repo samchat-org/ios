@@ -93,12 +93,12 @@
 
 - (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;
 {
-    if ((users == nil) || ([users count] <= 0)) {
-        return true;
-    }
     DDLogDebug(@"updateContactList: %@", users);
     if (![self resetContactListTable:(SAMCContactListType)listType]) {
         return NO;
+    }
+    if ((users == nil) || ([users count] <= 0)) {
+        return true;
     }
     __block BOOL result = YES;
     // TODO: separate transaction?
@@ -149,6 +149,27 @@
         }
     }];
     return result;
+}
+
+- (void)insertToContactList:(SAMCUserInfo *)user type:(SAMCContactListType)listType
+{
+    if (user == nil) {
+        return;
+    }
+    [self updateUser:user];
+    NSString *tableName;
+    if (listType == SAMCContactListTypeCustomer) {
+        tableName = @"contact_list_customer";
+    } else {
+        tableName = @"contact_list_servicer";
+    }
+    if (![self isTableExists:tableName]) {
+        return;
+    }
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(unique_id) VALUES(?)", tableName];
+        [db executeUpdate:sql, user.uniqueId];
+    }];
 }
 
 #pragma mark - Private

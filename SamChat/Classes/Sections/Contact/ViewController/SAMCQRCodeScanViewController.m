@@ -328,21 +328,41 @@
     if ([strResult hasPrefix:SAMC_ADD_CONTACT_PREFIX]) {
         [SVProgressHUD showWithStatus:@"adding ..." maskType:SVProgressHUDMaskTypeBlack];
         strResult = [strResult substringFromIndex:[SAMC_ADD_CONTACT_PREFIX length]];
+        NSNumber *uniqueId = @([strResult integerValue]);
         __weak typeof(self) wself = self;
-        [[SAMCContactManager sharedManager] addOrRemove:YES contact:[strResult integerValue] type:type completion:^(NSError * _Nullable error) {
-            [SVProgressHUD dismiss];
-            NSString *toast;
+        
+        [[SAMCContactManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
             if (error) {
-                toast = error.userInfo[NSLocalizedDescriptionKey];
-            } else {
-                toast = @"adding success";
+                [SVProgressHUD dismiss];
+                NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+                [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+                [wself reStartDevice];
+                return;
             }
-            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
-            [wself reStartDevice];
+            SAMCUserInfo *user = [SAMCUserInfo userInfoFromDict:userDict];
+            [[SAMCContactManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
+                [SVProgressHUD dismiss];
+                NSString *toast;
+                if (error) {
+                    toast = error.userInfo[NSLocalizedDescriptionKey];
+                } else {
+                    toast = @"adding success";
+                }
+                [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+                [wself reStartDevice];
+            }];
         }];
     } else {
         [self popAlertMsgWithScanResult:strResult];
     }
+}
+
+- (void)addContact:(NSNumber *)uniqueId
+{
+    if (uniqueId == nil) {
+        return;
+    }
+    
 }
 
 - (void)popAlertMsgWithScanResult:(NSString*)strResult

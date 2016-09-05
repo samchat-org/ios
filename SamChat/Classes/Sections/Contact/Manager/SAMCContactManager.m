@@ -61,13 +61,42 @@
     }];
 }
 
+- (void)queryAccurateUser:(NSNumber *)uniqueId
+               completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI queryAccurateUser:uniqueId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_QUERYACCURATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(nil, [SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                NSInteger count = [((NSNumber *)response[SAMC_COUNT]) integerValue];
+                if (count <= 0) {
+                    completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUserNotExists]);
+                } else {
+                    completion(response[SAMC_USERS][0], nil);
+                }
+            }
+        } else {
+            completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (void)addOrRemove:(BOOL)isAdd
-            contact:(NSInteger)uniqueId
+            contact:(SAMCUserInfo *)user
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI addOrRemove:isAdd contact:uniqueId type:type];
+    NSDictionary *parameters = [SAMCServerAPI addOrRemove:isAdd contact:user.uniqueId type:type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_CONTACT_CONTACT parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -78,7 +107,7 @@
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
                 completion(nil);
-                // TODO: update contact list database
+                [[SAMCDataBaseManager sharedManager].userInfoDB insertToContactList:user type:type];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -97,7 +126,9 @@
         });
     }
     if (![[SAMCPreferenceManager sharedManager].contactListServicerSyncFlag isEqual:@(YES)]) {
-        [self queryContactList:SAMCContactListTypeServicer];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self queryContactList:SAMCContactListTypeServicer];
+        });
     }
 }
 

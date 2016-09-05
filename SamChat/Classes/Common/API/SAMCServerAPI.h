@@ -51,6 +51,7 @@
 
 
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
++ (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId;
 
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
                             location:(NSDictionary *)location;
@@ -59,7 +60,7 @@
 + (NSDictionary *)queryContactList:(SAMCContactListType)type;
 
 + (NSDictionary *)addOrRemove:(BOOL)isAdd
-                      contact:(NSInteger)uniqueId
+                      contact:(NSNumber *)uniqueId
                          type:(SAMCContactListType)type;
 
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;

@@ -351,6 +351,33 @@
 //{
 //    "header":
 //    {
+//        "action" : "query-accurate"
+//        "token": "token",
+//    },
+//    "body":
+//    {
+//        "opt":2,   2: Query by cellphone or username
+//        "param":{
+//            "type":[0/1/2] 0: cellphone   1:unqiue_id   2: username
+//            "cellphone": //option
+//            "unique_id ": //option
+//            " username": //option
+//            
+//        }
+//    }
+//}
++ (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId
+{
+    uniqueId = uniqueId ?:@(0);
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_ACCURATE,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OPT:@(2),
+                           SAMC_PARAM:@{SAMC_TYPE:@(1),SAMC_UNIQUE_ID:uniqueId}};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action" : "public-query"
 //        "token": "token",
 //    },
@@ -430,13 +457,14 @@
 //    } 
 //}
 + (NSDictionary *)addOrRemove:(BOOL)isAdd
-                      contact:(NSInteger)uniqueId
+                      contact:(NSNumber *)uniqueId
                          type:(SAMCContactListType)type
 {
+    uniqueId = uniqueId ?:@(0);
     NSDictionary *header = @{SAMC_ACTION:SAMC_CONTACT,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:isAdd ? @(0):@(1),
                            SAMC_TYPE:@(type),
-                           SAMC_ID:@(uniqueId)};
+                           SAMC_ID:uniqueId};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

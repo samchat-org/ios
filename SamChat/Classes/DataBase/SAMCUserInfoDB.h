@@ -16,4 +16,6 @@
 
 - (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;
 
+- (void)insertToContactList:(SAMCUserInfo *)user type:(SAMCContactListType)listType;
+
 @end
