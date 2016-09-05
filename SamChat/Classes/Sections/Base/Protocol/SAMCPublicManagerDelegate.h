@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)sendMessage:(SAMCPublicMessage *)message didCompleteWithError:(nullable NSError *)error;
 
-- (void)onRecvMessages:(NSArray<SAMCPublicMessage *> *)messages;
+- (void)onRecvMessage:(SAMCPublicMessage *)message;
 
 - (void)fetchMessageAttachment:(SAMCPublicMessage *)message progress:(CGFloat)progress;
 

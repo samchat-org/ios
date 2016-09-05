@@ -8,6 +8,7 @@
 
 #import "SAMCPublicSession.h"
 #import "NSString+NIM.h"
+#import "SAMCAccountManager.h"
 
 @implementation SAMCPublicSession
 
@@ -26,12 +27,14 @@
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
     session.spBasicInfo = info;
     session.lastMessageContent = messageContent;
+    session.uniqueId = info.uniqueId;
     return session;
 }
 
 + (instancetype)sessionOfMyself
 {
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
+    session.uniqueId = [[SAMCAccountManager sharedManager].currentAccount integerValue];
     session.isOutgoing = YES;
     return session;
 }
@@ -43,7 +46,7 @@
             _tableName = @"publicmsg_mine";
         } else {
         _tableName = [NSString stringWithFormat:@"publicmsg_%@",
-                      [[NSString stringWithFormat:@"%ld", self.spBasicInfo.uniqueId] nim_MD5String]];
+                      [[NSString stringWithFormat:@"%ld", self.uniqueId] nim_MD5String]];
         }
     }
     return _tableName;
@@ -55,7 +58,7 @@
         return NO;
     } else {
         SAMCPublicSession *session = object;
-        return (self.isOutgoing == session.isOutgoing) && (self.spBasicInfo.uniqueId == session.spBasicInfo.uniqueId);
+        return (self.isOutgoing == session.isOutgoing) && (self.uniqueId == session.uniqueId);
     }
 }
 

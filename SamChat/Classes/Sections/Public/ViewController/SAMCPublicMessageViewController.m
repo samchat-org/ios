@@ -118,7 +118,7 @@ UITableViewDelegate>
     
     //数据
     NSInteger limit = 10;
-    NSTimeInterval showTimestampInterval = [NIMUIConfig messageTimeInterval];
+    NSTimeInterval showTimestampInterval = 0;//[NIMUIConfig messageTimeInterval];
     _sessionDatasource = [[SAMCPublicMsgDataSource alloc] initWithSession:self.publicSession showTimeInterval:showTimestampInterval limit:limit];
     _sessionDatasource.delegate = self;
     
@@ -370,8 +370,11 @@ UITableViewDelegate>
 {
 }
 
-- (void)onRecvMessages:(NSArray *)messages
+- (void)onRecvMessage:(SAMCPublicMessage *)message
 {
+    if ([message.publicSession isEqual:_publicSession]) {
+        [self uiAddMessages:@[message]];
+    }
 }
 
 - (void)fetchMessageAttachment:(SAMCPublicMessage *)message progress:(CGFloat)progress

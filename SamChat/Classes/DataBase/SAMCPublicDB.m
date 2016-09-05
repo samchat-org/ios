@@ -179,6 +179,7 @@
             message.text = [s stringForColumn:@"msg_text"];
             message.deliveryState = [s intForColumn:@"msg_status"];
             message.timestamp = [s longForColumn:@"msg_time"];
+            message.isOutgoingMsg = session.isOutgoing;
             [messages insertObject:message atIndex:0];
         }
         [s close];

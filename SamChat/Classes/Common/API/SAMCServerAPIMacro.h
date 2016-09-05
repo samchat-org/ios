@@ -101,7 +101,8 @@
 #define SAMC_LOCATION_ADDRESS           @"location.address"
 #define SAMC_BODY_DEST_ID               @"body.dest_id"
 
-#define SAMC_PUSHCATEGORY_NEWQUESTION   @"1"
+#define SAMC_PUSHCATEGORY_NEWQUESTION       @"1"
+#define SAMC_PUSHCATEGORY_NEWPUBLICMESSAGE  @"2"
 
 #define SAMC_SAM_PROS_INFO_COMPANY_NAME         @"sam_pros_info.company_name"
 #define SAMC_SAM_PROS_INFO_SERVICE_CATEGORY     @"sam_pros_info.service_category"

@@ -13,6 +13,7 @@
 #import "SAMCServerAPIMacro.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCAccountManager.h"
+#import "SAMCPublicManager.h"
 
 #define SAMCGeTuiAppId        @"e56px9TMay6OJRDrwE21P9"
 #define SAMCGeTuiAppKey       @"PUnNqMKGxaAdRoWFDmaTX5"
@@ -117,13 +118,29 @@
         return;
     }
     NSDictionary *payloadDict = payloadInfo;
+    
+    NSString *destId = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_BODY_DEST_ID]];
+    if (![[SAMCAccountManager sharedManager].currentAccount isEqualToString:destId]) {
+        return;
+    }
+    
     NSString *category = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_HEADER_CATEGORY]];
     if ([category isEqualToString:SAMC_PUSHCATEGORY_NEWQUESTION]) {
-        NSString *destId = [NSString stringWithFormat:@"%@", [payloadDict valueForKeyPath:SAMC_BODY_DEST_ID]];
-        if ([[SAMCAccountManager sharedManager].currentAccount isEqualToString:destId]) {
-            [[SAMCQuestionManager sharedManager] insertReceivedQuestion:payloadDict[SAMC_BODY]];
-        }
+        [self receivedNewQuestion:payloadDict];
+    } else if([category isEqualToString:SAMC_PUSHCATEGORY_NEWPUBLICMESSAGE]) {
+        [self receivedNewPublicMessage:payloadDict];
     }
+}
+
+- (void)receivedNewQuestion:(NSDictionary *)payload
+{
+    [[SAMCQuestionManager sharedManager] insertReceivedQuestion:payload[SAMC_BODY]];
+}
+
+- (void)receivedNewPublicMessage:(NSDictionary *)payload
+{
+    SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:payload[SAMC_BODY]];
+    [[SAMCPublicManager sharedManager] receivePublicMessage:message];
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "SAMCCustomPublicListCell.h"
 #import "SAMCPublicSession.h"
 #import "SAMCPublicManager.h"
+#import "SAMCPublicMessageViewController.h"
 
 @interface SAMCCustomPublicListDelegate ()<SAMCPublicManagerDelegate>
 
@@ -56,6 +57,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SAMCPublicMessageViewController *vc = [[SAMCPublicMessageViewController alloc] init];
+    vc.publicSession = [self data][indexPath.row];
+    [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

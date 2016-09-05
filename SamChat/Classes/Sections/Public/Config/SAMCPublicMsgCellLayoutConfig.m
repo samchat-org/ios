@@ -24,6 +24,16 @@
     return !model.message.isOutgoingMsg;
 }
 
+- (CGFloat)avatarMargin:(NIMMessageModel *)model
+{
+    return 0.f;
+}
+
+- (CGFloat)nickNameMargin:(NIMMessageModel *)model
+{
+    return 0.f;
+}
+
 - (NSArray *)customViews:(NIMMessageModel *)model
 {
     return nil;

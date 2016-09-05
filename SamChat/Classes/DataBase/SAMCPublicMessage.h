@@ -16,4 +16,6 @@
 
 @property (nonatomic, assign) NSInteger serverId;
 
++ (instancetype)publicMessageFromDict:(NSDictionary *)dict;
+
 @end

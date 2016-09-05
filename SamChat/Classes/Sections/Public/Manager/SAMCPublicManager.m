@@ -154,6 +154,13 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     handler(nil, messages);
 }
 
+- (void)receivePublicMessage:(SAMCPublicMessage *)message
+{
+    // TODO: update last_message_content
+    [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+    [self.publicDelegate onRecvMessage:message];
+}
+
 
 #pragma mark - Server
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut
