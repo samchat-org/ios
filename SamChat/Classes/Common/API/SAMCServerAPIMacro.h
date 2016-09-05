@@ -27,6 +27,7 @@
 #define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@"api_1.0_officialAccount_publicQuery.do"
 #define SAMC_URL_COMMON_SEND_INVITE_MSG             SAMC_API_PREFIX@"api_1.0_common_sendInviteMsg.do"
 #define SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE  SAMC_API_PREFIX@"api_1.0_advertisement_advertisementWrite.do"
+#define SAMC_URL_CONTACT_CONTACT_LIST_QUERY         SAMC_API_PREFIX@"api_1.0_contact_contactListQuery.do"
 
 #define SAMC_HEADER                     @"header"
 #define SAMC_BODY                       @"body"
@@ -53,6 +54,7 @@
 #define SAMC_QUERY_FUZZY                @"query-fuzzy"
 #define SAMC_PUBLIC_QUERY               @"public-query"
 #define SAMC_FOLLOW_LIST_QUERY          @"follow-list-query"
+#define SAMC_CONTACT_LIST_QUERY         @"contact-list-query"
 #define SAMC_SEND_INVITE_MSG            @"send-invite-msg"
 #define SAMC_ADVERTISEMENT_WRITE        @"advertisement-write"
 

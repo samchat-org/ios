@@ -397,6 +397,23 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "contact-list-query"
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//        “type[0,1]”: 0 customer  1 servicer
+//    } 
+//}
++ (NSDictionary *)queryContactList:(SAMCContactListType)type
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_CONTACT_LIST_QUERY,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_TYPE:@(type)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
 
 //{
 //    "header":

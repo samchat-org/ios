@@ -21,6 +21,7 @@
 #import "SAMCChatManager.h"
 #import "SAMCPushManager.h"
 #import "SAMCPublicManager.h"
+#import "SAMCContactManager.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
@@ -212,6 +213,7 @@
             [[SAMCAccountManager sharedManager] updateUser:[SAMCUserInfo userInfoFromDict:userInfo]];
             [[SAMCPushManager sharedManager] open];
             [[SAMCPublicManager sharedManager] queryFollowListIfNecessary];
+            [[SAMCContactManager sharedManager] queryContactListIfNecessary];
             completion(nil);
         }else{
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
@@ -250,6 +252,7 @@
     [SAMCChatManager sharedManager];
     [[SAMCPushManager sharedManager] open];
     [[SAMCPublicManager sharedManager] queryFollowListIfNecessary];
+    [[SAMCContactManager sharedManager] queryContactListIfNecessary];
     [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];
 }
 

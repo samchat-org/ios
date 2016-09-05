@@ -7,6 +7,7 @@
 //
 
 #import "SAMCUserInfoDB_2016082201.h"
+#import "SAMCDataBaseMacro.h"
 
 @implementation SAMCUserInfoDB_2016082201
 
@@ -24,7 +25,9 @@
                       email TEXT, address TEXT, sp_company_name TEXT, sp_service_category TEXT, \
                       sp_service_description TEXT, sp_countrycode TEXT, sp_phone TEXT, sp_address TEXT)",
                       @"CREATE INDEX IF NOT EXISTS unique_id_index ON userinfo(unique_id)",
-                      @"CREATE index IF NOT EXISTS username_index ON userinfo(username)"];
+                      @"CREATE index IF NOT EXISTS username_index ON userinfo(username)",
+                      SAMC_CREATE_CONTACT_LIST_CUSTOMER_TABLE_SQL_2016082201,
+                      SAMC_CREATE_CONTACT_LIST_SERVICER_TABLE_SQL_2016082201];
     for (NSString *sql in sqls) {
         if (![db executeUpdate:sql]) {
             DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);

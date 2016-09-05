@@ -13,4 +13,10 @@
 unique_id INTEGER UNIQUE, username TEXT NOT NULL, avatar TEXT, block_tag INTEGER, \
 favourite_tag INTEGER, sp_service_category TEXT, last_message_content TEXT)"
 
+#define SAMC_CREATE_CONTACT_LIST_CUSTOMER_TABLE_SQL_2016082201 @"cREATE TABLE IF NOT EXISTS contact_list_customer(\
+serial INTEGER PRIMARY KEY AUTOINCREMENT, unique_id INTEGER UNIQUE)"
+
+#define SAMC_CREATE_CONTACT_LIST_SERVICER_TABLE_SQL_2016082201 @"CREATE TABLE IF NOT EXISTS contact_list_servicer(\
+serial INTEGER PRIMARY KEY AUTOINCREMENT, unique_id INTEGER UNIQUE)"
+
 #endif /* SAMCDataBaseMacro_h */

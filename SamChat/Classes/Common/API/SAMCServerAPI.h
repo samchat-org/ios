@@ -56,6 +56,7 @@
                             location:(NSDictionary *)location;
 
 + (NSDictionary *)queryFollowList;
++ (NSDictionary *)queryContactList:(SAMCContactListType)type;
 
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;
 

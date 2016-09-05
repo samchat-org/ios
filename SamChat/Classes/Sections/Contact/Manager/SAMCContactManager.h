@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
+- (void)queryContactListIfNecessary;
+
 @end
 
 NS_ASSUME_NONNULL_END
