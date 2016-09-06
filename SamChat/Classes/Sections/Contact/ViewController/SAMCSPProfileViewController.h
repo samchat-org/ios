@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SAMCUserInfo.h"
+#import "SAMCUser.h"
 
 @interface SAMCSPProfileViewController : UIViewController
 
-@property (nonatomic, strong) SAMCUserInfo *userInfo;
+@property (nonatomic, strong) SAMCUser *user;
 
 @end

@@ -33,14 +33,15 @@
     }
 }
 
-- (void)updateUser:(SAMCUserInfo *)userInfo
+- (void)updateUser:(SAMCUser *)user
 {
-    DDLogDebug(@"userInfo: %@", userInfo);
-    NSNumber *unique_id = userInfo.uniqueId;
+    DDLogDebug(@"updateUser: %@", user);
+    NSNumber *unique_id = user.uniqueId;
     if (unique_id == nil) {
         DDLogError(@"unique id should not be nil");
         return;
     }
+    SAMCUserInfo *userInfo = user.userInfo;
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM userinfo WHERE unique_id = ?", unique_id];
         
@@ -151,7 +152,7 @@
     return result;
 }
 
-- (void)insertToContactList:(SAMCUserInfo *)user type:(SAMCContactListType)listType
+- (void)insertToContactList:(SAMCUser *)user type:(SAMCContactListType)listType
 {
     if (user == nil) {
         return;

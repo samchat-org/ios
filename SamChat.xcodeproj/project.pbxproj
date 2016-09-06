@@ -224,6 +224,7 @@
 		316A66FC1D7BAF3C00B56A5D /* SAMCPublicMsgDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A66FB1D7BAF3C00B56A5D /* SAMCPublicMsgDataSource.m */; };
 		316A67021D7BC03D00B56A5D /* SAMCPublicMsgCellLayoutConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A67011D7BC03D00B56A5D /* SAMCPublicMsgCellLayoutConfig.m */; };
 		316A67081D7D98A900B56A5D /* SAMCGroupedContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A67071D7D98A900B56A5D /* SAMCGroupedContacts.m */; };
+		316A672B1D7E66CD00B56A5D /* SAMCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A672A1D7E66CD00B56A5D /* SAMCUser.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -287,7 +288,6 @@
 		31F8FCBA1D755CA900734068 /* SAMCPublicSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCB91D755CA900734068 /* SAMCPublicSession.m */; };
 		31F8FCBD1D756C7B00734068 /* SAMCAvatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCBC1D756C7B00734068 /* SAMCAvatarImageView.m */; };
 		31F8FCC01D76718900734068 /* SAMCSPProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCBF1D76718900734068 /* SAMCSPProfileViewController.m */; };
-		31F8FCC61D76737F00734068 /* SAMCUserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCC51D76737F00734068 /* SAMCUserInfo.m */; };
 		31F8FCCA1D76A68100734068 /* SAMCPublicDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCC91D76A68100734068 /* SAMCPublicDB.m */; };
 		31F8FCCF1D76A9A800734068 /* SAMCPublicDB_2016082201.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCCE1D76A9A800734068 /* SAMCPublicDB_2016082201.m */; };
 		31F8FCD21D77C25600734068 /* SAMCSPPublicMessageDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCD11D77C25600734068 /* SAMCSPPublicMessageDelegate.m */; };
@@ -710,6 +710,8 @@
 		316A67011D7BC03D00B56A5D /* SAMCPublicMsgCellLayoutConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicMsgCellLayoutConfig.m; path = Public/Config/SAMCPublicMsgCellLayoutConfig.m; sourceTree = "<group>"; };
 		316A67061D7D98A900B56A5D /* SAMCGroupedContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCGroupedContacts.h; sourceTree = "<group>"; };
 		316A67071D7D98A900B56A5D /* SAMCGroupedContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCGroupedContacts.m; sourceTree = "<group>"; };
+		316A67291D7E66CD00B56A5D /* SAMCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUser.h; path = DataBase/Model/SAMCUser.h; sourceTree = "<group>"; };
+		316A672A1D7E66CD00B56A5D /* SAMCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUser.m; path = DataBase/Model/SAMCUser.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -831,8 +833,6 @@
 		31F8FCBC1D756C7B00734068 /* SAMCAvatarImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCAvatarImageView.m; sourceTree = "<group>"; };
 		31F8FCBE1D76718900734068 /* SAMCSPProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSPProfileViewController.h; sourceTree = "<group>"; };
 		31F8FCBF1D76718900734068 /* SAMCSPProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSPProfileViewController.m; sourceTree = "<group>"; };
-		31F8FCC41D76737F00734068 /* SAMCUserInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUserInfo.h; path = DataBase/Model/SAMCUserInfo.h; sourceTree = "<group>"; };
-		31F8FCC51D76737F00734068 /* SAMCUserInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUserInfo.m; path = DataBase/Model/SAMCUserInfo.m; sourceTree = "<group>"; };
 		31F8FCC71D7698B400734068 /* SAMCDataBaseMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCDataBaseMacro.h; path = DataBase/SAMCDataBaseMacro.h; sourceTree = "<group>"; };
 		31F8FCC81D76A68100734068 /* SAMCPublicDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicDB.h; path = DataBase/SAMCPublicDB.h; sourceTree = "<group>"; };
 		31F8FCC91D76A68100734068 /* SAMCPublicDB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicDB.m; path = DataBase/SAMCPublicDB.m; sourceTree = "<group>"; };
@@ -2099,8 +2099,8 @@
 				31F8FCB91D755CA900734068 /* SAMCPublicSession.m */,
 				3154F9511D797A0400C540EB /* SAMCPublicMessage.h */,
 				3154F9521D797A0400C540EB /* SAMCPublicMessage.m */,
-				31F8FCC41D76737F00734068 /* SAMCUserInfo.h */,
-				31F8FCC51D76737F00734068 /* SAMCUserInfo.m */,
+				316A67291D7E66CD00B56A5D /* SAMCUser.h */,
+				316A672A1D7E66CD00B56A5D /* SAMCUser.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2483,7 +2483,6 @@
 				314D5D281D6ADC15004B3DE4 /* SAMCUserInfoDB_2016082201.m in Sources */,
 				312C1C831D35D85B00242906 /* NTESChartletAttachment.m in Sources */,
 				312C1CBF1D35D85B00242906 /* NTESSettingViewController.m in Sources */,
-				31F8FCC61D76737F00734068 /* SAMCUserInfo.m in Sources */,
 				312C1C541D35D85B00242906 /* NTESSessionCardViewController.m in Sources */,
 				312C1C351D35D85B00242906 /* NSData+NTES.m in Sources */,
 				312C1C3C1D35D85B00242906 /* UIResponder+NTESFirstResponder.m in Sources */,
@@ -2553,6 +2552,7 @@
 				312C1CCD1D35D85B00242906 /* NTESSettingSwitcherCell.m in Sources */,
 				312C1C6A1D35D85B00242906 /* NTESContactDataMember.m in Sources */,
 				31F8FCA71D74337100734068 /* SAMCPublicManager.m in Sources */,
+				316A672B1D7E66CD00B56A5D /* SAMCUser.m in Sources */,
 				312C1C5C1D35D85B00242906 /* NTESChatroomMaker.m in Sources */,
 				312C1CCA1D35D85B00242906 /* NTESBirthPickerView.m in Sources */,
 				312C1C8B1D35D85B00242906 /* NTESSessionCustomContentConfig.m in Sources */,

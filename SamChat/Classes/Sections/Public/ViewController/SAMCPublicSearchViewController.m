@@ -94,9 +94,9 @@
             return;
         }
         DDLogDebug(@"public: %@", users);
-        for (NSDictionary *user in users) {
-            SAMCUserInfo *userInfo = [SAMCUserInfo userInfoFromDict:user];
-            [wself.data addObject:userInfo];
+        for (NSDictionary *userDict in users) {
+            SAMCUser *user = [SAMCUser userFromDict:userDict];
+            [wself.data addObject:user];
             [wself.searchResultTabeView reloadData];
         }
     }];
@@ -116,8 +116,8 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
-    SAMCUserInfo *userInfo = self.data[indexPath.row];
-    cell.textLabel.text = userInfo.username;
+    SAMCUser *user = self.data[indexPath.row];
+    cell.textLabel.text = user.userInfo.username;
     return cell;
 }
 
@@ -126,7 +126,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     SAMCSPProfileViewController *vc = [[SAMCSPProfileViewController alloc] init];
-    vc.userInfo = self.data[indexPath.row];
+    vc.user = self.data[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

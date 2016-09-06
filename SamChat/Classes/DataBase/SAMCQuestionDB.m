@@ -14,7 +14,7 @@
 #import "GCDMulticastDelegate.h"
 #import "SAMCQuestionManagerDelegate.h"
 #import "SAMCQuestionSession.h"
-#import "SAMCUserInfo.h"
+#import "SAMCUser.h"
 
 @interface SAMCQuestionDB ()
 
@@ -157,7 +157,7 @@
         DDLogError(@"unique id should not be nil");
         return;
     }
-    [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:[SAMCUserInfo userInfoFromDict:questionInfo[SAMC_USER]]];
+    [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:[SAMCUser userFromDict:questionInfo[SAMC_USER]]];
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *question = questionInfo[SAMC_QUESTION] ?:@"";
         NSNumber *sender_unique_id = [questionInfo valueForKeyPath:SAMC_USER_ID];

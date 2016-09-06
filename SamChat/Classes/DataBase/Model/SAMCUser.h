@@ -1,8 +1,8 @@
 //
-//  SAMCUserInfo.h
+//  SAMCUser.h
 //  SamChat
 //
-//  Created by HJ on 8/31/16.
+//  Created by HJ on 9/6/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
@@ -10,10 +10,21 @@
 #import "SAMCSPBasicInfo.h"
 
 @class SAMCSamProsInfo;
+@class SAMCUserInfo;
+
+@interface SAMCUser : NSObject
+
+@property (nonatomic, strong) NSNumber *uniqueId;
+@property (nonatomic, strong) SAMCUserInfo *userInfo;
+
++ (instancetype)userFromDict:(NSDictionary *)userDict;
+
+- (SAMCSPBasicInfo *)spBasicInfo;
+
+@end
 
 @interface SAMCUserInfo : NSObject
 
-@property (nonatomic, strong) NSNumber *uniqueId;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, strong) NSNumber *usertype;
 @property (nonatomic, strong) NSNumber *lastupdate;
@@ -24,10 +35,6 @@
 @property (nonatomic, copy) NSString *email;
 @property (nonatomic, copy) NSString *address;
 @property (nonatomic, strong) SAMCSamProsInfo *spInfo;
-
-+ (instancetype)userInfoFromDict:(NSDictionary *)infoDict;
-
-- (SAMCSPBasicInfo *)spBasicInfo;
 
 @end
 

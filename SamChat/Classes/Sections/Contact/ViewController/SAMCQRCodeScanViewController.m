@@ -339,7 +339,7 @@
                 [wself reStartDevice];
                 return;
             }
-            SAMCUserInfo *user = [SAMCUserInfo userInfoFromDict:userDict];
+            SAMCUser *user = [SAMCUser userFromDict:userDict];
             [[SAMCContactManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
                 [SVProgressHUD dismiss];
                 NSString *toast;

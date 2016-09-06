@@ -91,7 +91,7 @@
 }
 
 - (void)addOrRemove:(BOOL)isAdd
-            contact:(SAMCUserInfo *)user
+            contact:(SAMCUser *)user
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion
 {

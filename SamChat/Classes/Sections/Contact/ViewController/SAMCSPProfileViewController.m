@@ -29,7 +29,7 @@
 - (void)setupSubviews
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = self.userInfo.username;
+    self.navigationItem.title = self.user.userInfo.username;
     
     _followButton = [[UIButton alloc] init];
     _followButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -52,14 +52,14 @@
 {
     self.followButton.enabled = NO;
     __weak typeof(self) wself = self;
-    [[SAMCPublicManager sharedManager] follow:YES officialAccount:self.userInfo.spBasicInfo completion:^(NSError * _Nullable error) {
+    [[SAMCPublicManager sharedManager] follow:YES officialAccount:self.user.spBasicInfo completion:^(NSError * _Nullable error) {
         NSString *toast;
         if (error) {
             wself.followButton.enabled = YES;
             toast =error.userInfo[NSLocalizedDescriptionKey];
         } else {
             toast = @"follow success";
-            [[SAMCAccountManager sharedManager] updateUser:self.userInfo];
+            [[SAMCAccountManager sharedManager] updateUser:self.user];
         }
         [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
     }];

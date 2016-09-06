@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SAMCUserInfo.h"
+#import "SAMCUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
                completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion;
 
 - (void)addOrRemove:(BOOL)isAdd
-            contact:(SAMCUserInfo *)user
+            contact:(SAMCUser *)user
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion;
 

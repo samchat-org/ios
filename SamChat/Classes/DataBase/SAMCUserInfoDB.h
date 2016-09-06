@@ -8,15 +8,15 @@
 
 #import "SAMCDBBase.h"
 #import "SAMCPublicSession.h"
-#import "SAMCUserInfo.h"
+#import "SAMCUser.h"
 
 @interface SAMCUserInfoDB : SAMCDBBase
 
-- (void)updateUser:(SAMCUserInfo *)userInfo;
+- (void)updateUser:(SAMCUser *)user;
 
 - (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;
 
-- (void)insertToContactList:(SAMCUserInfo *)user type:(SAMCContactListType)listType;
+- (void)insertToContactList:(SAMCUser *)user type:(SAMCContactListType)listType;
 
 - (NSArray *)myContactListOfType:(SAMCContactListType)listType;
 
