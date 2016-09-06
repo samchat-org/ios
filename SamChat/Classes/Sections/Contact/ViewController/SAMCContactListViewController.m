@@ -11,7 +11,7 @@
 #import "SAMCSessionViewController.h"
 #import "NTESContactUtilItem.h"
 #import "NTESContactDefines.h"
-#import "NTESGroupedContacts.h"
+#import "SAMCGroupedContacts.h"
 #import "UIView+Toast.h"
 #import "NTESCustomNotificationDB.h"
 #import "NTESNotificationCenter.h"
@@ -33,12 +33,13 @@
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
 {
-    NTESGroupedContacts *_contacts;
+    SAMCGroupedContacts *_contacts;
 }
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchDisplayController *searchResultController;
 @property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) NSArray *contactUtils;
 
 @end
 
@@ -51,15 +52,11 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserInfoHasUpdatedNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserBlackListHasUpdatedNotification object:nil];
     
+    [self setUpNavItem];
     [self prepareData];
+    
     [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
     [[SAMCAccountManager sharedManager] addDelegate:self];
-    
-    if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        [self prepareCustomModeContacts];
-    } else {
-        [self prepareSPModeContacts];
-    }
 }
 
 - (void)dealloc{
@@ -108,24 +105,8 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 - (void)switchToUserMode:(NSNotification *)notification
 {
-    SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
-    if (mode == SAMCUserModeTypeCustom) {
-        [self prepareCustomModeContacts];
-    } else {
-        [self prepareSPModeContacts];
-    }
-}
-
-- (void)prepareCustomModeContacts
-{
-    self.navigationItem.title = @"Service Provider";
-//    self.tableView.backgroundColor = [UIColor greenColor];
-}
-
-- (void)prepareSPModeContacts
-{
-    self.navigationItem.title = @"My Clients";
-//    self.tableView.backgroundColor = [UIColor yellowColor];
+    [self prepareData];
+    [self.tableView reloadData];
 }
 
 - (void)setUpNavItem{
@@ -139,60 +120,15 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 }
 
 - (void)prepareData{
-    _contacts = [[NTESGroupedContacts alloc] init];
-    
-    NSString *contactCellUtilIcon   = @"icon";
-    NSString *contactCellUtilVC     = @"vc";
-    NSString *contactCellUtilBadge  = @"badge";
-    NSString *contactCellUtilTitle  = @"title";
-    NSString *contactCellUtilUid    = @"uid";
-    NSString *contactCellUtilSelectorName = @"selName";
-    //原始数据
-    
-    NSInteger systemCount = [[[NIMSDK sharedSDK] systemNotificationManager] allUnreadCount];
-    NSMutableArray *utils =
-    [@[
-       @{
-           contactCellUtilIcon:@"icon_notification_normal",
-           contactCellUtilTitle:@"验证消息",
-           contactCellUtilVC:@"NTESSystemNotificationViewController",
-           contactCellUtilBadge:@(systemCount)
-           },
-       @{
-           contactCellUtilIcon:@"icon_team_advance_normal",
-           contactCellUtilTitle:@"高级群",
-           contactCellUtilVC:@"NTESAdvancedTeamListViewController"
-           },
-       @{
-           contactCellUtilIcon:@"icon_team_normal_normal",
-           contactCellUtilTitle:@"讨论组",
-           contactCellUtilVC:@"NTESNormalTeamListViewController"
-           },
-       @{
-           contactCellUtilIcon:@"icon_blacklist_normal",
-           contactCellUtilTitle:@"黑名单",
-           contactCellUtilVC:@"NTESBlackListViewController"
-           },
-       ] mutableCopy];
-    
-    [self setUpNavItem];
-    
-    //构造显示的数据模型
-    NTESContactUtilItem *contactUtil = [[NTESContactUtilItem alloc] init];
-    NSMutableArray * members = [[NSMutableArray alloc] init];
-    for (NSDictionary *item in utils) {
-        NTESContactUtilMember *utilItem = [[NTESContactUtilMember alloc] init];
-        utilItem.nick              = item[contactCellUtilTitle];
-        utilItem.icon              = [UIImage imageNamed:item[contactCellUtilIcon]];
-        utilItem.vcName            = item[contactCellUtilVC];
-        utilItem.badge             = [item[contactCellUtilBadge] stringValue];
-        utilItem.userId            = item[contactCellUtilUid];
-        utilItem.selName           = item[contactCellUtilSelectorName];
-        [members addObject:utilItem];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        self.navigationItem.title = @"Service Provider";
+        _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeServicer];
+    } else {
+        self.navigationItem.title = @"My Clients";
+        _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeCustomer];
     }
-    contactUtil.members = members;
     
-    [_contacts addGroupAboveWithTitle:@"" members:contactUtil.members];
+    [_contacts addGroupAboveWithTitle:@"" members:self.contactUtils];
 }
 
 
@@ -431,6 +367,61 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     vc.finshBlock = block;
     [vc show];
 }
+
+- (NSArray *)contactUtils
+{
+    if (_contactUtils == nil) {
+        NSString *contactCellUtilIcon   = @"icon";
+        NSString *contactCellUtilVC     = @"vc";
+        NSString *contactCellUtilBadge  = @"badge";
+        NSString *contactCellUtilTitle  = @"title";
+        NSString *contactCellUtilUid    = @"uid";
+        NSString *contactCellUtilSelectorName = @"selName";
+        //原始数据
+        
+        NSInteger systemCount = [[[NIMSDK sharedSDK] systemNotificationManager] allUnreadCount];
+        NSMutableArray *utils =
+        [@[
+           @{
+               contactCellUtilIcon:@"icon_notification_normal",
+               contactCellUtilTitle:@"验证消息",
+               contactCellUtilVC:@"NTESSystemNotificationViewController",
+               contactCellUtilBadge:@(systemCount)
+               },
+           @{
+               contactCellUtilIcon:@"icon_team_advance_normal",
+               contactCellUtilTitle:@"高级群",
+               contactCellUtilVC:@"NTESAdvancedTeamListViewController"
+               },
+           @{
+               contactCellUtilIcon:@"icon_team_normal_normal",
+               contactCellUtilTitle:@"讨论组",
+               contactCellUtilVC:@"NTESNormalTeamListViewController"
+               },
+           @{
+               contactCellUtilIcon:@"icon_blacklist_normal",
+               contactCellUtilTitle:@"黑名单",
+               contactCellUtilVC:@"NTESBlackListViewController"
+               },
+           ] mutableCopy];
+        
+        //构造显示的数据模型
+        NSMutableArray * members = [[NSMutableArray alloc] init];
+        for (NSDictionary *item in utils) {
+            NTESContactUtilMember *utilItem = [[NTESContactUtilMember alloc] init];
+            utilItem.nick              = item[contactCellUtilTitle];
+            utilItem.icon              = [UIImage imageNamed:item[contactCellUtilIcon]];
+            utilItem.vcName            = item[contactCellUtilVC];
+            utilItem.badge             = [item[contactCellUtilBadge] stringValue];
+            utilItem.userId            = item[contactCellUtilUid];
+            utilItem.selName           = item[contactCellUtilSelectorName];
+            [members addObject:utilItem];
+        }
+        _contactUtils = members;
+    }
+    return _contactUtils;
+}
+
 
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText

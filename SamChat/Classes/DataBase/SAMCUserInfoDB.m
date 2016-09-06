@@ -172,6 +172,30 @@
     }];
 }
 
+- (NSArray *)myContactListOfType:(SAMCContactListType)listType
+{
+    NSString *tableName;
+    if (listType == SAMCContactListTypeCustomer) {
+        tableName = @"contact_list_customer";
+    } else {
+        tableName = @"contact_list_servicer";
+    }
+    if (![self isTableExists:tableName]) {
+        return nil;
+    }
+    __block NSMutableArray *contactList = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"select * from %@", tableName];
+        FMResultSet *s = [db executeQuery:sql];
+        while ([s next]) {
+            NSNumber *uniqueId = @([s longForColumn:@"unique_id"]);
+            [contactList addObject:uniqueId];
+        }
+        [s close];
+    }];
+    return contactList;
+}
+
 #pragma mark - Private
 - (BOOL)resetContactListTable:(SAMCContactListType)listType
 {

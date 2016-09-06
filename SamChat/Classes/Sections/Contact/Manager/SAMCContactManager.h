@@ -28,6 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)queryContactListIfNecessary;
 
+- (NSArray *)myContactListOfType:(SAMCContactListType)listType;
+
 @end
 
 NS_ASSUME_NONNULL_END

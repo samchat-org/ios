@@ -132,6 +132,11 @@
     }
 }
 
+- (NSArray *)myContactListOfType:(SAMCContactListType)listType
+{
+    return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];
+}
+
 #pragma mark - Private
 - (void)queryContactList:(SAMCContactListType)type
 {
