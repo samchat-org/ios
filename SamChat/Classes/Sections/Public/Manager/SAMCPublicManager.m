@@ -147,11 +147,14 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                          limit:(NSInteger)limit
                         result:(void(^)(NSError *error, NSArray<SAMCPublicMessage *> *messages))handler
 {
-    // TODO: change to async dispatch ?
-    NSArray<SAMCPublicMessage *> *messages = [[SAMCDataBaseManager sharedManager].publicDB messagesInSession:session
-                                                                                                     message:message
-                                                                                                       limit:limit];
-    handler(nil, messages);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray<SAMCPublicMessage *> *messages = [[SAMCDataBaseManager sharedManager].publicDB messagesInSession:session
+                                                                                                         message:message
+                                                                                                           limit:limit];
+        if (handler) {
+            handler(nil, messages);
+        }
+    });
 }
 
 - (void)receivePublicMessage:(SAMCPublicMessage *)message
