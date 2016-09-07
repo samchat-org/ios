@@ -62,12 +62,15 @@
                          limit:(NSInteger)limit
                         result:(void(^)(NSError *error, NSArray *messages))handler
 {
-    // TODO: change to async dispatch ?
-    NSArray<NIMMessage *> *messages = [[SAMCDataBaseManager sharedManager].messageDB messagesInSession:session
-                                                                                              userMode:userMode
-                                                                                               message:message
-                                                                                                 limit:limit];
-    handler(nil, messages);
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray<NIMMessage *> *messages = [[SAMCDataBaseManager sharedManager].messageDB messagesInSession:session
+                                                                                                  userMode:userMode
+                                                                                                   message:message
+                                                                                                     limit:limit];
+        if (handler) {
+            handler(nil, messages);
+        }
+    });
 }
 
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
