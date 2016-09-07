@@ -236,7 +236,7 @@
     __block NSString *question = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *answersStr = nil;
-        FMResultSet *s = [db executeQuery:@"SELECT question,answers FROM send_question WHERE question_id = ?",questionId];
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM send_question WHERE question_id = ?",questionId];
         if ([s next]) {
             question = [s stringForColumn:@"question"];
             answersStr = [s stringForColumn:@"answers"];
@@ -249,15 +249,29 @@
                 }
             }
         }
-        [s close];
         if (question && updateFlag) {
+            NSString *address = [s stringForColumn:@"address"];
+            NSTimeInterval datetime = [s doubleForColumn:@"datetime"];
+            NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
+            NSInteger responseCount = [s longForColumn:@"new_response_count"];
+            NSInteger status = [s longForColumn:@"status"];
             if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
                 answersStr = answer;
             } else {
                 answersStr = [NSString stringWithFormat:@"%@,%@",answersStr,answer];
             }
             [db executeUpdate:@"UPDATE send_question SET answers = ? WHERE question_id = ?",answersStr,questionId];
+            SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[questionId integerValue]
+                                              question:question
+                                               address:address
+                                              datetime:datetime
+                                         responseCount:responseCount
+                                          responsetime:lastAnswerTime
+                                                status:status
+                                               answers:[self answersFromString:answersStr]];
+            [self.questionDelegate didUpdateQuestionSession:session];
         }
+        [s close];
     }];
     return question;
 }

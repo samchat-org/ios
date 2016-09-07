@@ -93,4 +93,27 @@
     [self.viewController sortAndReload];
 }
 
+- (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession
+{
+    if (questionSession.type != SAMCQuestionSessionTypeSend) {
+        return;
+    }
+    for (SAMCQuestionSession *session in self.data) {
+        if (questionSession.questionId == session.questionId) {
+            [self.data removeObject:session];
+            break;
+        }
+    }
+    NSInteger insert = [self findInsertPlace:questionSession];
+    [self.data insertObject:questionSession atIndex:insert];
+    [self.viewController sortAndReload];
+}
+
+#pragma mark - Private
+- (NSInteger)findInsertPlace:(SAMCQuestionSession *)questionSession
+{
+    // TODO: add time sorting to find the insert place
+    return 0; // for test now
+}
+
 @end

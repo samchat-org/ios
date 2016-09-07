@@ -105,6 +105,10 @@
     [self.viewController sortAndReload];
 }
 
+- (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession
+{
+}
+
 #pragma mark - Insert Message
 - (void)saveQuestionMessage:(SAMCQuestionSession *)questionSession
 {

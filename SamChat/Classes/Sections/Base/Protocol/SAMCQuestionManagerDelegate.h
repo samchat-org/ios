@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 - (void)didAddQuestionSession:(SAMCQuestionSession *)questionSession;
+- (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession;
 
 @end
 
