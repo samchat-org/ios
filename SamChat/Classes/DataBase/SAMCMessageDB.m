@@ -179,9 +179,9 @@
         while ([s next]) {
             NSString *messageId = [s stringForColumn:@"msg_id"];
             [messageIds addObject:messageId];
-            sortedMessageIds = [[messageIds reverseObjectEnumerator] allObjects];
         }
         [s close];
+        sortedMessageIds = [[messageIds reverseObjectEnumerator] allObjects];
         messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:sortedMessageIds];
     }];
     return [self sortMessages:messages messageIds:sortedMessageIds];
