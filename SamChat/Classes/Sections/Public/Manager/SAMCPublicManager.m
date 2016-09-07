@@ -175,7 +175,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        DDLogError(@"sendPublicMessage success: %@", responseObject);
+        DDLogDebug(@"sendPublicMessage success: %@", responseObject);
         NSError *sendError = nil;
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
