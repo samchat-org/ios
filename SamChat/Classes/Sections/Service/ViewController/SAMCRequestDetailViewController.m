@@ -16,13 +16,14 @@
 #import "NIMAvatarImageView.h"
 #import "NIMKitUtil.h"
 #import "NIMMessage+SAMC.h"
+#import "SAMCQuestionManager.h"
 
-@interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCQuestionManagerDelegate>
 
 @property (nonatomic, strong) SAMCRequestDetailInfoView *requestView;
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic,readonly) NSMutableArray<SAMCRecentSession *> *answerSessions;
+@property (nonatomic, strong) NSMutableArray<SAMCRecentSession *> *answerSessions;
 
 @end
 
@@ -38,6 +39,13 @@
         _answerSessions = [NSMutableArray array];
     }
     [self sort];
+    
+    [[SAMCQuestionManager sharedManager] addDelegate:self];
+}
+
+- (void)dealloc
+{
+    [[SAMCQuestionManager sharedManager] removeDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -184,6 +192,19 @@
 - (NSString *)timestampDescriptionForRecentSession:(SAMCRecentSession *)recent
 {
     return [NIMKitUtil showTime:recent.lastMessage.nimMessage.timestamp showDetail:NO];
+}
+
+#pragma mark - SAMCQuestionManagerDelegate
+- (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession
+{
+    if (!(self.questionSession.questionId == questionSession.questionId)) {
+        return;
+    }
+    self.questionSession = questionSession;
+    [self.answerSessions removeAllObjects];
+    [self.answerSessions addObjectsFromArray:[self allCurrentQuestionAnswerSessions]];
+    [self sort];
+    [self.tableView reloadData];
 }
 
 @end
