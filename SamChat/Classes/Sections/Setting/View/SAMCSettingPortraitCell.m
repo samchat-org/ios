@@ -122,6 +122,10 @@
     [self.bottomButton removeTarget:tableView.viewController action:NULL forControlEvents:UIControlEventTouchUpInside];
     SEL bottomAction = NSSelectorFromString(extraInfo[SAMC_CELL_EXTRA_BOTTOM_ACTION_KEY]);
     [self.bottomButton addTarget:tableView.viewController action:bottomAction forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.avatar removeTarget:tableView.viewController action:NULL forControlEvents:UIControlEventTouchUpInside];
+    SEL avatarAction = NSSelectorFromString(rowData.cellActionName);
+    [self.avatar addTarget:tableView.viewController action:avatarAction forControlEvents:UIControlEventTouchUpInside];
 }
 
 

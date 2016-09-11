@@ -91,8 +91,9 @@
                                       ExtraInfo     : portraitCellExtra,
                                       CellClass     : @"SAMCSettingPortraitCell",
                                       RowHeight     : @(100),
-                                      CellAction    : @"onActionTouchPortrait:",
-                                      ShowAccessory : @(NO)
+                                      CellAction    : @"onTouchPortraitAvatar:",
+                                      ShowAccessory : @(NO),
+                                      ForbidSelect  : @(YES)
                                       },
                                   @{
                                       Title         : @"Create Service Account",
@@ -170,8 +171,9 @@
                                       ExtraInfo     : portraitCellExtra,
                                       CellClass     : @"SAMCSettingPortraitCell",
                                       RowHeight     : @(100),
-                                      CellAction    : @"onActionTouchPortrait:",
-                                      ShowAccessory : @(YES)
+                                      CellAction    : @"onTouchPortraitAvatar:",
+                                      ShowAccessory : @(NO),
+                                      ForbidSelect : @(YES)
                                       },
                                   ],
                           FooterTitle:@""
@@ -318,6 +320,11 @@
 - (void)onTouchPortraitBottom:(id)sender
 {
     DDLogDebug(@"onTouchPortraitBottom");
+}
+
+- (void)onTouchPortraitAvatar:(id)sender
+{
+    DDLogDebug(@"onTouchPortraitAvatar");
 }
 
 @end
