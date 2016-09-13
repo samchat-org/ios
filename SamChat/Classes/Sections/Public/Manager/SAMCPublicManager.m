@@ -14,6 +14,10 @@
 #import "SAMCDataBaseManager.h"
 #import "SAMCPreferenceManager.h"
 #import "GCDMulticastDelegate.h"
+#import <AWSS3/AWSS3.h>
+#import "SAMCImageUtil.h"
+#import "SAMCImageAttachment.h"
+#import "SDImageCache.h"
 
 @interface SAMCPublicManager ()
 
@@ -168,41 +172,12 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 #pragma mark - Server
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut
 {
-    // TODO: handle text message now, image later
     [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
-    [self.publicDelegate willSendMessage:message];
-    NSDictionary *parameters = [SAMCServerAPI writeAdvertisementType:message.messageType content:message.text];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        DDLogDebug(@"sendPublicMessage success: %@", responseObject);
-        NSError *sendError = nil;
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode == 0) {
-                NSInteger serverId = [((NSNumber *)response[SAMC_ADV_ID]) integerValue];
-                NSInteger timestamp = [((NSNumber *)response[SAMC_PUBLISH_TIMESTAMP]) integerValue]/1000; // seconds
-                message.serverId = serverId;
-                message.timestamp = timestamp;
-                message.deliveryState = NIMMessageDeliveryStateDeliveried;
-            } else {
-                message.deliveryState = NIMMessageDeliveryStateFailed;
-                sendError = [SAMCServerErrorHelper errorWithCode:errorCode];
-            }
-        } else {
-            message.deliveryState = NIMMessageDeliveryStateFailed;
-            sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError];
-        }
-        [[SAMCDataBaseManager sharedManager].publicDB updateMessageStateServerIdAndTime:message];
-        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        DDLogError(@"sendPublicMessage failed: %@", error);
-        message.deliveryState = NIMMessageDeliveryStateFailed;
-        NSError *sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable];
-        [[SAMCDataBaseManager sharedManager].publicDB updateMessageStateServerIdAndTime:message];
-        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
-    }];
+    if (message.messageType == NIMMessageTypeCustom) {
+        [self sendPublicImageMessage:message];
+    } else if(message.messageType == NIMMessageTypeText) {
+        [self sendPublicTextMessage:message];
+    }
 }
 
 #pragma mark - Private
@@ -227,6 +202,108 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         // TODO: check Reachability and retry
+    }];
+}
+
+- (void)sendPublicTextMessage:(SAMCPublicMessage *)message
+{
+    [self.publicDelegate willSendMessage:message];
+    [self sendPublicMessage:message];
+}
+
+
+- (void)sendPublicImageMessage:(SAMCPublicMessage *)message
+{
+    NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+    SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+    [self.publicDelegate willSendMessage:message];
+    AWSS3TransferUtilityUploadExpression *expression = [AWSS3TransferUtilityUploadExpression new];
+    __weak typeof(self) wself = self;
+    expression.progressBlock = ^(AWSS3TransferUtilityTask *task, NSProgress *progress) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            attachment.progress = progress.fractionCompleted/0.9f;
+            attachment.progress = progress.fractionCompleted;
+            [wself.publicDelegate sendMessage:message progress:attachment.progress];
+        });
+    };
+    
+    AWSS3TransferUtilityUploadCompletionHandlerBlock completionHandler = ^(AWSS3TransferUtilityUploadTask *task, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            attachment.progress = 1.0f;
+            if (error) {
+                message.deliveryState = NIMMessageDeliveryStateFailed;
+                [wself.publicDelegate sendMessage:message didCompleteWithError:error];
+                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
+            } else {
+                // TODO: add image url, store to cache, and delete path
+                [wself sendPublicMessage:message];
+            }
+        });
+    };
+
+    AWSS3TransferUtility *transferUtility = [AWSS3TransferUtility defaultS3TransferUtility];
+    NSString *key = [NSString stringWithFormat:@"advertisement/origin/%@", attachment.path];
+    NSURL *fileUrl = [NSURL fileURLWithPath:attachment.path];
+    [[transferUtility uploadFile:fileUrl bucket:SAMC_S3_BUCKETNAME key:key contentType:@"image/jpeg" expression:expression completionHander:completionHandler] continueWithBlock:^id (AWSTask * task) {
+        if (task.error || task.exception) {
+            DDLogDebug(@"Error: %@", task.error);
+            DDLogDebug(@"Exception: %@", task.exception);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                message.deliveryState = NIMMessageDeliveryStateFailed;
+                [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
+                [wself.publicDelegate sendMessage:message didCompleteWithError:task.error];
+            });
+        }
+        if (task.result) {
+            DDLogDebug(@"Uploading...");
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [wself.publicDelegate sendMessage:message progress:0.f];
+            });
+        }
+        return nil;
+    }];
+}
+
+- (void)sendPublicMessage:(SAMCPublicMessage *)message
+{
+    NSDictionary *parameters = nil;
+    if (message.messageType == NIMMessageTypeText) {
+        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeText content:message.text];
+    } else if(message.messageType == NIMMessageTypeCustom) {
+        NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+        SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeImage content:attachment.url];
+    }
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        DDLogDebug(@"sendPublicMessage success: %@", responseObject);
+        NSError *sendError = nil;
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode == 0) {
+                NSInteger serverId = [((NSNumber *)response[SAMC_ADV_ID]) integerValue];
+                NSInteger timestamp = [((NSNumber *)response[SAMC_PUBLISH_TIMESTAMP]) integerValue]/1000; // seconds
+                message.serverId = serverId;
+                message.timestamp = timestamp;
+                message.deliveryState = NIMMessageDeliveryStateDeliveried;
+            } else {
+                message.deliveryState = NIMMessageDeliveryStateFailed;
+                sendError = [SAMCServerErrorHelper errorWithCode:errorCode];
+            }
+        } else {
+            message.deliveryState = NIMMessageDeliveryStateFailed;
+            sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError];
+        }
+        [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
+        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        DDLogError(@"sendPublicMessage failed: %@", error);
+        message.deliveryState = NIMMessageDeliveryStateFailed;
+        NSError *sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable];
+        [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
+        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
     }];
 }
 

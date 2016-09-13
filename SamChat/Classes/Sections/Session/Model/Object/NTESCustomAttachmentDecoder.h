@@ -11,4 +11,6 @@
 
 @interface NTESCustomAttachmentDecoder : NSObject<NIMCustomAttachmentCoding>
 
+- (id<NIMCustomAttachment>)decodeAttachment:(NSString *)content;
+
 @end

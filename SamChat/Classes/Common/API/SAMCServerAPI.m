@@ -502,7 +502,7 @@
 //        "content": text or url
 //    }
 //}
-+ (NSDictionary *)writeAdvertisementType:(NIMMessageType)type
++ (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
                                  content:(NSString *)content
 {
     content = content ?:@"";

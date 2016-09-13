@@ -140,6 +140,7 @@
 - (void)receivedNewPublicMessage:(NSDictionary *)payload
 {
     SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:payload[SAMC_BODY]];
+    // TODO: 图片消息下载缩略图
     [[SAMCPublicManager sharedManager] receivePublicMessage:message];
 }
 

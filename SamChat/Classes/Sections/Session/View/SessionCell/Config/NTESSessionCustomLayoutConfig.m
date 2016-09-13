@@ -67,7 +67,8 @@
                    @"NTESJanKenPonAttachment",
                    @"NTESSnapchatAttachment",
                    @"NTESChartletAttachment",
-                   @"NTESWhiteboardAttachment"
+                   @"NTESWhiteboardAttachment",
+                   @"SAMCImageAttachment"
                    ];
     });
     return types;

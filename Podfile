@@ -1,4 +1,4 @@
-platform :ios, '7.0'
+platform :ios, '8.0'
 
 pod 'SDWebImage', '~> 3.7.1'
 pod 'Toast', '~> 2.4'
@@ -10,3 +10,4 @@ pod 'CocoaLumberjack', '~> 2.0.0-rc2'
 pod 'SSZipArchive', '~> 1.2'
 pod 'AFNetworking', '~> 3.0'
 pod 'GTSDK', '1.4.3-noidfa'
+pod 'AWSS3'

@@ -12,6 +12,7 @@
 #import "NTESSnapchatAttachment.h"
 #import "NTESChartletAttachment.h"
 #import "NTESWhiteboardAttachment.h"
+#import "SAMCImageAttachment.h"
 #import "NSDictionary+NTESJson.h"
 #import "NTESSessionUtil.h"
 
@@ -57,6 +58,18 @@
                     ((NTESWhiteboardAttachment *)attachment).flag = [data jsonInteger:CMFlag];
                 }
                     break;
+                    
+                case CustomMessageTypeSAMCImage:
+                {
+                    attachment = [[SAMCImageAttachment alloc] init];
+                    ((SAMCImageAttachment *)attachment).url = [data jsonString:CMURL];
+                    ((SAMCImageAttachment *)attachment).thumbUrl = [data jsonString:CMTHUMBURL];
+                    ((SAMCImageAttachment *)attachment).path = [data jsonString:CMPATH];
+                    ((SAMCImageAttachment *)attachment).thumbPath = [data jsonString:CMTHUMBPATH];
+                    ((SAMCImageAttachment *)attachment).displayName = [data jsonString:CMDISPLAYNAME];
+                    ((SAMCImageAttachment *)attachment).size = CGSizeMake([data jsonDouble:CMSIZE_WIDTH], [data jsonDouble:CMSIZE_HEIGHT]);
+                }
+                    break;
                 default:
                     break;
             }
@@ -84,6 +97,9 @@
     else if ([attachment isKindOfClass:[NTESWhiteboardAttachment class]]) {
         NSInteger flag = [((NTESWhiteboardAttachment *)attachment) flag];
         check = ((flag >= CustomWhiteboardFlagInvite) && (flag <= CustomWhiteboardFlagClose)) ? YES : NO;
+    }
+    else if ([attachment isKindOfClass:[SAMCImageAttachment class]]) {
+        check = YES;
     }
     return check;
 }

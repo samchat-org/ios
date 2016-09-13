@@ -13,4 +13,6 @@
 
 + (SAMCPublicMessage *)msgWithText:(NSString*)text;
 
++ (SAMCPublicMessage *)msgWithImage:(UIImage *)image;
+
 @end

@@ -14,6 +14,9 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
+  - AWSCore (2.4.7)
+  - AWSS3 (2.4.7):
+    - AWSCore (= 2.4.7)
   - CocoaLumberjack (2.0.3):
     - CocoaLumberjack/Default (= 2.0.3)
     - CocoaLumberjack/Extensions (= 2.0.3)
@@ -39,6 +42,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 3.0)
+  - AWSS3
   - CocoaLumberjack (~> 2.0.0-rc2)
   - FMDB (~> 2.5)
   - GTSDK (= 1.4.3-noidfa)
@@ -51,6 +55,8 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
+  AWSCore: 9a729a3c0050a51ece3547d546c327acdac7838a
+  AWSS3: 0f3c8ed11e04cd78cf86ed396c06330ab142db7a
   CocoaLumberjack: f58d8a19629f4d8379ae14bb3534def24161430e
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   GTSDK: fdc3f8ee1ad554195df5e023820edafefbd0c024

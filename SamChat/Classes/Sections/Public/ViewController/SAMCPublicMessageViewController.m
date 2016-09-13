@@ -41,6 +41,8 @@
 #import "SAMCPublicMessageMaker.h"
 #import "SAMCPublicMsgDataSource.h"
 #import "SAMCPublicMsgCellLayoutConfig.h"
+#import "SAMCPublicCustomMsgCellLayoutConfig.h"
+#import "SAMCImageAttachment.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -179,7 +181,10 @@ UITableViewDelegate>
     if ([mediaType isEqualToString:(NSString *)kUTTypeMovie]) {
     }else{
         UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
-        [self sendMessage:[NTESSessionMsgConverter msgWithImage:orgImage]];
+        
+        SAMCPublicMessage *message = [SAMCPublicMessageMaker msgWithImage:orgImage];
+        message.publicSession = self.publicSession;
+        [self sendMessage:message];
     }
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
@@ -192,19 +197,21 @@ UITableViewDelegate>
 }
 
 #pragma mark - Cell Actions
-- (void)showImage:(NIMMessage *)message
+- (void)showCustom:(SAMCPublicMessage *)message
 {
-    NIMImageObject *object = message.messageObject;
+    NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+    SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+    
     NTESGalleryItem *item = [[NTESGalleryItem alloc] init];
-    item.thumbPath      = [object thumbPath];
-    item.imageURL       = [object url];
-    item.name           = [object displayName];
+    item.thumbPath      = attachment.thumbPath;
+    item.imageURL       = attachment.url;
+    item.name           = attachment.displayName;
     NTESGalleryViewController *vc = [[NTESGalleryViewController alloc] initWithItem:item];
     [self.navigationController pushViewController:vc animated:YES];
-    if(![[NSFileManager defaultManager] fileExistsAtPath:object.thumbPath]){
+    if(![[NSFileManager defaultManager] fileExistsAtPath:attachment.thumbPath]){
         //如果缩略图下跪了，点进看大图的时候再去下一把缩略图
         __weak typeof(self) wself = self;
-        [[NIMSDK sharedSDK].resourceManager download:object.thumbUrl filepath:object.thumbPath progress:nil completion:^(NSError *error) {
+        [[NIMSDK sharedSDK].resourceManager download:attachment.thumbUrl filepath:attachment.thumbPath progress:nil completion:^(NSError *error) {
             if (!error) {
                 [wself uiUpdateMessage:message];
             }
@@ -368,6 +375,11 @@ UITableViewDelegate>
 
 -(void)sendMessage:(SAMCPublicMessage *)message progress:(CGFloat)progress
 {
+    if ([message.publicSession isEqual:_publicSession]) {
+        NIMMessageModel *model = [self makeModel:message];
+        NSInteger index = [self.sessionDatasource indexAtModelArray:model];
+        [self.layoutManager updateCellAtIndex:index model:model];
+    }
 }
 
 - (void)onRecvMessage:(SAMCPublicMessage *)message
@@ -435,7 +447,7 @@ UITableViewDelegate>
     NSString *eventName = event.eventName;
     if ([eventName isEqualToString:NIMKitEventNameTapContent]) {
         NIMMessage *message = event.messageModel.message;
-        NSDictionary *actions = @{@(NIMMessageTypeImage):@"showImage:"};
+        NSDictionary *actions = @{@(NIMMessageTypeCustom):@"showCustom:"};
         NSString *value = actions[@(message.messageType)];
         if (value) {
             SEL selector = NSSelectorFromString(value);
@@ -558,7 +570,11 @@ UITableViewDelegate>
 #pragma mark - Private
 - (void)layoutConfig:(NIMMessageModel *)model
 {
-    model.layoutConfig = [[SAMCPublicMsgCellLayoutConfig alloc] init];
+    if (model.message.messageType == NIMMessageTypeCustom) {
+        model.layoutConfig = [[SAMCPublicCustomMsgCellLayoutConfig alloc] init];
+    } else {
+        model.layoutConfig = [[SAMCPublicMsgCellLayoutConfig alloc] init];
+    }
     [model calculateContent:self.tableView.nim_width force:NO];
 }
 

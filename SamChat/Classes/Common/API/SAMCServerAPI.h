@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "SAMCServerAPIMacro.h"
 
+typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
+    SAMCAdvertisementTypeText,
+    SAMCAdvertisementTypeImage
+};
+
 @interface SAMCServerAPI : NSObject
 
 #pragma mark - Register
@@ -65,7 +70,7 @@
 
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;
 
-+ (NSDictionary *)writeAdvertisementType:(NIMMessageType)type
++ (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
                                  content:(NSString *)content;
 
 @end

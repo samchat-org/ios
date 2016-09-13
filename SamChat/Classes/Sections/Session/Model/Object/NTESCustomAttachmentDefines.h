@@ -14,6 +14,7 @@ typedef NS_ENUM(NSInteger,NTESCustomMessageType){
     CustomMessageTypeSnapchat   = 2, //阅后即焚
     CustomMessageTypeChartlet   = 3, //贴图表情
     CustomMessageTypeWhiteboard = 4,  //白板会话
+    CustomMessageTypeSAMCImage  = 5, // 广告图片
 };
 
 
@@ -22,6 +23,12 @@ typedef NS_ENUM(NSInteger,NTESCustomMessageType){
 #define CMValue         @"value"
 #define CMFlag          @"flag"
 #define CMURL           @"url"
+#define CMTHUMBURL      @"thumbUrl"
+#define CMPATH          @"path"
+#define CMTHUMBPATH     @"thumbPath"
+#define CMDISPLAYNAME   @"displayName"
+#define CMSIZE_HEIGHT   @"sizeh"
+#define CMSIZE_WIDTH    @"sizew"
 #define CMMD5           @"md5"
 #define CMFIRE          @"fired"    //阅后即焚消息是否被焚毁
 #define CMCatalog       @"catalog"  //贴图类别

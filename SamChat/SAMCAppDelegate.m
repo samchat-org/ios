@@ -29,6 +29,7 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCAccountManager.h"
 #import "SAMCPushManager.h"
+#import <AWSS3/AWSS3.h>
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
@@ -61,6 +62,13 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
                                   cerName:cerName];
     
     [NIMCustomObject registerCustomDecoder:[NTESCustomAttachmentDecoder new]];
+    
+    // setup AWSS3
+    AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc]
+                                                          initWithRegionType:AWSRegionUSWest2
+                                                          identityPoolId:@"us-west-2:083f7106-00ad-4b9e-8e1d-2214d30975ba"];
+    AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2 credentialsProvider:credentialsProvider];
+    AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
     
     
     [self setupServices];
@@ -126,6 +134,13 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 - (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
     DDLogError(@"fail to get apns token :%@",error);
+}
+
+- (void)application:(UIApplication *)application handleEventsForBackgroundURLSession:(NSString *)identifier
+  completionHandler:(void (^)())completionHandler
+{
+    /* Store the completion handler.*/
+    [AWSS3TransferUtility interceptApplication:application handleEventsForBackgroundURLSession:identifier completionHandler:completionHandler];
 }
 
 

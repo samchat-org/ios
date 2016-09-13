@@ -91,6 +91,7 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 #define CALL_MESSAGE_EXTERN_FROM_CUSTOM     @"customer"
 #define CALL_MESSAGE_EXTERN_FROM_SP         @"sp"
 
+#define SAMC_S3_BUCKETNAME      @"samchat2"
 
 typedef NS_ENUM(NSInteger,SAMCUserModeType) {
     SAMCUserModeTypeCustom,

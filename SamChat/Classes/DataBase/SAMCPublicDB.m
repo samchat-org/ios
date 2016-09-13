@@ -10,6 +10,7 @@
 #import "GCDMulticastDelegate.h"
 #import "SAMCServerAPIMacro.h"
 #import "SAMCPublicDB_2016082201.h"
+#import "NTESCustomAttachmentDecoder.h"
 
 @interface SAMCPublicDB ()
 
@@ -179,6 +180,12 @@
             message.text = [s stringForColumn:@"msg_text"];
             message.deliveryState = [s intForColumn:@"msg_status"];
             message.timestamp = [s longForColumn:@"msg_time"];
+            NSString *msgContent = [s stringForColumn:@"msg_content"];
+            if (message.messageType == NIMMessageTypeCustom) {
+                NIMCustomObject *customObject = [[NIMCustomObject alloc] init];
+                customObject.attachment = [[[NTESCustomAttachmentDecoder alloc] init] decodeAttachment:msgContent];
+                message.messageObject = customObject;
+            }
             message.isOutgoingMsg = session.isOutgoing;
             [messages insertObject:message atIndex:0];
         }
@@ -198,13 +205,19 @@
         // insert message
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
         // TODO: need create index ?
-        NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_status, msg_time) VALUES(?,?,?,?,?,?,?)", tableName];
-        [db executeUpdate:sql, @(message.messageType), message.from, message.messageId ,@(message.serverId), message.text, @(message.deliveryState),@(message.timestamp)];
+        NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_content, msg_status, msg_time) VALUES(?,?,?,?,?,?,?,?)", tableName];
+        NSString *msgContent;
+        if (message.messageType == NIMMessageTypeCustom) {
+            NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+            msgContent = [customObject.attachment encodeAttachment];
+        }
+        msgContent = msgContent ?:@"";
+        [db executeUpdate:sql, @(message.messageType), message.from, message.messageId ,@(message.serverId), message.text, msgContent, @(message.deliveryState),@(message.timestamp)];
         
     }];
 }
 
-- (void)updateMessageStateServerIdAndTime:(SAMCPublicMessage *)message
+- (void)updateMessage:(SAMCPublicMessage *)message
 {
     if (message == nil) {
         return;
@@ -212,10 +225,15 @@
     NSNumber *state = @(message.deliveryState);
     NSNumber *serverId = @(message.serverId);
     NSNumber *timestamp = @(message.timestamp);
+    NSString *msgContent = @"";
+    if (message.messageType == NIMMessageTypeCustom) {
+        NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+        msgContent = [customObject.attachment encodeAttachment];
+    }
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *tableName = message.publicSession.tableName;
-        NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET msg_status = ?, server_id = ?, msg_time = ? WHERE msg_id = ?", tableName];
-        [db executeUpdate:sql, state, serverId, timestamp, message.messageId];
+        NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET msg_status = ?, server_id = ?, msg_time = ?, msg_content = ? WHERE msg_id = ?", tableName];
+        [db executeUpdate:sql, state, serverId, timestamp, msgContent, message.messageId];
     }];
 }
 
