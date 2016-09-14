@@ -9,6 +9,8 @@
 #import "SAMCDataManager.h"
 #import "NTESChatroomManager.h"
 #import "NTESCustomAttachmentDefines.h"
+#import "SAMCUser.h"
+#import "SAMCContactManager.h"
 
 @interface SAMCDataRequest : NSObject
 
@@ -69,21 +71,17 @@
         case NIMSessionTypeP2P:
         case NIMSessionTypeTeam:
         {
-            NIMUser *user = [[NIMSDK sharedSDK].userManager userInfo:userId];
-            NIMUserInfo *userInfo = user.userInfo;
-            NIMTeamMember *member = nil;
-            if (sessionType == NIMSessionTypeTeam)
-            {
-                member = [[NIMSDK sharedSDK].teamManager teamMember:userId
-                                                             inTeam:session.sessionId];
+            SAMCUser *user = [[SAMCContactManager sharedManager] userInfo:userId];
+            SAMCUserInfo *userInfo = user.userInfo;
+            NSString *name;
+            if (sessionType == NIMSessionTypeTeam) {
+                NIMTeamMember *member = [[NIMSDK sharedSDK].teamManager teamMember:userId inTeam:session.sessionId];
+                name = [self nicknameOfMemberInfo:member];
             }
-            NSString *name = [self nickname:user
-                                 memberInfo:member];
-            if (name)
-            {
-                info.showName = name;
+            if ((name==nil) && ([userInfo.username length]>0)) {
+                info.showName = userInfo.username;
             }
-            info.avatarUrlString = userInfo.thumbAvatarUrl;
+            info.avatarUrlString = userInfo.avatar;
             info.avatarImage = self.defaultUserAvatar;
             
             if (userInfo == nil)
@@ -208,28 +206,12 @@
 }
 
 #pragma mark - nickname
-- (NSString *)nickname:(NIMUser *)user
-            memberInfo:(NIMTeamMember *)memberInfo
+- (NSString *)nicknameOfMemberInfo:(NIMTeamMember *)memberInfo
 {
     NSString *name = nil;
-    do{
-        if ([user.alias length])
-        {
-            name = user.alias;
-            break;
-        }
-        if (memberInfo && [memberInfo.nickname length])
-        {
-            name = memberInfo.nickname;
-            break;
-        }
-        
-        if ([user.userInfo.nickName length])
-        {
-            name = user.userInfo.nickName;
-            break;
-        }
-    }while (0);
+    if (memberInfo && [memberInfo.nickname length]) {
+        name = memberInfo.nickname;
+    }
     return name;
 }
 
@@ -278,13 +260,12 @@
     
     DDLogInfo(@"request user ids %@",userIds);
     __weak typeof(self) weakSelf = self;
-    [[NIMSDK sharedSDK].userManager fetchUserInfos:userIds
-                                        completion:^(NSArray *users, NSError *error) {
-                                            [weakSelf afterReuquest:userIds];
-                                            if (!error) {
-                                                [[NIMKit sharedKit] notfiyUserInfoChanged:userIds];
-                                            }
-                                        }];
+    [[SAMCContactManager sharedManager] fetchUserInfos:userIds completion:^(NSArray<SAMCUser *> * _Nullable users, NSError * _Nullable error) {
+        [weakSelf afterReuquest:userIds];
+        if (!error) {
+            [[NIMKit sharedKit] notfiyUserInfoChanged:userIds];
+        }
+    }];
 }
 
 - (void)afterReuquest:(NSArray *)userIds

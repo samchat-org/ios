@@ -14,7 +14,7 @@
 
 @interface SAMCUser : NSObject
 
-@property (nonatomic, strong) NSNumber *uniqueId;
+@property (nonatomic, strong) NSString *userId;
 @property (nonatomic, strong) SAMCUserInfo *userInfo;
 
 + (instancetype)userFromDict:(NSDictionary *)userDict;

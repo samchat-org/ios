@@ -12,6 +12,8 @@
 
 @interface SAMCUserInfoDB : SAMCDBBase
 
+- (SAMCUser *)userInfo:(NSString *)userId;
+
 - (void)updateUser:(SAMCUser *)user;
 
 - (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;

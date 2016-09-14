@@ -90,13 +90,43 @@
     }];
 }
 
+- (void)fetchUserInfos:(NSArray<NSString *> *)userIds
+            completion:(void (^)(NSArray<SAMCUser *> * __nullable users, NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI queryUsers:userIds];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_QUERYGROUP parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(nil, [SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                NSMutableArray *users = [[NSMutableArray alloc] init];
+                for (NSDictionary *userDict in response[SAMC_USERS]) {
+                    SAMCUser *user = [SAMCUser userFromDict:userDict];
+                    [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+                    [users addObject:user];
+                }
+                completion(users, nil);
+            }
+        } else {
+            completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (void)addOrRemove:(BOOL)isAdd
             contact:(SAMCUser *)user
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI addOrRemove:isAdd contact:user.uniqueId type:type];
+    NSDictionary *parameters = [SAMCServerAPI addOrRemove:isAdd contact:user.userId type:type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_CONTACT_CONTACT parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
@@ -135,6 +165,11 @@
 - (NSArray *)myContactListOfType:(SAMCContactListType)listType
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];
+}
+
+- (SAMCUser *)userInfo:(NSString *)userId
+{
+    return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
 }
 
 #pragma mark - Private

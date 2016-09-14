@@ -10,7 +10,7 @@
 
 @implementation SAMCSPBasicInfo
 
-+ (instancetype)infoOfUser:(NSInteger)uniqueId
++ (instancetype)infoOfUser:(NSString *)userId
                   username:(NSString *)username
                     avatar:(NSString *)avatar
                   blockTag:(BOOL)blockTag
@@ -18,7 +18,7 @@
                   category:(NSString *)category
 {
     SAMCSPBasicInfo *info = [[SAMCSPBasicInfo alloc] init];
-    info.uniqueId = uniqueId;
+    info.userId = userId;
     info.username = username;
     info.avatar = avatar;
     info.blockTag = blockTag;

@@ -27,14 +27,14 @@
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
     session.spBasicInfo = info;
     session.lastMessageContent = messageContent;
-    session.uniqueId = info.uniqueId;
+    session.userId = info.userId;
     return session;
 }
 
 + (instancetype)sessionOfMyself
 {
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
-    session.uniqueId = [[SAMCAccountManager sharedManager].currentAccount integerValue];
+    session.userId = [SAMCAccountManager sharedManager].currentAccount;
     session.isOutgoing = YES;
     return session;
 }
@@ -46,7 +46,7 @@
             _tableName = @"publicmsg_mine";
         } else {
         _tableName = [NSString stringWithFormat:@"publicmsg_%@",
-                      [[NSString stringWithFormat:@"%ld", self.uniqueId] nim_MD5String]];
+                      [self.userId nim_MD5String]];
         }
     }
     return _tableName;
@@ -58,7 +58,7 @@
         return NO;
     } else {
         SAMCPublicSession *session = object;
-        return (self.isOutgoing == session.isOutgoing) && (self.uniqueId == session.uniqueId);
+        return (self.isOutgoing == session.isOutgoing) && ([self.userId isEqualToString:session.userId]);
     }
 }
 

@@ -53,7 +53,7 @@
     message.timestamp = [dict[SAMC_PUBLISH_TIMESTAMP] integerValue]/1000;
     message.from = [NSString stringWithFormat:@"%@", dict[SAMC_ID]];
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
-    session.uniqueId = [dict[SAMC_ID] integerValue];
+    session.userId = [NSString stringWithFormat:@"%@", dict[SAMC_ID]];
     message.publicSession = session;
     return message;
 }

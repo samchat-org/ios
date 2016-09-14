@@ -10,14 +10,14 @@
 
 @interface SAMCSPBasicInfo : NSObject
 
-@property (nonatomic, assign) NSInteger uniqueId;
+@property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *username;
 @property (nonatomic, copy) NSString *avatar;
 @property (nonatomic, assign) BOOL blockTag;
 @property (nonatomic, assign) BOOL favouriteTag;
 @property (nonatomic, copy) NSString *spServiceCategory;
 
-+ (instancetype)infoOfUser:(NSInteger)uniqueId
++ (instancetype)infoOfUser:(NSString *)userId
                   username:(NSString *)username
                     avatar:(NSString *)avatar
                   blockTag:(BOOL)blockTag

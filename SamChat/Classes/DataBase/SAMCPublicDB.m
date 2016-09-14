@@ -108,7 +108,7 @@
             NSString *sp_service_category = [s stringForColumn:@"sp_service_category"];
             NSString *last_message_content = [s stringForColumn:@"last_message_content"];
             
-            SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:unique_id
+            SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:[NSString stringWithFormat:@"%ld",unique_id]
                                                        username:username
                                                          avatar:avatar
                                                        blockTag:block_tag
@@ -125,14 +125,14 @@
 - (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",@(userInfo.uniqueId)];
+        NSNumber *unique_id = @([userInfo.userId integerValue]);
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",unique_id];
         [s next];
         int count = [s intForColumnIndex:0];
         [s close];
         if (count > 0) {
             return; // already exist
         }
-        NSNumber *unique_id = @(userInfo.uniqueId);
         NSString *username = userInfo.username;
         NSString *avatar = userInfo.avatar;
         NSNumber *block_tag = @(userInfo.blockTag);
@@ -148,7 +148,8 @@
 - (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
-        [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", @(userInfo.uniqueId)];
+        NSNumber *unique_id = @([userInfo.userId integerValue]);
+        [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", unique_id];
         // TODO: update total unread count & delegate session updating
     }];
 }

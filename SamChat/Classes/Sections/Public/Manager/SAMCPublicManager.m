@@ -90,7 +90,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI follow:isFollow officialAccount:@(userInfo.uniqueId)];
+    NSDictionary *parameters = [SAMCServerAPI follow:isFollow officialAccount:userInfo.userId];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     __weak typeof(self) wself = self;

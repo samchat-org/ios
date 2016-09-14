@@ -33,14 +33,50 @@
     }
 }
 
+- (SAMCUser *)userInfo:(NSString *)userId
+{
+    __block SAMCUser *user = [[SAMCUser alloc] init];
+    user.userId = userId;
+    NSNumber *unique_id = @([userId integerValue]);
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM userInfo WHERE unique_id = ?", unique_id];
+        if ([s next]) {
+            SAMCUserInfo *userInfo = [[SAMCUserInfo alloc] init];
+            userInfo.username = [s stringForColumn:@"username"];
+            userInfo.usertype = @([s intForColumn:@"usertype"]);
+            userInfo.lastupdate = @([s longForColumn:@"lastupdate"]);
+            userInfo.avatar = [s stringForColumn:@"avatar"];
+            userInfo.avatarOriginal = [s stringForColumn:@"avatar_original"];
+            userInfo.countryCode = [s stringForColumn:@"countrycode"];
+            userInfo.cellPhone = [s stringForColumn:@"cellphone"];
+            userInfo.email = [s stringForColumn:@"email"];
+            userInfo.address = [s stringForColumn:@"address"];
+            if ([userInfo.usertype isEqual:@(SAMCuserTypeSamPros)]) {
+                SAMCSamProsInfo *spInfo = [[SAMCSamProsInfo alloc] init];
+                spInfo.companyName = [s stringForColumn:@"sp_company_name"];
+                spInfo.serviceCategory = [s stringForColumn:@"sp_service_category"];
+                spInfo.serviceDescription = [s stringForColumn:@"sp_service_description"];
+                spInfo.countryCode = [s stringForColumn:@"sp_countrycode"];
+                spInfo.phone = [s stringForColumn:@"sp_phone"];
+//                spInfo.email; // TODO: sp email?
+                spInfo.address = [s stringForColumn:@"sp_address"];
+                userInfo.spInfo = spInfo;
+            }
+            user.userInfo = userInfo;
+        }
+        [s close];
+    }];
+    return user;
+}
+
 - (void)updateUser:(SAMCUser *)user
 {
     DDLogDebug(@"updateUser: %@", user);
-    NSNumber *unique_id = user.uniqueId;
-    if (unique_id == nil) {
+    if (user.userId == nil) {
         DDLogError(@"unique id should not be nil");
         return;
     }
+    NSNumber *unique_id = @([user.userId integerValue]);
     SAMCUserInfo *userInfo = user.userInfo;
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM userinfo WHERE unique_id = ?", unique_id];
@@ -169,7 +205,7 @@
     }
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(unique_id) VALUES(?)", tableName];
-        [db executeUpdate:sql, user.uniqueId];
+        [db executeUpdate:sql, @([user.userId integerValue])];
     }];
 }
 

@@ -52,11 +52,12 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
                       location:(NSDictionary *)location;
 
 + (NSDictionary *)follow:(BOOL)isFollow
-         officialAccount:(NSNumber *)uniqueId;
+         officialAccount:(NSString *)userId;
 
 
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
 + (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId;
++ (NSDictionary *)queryUsers:(NSArray<NSString *> *)userIds;
 
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
                             location:(NSDictionary *)location;
@@ -65,7 +66,7 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 + (NSDictionary *)queryContactList:(SAMCContactListType)type;
 
 + (NSDictionary *)addOrRemove:(BOOL)isAdd
-                      contact:(NSNumber *)uniqueId
+                      contact:(NSString *)userId
                          type:(SAMCContactListType)type;
 
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;

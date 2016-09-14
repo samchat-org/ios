@@ -315,9 +315,9 @@
 //    }
 //}
 + (NSDictionary *)follow:(BOOL)isFollow
-         officialAccount:(NSNumber *)uniqueId
+         officialAccount:(NSString *)userId;
 {
-    uniqueId = uniqueId ?:@(0);
+    NSNumber *uniqueId = @([userId integerValue]);
     NSDictionary *header = @{SAMC_ACTION:SAMC_FOLLOW,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:isFollow ? @(1) : @(0),
                            SAMC_ID:uniqueId};
@@ -372,6 +372,29 @@
     NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_ACCURATE,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:@(2),
                            SAMC_PARAM:@{SAMC_TYPE:@(1),SAMC_UNIQUE_ID:uniqueId}};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
+//        "action" : "query-group"
+//        "token": "token",
+//    },
+//    "body":
+//    {
+//        "opt":3,   3: Query group users by unique_id
+//        "param":{
+//            "unique_id":[1,2,3,4,5,6]
+//        }
+//    }
+//}
++ (NSDictionary *)queryUsers:(NSArray<NSString *> *)userIds
+{
+    userIds = userIds ?:@[];
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_GROUP, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OPT:@(3),
+                           SAMC_PARAM:@{SAMC_UNIQUE_ID:userIds}};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
@@ -457,10 +480,10 @@
 //    } 
 //}
 + (NSDictionary *)addOrRemove:(BOOL)isAdd
-                      contact:(NSNumber *)uniqueId
+                      contact:(NSString *)userId
                          type:(SAMCContactListType)type
 {
-    uniqueId = uniqueId ?:@(0);
+    NSNumber *uniqueId = @([userId integerValue]);
     NSDictionary *header = @{SAMC_ACTION:SAMC_CONTACT,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:isAdd ? @(0):@(1),
                            SAMC_TYPE:@(type),

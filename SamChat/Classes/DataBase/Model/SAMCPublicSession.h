@@ -12,7 +12,7 @@
 @interface SAMCPublicSession : NSObject
 
 @property (nonatomic, strong) SAMCSPBasicInfo *spBasicInfo;
-@property (nonatomic, assign) NSInteger uniqueId;
+@property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *lastMessageContent;
 @property (nonatomic, assign) BOOL isOutgoing;
 

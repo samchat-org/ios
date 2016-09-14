@@ -14,7 +14,7 @@
 + (instancetype)userFromDict:(NSDictionary *)userDict
 {
     SAMCUser *user = [[SAMCUser alloc] init];
-    user.uniqueId = userDict[SAMC_ID];
+    user.userId = [NSString stringWithFormat:@"%@",userDict[SAMC_ID]];
     
     SAMCUserInfo *info = [[SAMCUserInfo alloc] init];
     info.username = userDict[SAMC_USERNAME];
@@ -34,9 +34,9 @@
 
 - (SAMCSPBasicInfo *)spBasicInfo
 {
-    return [SAMCSPBasicInfo infoOfUser:[_uniqueId integerValue]
-                              username: _userInfo.username
-                                avatar: _userInfo.avatar
+    return [SAMCSPBasicInfo infoOfUser:_userId
+                              username:_userInfo.username
+                                avatar:_userInfo.avatar
                               blockTag:NO
                           favouriteTag:NO
                               category: _userInfo.spInfo.serviceCategory];

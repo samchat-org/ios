@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryAccurateUser:(NSNumber *)uniqueId
                completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion;
 
+- (void)fetchUserInfos:(NSArray<NSString *> *)userIds
+            completion:(void (^)(NSArray<SAMCUser *> * __nullable users, NSError * __nullable error))completion;
+
 - (void)addOrRemove:(BOOL)isAdd
             contact:(SAMCUser *)user
                type:(SAMCContactListType)type
@@ -29,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryContactListIfNecessary;
 
 - (NSArray *)myContactListOfType:(SAMCContactListType)listType;
+
+- (SAMCUser *)userInfo:(NSString *)userId;
 
 @end
 
