@@ -43,6 +43,7 @@
 #import "SAMCPublicMsgCellLayoutConfig.h"
 #import "SAMCPublicCustomMsgCellLayoutConfig.h"
 #import "SAMCImageAttachment.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -183,7 +184,6 @@ UITableViewDelegate>
         UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
         
         SAMCPublicMessage *message = [SAMCPublicMessageMaker msgWithImage:orgImage];
-        message.publicSession = self.publicSession;
         [self sendMessage:message];
     }
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -349,6 +349,8 @@ UITableViewDelegate>
 - (void)sendMessage:(SAMCPublicMessage *)message
 {
     DDLogDebug(@"sendMessage: %@", message);
+    message.publicSession = self.publicSession;
+    message.from = [SAMCAccountManager sharedManager].currentAccount;
     [[SAMCPublicManager sharedManager] sendPublicMessage:message error:NULL];
 }
 
@@ -429,7 +431,6 @@ UITableViewDelegate>
 - (void)onSendText:(NSString *)text
 {
     SAMCPublicMessage *message = [SAMCPublicMessageMaker msgWithText:text];
-    message.publicSession = self.publicSession;
     [self sendMessage:message];
 }
 
