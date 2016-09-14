@@ -11,6 +11,7 @@
 #import "SAMCServerAPIMacro.h"
 #import "SAMCPublicDB_2016082201.h"
 #import "NTESCustomAttachmentDecoder.h"
+#import "SAMCImageAttachment.h"
 
 @interface SAMCPublicDB ()
 
@@ -234,6 +235,32 @@
         NSString *tableName = message.publicSession.tableName;
         NSString *sql = [NSString stringWithFormat:@"UPDATE %@ SET msg_status = ?, server_id = ?, msg_time = ?, msg_content = ? WHERE msg_id = ?", tableName];
         [db executeUpdate:sql, state, serverId, timestamp, msgContent, message.messageId];
+    }];
+}
+
+- (void)deleteMessage:(SAMCPublicMessage *)message
+{
+    if (message == nil) {
+        return;
+    }
+    if (message.messageType == NIMMessageTypeCustom) {
+        NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+        SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+        NSFileManager *fileMgr = [NSFileManager defaultManager];
+        NSError *error;
+        if ([attachment.path length] && [fileMgr fileExistsAtPath:attachment.path]) {
+            [fileMgr removeItemAtPath:attachment.path error:&error];
+            DDLogDebug(@"path: %@", error);
+        }
+        if ([attachment.thumbPath length] && [fileMgr fileExistsAtPath:attachment.thumbPath]) {
+            [fileMgr removeItemAtPath:attachment.thumbPath error:&error];
+            DDLogDebug(@"thumbPath: %@", error);
+        }
+    }
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = message.publicSession.tableName;
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE msg_id = ?", tableName];
+        [db executeUpdate:sql, message.messageId];
     }];
 }
 

@@ -29,5 +29,6 @@
 
 - (void)insertMessage:(SAMCPublicMessage *)message;
 - (void)updateMessage:(SAMCPublicMessage *)message;
+- (void)deleteMessage:(SAMCPublicMessage *)message;
 
 @end

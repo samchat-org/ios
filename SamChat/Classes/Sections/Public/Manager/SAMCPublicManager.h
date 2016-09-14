@@ -36,6 +36,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                        message:(SAMCPublicMessage * __nullable)message
                          limit:(NSInteger)limit
                         result:(void(^)(NSError *error, NSArray<SAMCPublicMessage *> *messages))handler;
+- (void)deleteMessage:(SAMCPublicMessage *)message;
 
 - (void)receivePublicMessage:(SAMCPublicMessage *)message;
 

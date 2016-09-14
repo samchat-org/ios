@@ -161,6 +161,13 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     });
 }
 
+- (void)deleteMessage:(SAMCPublicMessage *)message
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB deleteMessage:message];
+    });
+}
+
 - (void)receivePublicMessage:(SAMCPublicMessage *)message
 {
     // TODO: update last_message_content

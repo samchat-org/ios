@@ -528,6 +528,9 @@ UITableViewDelegate>
 
 - (void)deleteMsg:(id)sender
 {
+    SAMCPublicMessage *message = (SAMCPublicMessage *)[self messageForMenu];
+    [self uiDeleteMessage:message];
+    [[SAMCPublicManager sharedManager] deleteMessage:message];
 }
 
 - (void)menuDidHide:(NSNotification *)notification
