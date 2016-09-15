@@ -12,6 +12,7 @@
 #import "NTESJanKenPonAttachment.h"
 #import "NTESChartletAttachment.h"
 #import "NTESWhiteboardAttachment.h"
+#import "SAMCImageAttachment.h"
 
 @implementation NIMMessage (SAMC)
 
@@ -85,6 +86,9 @@
     }
     else if ([object.attachment isKindOfClass:[NTESWhiteboardAttachment class]]) {
         text = @"[白板]";
+    }
+    else if ([object.attachment isKindOfClass:[SAMCImageAttachment class]]) {
+        text = @"[图片]";
     }else{
         text = @"[未知消息]";
     }
