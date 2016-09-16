@@ -189,7 +189,6 @@ NIMUserManagerDelegate>
 
 
 - (void)viewDidLayoutSubviews{
-    [self changeLeftBarBadge:[self.conversationManager allUnreadCountOfUserMode:self.currentUserMode]];
     BOOL isFirstLayout = CGRectEqualToRect(_layoutManager.viewRect, CGRectZero);
     if (isFirstLayout) {
         [self.tableView nim_scrollToBottom:NO];
@@ -418,13 +417,6 @@ NIMUserManagerDelegate>
     if ([recentSession.session isEqual:self.session]) {
         return;
     }
-    [self changeLeftBarBadge:totalUnreadCount];
-}
-
-- (void)changeLeftBarBadge:(NSInteger)unreadCount{
-    NIMCustomLeftBarView *leftBarView = (NIMCustomLeftBarView *)self.navigationItem.leftBarButtonItem.customView;
-    leftBarView.badgeView.badgeValue = @(unreadCount).stringValue;
-    leftBarView.badgeView.hidden = !unreadCount;
 }
 
 #pragma mark - Notification

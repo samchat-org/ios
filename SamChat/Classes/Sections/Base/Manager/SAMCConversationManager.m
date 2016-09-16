@@ -73,11 +73,6 @@
     });
 }
 
-- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
-{
-    return [[SAMCDataBaseManager sharedManager].messageDB allUnreadCountOfUserMode:userMode];
-}
-
 - (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
