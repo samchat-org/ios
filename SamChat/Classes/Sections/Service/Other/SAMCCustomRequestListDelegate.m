@@ -59,7 +59,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SAMCRequestDetailViewController *vc = [[SAMCRequestDetailViewController alloc] init];
-    vc.questionSession = [self data][indexPath.row];
+    SAMCQuestionSession *session = [self data][indexPath.row];
+    vc.questionSession = session;
+    [[SAMCQuestionManager sharedManager] clearSendQuestionNewResponseCount:session];
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

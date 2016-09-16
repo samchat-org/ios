@@ -149,6 +149,23 @@
     }];
 }
 
+- (void)clearSendQuestionNewResponseCount:(SAMCQuestionSession *)session
+{
+    if (session == nil) {
+        return;
+    }
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"UPDATE send_question SET new_response_count=0 WHERE question_id=?", @(session.questionId)];
+    }];
+}
+
+- (void)deleteSendQuestion:(SAMCQuestionSession *)session
+{
+    [self.queue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:@"DELETE FROM send_question WHERE question_id = ?", @(session.questionId)];
+    }];
+}
+
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo
 {
     DDLogDebug(@"insertReceivedQuestion: %@", questionInfo);
@@ -181,13 +198,6 @@
 {
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"UPDATE received_question SET status = ? WHERE question_id = ?", @(status), @(questionId)];
-    }];
-}
-
-- (void)deleteSendQuestion:(SAMCQuestionSession *)session
-{
-    [self.queue inDatabase:^(FMDatabase *db) {
-        [db executeUpdate:@"DELETE FROM send_question WHERE question_id = ?", @(session.questionId)];
     }];
 }
 

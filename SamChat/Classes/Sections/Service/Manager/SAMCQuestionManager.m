@@ -92,6 +92,20 @@
     });
 }
 
+- (void)clearSendQuestionNewResponseCount:(SAMCQuestionSession *)session
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB clearSendQuestionNewResponseCount:session];
+    });
+}
+
+- (void)deleteSendQuestion:(SAMCQuestionSession *)session
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB deleteSendQuestion:session];
+    });
+}
+
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo
 {
     if ((questionInfo == nil) || (![questionInfo isKindOfClass:[NSDictionary class]])) {
@@ -106,13 +120,6 @@
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].questionDB updateReceivedQuestion:questionId status:status];
-    });
-}
-
-- (void)deleteSendQuestion:(SAMCQuestionSession *)session
-{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].questionDB deleteSendQuestion:session];
     });
 }
 

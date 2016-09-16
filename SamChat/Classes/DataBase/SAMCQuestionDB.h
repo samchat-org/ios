@@ -17,11 +17,11 @@
 - (NSArray<SAMCQuestionSession *> *)allSendQuestion;
 - (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
 - (void)insertSendQuestion:(NSDictionary *)questionInfo;
-- (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
-
-- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status;
-
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session;
+- (void)clearSendQuestionNewResponseCount:(SAMCQuestionSession *)session;
+
+- (void)insertReceivedQuestion:(NSDictionary *)questionInfo;
+- (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status;
 - (void)deleteReceivedQuestion:(SAMCQuestionSession *)session;
 
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId;
