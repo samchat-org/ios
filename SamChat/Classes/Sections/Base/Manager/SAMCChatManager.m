@@ -182,7 +182,7 @@
 {
     SAMCMessage *quesitonMessage = nil;
     // 查询是否是一个新的回复，如果是则更新到问题表中，同时需要插入问题到聊天消息中
-    NSString *question = [[SAMCDataBaseManager sharedManager].questionDB sendQuestion:questionId inserAnswer:answer time:time];
+    NSString *question = [[SAMCDataBaseManager sharedManager].questionDB sendQuestion:questionId insertAnswer:answer time:time];
     if (question) {
         NIMMessage *message = [[NIMMessage alloc] init];
         message.text = question;

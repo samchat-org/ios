@@ -8,10 +8,11 @@
 
 #import "SAMCUnreadCountManager.h"
 #import "SAMCConversationManager.h"
+#import "SAMCQuestionManager.h"
 #import "GCDMulticastDelegate.h"
 #import "SAMCDataBaseManager.h"
 
-@interface SAMCUnreadCountManager ()<SAMCConversationManagerDelegate>
+@interface SAMCUnreadCountManager ()<SAMCConversationManagerDelegate,SAMCQuestionManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCUnreadCountManagerDelegate> *multicastDelegate;
 
@@ -35,6 +36,7 @@
     if (self) {
         _multicastDelegate = (GCDMulticastDelegate <SAMCUnreadCountManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
         [[SAMCConversationManager sharedManager] addDelegate:self];
+        [[SAMCQuestionManager sharedManager] addDelegate:self];
     }
     return self;
 }
@@ -42,12 +44,16 @@
 - (void)dealloc
 {
     [[SAMCConversationManager sharedManager] removeDelegate:self];
+    [[SAMCQuestionManager sharedManager] removeDelegate:self];
 }
 
 - (void)refresh
 {
-    _customChatUnreadCount = [[SAMCDataBaseManager sharedManager].messageDB allUnreadCountOfUserMode:SAMCUserModeTypeCustom];
-    _spChatUnreadCount = [[SAMCDataBaseManager sharedManager].messageDB allUnreadCountOfUserMode:SAMCUserModeTypeSP];
+    SAMCDataBaseManager *dbManager = [SAMCDataBaseManager sharedManager];
+    _customChatUnreadCount = [dbManager.messageDB allUnreadCountOfUserMode:SAMCUserModeTypeCustom];
+    _spChatUnreadCount = [dbManager.messageDB allUnreadCountOfUserMode:SAMCUserModeTypeSP];
+    _customServiceUnreadCount = [dbManager.questionDB allUnreadCountOfUserMode:SAMCUserModeTypeCustom];
+    _spServiceUnreadCount = [dbManager.questionDB allUnreadCountOfUserMode:SAMCUserModeTypeSP];
 }
 
 - (void)clear
@@ -76,6 +82,15 @@
         return self.customChatUnreadCount;
     } else {
         return self.spChatUnreadCount;
+    }
+}
+
+- (NSInteger)serviceUnreadCountOfUserMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        return self.customServiceUnreadCount;
+    } else {
+        return self.spServiceUnreadCount;
     }
 }
 
@@ -119,6 +134,16 @@
         self.customChatUnreadCount = totalUnreadCount;
     } else {
         self.spChatUnreadCount = totalUnreadCount;
+    }
+}
+
+#pragma mark - SAMCQuestionManagerDelegate
+- (void)questionUnreadCountDidChanged:(NSInteger)unreadCount userMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        self.customServiceUnreadCount = unreadCount;
+    } else {
+        self.spServiceUnreadCount = unreadCount;
     }
 }
 

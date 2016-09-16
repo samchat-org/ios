@@ -28,5 +28,6 @@
 
 
 - (NSInteger)chatUnreadCountOfUserMode:(SAMCUserModeType)mode;
+- (NSInteger)serviceUnreadCountOfUserMode:(SAMCUserModeType)mode;
 
 @end

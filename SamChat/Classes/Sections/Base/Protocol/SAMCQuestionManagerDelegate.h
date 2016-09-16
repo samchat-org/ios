@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didAddQuestionSession:(SAMCQuestionSession *)questionSession;
 - (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession;
 
+- (void)questionUnreadCountDidChanged:(NSInteger)unreadCount userMode:(SAMCUserModeType)mode;
+
 @end
 
 NS_ASSUME_NONNULL_END

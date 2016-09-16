@@ -104,7 +104,9 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 {
     extern NSString * const SAMCSwitchToUserModeKey;
     SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
-    [self refreshSessionBadge:[[SAMCUnreadCountManager sharedManager] chatUnreadCountOfUserMode:mode]];
+    SAMCUnreadCountManager *unreadCountManager = [SAMCUnreadCountManager sharedManager];
+    [self refreshServiceBadge:[unreadCountManager serviceUnreadCountOfUserMode:mode]];
+    [self refreshSessionBadge:[unreadCountManager chatUnreadCountOfUserMode:mode]];
 }
 
 - (NSArray*)tabbars{
@@ -166,6 +168,13 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     }
 }
 
+- (void)serviceUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
+{
+    if (mode == self.currentUserMode) {
+        [self refreshServiceBadge:count];
+    }
+}
+
 #pragma mark - NIMSystemNotificationManagerDelegate
 - (void)onSystemNotificationCountChanged:(NSInteger)unreadCount
 {
@@ -179,6 +188,12 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     NTESCustomNotificationDB *db = [NTESCustomNotificationDB sharedInstance];
     self.customSystemUnreadCount = db.unreadCount;
     [self refreshSettingBadge];
+}
+
+- (void)refreshServiceBadge:(NSInteger)unreadCount
+{
+    UINavigationController *nav = self.viewControllers[NTESMainTabTypeService];
+    nav.tabBarItem.badgeValue = unreadCount ? @(unreadCount).stringValue : nil;
 }
 
 - (void)refreshSessionBadge:(NSInteger)unreadCount
@@ -226,8 +241,9 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 
 #pragma mark - VC
 - (NSDictionary *)vcInfoForTabType:(NTESMainTabType)type{
-    
-    NSInteger chatUnreadCount = [[SAMCUnreadCountManager sharedManager] chatUnreadCountOfUserMode:self.currentUserMode];
+    SAMCUnreadCountManager *unreadCountManager = [SAMCUnreadCountManager sharedManager];
+    NSInteger chatUnreadCount = [unreadCountManager chatUnreadCountOfUserMode:self.currentUserMode];
+    NSInteger serviceUnreadCount = [unreadCountManager serviceUnreadCountOfUserMode:self.currentUserMode];
     if (_configs == nil)
     {
         _configs = @{
@@ -236,7 +252,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarTitle        : @"Service",
                              TabbarImage        : @"icon_message_normal",
                              TabbarSelectedImage: @"icon_message_pressed",
-                             TabbarItemBadgeValue: @(0)
+                             TabbarItemBadgeValue: @(serviceUnreadCount)
                              },
                      @(NTESMainTabTypePublic) : @{
 //                             TabbarVC           : @"SAMCPublicViewController",

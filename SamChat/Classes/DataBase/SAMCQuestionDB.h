@@ -25,6 +25,8 @@
 - (void)deleteReceivedQuestion:(SAMCQuestionSession *)session;
 
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId;
-- (NSString *)sendQuestion:(NSNumber *)questionId inserAnswer:(NSString *)answer time:(NSTimeInterval)time;
+- (NSString *)sendQuestion:(NSNumber *)questionId insertAnswer:(NSString *)answer time:(NSTimeInterval)time;
+
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)mode;
 
 @end

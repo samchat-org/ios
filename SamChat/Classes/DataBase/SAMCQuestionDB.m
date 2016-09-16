@@ -157,6 +157,7 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"UPDATE send_question SET new_response_count=0 WHERE question_id=?", @(session.questionId)];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfSendQuestion] userMode:SAMCUserModeTypeCustom];
 }
 
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session
@@ -164,6 +165,7 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"DELETE FROM send_question WHERE question_id = ?", @(session.questionId)];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfSendQuestion] userMode:SAMCUserModeTypeCustom];
 }
 
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo
@@ -192,6 +194,7 @@
                                                                      status:[status integerValue]];
         [self.questionDelegate didAddQuestionSession:session];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfReceivedQuestion] userMode:SAMCUserModeTypeSP];
 }
 
 - (void)updateReceivedQuestion:(NSInteger)questionId status:(SAMCReceivedQuestionStatus)status
@@ -199,6 +202,7 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"UPDATE received_question SET status = ? WHERE question_id = ?", @(status), @(questionId)];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfReceivedQuestion] userMode:SAMCUserModeTypeSP];
 }
 
 - (void)deleteReceivedQuestion:(SAMCQuestionSession *)session
@@ -206,6 +210,7 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"DELETE FROM received_question WHERE question_id = ?", @(session.questionId)];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfReceivedQuestion] userMode:SAMCUserModeTypeSP];
 }
 
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId
@@ -238,7 +243,7 @@
     return session;
 }
 
-- (NSString *)sendQuestion:(NSNumber *)questionId inserAnswer:(NSString *)answer time:(NSTimeInterval)time;
+- (NSString *)sendQuestion:(NSNumber *)questionId insertAnswer:(NSString *)answer time:(NSTimeInterval)time;
 {
     if (questionId == nil) {
         return nil;
@@ -283,13 +288,51 @@
         }
         [s close];
     }];
+    [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfSendQuestion] userMode:SAMCUserModeTypeCustom];
     return question;
+}
+
+
+
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        return [self allUnreadCountOfSendQuestion];
+    } else {
+        return [self allUnreadCountOfReceivedQuestion];
+    }
 }
 
 #pragma mark - Private
 - (NSArray<NSString *> *)answersFromString:(NSString *)answersStr
 {
     return [answersStr componentsSeparatedByString:@","];
+}
+
+- (NSInteger)allUnreadCountOfReceivedQuestion
+{
+    __block NSInteger unreadCount = 0;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(serial) FROM received_question WHERE status=?",@(SAMCReceivedQuestionStatusNew)];
+        if ([s next]) {
+            unreadCount = [s intForColumnIndex:0];
+        }
+        [s close];
+    }];
+    return unreadCount;
+}
+
+- (NSInteger)allUnreadCountOfSendQuestion
+{
+    __block NSInteger unreadCount = 0;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT SUM(new_response_count) FROM send_question"];
+        if ([s next]) {
+            unreadCount = [s intForColumnIndex:0];
+        }
+        [s close];
+    }];
+    return unreadCount;
 }
 
 @end
