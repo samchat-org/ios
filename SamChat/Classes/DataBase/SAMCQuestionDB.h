@@ -25,6 +25,6 @@
 - (void)deleteReceivedQuestion:(SAMCQuestionSession *)session;
 
 - (SAMCQuestionSession *)sendQuestionOfQuestionId:(NSNumber *)questionId;
-- (NSString *)sendQuesion:(NSNumber *)questionId getNewResponseFromAnswer:(NSString *)answer update:(BOOL)updateFlag;
+- (NSString *)sendQuestion:(NSNumber *)questionId inserAnswer:(NSString *)answer time:(NSTimeInterval)time;
 
 @end

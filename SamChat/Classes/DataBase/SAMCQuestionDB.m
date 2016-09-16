@@ -228,7 +228,7 @@
     return session;
 }
 
-- (NSString *)sendQuesion:(NSNumber *)questionId getNewResponseFromAnswer:(NSString *)answer update:(BOOL)updateFlag
+- (NSString *)sendQuestion:(NSNumber *)questionId inserAnswer:(NSString *)answer time:(NSTimeInterval)time;
 {
     if (questionId == nil) {
         return nil;
@@ -249,18 +249,18 @@
                 }
             }
         }
-        if (question && updateFlag) {
+        if (question) {
             NSString *address = [s stringForColumn:@"address"];
             NSTimeInterval datetime = [s doubleForColumn:@"datetime"];
-            NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
-            NSInteger responseCount = [s longForColumn:@"new_response_count"];
+            NSTimeInterval lastAnswerTime = time;
+            NSInteger responseCount = [s longForColumn:@"new_response_count"] + 1;
             NSInteger status = [s longForColumn:@"status"];
             if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
                 answersStr = answer;
             } else {
                 answersStr = [NSString stringWithFormat:@"%@,%@",answersStr,answer];
             }
-            [db executeUpdate:@"UPDATE send_question SET answers = ? WHERE question_id = ?",answersStr,questionId];
+            [db executeUpdate:@"UPDATE send_question SET answers=?, last_answer_time=?, new_response_count=? WHERE question_id=?",answersStr,@(lastAnswerTime), @(responseCount), questionId];
             SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[questionId integerValue]
                                               question:question
                                                address:address

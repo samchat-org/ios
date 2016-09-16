@@ -137,7 +137,7 @@
                 // 如果消息扩展中含有quest_id,则是商家回答问题的消息,此时需要先插入问题,再插入这条消息
                 NSString *questionIdStr = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
                 if (questionIdStr) {
-                    SAMCMessage *questionMessage = [self questionMessageOfQuestionId:@([questionIdStr intValue]) answer:message.from];
+                    SAMCMessage *questionMessage = [self questionMessageOfQuestionId:@([questionIdStr intValue]) answer:message.from time:message.timestamp*1000];
                     if (questionMessage) {
                         [customMessages addObject:questionMessage];
                         NSInteger index = [normalMessages indexOfObject:message];
@@ -178,11 +178,11 @@
 }
 
 #pragma mark - handleMessageWithQuestionId
-- (SAMCMessage *)questionMessageOfQuestionId:(NSNumber *)questionId answer:(NSString *)answer
+- (SAMCMessage *)questionMessageOfQuestionId:(NSNumber *)questionId answer:(NSString *)answer time:(NSTimeInterval)time
 {
     SAMCMessage *quesitonMessage = nil;
     // 查询是否是一个新的回复，如果是则更新到问题表中，同时需要插入问题到聊天消息中
-    NSString *question = [[SAMCDataBaseManager sharedManager].questionDB sendQuesion:questionId getNewResponseFromAnswer:answer update:YES];
+    NSString *question = [[SAMCDataBaseManager sharedManager].questionDB sendQuestion:questionId inserAnswer:answer time:time];
     if (question) {
         NIMMessage *message = [[NIMMessage alloc] init];
         message.text = question;
