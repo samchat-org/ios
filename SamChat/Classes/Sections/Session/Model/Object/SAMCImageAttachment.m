@@ -101,6 +101,11 @@
     }
 }
 
+- (NSString *)filename
+{
+    return _path;
+}
+
 #pragma mark - NTESSessionCustomContentConfig
 - (NSString *)cellContent:(NIMMessage *)message
 {

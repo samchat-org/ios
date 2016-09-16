@@ -66,7 +66,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     // setup AWSS3
     AWSCognitoCredentialsProvider *credentialsProvider = [[AWSCognitoCredentialsProvider alloc]
                                                           initWithRegionType:AWSRegionUSWest2
-                                                          identityPoolId:@"us-west-2:083f7106-00ad-4b9e-8e1d-2214d30975ba"];
+                                                          identityPoolId:@"us-west-2:2d22de2e-5125-4d48-9dec-28367ebeda89"];
     AWSServiceConfiguration *configuration = [[AWSServiceConfiguration alloc] initWithRegion:AWSRegionUSWest2 credentialsProvider:credentialsProvider];
     AWSServiceManager.defaultServiceManager.defaultServiceConfiguration = configuration;
     

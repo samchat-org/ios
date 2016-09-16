@@ -242,16 +242,17 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 [wself.publicDelegate sendMessage:message didCompleteWithError:error];
                 [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
             } else {
-                // TODO: add image url, store to cache, and delete path
+                attachment.url = [NSString stringWithFormat:@"%@%@%@",SAMC_AWSS3_URLPREFIX,SAMC_AWSS3_ADV_ORG_PATH,[attachment filename]];
+                DDLogDebug(@"url: %@", attachment.url);
                 [wself sendPublicMessage:message];
             }
         });
     };
 
     AWSS3TransferUtility *transferUtility = [AWSS3TransferUtility defaultS3TransferUtility];
-    NSString *key = [NSString stringWithFormat:@"advertisement/origin/%@", attachment.path];
+    NSString *key = [NSString stringWithFormat:@"%@%@", SAMC_AWSS3_ADV_ORG_PATH, [attachment filename]];
     NSURL *fileUrl = [NSURL fileURLWithPath:attachment.path];
-    [[transferUtility uploadFile:fileUrl bucket:SAMC_S3_BUCKETNAME key:key contentType:@"image/jpeg" expression:expression completionHander:completionHandler] continueWithBlock:^id (AWSTask * task) {
+    [[transferUtility uploadFile:fileUrl bucket:SAMC_AWSS3_BUCKETNAME key:key contentType:@"image/jpeg" expression:expression completionHander:completionHandler] continueWithBlock:^id (AWSTask * task) {
         if (task.error || task.exception) {
             DDLogDebug(@"Error: %@", task.error);
             DDLogDebug(@"Exception: %@", task.exception);

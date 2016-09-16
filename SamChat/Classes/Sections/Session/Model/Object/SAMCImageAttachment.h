@@ -21,4 +21,6 @@
 @property (nonatomic, assign) CGSize size;
 @property (nonatomic, assign) CGFloat progress;
 
+- (NSString *)filename;
+
 @end
