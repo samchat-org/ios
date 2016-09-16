@@ -42,7 +42,6 @@ dispatch_queue_t SAMCMessageDataPrepareQueue()
 
 @interface SAMCNIMSessionViewController ()
 <
-SAMCConversationManagerDelegate,
 NIMTeamManagerDelegate,
 NIMMediaManagerDelgate,
 NIMMessageCellDelegate,
@@ -82,7 +81,6 @@ NIMUserManagerDelegate>
     _tableView.dataSource = nil;
 //    [[NIMSDK sharedSDK].chatManager removeDelegate:self];
     [[SAMCChatManager sharedManager] removeDelegate:self];
-    [self.conversationManager removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -163,7 +161,6 @@ NIMUserManagerDelegate>
     
 //    [[[NIMSDK sharedSDK] chatManager] addDelegate:self];
     [[SAMCChatManager sharedManager] addDelegate:self];
-    [self.conversationManager addDelegate:self];
     
     if (self.session.sessionType == NIMSessionTypeTeam) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamInfoHasUpdatedNotification:) name:NIMKitTeamInfoHasUpdatedNotification object:nil];
@@ -386,36 +383,6 @@ NIMUserManagerDelegate>
 {
     if ([receipt.session isEqual:_session]) {
         [self checkReceipt];
-    }
-}
-
-
-#pragma mark - SAMCConversationManagerDelegate
-- (void)messagesDeletedInSession:(SAMCSession *)session{
-    [self.sessionDatasource resetMessages:nil];
-    [self.tableView reloadData];
-}
-
-- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
-           totalUnreadCount:(NSInteger)totalUnreadCount{
-    [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
-}
-
-- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount{
-    [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
-}
-
-- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount{
-    [self changeUnreadCount:recentSession totalUnreadCount:totalUnreadCount];
-}
-
-
-- (void)changeUnreadCount:(SAMCRecentSession *)recentSession
-         totalUnreadCount:(NSInteger)totalUnreadCount{
-    if ([recentSession.session isEqual:self.session]) {
-        return;
     }
 }
 
