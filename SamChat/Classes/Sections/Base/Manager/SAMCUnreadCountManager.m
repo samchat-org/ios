@@ -96,43 +96,30 @@
     }
 }
 
-#pragma mark - Private
-- (void)updateChatUnreadCount:(NSInteger)count userMode:(SAMCUserModeType)mode
+- (void)setCustomServiceUnreadCount:(NSInteger)customServiceUnreadCount
 {
-    if (mode == SAMCUserModeTypeCustom) {
-        self.customChatUnreadCount = count;
-    } else {
-        self.spChatUnreadCount = count;
+    if (_customServiceUnreadCount != customServiceUnreadCount) {
+        _customServiceUnreadCount = customServiceUnreadCount;
+        [self.multicastDelegate serviceUnreadCountDidChanged:customServiceUnreadCount mode:SAMCUserModeTypeCustom];
+    }
+}
+
+- (void)setSpServiceUnreadCount:(NSInteger)spServiceUnreadCount
+{
+    if (_spServiceUnreadCount != spServiceUnreadCount) {
+        _spServiceUnreadCount = spServiceUnreadCount;
+        [self.multicastDelegate serviceUnreadCountDidChanged:spServiceUnreadCount mode:SAMCUserModeTypeSP];
     }
 }
 
 #pragma mark - SAMCConversationManagerDelegate
-- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
-           totalUnreadCount:(NSInteger)totalUnreadCount
+- (void)totalUnreadCountDidChanged:(NSInteger)totalUnreadCount userMode:(SAMCUserModeType)mode;
 {
-    [self updateChatUnreadCount:totalUnreadCount userMode:recentSession.session.sessionMode];
-}
-
-- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount
-{
-    [self updateChatUnreadCount:totalUnreadCount userMode:recentSession.session.sessionMode];
-}
-
-- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount
-{
-    [self updateChatUnreadCount:totalUnreadCount userMode:recentSession.session.sessionMode];
-}
-
-- (void)messagesDeletedInSession:(SAMCSession *)session
-{
-    // TODO:
-}
-
-- (void)allMessagesDeleted
-{
-    // TODO:
+    if (mode == SAMCUserModeTypeCustom) {
+        self.customChatUnreadCount = totalUnreadCount;
+    } else {
+        self.spChatUnreadCount = totalUnreadCount;
+    }
 }
 
 @end

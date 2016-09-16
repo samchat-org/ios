@@ -193,7 +193,6 @@
 
 #pragma mark - SAMCConversationManagerDelegate
 - (void)didAddRecentSession:(SAMCRecentSession *)recentSession
-           totalUnreadCount:(NSInteger)totalUnreadCount
 {
     if (![self isCurrentModeSession:recentSession.session]) {
         return;
@@ -205,7 +204,6 @@
 
 
 - (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount
 {
     if (![self isCurrentModeSession:recentSession.session]) {
         return;

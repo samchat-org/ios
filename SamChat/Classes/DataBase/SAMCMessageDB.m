@@ -120,10 +120,11 @@
                                                                 lastMessage:lastMessage
                                                                 unreadCount:sessionUnreadCount];
         if (isNewSession) {
-            [_conversationDelegate didAddRecentSession:recentSession totalUnreadCount:totalUnreadCount];
+            [_conversationDelegate didAddRecentSession:recentSession];
         } else {
-            [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:totalUnreadCount];
+            [_conversationDelegate didUpdateRecentSession:recentSession];
         }
+        [_conversationDelegate totalUnreadCountDidChanged:totalUnreadCount userMode:sessionMode];
     }];
 }
 
@@ -226,7 +227,8 @@
             unreadCount = [s intForColumnIndex:0];
         }
         [s close];
-        [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:unreadCount];
+        [_conversationDelegate didUpdateRecentSession:recentSession];
+        [_conversationDelegate totalUnreadCountDidChanged:unreadCount userMode:userMode];
     }];
 }
 
@@ -271,7 +273,8 @@
             SAMCRecentSession *recentSession = [SAMCRecentSession recentSession:session
                                                                     lastMessage:lastMessage
                                                                     unreadCount:0];
-            [_conversationDelegate didUpdateRecentSession:recentSession totalUnreadCount:totalUnreadCount];
+            [_conversationDelegate didUpdateRecentSession:recentSession];
+            [_conversationDelegate totalUnreadCountDidChanged:totalUnreadCount userMode:message.session.sessionMode];
         }
     }];
 }
@@ -329,10 +332,11 @@
         }
         [s close];
         if (isNewSession) {
-            [_conversationDelegate didAddRecentSession:samcRecentSession totalUnreadCount:totalUnreadCount];
+            [_conversationDelegate didAddRecentSession:samcRecentSession];
         } else {
-            [_conversationDelegate didUpdateRecentSession:samcRecentSession totalUnreadCount:totalUnreadCount];
+            [_conversationDelegate didUpdateRecentSession:samcRecentSession];
         }
+        [_conversationDelegate totalUnreadCountDidChanged:totalUnreadCount userMode:sessionMode];
     }];
 }
 

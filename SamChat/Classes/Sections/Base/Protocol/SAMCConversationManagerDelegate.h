@@ -15,18 +15,16 @@
 @protocol SAMCConversationManagerDelegate <NSObject>
 
 @optional
-- (void)didAddRecentSession:(SAMCRecentSession *)recentSession
-           totalUnreadCount:(NSInteger)totalUnreadCount;
+- (void)didAddRecentSession:(SAMCRecentSession *)recentSession;
 
-- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount;
+- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession;
 
-- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession
-              totalUnreadCount:(NSInteger)totalUnreadCount;
+- (void)didRemoveRecentSession:(SAMCRecentSession *)recentSession;
 
 - (void)messagesDeletedInSession:(SAMCSession *)session;
 
 - (void)allMessagesDeleted;
 
+- (void)totalUnreadCountDidChanged:(NSInteger)totalUnreadCount userMode:(SAMCUserModeType)mode;
 
 @end
