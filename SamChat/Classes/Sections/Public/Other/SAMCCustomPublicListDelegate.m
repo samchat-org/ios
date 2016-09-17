@@ -58,7 +58,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SAMCPublicMessageViewController *vc = [[SAMCPublicMessageViewController alloc] init];
-    vc.publicSession = [self data][indexPath.row];
+    SAMCPublicSession *session = [self data][indexPath.row];
+    vc.publicSession = session;
+    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:session];
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 

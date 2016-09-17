@@ -31,4 +31,6 @@
 - (void)updateMessage:(SAMCPublicMessage *)message;
 - (void)deleteMessage:(SAMCPublicMessage *)message;
 
+- (void)markAllMessagesReadInSession:(SAMCPublicSession *)session;
+
 @end

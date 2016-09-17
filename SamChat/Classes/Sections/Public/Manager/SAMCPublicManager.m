@@ -170,11 +170,18 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 - (void)receivePublicMessage:(SAMCPublicMessage *)message
 {
-    // TODO: update last_message_content
-    [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
-    [self.publicDelegate onRecvMessage:message];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+        [self.publicDelegate onRecvMessage:message];
+    });
 }
 
+- (void)markAllMessagesReadInSession:(SAMCPublicSession *)session
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB markAllMessagesReadInSession:session];
+    });
+}
 
 #pragma mark - Server
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut

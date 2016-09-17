@@ -42,5 +42,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)error;
 
+- (void)markAllMessagesReadInSession:(SAMCPublicSession *)session;
+
 @end
 NS_ASSUME_NONNULL_END

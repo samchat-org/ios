@@ -159,16 +159,11 @@
 
 - (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
 {
+    __weak typeof(self) wself = self;
     [self.queue inDatabase:^(FMDatabase *db) {
         NSNumber *unique_id = @([userInfo.userId integerValue]);
         [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", unique_id];
-        NSInteger unreadCount = 0;
-        FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM follow_list"];
-        if ([s next]) {
-            unreadCount = [s intForColumnIndex:0];
-        }
-        [s close];
-        [_publicDelegate publicUnreadCountDidChanged:unreadCount userMode:SAMCUserModeTypeCustom];
+        [wself delegateUnreadCountChanged:db];
     }];
 }
 
@@ -256,13 +251,7 @@
         [wself delegateUpdatePublicSession:db uniqueId:uniqueId];
         
         // 4. get totalUnreadCount
-        s = [db executeQuery:@"SELECT SUM(unread_count) FROM follow_list"];
-        NSInteger totalUnreadCount = 0;
-        if ([s next]) {
-            totalUnreadCount = [s intForColumnIndex:0];
-        }
-        [s close];
-        [_publicDelegate publicUnreadCountDidChanged:totalUnreadCount userMode:SAMCUserModeTypeCustom];
+        [wself delegateUnreadCountChanged:db];
     }];
 }
 
@@ -358,6 +347,24 @@
     }];
 }
 
+- (void)markAllMessagesReadInSession:(SAMCPublicSession *)session
+{
+    __weak typeof(self) wself = self;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSNumber *uniqueId = @([session.userId integerValue]);
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id=?", uniqueId];
+        [s next];
+        int count = [s intForColumnIndex:0];
+        [s close];
+        if (count == 0) {
+            return;
+        }
+        [db executeUpdate:@"UPDATE follow_list SET unread_count=0 WHERE unique_id=?", uniqueId];
+        [wself delegateUpdatePublicSession:db uniqueId:uniqueId];
+        [wself delegateUnreadCountChanged:db];
+    }];
+}
+
 #pragma mark -
 - (void)delegateUpdatePublicSession:(FMDatabase *)db
                            uniqueId:(NSNumber *)uniqueId
@@ -389,6 +396,17 @@
         [_publicDelegate didUpdatePublicSession:session];
     };
     [s close];
+}
+
+- (void)delegateUnreadCountChanged:(FMDatabase *)db
+{
+    NSInteger unreadCount = 0;
+    FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM follow_list"];
+    if ([s next]) {
+        unreadCount = [s intForColumnIndex:0];
+    }
+    [s close];
+    [_publicDelegate publicUnreadCountDidChanged:unreadCount userMode:SAMCUserModeTypeCustom];
 }
 
 #pragma mark - Private
