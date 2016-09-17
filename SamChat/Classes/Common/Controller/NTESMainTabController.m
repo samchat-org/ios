@@ -106,6 +106,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     SAMCUnreadCountManager *unreadCountManager = [SAMCUnreadCountManager sharedManager];
     [self refreshServiceBadge:[unreadCountManager serviceUnreadCountOfUserMode:mode]];
     [self refreshSessionBadge:[unreadCountManager chatUnreadCountOfUserMode:mode]];
+    [self refreshPublicBadge:[unreadCountManager publicUnreadCountOfUserMode:mode]];
 }
 
 - (NSArray*)tabbars{
@@ -256,6 +257,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     SAMCUnreadCountManager *unreadCountManager = [SAMCUnreadCountManager sharedManager];
     NSInteger chatUnreadCount = [unreadCountManager chatUnreadCountOfUserMode:self.currentUserMode];
     NSInteger serviceUnreadCount = [unreadCountManager serviceUnreadCountOfUserMode:self.currentUserMode];
+    NSInteger publicUnreadCount = [unreadCountManager publicUnreadCountOfUserMode:self.currentUserMode];
     if (_configs == nil)
     {
         _configs = @{
@@ -271,7 +273,7 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
                              TabbarVC           : @"SAMCPublicContainerViewController",
                              TabbarTitle        : @"Public",
                              TabbarImage        : @"icon_message_normal",
-                             TabbarItemBadgeValue: @(0)
+                             TabbarItemBadgeValue: @(publicUnreadCount)
                              },
                      @(NTESMainTabTypeMessageList) : @{
 //                             TabbarVC           : @"NTESSessionListViewController",

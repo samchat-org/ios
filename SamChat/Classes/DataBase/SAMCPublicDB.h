@@ -31,6 +31,7 @@
 - (void)updateMessage:(SAMCPublicMessage *)message;
 - (void)deleteMessage:(SAMCPublicMessage *)message;
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
 - (void)markAllMessagesReadInSession:(SAMCPublicSession *)session;
 
 @end

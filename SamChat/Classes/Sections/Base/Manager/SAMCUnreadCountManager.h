@@ -16,6 +16,7 @@
 @property (nonatomic, assign) NSInteger customServiceUnreadCount;
 
 @property (nonatomic, assign) NSInteger spChatUnreadCount;
+@property (nonatomic, assign) NSInteger spPublicUnreadCount;
 @property (nonatomic, assign) NSInteger spServiceUnreadCount;
 
 + (instancetype)sharedManager;
@@ -28,5 +29,6 @@
 
 - (NSInteger)chatUnreadCountOfUserMode:(SAMCUserModeType)mode;
 - (NSInteger)serviceUnreadCountOfUserMode:(SAMCUserModeType)mode;
+- (NSInteger)publicUnreadCountOfUserMode:(SAMCUserModeType)mode;
 
 @end

@@ -347,6 +347,22 @@
     }];
 }
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode
+{
+    if (userMode == SAMCUserModeTypeSP) {
+        return 0;
+    }
+    __block NSInteger unreadCount = 0;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT SUM(unread_count) FROM follow_list"];
+        if ([s next]) {
+            unreadCount = [s intForColumnIndex:0];
+        }
+        [s close];
+    }];
+    return unreadCount;
+}
+
 - (void)markAllMessagesReadInSession:(SAMCPublicSession *)session
 {
     __weak typeof(self) wself = self;

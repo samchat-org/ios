@@ -57,15 +57,19 @@
     _spChatUnreadCount = [dbManager.messageDB allUnreadCountOfUserMode:SAMCUserModeTypeSP];
     _customServiceUnreadCount = [dbManager.questionDB allUnreadCountOfUserMode:SAMCUserModeTypeCustom];
     _spServiceUnreadCount = [dbManager.questionDB allUnreadCountOfUserMode:SAMCUserModeTypeSP];
+    _customPublicUnreadCount = [dbManager.publicDB allUnreadCountOfUserMode:SAMCUserModeTypeCustom];
+    _spPublicUnreadCount = 0;
 }
 
 - (void)clear
 {
+    // edit property to delegate the change
     self.customChatUnreadCount = 0;
     self.customPublicUnreadCount = 0;
     self.customServiceUnreadCount = 0;
     self.spChatUnreadCount = 0;
     self.spServiceUnreadCount = 0;
+    self.spPublicUnreadCount = 0;
 }
 
 - (void)addDelegate:(id<SAMCUnreadCountManagerDelegate>)delegate
@@ -93,6 +97,15 @@
         return self.customServiceUnreadCount;
     } else {
         return self.spServiceUnreadCount;
+    }
+}
+
+- (NSInteger)publicUnreadCountOfUserMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        return self.customPublicUnreadCount;
+    } else {
+        return self.spPublicUnreadCount;
     }
 }
 
