@@ -32,7 +32,7 @@
 #define SAMC_URL_CONTACT_CONTACT_LIST_QUERY         SAMC_API_PREFIX@"api_1.0_contact_contactListQuery.do"
 #define SAMC_URL_CONTACT_CONTACT                    SAMC_API_PREFIX@"api_1.0_contact_contact.do"
 
-#define SAMC_AWSS3_URLPREFIX            @"http://ec2-52-40-15-21.us-west-2.compute.amazonaws.com:8081/sam_svr/samchat-test/"
+#define SAMC_AWSS3_URLPREFIX            @"https://s3-us-west-2.amazonaws.com/samchat-test/"
 #define SAMC_AWSS3_BUCKETNAME           @"samchat-test"
 #define SAMC_AWSS3_ADV_ORG_PATH         @"advertisement/origin/"
 
