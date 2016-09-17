@@ -16,7 +16,6 @@
 @property (nonatomic, assign) NSInteger customServiceUnreadCount;
 
 @property (nonatomic, assign) NSInteger spChatUnreadCount;
-@property (nonatomic, assign) NSInteger spPublicUnreadCount;
 @property (nonatomic, assign) NSInteger spServiceUnreadCount;
 
 + (instancetype)sharedManager;

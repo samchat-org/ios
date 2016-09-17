@@ -18,7 +18,8 @@
 - (BOOL)migrateDatabase:(FMDatabase *)db error:(out NSError *__autoreleasing *)error
 {
     DDLogDebug(@"SAMCPublicDB_2016082201");
-    // | serial | unique_id | username | avatar | block_tag | favourite_tag | sp_service_category | last_message_content |
+    // | serial | unique_id | username | avatar | block_tag | favourite_tag | sp_service_category
+    // | last_message_content | last_message_time | unread_count
     NSArray *sqls = @[SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201];
     for (NSString *sql in sqls) {
         if (![db executeUpdate:sql]) {

@@ -11,8 +11,9 @@
 #import "SAMCQuestionManager.h"
 #import "GCDMulticastDelegate.h"
 #import "SAMCDataBaseManager.h"
+#import "SAMCPublicManager.h"
 
-@interface SAMCUnreadCountManager ()<SAMCConversationManagerDelegate,SAMCQuestionManagerDelegate>
+@interface SAMCUnreadCountManager ()<SAMCConversationManagerDelegate,SAMCQuestionManagerDelegate,SAMCPublicManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCUnreadCountManagerDelegate> *multicastDelegate;
 
@@ -37,6 +38,7 @@
         _multicastDelegate = (GCDMulticastDelegate <SAMCUnreadCountManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
         [[SAMCConversationManager sharedManager] addDelegate:self];
         [[SAMCQuestionManager sharedManager] addDelegate:self];
+        [[SAMCPublicManager sharedManager] addDelegate:self];
     }
     return self;
 }
@@ -45,6 +47,7 @@
 {
     [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[SAMCQuestionManager sharedManager] removeDelegate:self];
+    [[SAMCPublicManager sharedManager] removeDelegate:self];
 }
 
 - (void)refresh
@@ -62,7 +65,6 @@
     self.customPublicUnreadCount = 0;
     self.customServiceUnreadCount = 0;
     self.spChatUnreadCount = 0;
-    self.spPublicUnreadCount = 0;
     self.spServiceUnreadCount = 0;
 }
 
@@ -127,6 +129,14 @@
     }
 }
 
+- (void)setCustomPublicUnreadCount:(NSInteger)customPublicUnreadCount
+{
+    if (_customPublicUnreadCount != customPublicUnreadCount) {
+        _customPublicUnreadCount = customPublicUnreadCount;
+        [self.multicastDelegate publicUnreadCountDidChanged:customPublicUnreadCount mode:SAMCUserModeTypeCustom];
+    }
+}
+
 #pragma mark - SAMCConversationManagerDelegate
 - (void)totalUnreadCountDidChanged:(NSInteger)totalUnreadCount userMode:(SAMCUserModeType)mode;
 {
@@ -144,6 +154,14 @@
         self.customServiceUnreadCount = unreadCount;
     } else {
         self.spServiceUnreadCount = unreadCount;
+    }
+}
+
+#pragma mark - SAMCPublicManagerDelegate
+- (void)publicUnreadCountDidChanged:(NSInteger)unreadCount userMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        self.customPublicUnreadCount = unreadCount;
     }
 }
 

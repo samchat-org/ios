@@ -298,6 +298,7 @@
             }
         }
         [s close];
+        // TODO: update unreadcount?
     }];
 }
 

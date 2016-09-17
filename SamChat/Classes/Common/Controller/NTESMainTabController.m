@@ -35,7 +35,6 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     NTESMainTabTypePublic,
     NTESMainTabTypeMessageList,    //聊天
     NTESMainTabTypeContact,
-//    NTESMainTabTypeChatroomList,   //聊天室
     NTESMainTabTypeSetting,        //设置
 };
 
@@ -175,6 +174,13 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
     }
 }
 
+- (void)publicUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
+{
+    if (mode == self.currentUserMode) {
+        [self refreshPublicBadge:count];
+    }
+}
+
 #pragma mark - NIMSystemNotificationManagerDelegate
 - (void)onSystemNotificationCountChanged:(NSInteger)unreadCount
 {
@@ -199,6 +205,12 @@ typedef NS_ENUM(NSInteger,NTESMainTabType) {
 - (void)refreshSessionBadge:(NSInteger)unreadCount
 {
     UINavigationController *nav = self.viewControllers[NTESMainTabTypeMessageList];
+    nav.tabBarItem.badgeValue = unreadCount ? @(unreadCount).stringValue : nil;
+}
+
+- (void)refreshPublicBadge:(NSInteger)unreadCount
+{
+    UINavigationController *nav = self.viewControllers[NTESMainTabTypePublic];
     nav.tabBarItem.badgeValue = unreadCount ? @(unreadCount).stringValue : nil;
 }
 

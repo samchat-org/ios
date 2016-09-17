@@ -23,11 +23,15 @@
 
 + (instancetype)session:(SAMCSPBasicInfo *)info
      lastMessageContent:(NSString *)messageContent
+        lastMessageTime:(NSTimeInterval)lastMessageTime
+            unreadCount:(NSInteger)unreadCount
 {
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
     session.spBasicInfo = info;
     session.lastMessageContent = messageContent;
+    session.lastMesssageTime = lastMessageTime;
     session.userId = info.userId;
+    session.unreadCount = unreadCount;
     return session;
 }
 

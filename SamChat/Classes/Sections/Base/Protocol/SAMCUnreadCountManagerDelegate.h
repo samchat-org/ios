@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)chatUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode;
 - (void)serviceUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode;
+- (void)publicUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode;
 
 @end
 

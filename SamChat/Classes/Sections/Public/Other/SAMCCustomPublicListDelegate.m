@@ -92,11 +92,28 @@
 
 #pragma mark - SAMCPublicManagerDelegate
 - (void)didAddPublicSession:(SAMCPublicSession *)publicSession
-           totalUnreadCount:(NSInteger)totalUnreadCount
 {
     [[self data] addObject:publicSession];
     [self.viewController sortAndReload];
 }
 
+- (void)didUpdatePublicSession:(SAMCPublicSession *)publicSession
+{
+    NSMutableArray *sessions= [self data];
+    for (SAMCPublicSession *session in sessions) {
+        if ([session isEqual:publicSession]) {
+            [sessions removeObject:session];
+            break;
+        }
+    }
+    NSInteger insert = [self findInsertPlace:publicSession];
+    [sessions insertObject:publicSession atIndex:insert];
+    [self.viewController sortAndReload];
+}
+
+- (NSInteger)findInsertPlace:(SAMCPublicSession *)session
+{
+    return 0; // TODO: find insert place
+}
 
 @end
