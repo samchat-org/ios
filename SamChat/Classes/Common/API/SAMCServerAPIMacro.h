@@ -9,7 +9,7 @@
 #ifndef SAMCServerAPIMacro_h
 #define SAMCServerAPIMacro_h
 
-#define SAMC_API_PREFIX                 @"http://ec2-54-222-170-218.cn-north-1.compute.amazonaws.com.cn:8081/sam_svr/"
+#define SAMC_API_PREFIX                 @"http://ec2-52-40-15-21.us-west-2.compute.amazonaws.com:8081/sam_svr/"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@"api_1.0_user_registerCodeRequest.do"
 #define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@"api_1.0_user_signupCodeVerify.do"
