@@ -101,9 +101,7 @@ UITableViewDelegate>
     
     CGRect inputViewRect = CGRectMake(0, 0, self.view.nim_width, [NIMUIConfig topInputViewHeight]);
     
-    BOOL disableInputView = NO;
-    
-    if (!disableInputView) {
+    if ([self.publicSession isOutgoing]) {
         _sessionInputView = [[NIMInputView alloc] initWithFrame:inputViewRect];
         _sessionInputView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
         self.sessionInputView.nim_bottom = self.view.nim_height;
