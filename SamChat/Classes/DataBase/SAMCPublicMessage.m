@@ -39,6 +39,7 @@
         SAMCImageAttachment *attachment = [[SAMCImageAttachment alloc] init];
         attachment.url = dict[SAMC_CONTENT];
         attachment.thumbUrl = dict[SAMC_CONTENT_THUMB];
+        attachment.thumbPath = [attachment.thumbUrl lastPathComponent];
         customObject.attachment = attachment;
         message.messageObject = customObject;
         message.attachmentDownloadState = NIMMessageAttachmentDownloadStateDownloaded;

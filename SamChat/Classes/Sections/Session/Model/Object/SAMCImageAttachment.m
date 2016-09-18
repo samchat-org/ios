@@ -94,7 +94,7 @@
 
 - (NSString *)thumbPath
 {
-    if (_path) {
+    if (_thumbPath) {
         return [NTESFileLocationHelper filepathForImage:_thumbPath];
     } else {
         return nil;

@@ -39,4 +39,22 @@
     return nil;
 }
 
+- (UIEdgeInsets)cellInsets:(NIMMessageModel *)model
+{
+    CGFloat cellTopToBubbleTop           = 3;
+    CGFloat otherNickNameHeight          = 20;
+    CGFloat otherBubbleOriginX           = [self shouldShowAvatar:model]? 55 : 0;
+    CGFloat cellBubbleButtomToCellButtom = 13;
+    if ([self shouldShowNickName:model])
+    {
+        //要显示名字
+        return UIEdgeInsetsMake(cellTopToBubbleTop + otherNickNameHeight ,otherBubbleOriginX,cellBubbleButtomToCellButtom, 0);
+    }
+    else
+    {
+        return UIEdgeInsetsMake(cellTopToBubbleTop,otherBubbleOriginX,cellBubbleButtomToCellButtom, 0);
+    }
+    
+}
+
 @end

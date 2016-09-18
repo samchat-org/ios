@@ -14,6 +14,7 @@
 #import "SAMCQuestionManager.h"
 #import "SAMCAccountManager.h"
 #import "SAMCPublicManager.h"
+#import "SAMCImageAttachment.h"
 
 #define SAMCGeTuiAppId        @"e56px9TMay6OJRDrwE21P9"
 #define SAMCGeTuiAppKey       @"PUnNqMKGxaAdRoWFDmaTX5"
@@ -140,8 +141,18 @@
 - (void)receivedNewPublicMessage:(NSDictionary *)payload
 {
     SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:payload[SAMC_BODY]];
-    // TODO: 图片消息下载缩略图
-    [[SAMCPublicManager sharedManager] receivePublicMessage:message];
+    if (message.messageType == NIMMessageTypeCustom) {
+        NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+        SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+        [[NIMSDK sharedSDK].resourceManager download:attachment.thumbUrl filepath:attachment.thumbPath progress:nil completion:^(NSError * _Nullable error) {
+            if (error) {
+                DDLogError(@"download thumb image error: %@", error);
+            }
+            [[SAMCPublicManager sharedManager] receivePublicMessage:message];
+        }];
+    } else {
+        [[SAMCPublicManager sharedManager] receivePublicMessage:message];
+    }
 }
 
 @end
