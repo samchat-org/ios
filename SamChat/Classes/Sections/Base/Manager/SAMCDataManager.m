@@ -10,7 +10,7 @@
 #import "NTESChatroomManager.h"
 #import "NTESCustomAttachmentDefines.h"
 #import "SAMCUser.h"
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCDataRequest : NSObject
 
@@ -71,7 +71,7 @@
         case NIMSessionTypeP2P:
         case NIMSessionTypeTeam:
         {
-            SAMCUser *user = [[SAMCContactManager sharedManager] userInfo:userId];
+            SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
             SAMCUserInfo *userInfo = user.userInfo;
             NSString *name;
             if (sessionType == NIMSessionTypeTeam) {
@@ -260,7 +260,7 @@
     
     DDLogInfo(@"request user ids %@",userIds);
     __weak typeof(self) weakSelf = self;
-    [[SAMCContactManager sharedManager] fetchUserInfos:userIds completion:^(NSArray<SAMCUser *> * _Nullable users, NSError * _Nullable error) {
+    [[SAMCUserManager sharedManager] fetchUserInfos:userIds completion:^(NSArray<SAMCUser *> * _Nullable users, NSError * _Nullable error) {
         [weakSelf afterReuquest:userIds];
         if (!error) {
             [[NIMKit sharedKit] notfiyUserInfoChanged:userIds];

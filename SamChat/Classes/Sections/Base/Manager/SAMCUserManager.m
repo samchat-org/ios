@@ -1,12 +1,12 @@
 //
-//  SAMCContactManager.m
+//  SAMCUserManager.m
 //  SamChat
 //
-//  Created by HJ on 9/2/16.
+//  Created by HJ on 9/19/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 #import "AFNetworking.h"
 #import "SAMCDataPostSerializer.h"
 #import "SAMCServerAPI.h"
@@ -15,14 +15,14 @@
 #import "SAMCDataBaseManager.h"
 #import "SAMCAccountManager.h"
 
-@implementation SAMCContactManager
+@implementation SAMCUserManager
 
 + (instancetype)sharedManager
 {
-    static SAMCContactManager *instance = nil;
+    static SAMCUserManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[SAMCContactManager alloc] init];
+        instance = [[SAMCUserManager alloc] init];
     });
     return instance;
 }

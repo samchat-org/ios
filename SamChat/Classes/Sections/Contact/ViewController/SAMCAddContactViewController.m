@@ -8,7 +8,7 @@
 
 #import "SAMCAddContactViewController.h"
 #import "SAMCQRCodeScanViewController.h"
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 #import "UIView+Toast.h"
 
 @interface SAMCAddContactViewController ()
@@ -96,7 +96,7 @@
 {
     NSString *key = self.searchTextField.text;
     __weak typeof(self) wself = self;
-    [[SAMCContactManager sharedManager] queryFuzzyUserWithKey:key completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+    [[SAMCUserManager sharedManager] queryFuzzyUserWithKey:key completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
         if (error) {
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
             [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];

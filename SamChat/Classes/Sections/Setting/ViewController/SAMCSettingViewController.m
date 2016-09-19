@@ -20,7 +20,7 @@
 #import "UIView+Toast.h"
 #import "SAMCResourceManager.h"
 #import "SAMCServerAPIMacro.h"
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 #import "SDWebImageManager.h"
 
 
@@ -374,7 +374,7 @@
             [SVProgressHUD dismiss];
             if (!error && wself) {
                 DDLogDebug(@"url: %@", urlString);
-                [[SAMCContactManager sharedManager] updateAvatar:urlString completion:^(SAMCUser * _Nullable user, NSError * _Nullable error) {
+                [[SAMCUserManager sharedManager] updateAvatar:urlString completion:^(SAMCUser * _Nullable user, NSError * _Nullable error) {
                     if (!error) {
                         [[SDWebImageManager sharedManager] saveImageToCache:imageForAvatarUpload forURL:[NSURL URLWithString:user.userInfo.avatar]];
                         [wself.tableView reloadData];

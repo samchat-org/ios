@@ -8,7 +8,7 @@
 
 #import "SAMCGroupedContacts.h"
 #import "NTESContactDataMember.h"
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCGroupedContacts ()
 
@@ -49,7 +49,7 @@
 - (void)update
 {
     NSMutableArray *contacts = [NSMutableArray array];
-    for (NSNumber *uniqueId in [[SAMCContactManager sharedManager] myContactListOfType:_listType]) {
+    for (NSNumber *uniqueId in [[SAMCUserManager sharedManager] myContactListOfType:_listType]) {
         NIMKitInfo *info = [[NIMKitInfo alloc] init];
         info.infoId = [NSString stringWithFormat:@"%@", uniqueId];
         info.showName = info.infoId; // TODO: get userInfo from db

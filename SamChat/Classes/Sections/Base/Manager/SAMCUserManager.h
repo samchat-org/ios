@@ -1,8 +1,8 @@
 //
-//  SAMCContactManager.h
+//  SAMCUserManager.h
 //  SamChat
 //
-//  Created by HJ on 9/2/16.
+//  Created by HJ on 9/19/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SAMCContactManager : NSObject
+@interface SAMCUserManager : NSObject
 
 + (instancetype)sharedManager;
 

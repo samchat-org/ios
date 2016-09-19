@@ -11,7 +11,7 @@
 #import "SAMCQRScanView.h"
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCMyQRCodeViewController.h"
-#import "SAMCContactManager.h"
+#import "SAMCUserManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 
@@ -331,7 +331,7 @@
         NSNumber *uniqueId = @([strResult integerValue]);
         __weak typeof(self) wself = self;
         
-        [[SAMCContactManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+        [[SAMCUserManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
             if (error) {
                 [SVProgressHUD dismiss];
                 NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
@@ -340,7 +340,7 @@
                 return;
             }
             SAMCUser *user = [SAMCUser userFromDict:userDict];
-            [[SAMCContactManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
+            [[SAMCUserManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
                 [SVProgressHUD dismiss];
                 NSString *toast;
                 if (error) {
