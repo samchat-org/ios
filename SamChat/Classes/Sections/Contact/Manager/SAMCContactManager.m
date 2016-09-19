@@ -13,6 +13,7 @@
 #import "SAMCServerErrorHelper.h"
 #import "SAMCPreferenceManager.h"
 #import "SAMCDataBaseManager.h"
+#import "SAMCAccountManager.h"
 
 @implementation SAMCContactManager
 
@@ -160,6 +161,34 @@
             [self queryContactList:SAMCContactListTypeServicer];
         });
     }
+}
+
+- (void)updateAvatar:(NSString *)url
+          completion:(void (^)(SAMCUser * __nullable userDict, NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI updateAvatar:url];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_PROFILE_AVATAR_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(nil, [SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                user.userInfo.avatar = [response valueForKeyPath:SAMC_USER_THUMB];
+                user.userInfo.avatarOriginal = url;
+                [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+                completion(user, nil);
+            }
+        } else {
+            completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
 }
 
 - (NSArray *)myContactListOfType:(SAMCContactListType)listType

@@ -534,6 +534,29 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "avatar-update",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "avatar":
+//        {
+//            "origin": http://121.42.207.185/avatar/2016/1/18/origin_1453123489091.png
+//            “thumb:” http://121.42.207.185/avatar/2016/1/18/thumb_1453123489091.png
+//        },
+//    }
+//}
++ (NSDictionary *)updateAvatar:(NSString *)url
+{
+    url = url ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_AVATAR_UPDATE,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_AVATAR:@{SAMC_ORIGIN:url, SAMC_THUMB:@""}};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

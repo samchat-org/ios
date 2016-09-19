@@ -74,4 +74,6 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 + (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
                                  content:(NSString *)content;
 
++ (NSDictionary *)updateAvatar:(NSString *)url;
+
 @end

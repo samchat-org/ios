@@ -229,6 +229,7 @@
 		316A67481D857AD500B56A5D /* SAMCImageAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A67471D857AD500B56A5D /* SAMCImageAttachment.m */; };
 		316A674E1D86BF7000B56A5D /* SAMCPublicCustomMsgCellLayoutConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A674D1D86BF7000B56A5D /* SAMCPublicCustomMsgCellLayoutConfig.m */; };
 		316A678D1D8BCA3700B56A5D /* SAMCUnreadCountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A678C1D8BCA3700B56A5D /* SAMCUnreadCountManager.m */; };
+		316A67941D8EB83E00B56A5D /* SAMCResourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 316A67931D8EB83E00B56A5D /* SAMCResourceManager.m */; };
 		31799EB41D4063D000878058 /* SAMCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31799EB31D4063D000878058 /* SAMCLoginViewController.m */; };
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
@@ -729,6 +730,8 @@
 		316A678B1D8BCA3700B56A5D /* SAMCUnreadCountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUnreadCountManager.h; path = Base/Manager/SAMCUnreadCountManager.h; sourceTree = "<group>"; };
 		316A678C1D8BCA3700B56A5D /* SAMCUnreadCountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCUnreadCountManager.m; path = Base/Manager/SAMCUnreadCountManager.m; sourceTree = "<group>"; };
 		316A678E1D8BD48A00B56A5D /* SAMCUnreadCountManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUnreadCountManagerDelegate.h; path = Base/Protocol/SAMCUnreadCountManagerDelegate.h; sourceTree = "<group>"; };
+		316A67921D8EB83E00B56A5D /* SAMCResourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCResourceManager.h; path = Base/Manager/SAMCResourceManager.h; sourceTree = "<group>"; };
+		316A67931D8EB83E00B56A5D /* SAMCResourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCResourceManager.m; path = Base/Manager/SAMCResourceManager.m; sourceTree = "<group>"; };
 		31799EB21D4063D000878058 /* SAMCLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLoginViewController.h; sourceTree = "<group>"; };
 		31799EB31D4063D000878058 /* SAMCLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLoginViewController.m; sourceTree = "<group>"; };
 		31799EB61D4064EA00878058 /* CountryCodeListCh.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListCh.plist; sourceTree = "<group>"; };
@@ -2034,6 +2037,8 @@
 				316A672D1D7EBE6D00B56A5D /* SAMCDataManager.m */,
 				316A678B1D8BCA3700B56A5D /* SAMCUnreadCountManager.h */,
 				316A678C1D8BCA3700B56A5D /* SAMCUnreadCountManager.m */,
+				316A67921D8EB83E00B56A5D /* SAMCResourceManager.h */,
+				316A67931D8EB83E00B56A5D /* SAMCResourceManager.m */,
 			);
 			name = Manager;
 			sourceTree = "<group>";
@@ -2615,6 +2620,7 @@
 				3195DE3B1D604EA6001BD2B4 /* SAMCAccountManager.m in Sources */,
 				316A67021D7BC03D00B56A5D /* SAMCPublicMsgCellLayoutConfig.m in Sources */,
 				31F8FC971D6D3A5800734068 /* SAMCQuestionDB_2016082201.m in Sources */,
+				316A67941D8EB83E00B56A5D /* SAMCResourceManager.m in Sources */,
 				314D5D3F1D6BDD3F004B3DE4 /* SAMCQRCodeScanViewController.m in Sources */,
 				3195DE081D54B94E001BD2B4 /* SAMCSessionViewController.m in Sources */,
 				3195DE351D5B30F1001BD2B4 /* SAMCQuestionMessage.m in Sources */,

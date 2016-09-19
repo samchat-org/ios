@@ -31,6 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)queryContactListIfNecessary;
 
+- (void)updateAvatar:(NSString *)url
+          completion:(void (^)(SAMCUser * __nullable user, NSError * __nullable error))completion;
+
 - (NSArray *)myContactListOfType:(SAMCContactListType)listType;
 
 - (SAMCUser *)userInfo:(NSString *)userId;
