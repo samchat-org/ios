@@ -23,6 +23,7 @@
 #import "SAMCContactManager.h"
 #import "SDWebImageManager.h"
 
+
 @interface SAMCSettingViewController ()<UITableViewDataSource,UITableViewDelegate,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -367,7 +368,7 @@
     BOOL success = data && [data writeToFile:filePath atomically:YES];
     __weak typeof(self) wself = self;
     if (success) {
-        [SVProgressHUD show];
+        [SVProgressHUD showWithStatus:@"Updating" maskType:SVProgressHUDMaskTypeBlack];
         NSString *key = [NSString stringWithFormat:@"%@%@", SAMC_AWSS3_AVATAR_ORG_PATH, fileName];
         [[SAMCResourceManager sharedManager] upload:filePath key:key contentType:@"image/jpeg" progress:nil completion:^(NSString *urlString, NSError *error) {
             [SVProgressHUD dismiss];

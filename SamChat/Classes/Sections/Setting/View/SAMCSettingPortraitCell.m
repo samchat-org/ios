@@ -10,11 +10,11 @@
 #import "NIMCommonTableData.h"
 #import "UIView+NTES.h"
 #import "NTESSessionUtil.h"
-#import "NIMAvatarImageView.h"
+#import "SAMCAvatarImageView.h"
 
 @interface SAMCSettingPortraitCell()
 
-@property (nonatomic,strong) NIMAvatarImageView *avatar;
+@property (nonatomic,strong) SAMCAvatarImageView *avatar;
 
 @property (nonatomic,strong) UILabel *nameLabel;
 
@@ -32,7 +32,7 @@
     if (self) {
         CGFloat avatarWidth = 55.f;
 //        _avatar = [[NIMAvatarImageView alloc] initWithFrame:CGRectMake(0, 0, avatarWidth, avatarWidth)];
-        _avatar = [[NIMAvatarImageView alloc] init];
+        _avatar = [[SAMCAvatarImageView alloc] init];
         _avatar.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:_avatar];
         _topButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -112,7 +112,7 @@
         [self.nameLabel sizeToFit];
         self.accountLabel.text = [NSString stringWithFormat:@"帐号：%@",uid];
         [self.accountLabel sizeToFit];
-        [self.avatar nim_setImageWithURL:[NSURL URLWithString:info.avatarUrlString] placeholderImage:info.avatarImage options:NIMWebImageRetryFailed];
+        [self.avatar samc_setImageWithURL:[NSURL URLWithString:info.avatarUrlString] placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     }
     
     [self.topButton removeTarget:tableView.viewController action:NULL forControlEvents:UIControlEventTouchUpInside];
