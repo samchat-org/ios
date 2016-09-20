@@ -20,6 +20,6 @@
 
 - (void)insertToContactList:(SAMCUser *)user type:(SAMCContactListType)listType;
 
-- (NSArray *)myContactListOfType:(SAMCContactListType)listType;
+- (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
 
 @end

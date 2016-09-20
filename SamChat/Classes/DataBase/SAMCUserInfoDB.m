@@ -209,7 +209,7 @@
     }];
 }
 
-- (NSArray *)myContactListOfType:(SAMCContactListType)listType
+- (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {
     NSString *tableName;
     if (listType == SAMCContactListTypeCustomer) {
@@ -226,7 +226,7 @@
         FMResultSet *s = [db executeQuery:sql];
         while ([s next]) {
             NSNumber *uniqueId = @([s longForColumn:@"unique_id"]);
-            [contactList addObject:uniqueId];
+            [contactList addObject:uniqueId.stringValue];
         }
         [s close];
     }];

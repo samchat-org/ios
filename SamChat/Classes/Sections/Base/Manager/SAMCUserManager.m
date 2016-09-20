@@ -191,7 +191,7 @@
     }];
 }
 
-- (NSArray *)myContactListOfType:(SAMCContactListType)listType
+- (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];
 }

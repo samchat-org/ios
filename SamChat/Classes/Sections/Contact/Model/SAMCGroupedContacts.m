@@ -49,21 +49,12 @@
 - (void)update
 {
     NSMutableArray *contacts = [NSMutableArray array];
-    for (NSNumber *uniqueId in [[SAMCUserManager sharedManager] myContactListOfType:_listType]) {
-        NIMKitInfo *info = [[NIMKitInfo alloc] init];
-        info.infoId = [NSString stringWithFormat:@"%@", uniqueId];
-        info.showName = info.infoId; // TODO: get userInfo from db
+    for (NSString *userId in [[SAMCUserManager sharedManager] myContactListOfType:_listType]) {
+        NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:userId];
         NTESContactDataMember *contact = [[NTESContactDataMember alloc] init];
         contact.info = info;
         [contacts addObject:contact];
     }
-    
-//    for (NIMUser *user in [NIMSDK sharedSDK].userManager.myFriends) {
-//        NIMKitInfo *info           = [[NIMKit sharedKit] infoByUser:user.userId];
-//        NTESContactDataMember *contact = [[NTESContactDataMember alloc] init];
-//        contact.info               = info;
-//        [contacts addObject:contact];
-//    }
     [self setMembers:contacts];
 }
 
