@@ -557,6 +557,25 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "get-places-info-request",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "key" :
+//    }
+//}
++ (NSDictionary *)getPlacesInfo:(NSString *)key
+{
+    key = key ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_GET_PLACES_INFO_REQUEST,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_KEY:key};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

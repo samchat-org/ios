@@ -10,4 +10,9 @@
 
 @interface SAMCPlaceInfo : NSObject
 
+@property (nonatomic, copy) NSString *desc;
+@property (nonatomic, copy) NSString *placeId;
+
++ (instancetype)placeInfoFromDict:(NSDictionary *)dict;
+
 @end

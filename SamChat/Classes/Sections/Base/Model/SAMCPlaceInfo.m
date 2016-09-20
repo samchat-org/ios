@@ -7,7 +7,16 @@
 //
 
 #import "SAMCPlaceInfo.h"
+#import "SAMCServerAPIMacro.h"
 
 @implementation SAMCPlaceInfo
+
++ (instancetype)placeInfoFromDict:(NSDictionary *)dict
+{
+    SAMCPlaceInfo *info = [[SAMCPlaceInfo alloc] init];
+    info.desc = dict[SAMC_DESCRIPTION];
+    info.placeId = dict[SAMC_PLACE_ID];
+    return info;
+}
 
 @end

@@ -32,6 +32,7 @@
 #define SAMC_URL_CONTACT_CONTACT_LIST_QUERY         SAMC_API_PREFIX@"api_1.0_contact_contactListQuery.do"
 #define SAMC_URL_CONTACT_CONTACT                    SAMC_API_PREFIX@"api_1.0_contact_contact.do"
 #define SAMC_URL_PROFILE_AVATAR_UPDATE              SAMC_API_PREFIX@"api_1.0_profile_avatarUpdate.do"
+#define SAMC_URL_PROFILE_GET_PLACESINFO             SAMC_API_PREFIX@"api_1.0_profile_getPlacesInfoRequest.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"https://s3-us-west-2.amazonaws.com/samchat-test/"
 #define SAMC_AWSS3_BUCKETNAME           @"samchat-test"
@@ -71,6 +72,7 @@
 #define SAMC_ADVERTISEMENT_WRITE        @"advertisement-write"
 #define SAMC_CONTACT                    @"contact"
 #define SAMC_AVATAR_UPDATE              @"avatar-update"
+#define SAMC_GET_PLACES_INFO_REQUEST    @"get-places-info-request"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -113,6 +115,8 @@
 #define SAMC_AVATAR                     @"avatar"
 #define SAMC_ORIGIN                     @"origin"
 #define SAMC_THUMB                      @"thumb"
+#define SAMC_DESCRIPTION                @"description"
+#define SAMC_PLACE_ID                   @"place_id"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
