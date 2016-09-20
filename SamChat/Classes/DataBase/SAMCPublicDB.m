@@ -86,7 +86,6 @@
                 *rollback = YES;
                 break;
             }
-            [db commit];
         }
     }];
     return result;
@@ -102,28 +101,28 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT * FROM follow_list"];
         while ([s next]) {
-            NSInteger unique_id = [s longForColumn:@"unique_id"];
+            NSInteger uniqueId = [s longForColumn:@"unique_id"];
             NSString *username = [s stringForColumn:@"username"];
             NSString *avatar = [s stringForColumn:@"avatar"];
-            BOOL block_tag = [s boolForColumn:@"block_tag"];
-            BOOL favourite_tag = [s boolForColumn:@"favourite_tag"];
-            NSString *sp_service_category = [s stringForColumn:@"sp_service_category"];
-            NSString *last_message_id = [s stringForColumn:@"last_message_id"];
-            NSString *last_message_content = [s stringForColumn:@"last_message_content"];
-            NSTimeInterval last_message_time = [s doubleForColumn:@"last_message_time"];
-            NSInteger unread_count = [s intForColumn:@"unread_count"];
+            BOOL blockTag = [s boolForColumn:@"block_tag"];
+            BOOL favouriteTag = [s boolForColumn:@"favourite_tag"];
+            NSString *spServiceCategory = [s stringForColumn:@"sp_service_category"];
+            NSString *lastMsgId = [s stringForColumn:@"last_msg_id"];
+            NSString *lastMsgContent = [s stringForColumn:@"last_msg_content"];
+            NSTimeInterval lastMsgTime = [s doubleForColumn:@"last_msg_time"];
+            NSInteger unreadCount = [s intForColumn:@"unread_count"];
             
-            SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:[NSString stringWithFormat:@"%ld",unique_id]
+            SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:@(uniqueId).stringValue
                                                        username:username
                                                          avatar:avatar
-                                                       blockTag:block_tag
-                                                   favouriteTag:favourite_tag
-                                                       category:sp_service_category];
+                                                       blockTag:blockTag
+                                                   favouriteTag:favouriteTag
+                                                       category:spServiceCategory];
             SAMCPublicSession *session = [SAMCPublicSession session:info
-                                                      lastMessageId:last_message_id
-                                                 lastMessageContent:last_message_content
-                                                    lastMessageTime:last_message_time
-                                                        unreadCount:unread_count];
+                                                      lastMessageId:lastMsgId
+                                                 lastMessageContent:lastMsgContent
+                                                    lastMessageTime:lastMsgTime
+                                                        unreadCount:unreadCount];
             [follows addObject:session];
         }
         [s close];
@@ -134,8 +133,8 @@
 - (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
-        NSNumber *unique_id = @([userInfo.userId integerValue]);
-        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",unique_id];
+        NSNumber *uniqueId = @([userInfo.userId integerValue]);
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",uniqueId];
         [s next];
         int count = [s intForColumnIndex:0];
         [s close];
@@ -144,11 +143,11 @@
         }
         NSString *username = userInfo.username;
         NSString *avatar = userInfo.avatar;
-        NSNumber *block_tag = @(userInfo.blockTag);
-        NSNumber *favourite_tag = @(userInfo.favouriteTag);
-        NSString *sp_service_category = userInfo.spServiceCategory;
+        NSNumber *blockTag = @(userInfo.blockTag);
+        NSNumber *favouriteTag = @(userInfo.favouriteTag);
+        NSString *spServiceCategory = userInfo.spServiceCategory;
 //        [db executeUpdate:@"INSERT OR IGNORE INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
-        [db executeUpdate:@"INSERT INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",unique_id,username,avatar,block_tag,favourite_tag,sp_service_category];
+        [db executeUpdate:@"INSERT INTO follow_list(unique_id,username,avatar,block_tag,favourite_tag,sp_service_category) VALUES (?,?,?,?,?,?)",uniqueId,username,avatar,blockTag,favouriteTag,spServiceCategory];
         SAMCPublicSession *session = [SAMCPublicSession session:userInfo
                                                   lastMessageId:@""
                                              lastMessageContent:@""
@@ -247,7 +246,7 @@
         [s close];
         NSString *lastMsgContent = [message messageContent];
         // 3. update unread count & last message info
-        [db executeUpdate:@"UPDATE follow_list SET last_message_id=?, last_message_content=?, last_message_time=?, unread_count=? WHERE unique_id=?",message.messageId,lastMsgContent,@(message.timestamp), @(sessionUnreadCount), uniqueId];
+        [db executeUpdate:@"UPDATE follow_list SET last_msg_id=?, last_msg_content=?, last_msg_time=?, unread_count=? WHERE unique_id=?",message.messageId,lastMsgContent,@(message.timestamp), @(sessionUnreadCount), uniqueId];
         
         [wself delegateUpdatePublicSession:db uniqueId:uniqueId];
         
@@ -305,7 +304,7 @@
             return;
         }
         NSNumber *uniqueId = @([message.from integerValue]);
-        FMResultSet *s = [db executeQuery:@"SELECT last_message_id from follow_list where unique_id = ?", uniqueId];
+        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id from follow_list where unique_id = ?", uniqueId];
         NSString *lastMsgId = nil;
         if ([s next]) {
             lastMsgId = [s stringForColumnIndex:0];
@@ -342,7 +341,7 @@
             }
             [s close];
             // 3. update unread count & last message info
-            [db executeUpdate:@"UPDATE follow_list SET last_message_id=?, last_message_content=?, last_message_time=? WHERE unique_id=?",lastMsgId,lastMsgContent,@(lastMsgTime), uniqueId];
+            [db executeUpdate:@"UPDATE follow_list SET last_msg_id=?, last_msg_content=?, last_msg_time=? WHERE unique_id=?",lastMsgId,lastMsgContent,@(lastMsgTime), uniqueId];
             [wself delegateUpdatePublicSession:db uniqueId:uniqueId];
         }
     }];
@@ -390,25 +389,25 @@
     if ([s next]) {
         NSString *username = [s stringForColumn:@"username"];
         NSString *avatar = [s stringForColumn:@"avatar"];
-        BOOL block_tag = [s boolForColumn:@"block_tag"];
-        BOOL favourite_tag = [s boolForColumn:@"favourite_tag"];
-        NSString *sp_service_category = [s stringForColumn:@"sp_service_category"];
-        NSString *last_message_id = [s stringForColumn:@"last_message_id"];
-        NSString *last_message_content = [s stringForColumn:@"last_message_content"];
-        NSTimeInterval last_message_time = [s doubleForColumn:@"last_message_time"];
-        NSInteger unread_count = [s intForColumn:@"unread_count"];
+        BOOL blockTag = [s boolForColumn:@"block_tag"];
+        BOOL favouriteTag = [s boolForColumn:@"favourite_tag"];
+        NSString *spServiceCategory = [s stringForColumn:@"sp_service_category"];
+        NSString *lastMsgId = [s stringForColumn:@"last_msg_id"];
+        NSString *lastMsgContent = [s stringForColumn:@"last_msg_content"];
+        NSTimeInterval lastMsgTime = [s doubleForColumn:@"last_msg_time"];
+        NSInteger unreadCount = [s intForColumn:@"unread_count"];
         
         SAMCSPBasicInfo *info = [SAMCSPBasicInfo infoOfUser:uniqueId.stringValue
                                                    username:username
                                                      avatar:avatar
-                                                   blockTag:block_tag
-                                               favouriteTag:favourite_tag
-                                                   category:sp_service_category];
+                                                   blockTag:blockTag
+                                               favouriteTag:favouriteTag
+                                                   category:spServiceCategory];
         SAMCPublicSession *session = [SAMCPublicSession session:info
-                                                  lastMessageId:last_message_id
-                                             lastMessageContent:last_message_content
-                                                lastMessageTime:last_message_time
-                                                    unreadCount:unread_count];
+                                                  lastMessageId:lastMsgId
+                                             lastMessageContent:lastMsgContent
+                                                lastMessageTime:lastMsgTime
+                                                    unreadCount:unreadCount];
         session.isOutgoing = NO; // only outgoing need update session
         [_publicDelegate didUpdatePublicSession:session];
     };
