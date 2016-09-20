@@ -16,18 +16,16 @@
 
 // messages should belong to the same session
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages
-           sessionMode:(SAMCUserModeType)sessionMode
            unreadCount:(NSInteger)unreadCount;
 
 // conversation manager
 - (NSArray<SAMCRecentSession *> *)allSessionsOfUserMode:(SAMCUserModeType)userMode;
 
-- (NSArray<NIMMessage *> *)messagesInSession:(NIMSession *)session
-                                    userMode:(SAMCUserModeType)userMode
+- (NSArray<NIMMessage *> *)messagesInSession:(SAMCSession *)session
                                      message:(NIMMessage *)message
                                        limit:(NSInteger)limit;
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
-- (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode;
+- (void)markAllMessagesReadInSession:(SAMCSession *)session;
 
 - (void)deleteMessage:(SAMCMessage *)message;
 

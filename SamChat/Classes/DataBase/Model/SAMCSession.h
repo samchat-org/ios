@@ -10,7 +10,6 @@
 
 @interface SAMCSession : NSObject<NSCopying>
 
-@property (nonatomic, copy, readonly) NSString *tableName;
 @property (nonatomic, copy, readonly) NSString *sessionId;
 @property (nonatomic, assign, readonly) NIMSessionType sessionType;
 @property (nonatomic, assign, readonly) SAMCUserModeType sessionMode;
@@ -18,5 +17,8 @@
 + (instancetype)session:(NSString *)sessionId
                    type:(NIMSessionType)sessionType
                    mode:(SAMCUserModeType)sessionMode;
+
+- (NIMSession *)nimSession;
+- (NSString *)tableName;
 
 @end

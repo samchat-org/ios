@@ -24,7 +24,6 @@
 #import "NIMUIConfig.h"
 #import "NIMKit.h"
 #import "SAMCPreferenceManager.h"
-#import "SAMCDataBaseManager.h"
 #import "SAMCChatManager.h"
 #import "SAMCConversationManager.h"
 
@@ -61,8 +60,7 @@ NIMUserManagerDelegate>
 - (instancetype)initWithSession:(SAMCSession *)session{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        _session = [NIMSession session:session.sessionId type:session.sessionType];
-        _currentUserMode = session.sessionMode;
+        _samcSession = session;
         _pendingMessages = [[NSMutableArray alloc] init];
     }
     return self;
@@ -138,9 +136,9 @@ NIMUserManagerDelegate>
     if ([self.sessionConfig respondsToSelector:@selector(showTimeInterval)]) {
         showTimestampInterval = [self.sessionConfig showTimestampInterval];
     }
-    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:_session dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
+    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:[_samcSession nimSession] dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
     _sessionDatasource.sessionConfig = [self sessionConfig];
-    [self.conversationManager markAllMessagesReadInSession:_session userMode:self.currentUserMode];
+    [self.conversationManager markAllMessagesReadInSession:_samcSession];
     
     _sessionDatasource.delegate = self;
     
@@ -162,7 +160,7 @@ NIMUserManagerDelegate>
 //    [[[NIMSDK sharedSDK] chatManager] addDelegate:self];
     [[SAMCChatManager sharedManager] addDelegate:self];
     
-    if (self.session.sessionType == NIMSessionTypeTeam) {
+    if (_samcSession.sessionType == NIMSessionTypeTeam) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamInfoHasUpdatedNotification:) name:NIMKitTeamInfoHasUpdatedNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamMembersHasUpdatedNotification:) name:NIMKitTeamMembersHasUpdatedNotification object:nil];
     }
@@ -267,7 +265,7 @@ NIMUserManagerDelegate>
 - (void)sendMessage:(NIMMessage *)message
 {
     id usermodeValue = nil;
-    if (self.currentUserMode == SAMCUserModeTypeSP) {
+    if (_samcSession.sessionMode == SAMCUserModeTypeSP) {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
     } else {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
@@ -279,23 +277,17 @@ NIMUserManagerDelegate>
     }
     message.remoteExt = ext;
     
-    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
-                                               type:self.session.sessionType
-                                               mode:self.currentUserMode];
-    SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
+    SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:_samcSession];
     samcmessage.nimMessage = message;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // TODO: need check here, should insert message after sendMessage ok?
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]
-                                                          sessionMode:self.currentUserMode
-                                                          unreadCount:0];
-        //        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:@[samcmessage]];
+        [[SAMCChatManager sharedManager] insertMessages:@[samcmessage] unreadCount:0];
         dispatch_async(dispatch_get_main_queue(), ^{
             NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];
             setting.roamingEnabled = false;
             message.setting = setting;
-            [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:_session error:nil];
+            [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:[_samcSession nimSession] error:nil];
         });
     });
 }
@@ -304,7 +296,7 @@ NIMUserManagerDelegate>
 //发送消息
 - (void)willSendMessage:(NIMMessage *)message
 {
-    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:[_samcSession nimSession]]) {
         if ([self findModel:message]) {
             [self uiUpdateMessage:message];
         }else{
@@ -316,7 +308,7 @@ NIMUserManagerDelegate>
 //发送结果
 - (void)sendMessage:(NIMMessage *)message didCompleteWithError:(NSError *)error
 {
-    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:[_samcSession nimSession]]) {
         NIMMessageModel *model = [self makeModel:message];
         NSInteger index = [self.sessionDatasource indexAtModelArray:model];
         [self.layoutManager updateCellAtIndex:index model:model];
@@ -334,7 +326,7 @@ NIMUserManagerDelegate>
 //发送进度
 -(void)sendMessage:(NIMMessage *)message progress:(CGFloat)progress
 {
-    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:[_samcSession nimSession]]) {
         NIMMessageModel *model = [self makeModel:message];
         [_layoutManager updateCellAtIndex:[self.sessionDatasource indexAtModelArray:model] model:model];
     }
@@ -343,18 +335,18 @@ NIMUserManagerDelegate>
 //接收消息
 - (void)onRecvMessages:(NSArray *)messages
 {
-    NIMMessage *message = messages.firstObject;
-    NIMSession *session = message.session;
-    if (![session.sessionId isEqual:self.session.sessionId] || !messages.count){
+    NIMMessage *nimmessage = messages.firstObject;
+    NIMSession *nimsession = nimmessage.session;
+    if (![nimsession.sessionId isEqual:_samcSession.sessionId] || !messages.count){
         return;
     }
     
-    if (session.sessionType == NIMSessionTypeChatroom) {
+    if (nimsession.sessionType == NIMSessionTypeChatroom) {
         [self uiAddChatroomMessages:messages];
     }
     else{
         [self uiAddMessages:messages];
-        [self.conversationManager markAllMessagesReadInSession:self.session userMode:self.currentUserMode];
+        [self.conversationManager markAllMessagesReadInSession:_samcSession];
     }
     
     [self sendMessageReceipt:messages];
@@ -363,7 +355,7 @@ NIMUserManagerDelegate>
 
 - (void)fetchMessageAttachment:(NIMMessage *)message progress:(CGFloat)progress
 {
-    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:[_samcSession nimSession]]) {
         NIMMessageModel *model = [self makeModel:message];
         [_layoutManager updateCellAtIndex:[self.sessionDatasource indexAtModelArray:model] model:model];
     }
@@ -371,7 +363,7 @@ NIMUserManagerDelegate>
 
 - (void)fetchMessageAttachment:(NIMMessage *)message didCompleteWithError:(NSError *)error
 {
-    if ([self isCurrentModeMessage:message] && [message.session isEqual:_session]) {
+    if ([self isCurrentModeMessage:message] && [message.session isEqual:[_samcSession nimSession]]) {
         NIMMessageModel *model = [self makeModel:message];
         //下完缩略图之后，因为比例有变化，重新刷下宽高。
         [model calculateContent:self.tableView.nim_width force:YES];
@@ -381,7 +373,7 @@ NIMUserManagerDelegate>
 
 - (void)onRecvMessageReceipt:(NIMMessageReceipt *)receipt
 {
-    if ([receipt.session isEqual:_session]) {
+    if ([receipt.session isEqual:[_samcSession nimSession]]) {
         [self checkReceipt];
     }
 }
@@ -395,8 +387,8 @@ NIMUserManagerDelegate>
 - (void)onTeamMembersHasUpdatedNotification:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     NSArray *teamIds = userInfo[NIMKitInfoKey];
-    if (self.session.sessionType == NIMSessionTypeTeam
-        && [teamIds containsObject:self.session.sessionId]) {
+    if (_samcSession.sessionType == NIMSessionTypeTeam
+        && [teamIds containsObject:_samcSession.sessionId]) {
         [self.tableView reloadData];
         self.navigationItem.title = [self sessionTitle];
     }
@@ -405,8 +397,8 @@ NIMUserManagerDelegate>
 - (void)onTeamInfoHasUpdatedNotification:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
     NSArray *teamIds = userInfo[NIMKitInfoKey];
-    if (self.session.sessionType == NIMSessionTypeTeam
-        && [teamIds containsObject:self.session.sessionId]) {
+    if (_samcSession.sessionType == NIMSessionTypeTeam
+        && [teamIds containsObject:_samcSession.sessionId]) {
         self.navigationItem.title = [self sessionTitle];
     }
 }
@@ -435,15 +427,15 @@ NIMUserManagerDelegate>
 - (NSString *)sessionTitle
 {
     NSString *title = @"";
-    NIMSessionType type = self.session.sessionType;
+    NIMSessionType type = _samcSession.sessionType;
     switch (type) {
         case NIMSessionTypeTeam:{
-            NIMTeam *team = [[[NIMSDK sharedSDK] teamManager] teamById:self.session.sessionId];
+            NIMTeam *team = [[[NIMSDK sharedSDK] teamManager] teamById:_samcSession.sessionId];
             title = [NSString stringWithFormat:@"%@(%zd)",[team teamName],[team memberNumber]];
         }
             break;
         case NIMSessionTypeP2P:{
-            title = [NIMKitUtil showNick:self.session.sessionId inSession:self.session];
+            title = [NIMKitUtil showNick:_samcSession.sessionId inSession:[_samcSession nimSession]];
         }
             break;
         default:
@@ -626,11 +618,8 @@ NIMUserManagerDelegate>
 {
     NIMMessage *message    = [self messageForMenu];
     [self uiDeleteMessage:message];
-    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId
-                                               type:self.session.sessionType
-                                               mode:self.currentUserMode];
     SAMCMessage *samcmessage = [SAMCMessage message:message.messageId
-                                            session:samcsession];
+                                            session:_samcSession];
     samcmessage.nimMessage = message;
     [self.conversationManager deleteMessage:samcmessage];
 }
@@ -743,7 +732,7 @@ NIMUserManagerDelegate>
 #pragma mark - 已读回执
 - (BOOL)shouldHandleReceipt
 {
-    return self.session.sessionType == NIMSessionTypeP2P &&
+    return _samcSession.sessionType == NIMSessionTypeP2P &&
     [self.sessionConfig respondsToSelector:@selector(shouldHandleReceipt)] &&
     [self.sessionConfig shouldHandleReceipt];
 }
@@ -854,7 +843,7 @@ NIMUserManagerDelegate>
 }
 
 - (SAMCConversationManager *)conversationManager{
-    switch (self.session.sessionType) {
+    switch (_samcSession.sessionType) {
         case NIMSessionTypeChatroom:
             return nil;
             break;
@@ -955,7 +944,7 @@ NIMUserManagerDelegate>
             messageMode = SAMCUserModeTypeSP;
         }
     }
-    return (messageMode == self.currentUserMode);
+    return (messageMode == _samcSession.sessionMode);
 }
 
 @end

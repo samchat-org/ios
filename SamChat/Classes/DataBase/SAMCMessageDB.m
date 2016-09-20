@@ -71,7 +71,6 @@
 }
 
 - (void)insertMessages:(NSArray<SAMCMessage *> *)messages
-           sessionMode:(SAMCUserModeType)sessionMode
            unreadCount:(NSInteger)unreadCount
 {
     if ([messages count] == 0) {
@@ -80,7 +79,8 @@
     SAMCMessage *lastMessage = [messages lastObject];
     // the messages belongs to the same SAMCSession
     SAMCSession *session = messages.firstObject.session;
-    NSString *sessionName = session.tableName;
+    SAMCUserModeType sessionMode = session.sessionMode;
+    NSString *sessionName = [session tableName];
     NSString *sessionId = session.sessionId;
     NSInteger sessionType = session.sessionType;
     __weak typeof(self) wself = self;
@@ -150,12 +150,11 @@
     return sessions;
 }
 
-- (NSArray<NIMMessage *> *)messagesInSession:(NIMSession *)session
-                                    userMode:(SAMCUserModeType)userMode
+- (NSArray<NIMMessage *> *)messagesInSession:(SAMCSession *)session
                                      message:(NIMMessage *)message
                                        limit:(NSInteger)limit
 {
-    NSString *tableName = [SAMCSession session:session.sessionId type:session.sessionType mode:userMode].tableName;
+    NSString *tableName = [session tableName];
     if (![self isTableExists:tableName]) {
         // table not found, first time enter the session, e.g. enter a new session from contact list
         return nil;
@@ -178,7 +177,7 @@
         }
         [s close];
         sortedMessageIds = [[messageIds reverseObjectEnumerator] allObjects];
-        messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:session messageIds:sortedMessageIds];
+        messages = [[NIMSDK sharedSDK].conversationManager messagesInSession:[session nimSession] messageIds:sortedMessageIds];
     }];
     return [self sortMessages:messages messageIds:sortedMessageIds];
 }
@@ -196,14 +195,14 @@
     return unreadCount;
 }
 
-- (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
+- (void)markAllMessagesReadInSession:(SAMCSession *)session
 {
     // just mark the session as read
-    [[NIMSDK sharedSDK].conversationManager markAllMessagesReadInSession:session];
+    [[NIMSDK sharedSDK].conversationManager markAllMessagesReadInSession:[session nimSession]];
     __weak typeof(self) wself = self;
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_mode = ? AND session_id = ?",
-                          @(userMode),session.sessionId];
+                          @(session.sessionMode),session.sessionId];
         [s next];
         int count = [s intForColumnIndex:0];
         [s close];
@@ -211,9 +210,9 @@
             return;
         }
         [db executeUpdate:@"UPDATE session_table SET unread_count = 0 WHERE session_mode = ? AND session_id = ?",
-         @(userMode),session.sessionId];
-        [wself notifyUpdateSession:session.sessionId new:NO mode:userMode inDatabase:db];
-        [wself notifyUnreadCountChangedOfMode:userMode inDatabase:db];
+         @(session.sessionMode),session.sessionId];
+        [wself notifyUpdateSession:session.sessionId new:NO mode:session.sessionMode inDatabase:db];
+        [wself notifyUnreadCountChangedOfMode:session.sessionMode inDatabase:db];
     }];
 }
 
@@ -221,7 +220,7 @@
 {
     __weak typeof(self) wself = self;
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        NSString *tableName = message.session.tableName;
+        NSString *tableName = [message.session tableName];
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE msg_id = ?", tableName];
         [db executeUpdate:sql, message.messageId];
         NSString *sessionId = message.session.sessionId;
@@ -267,7 +266,7 @@
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         [db executeUpdate:@"DELETE FROM session_table WHERE session_mode = ? AND session_id = ?",
          @(recentSession.session.sessionMode),recentSession.session.sessionId];
-        NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS '%@'",recentSession.session.tableName];
+        NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS '%@'",[recentSession.session tableName]];
         [db executeUpdate:sql];
         FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM session_table WHERE session_id = ?",
                           recentSession.session.sessionId];

@@ -9,9 +9,13 @@
 #import <Foundation/Foundation.h>
 #import "SAMCChatManagerDelegate.h"
 
+@class SAMCMessage;
+
 @interface SAMCChatManager : NSObject
 
 + (instancetype)sharedManager;
+
+- (void)insertMessages:(NSArray<SAMCMessage *> *)messages unreadCount:(NSInteger)unreadCount;
 
 - (void)addDelegate:(id<SAMCChatManagerDelegate>)delegate;
 - (void)removeDelegate:(id<SAMCChatManagerDelegate>)delegate;

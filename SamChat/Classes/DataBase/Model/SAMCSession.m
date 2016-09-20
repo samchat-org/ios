@@ -31,6 +31,11 @@
     return session;
 }
 
+- (NIMSession *)nimSession
+{
+    return [NIMSession session:_sessionId type:_sessionType];
+}
+
 - (NSString *)tableName
 {
     if (_tableName == nil) {

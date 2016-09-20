@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import "NTESSessionConfig.h"
+#import "SAMCSession.h"
 
 @interface SAMCSessionConfig : NTESSessionConfig
 
 @property (nonatomic, assign) SAMCUserModeType userMode;
 
-- (instancetype)initWithSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode;
+- (instancetype)initWithSession:(SAMCSession *)session;
 
 @end

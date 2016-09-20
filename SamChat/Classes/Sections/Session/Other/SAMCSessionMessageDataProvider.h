@@ -7,9 +7,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCSession.h"
 
 @interface SAMCSessionMessageDataProvider : NSObject<NIMKitMessageProvider>
 
-- (instancetype)initWithSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode;
+- (instancetype)initWithSession:(SAMCSession *)samcsession;
 
 @end

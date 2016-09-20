@@ -13,19 +13,17 @@
 
 @interface SAMCSessionMessageDataProvider ()
 
-@property (nonatomic,copy) NIMSession *session;
-@property (nonatomic, assign) SAMCUserModeType userMode;
+@property (nonatomic, copy) SAMCSession *session;
 
 @end
 
 @implementation SAMCSessionMessageDataProvider
 
-- (instancetype)initWithSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
+- (instancetype)initWithSession:(SAMCSession *)samcsession;
 {
     self = [super init];
     if (self) {
-        _session = session;
-        _userMode = userMode;
+        _session = samcsession;
     }
     return self;
 }
@@ -33,7 +31,6 @@
 - (void)pullDown:(NIMMessage *)firstMessage handler:(NIMKitDataProvideHandler)handler
 {
     [[SAMCConversationManager sharedManager] fetchMessagesInSession:_session
-                                                           userMode:_userMode
                                                             message:firstMessage
                                                               limit:10
                                                              result:^(NSError *error, NSArray *messages) {

@@ -17,12 +17,13 @@
 
 @implementation SAMCSessionConfig
 
-- (instancetype)initWithSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
+- (instancetype)initWithSession:(SAMCSession *)samcsession
 {
     self = [super init];
     if (self) {
-        self.session = session;
-        self.provider = [[SAMCSessionMessageDataProvider alloc] initWithSession:session userMode:userMode];
+        self.session = [samcsession nimSession];
+        self.userMode = samcsession.sessionMode;
+        self.provider = [[SAMCSessionMessageDataProvider alloc] initWithSession:samcsession];
     }
     return self;
 }

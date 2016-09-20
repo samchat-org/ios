@@ -70,10 +70,9 @@ NIMContactSelectDelegate>
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    DDLogInfo(@"enter session, id = %@",self.session.sessionId);
     _notificaionSender  = [[NTESCustomSysNotificationSender alloc] init];
     [self setUpNav];
-    BOOL disableCommandTyping = self.disableCommandTyping || (self.session.sessionType == NIMSessionTypeP2P &&[[NIMSDK sharedSDK].userManager isUserInBlackList:self.session.sessionId]);
+    BOOL disableCommandTyping = self.disableCommandTyping || (self.samcSession.sessionType == NIMSessionTypeP2P &&[[NIMSDK sharedSDK].userManager isUserInBlackList:self.samcSession.sessionId]);
     if (!disableCommandTyping) {
         _titleTimer = [[NTESTimerHolder alloc] init];
         [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
@@ -110,7 +109,7 @@ NIMContactSelectDelegate>
 - (id<NIMSessionConfig>)sessionConfig
 {
     if (_sessionConfig == nil) {
-        _sessionConfig = [[SAMCSessionConfig alloc] initWithSession:self.session userMode:self.currentUserMode];
+        _sessionConfig = [[SAMCSessionConfig alloc] initWithSession:self.samcSession];
 //        _sessionConfig.session = self.session;
     }
     return _sessionConfig;
@@ -128,7 +127,7 @@ NIMContactSelectDelegate>
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data
                                                              options:0
                                                                error:nil];
-        if ([dict jsonInteger:NTESNotifyID] == NTESCommandTyping && self.session.sessionType == NIMSessionTypeP2P && [notification.sender isEqualToString:self.session.sessionId])
+        if ([dict jsonInteger:NTESNotifyID] == NTESCommandTyping && self.samcSession.sessionType == NIMSessionTypeP2P && [notification.sender isEqualToString:self.samcSession.sessionId])
         {
             self.title = @"正在输入...";
             [_titleTimer startTimer:5
@@ -147,7 +146,7 @@ NIMContactSelectDelegate>
 
 
 - (NSString *)sessionTitle{
-    if ([self.session.sessionId isEqualToString:[NIMSDK sharedSDK].loginManager.currentAccount]) {
+    if ([self.samcSession.sessionId isEqualToString:[NIMSDK sharedSDK].loginManager.currentAccount]) {
         return  @"我的电脑";
     }
     return [super sessionTitle];
@@ -173,7 +172,7 @@ NIMContactSelectDelegate>
 
 - (void)onTextChanged:(id)sender
 {
-    [_notificaionSender sendTypingState:self.session];
+    [_notificaionSender sendTypingState:[self.samcSession nimSession]];
 }
 
 - (void)onSelectChartlet:(NSString *)chartletId
@@ -225,8 +224,8 @@ NIMContactSelectDelegate>
 {
     if ([self checkCondition]) {
         //由于音视频聊天里头有音频和视频聊天界面的切换，直接用present的话页面过渡会不太自然，这里还是用push，然后做出present的效果
-        NTESAudioChatViewController *vc = [[NTESAudioChatViewController alloc] initWithCallee:self.session.sessionId];
-        [vc setUserMode:self.currentUserMode];
+        NTESAudioChatViewController *vc = [[NTESAudioChatViewController alloc] initWithCallee:self.samcSession.sessionId];
+        [vc setUserMode:self.samcSession.sessionMode];
         CATransition *transition = [CATransition animation];
         transition.duration = 0.25;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
@@ -244,8 +243,8 @@ NIMContactSelectDelegate>
 {
     if ([self checkCondition]) {
         //由于音视频聊天里头有音频和视频聊天界面的切换，直接用present的话页面过渡会不太自然，这里还是用push，然后做出present的效果
-        NTESVideoChatViewController *vc = [[NTESVideoChatViewController alloc] initWithCallee:self.session.sessionId];
-        [vc setUserMode:self.currentUserMode];
+        NTESVideoChatViewController *vc = [[NTESVideoChatViewController alloc] initWithCallee:self.samcSession.sessionId];
+        [vc setUserMode:self.samcSession.sessionMode];
         CATransition *transition = [CATransition animation];
         transition.duration = 0.25;
         transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
@@ -564,8 +563,7 @@ NIMContactSelectDelegate>
 
 #pragma mark - 导航按钮
 - (void)onTouchUpInfoBtn:(id)sender{
-    SAMCSession *samcsession = [SAMCSession session:self.session.sessionId type:self.session.sessionType mode:self.currentUserMode];
-    SAMCSessionCardViewController *vc = [[SAMCSessionCardViewController alloc] initWithSession:samcsession];
+    SAMCSessionCardViewController *vc = [[SAMCSessionCardViewController alloc] initWithSession:self.samcSession];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -575,12 +573,12 @@ NIMContactSelectDelegate>
     [sheet showInView:self.view completionHandler:^(NSInteger index) {
         switch (index) {
             case 0:{ //查看云端消息
-                NTESSessionRemoteHistoryViewController *vc = [[NTESSessionRemoteHistoryViewController alloc] initWithSession:self.session];
+                NTESSessionRemoteHistoryViewController *vc = [[NTESSessionRemoteHistoryViewController alloc] initWithSession:[self.samcSession nimSession]];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             case 1:{ //搜索本地消息
-                NTESSessionLocalHistoryViewController *vc = [[NTESSessionLocalHistoryViewController alloc] initWithSession:self.session];
+                NTESSessionLocalHistoryViewController *vc = [[NTESSessionLocalHistoryViewController alloc] initWithSession:[self.samcSession nimSession]];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -590,7 +588,7 @@ NIMContactSelectDelegate>
                 [sheet showInView:self.view completionHandler:^(NSInteger index) {
                     if (index == wSheet.destructiveButtonIndex) {
                         BOOL removeRecentSession = [NTESBundleSetting sharedConfig].removeSessionWheDeleteMessages;
-                        [[NIMSDK sharedSDK].conversationManager deleteAllmessagesInSession:self.session removeRecentSession:removeRecentSession];
+                        [[NIMSDK sharedSDK].conversationManager deleteAllmessagesInSession:[self.samcSession nimSession] removeRecentSession:removeRecentSession];
                     }
                 }];
                 break;
@@ -602,7 +600,7 @@ NIMContactSelectDelegate>
 }
 
 - (void)enterTeamCard:(id)sender{
-    NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.session.sessionId];
+    NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.samcSession.sessionId];
     UIViewController *vc;
     if (team.type == NIMTeamTypeNormal) {
         vc = [[NIMNormalTeamCardViewController alloc] initWithTeam:team];
@@ -718,7 +716,7 @@ NIMContactSelectDelegate>
         result = NO;
     }
     NSString *currentAccount = [[NIMSDK sharedSDK].loginManager currentAccount];
-    if ([currentAccount isEqualToString:self.session.sessionId]) {
+    if ([currentAccount isEqualToString:self.samcSession.sessionId]) {
         [self.view makeToast:@"不能和自己通话哦" duration:2.0 position:CSToastPositionCenter];
         result = NO;
     }
@@ -796,12 +794,10 @@ NIMContactSelectDelegate>
     [historyBtn sizeToFit];
     UIBarButtonItem *historyButtonItem = [[UIBarButtonItem alloc] initWithCustomView:historyBtn];
     
-    
-    
-    if (self.session.sessionType == NIMSessionTypeTeam) {
+    if (self.samcSession.sessionType == NIMSessionTypeTeam) {
         self.navigationItem.rightBarButtonItems  = @[enterTeamCardItem,historyButtonItem];
-    }else if(self.session.sessionType == NIMSessionTypeP2P){
-        if ([self.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
+    }else if(self.samcSession.sessionType == NIMSessionTypeP2P){
+        if ([self.samcSession.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
             self.navigationItem.rightBarButtonItems = @[historyButtonItem];
         }else{
             self.navigationItem.rightBarButtonItems = @[enterUInfoItem,historyButtonItem];

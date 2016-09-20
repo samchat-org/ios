@@ -67,6 +67,14 @@
     return _multicastDelegate;
 }
 
+#pragma mark - MessageDB
+- (void)insertMessages:(NSArray<SAMCMessage *> *)messages unreadCount:(NSInteger)unreadCount
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:messages unreadCount:unreadCount];
+    });
+}
+
 #pragma mark - NIMChatManagerDelegate
 - (void)willSendMessage:(NIMMessage *)message
 {
@@ -156,8 +164,8 @@
         }
     }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages sessionMode:SAMCUserModeTypeCustom unreadCount:customUnread];
-        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages sessionMode:SAMCUserModeTypeSP unreadCount:spUnread];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:customMessages unreadCount:customUnread];
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:spMessages unreadCount:spUnread];
         [self.multicastDelegate onRecvMessages:normalMessages];
     });
 }

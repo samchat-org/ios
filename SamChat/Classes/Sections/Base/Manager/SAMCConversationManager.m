@@ -56,15 +56,13 @@
     return [[SAMCDataBaseManager sharedManager].messageDB allSessionsOfUserMode:userMode];
 }
 
-- (void)fetchMessagesInSession:(NIMSession *)session
-                      userMode:(SAMCUserModeType)userMode
+- (void)fetchMessagesInSession:(SAMCSession *)session
                        message:(NIMMessage *)message
                          limit:(NSInteger)limit
-                        result:(void(^)(NSError *error, NSArray *messages))handler
+                        result:(void(^)(NSError *error, NSArray *messages))handler;
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray<NIMMessage *> *messages = [[SAMCDataBaseManager sharedManager].messageDB messagesInSession:session
-                                                                                                  userMode:userMode
                                                                                                    message:message
                                                                                                      limit:limit];
         if (handler) {
@@ -73,11 +71,10 @@
     });
 }
 
-- (void)markAllMessagesReadInSession:(NIMSession *)session userMode:(SAMCUserModeType)userMode
+- (void)markAllMessagesReadInSession:(SAMCSession *)session
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].messageDB markAllMessagesReadInSession:(NIMSession *)session
-                                                                           userMode:(SAMCUserModeType)userMode];
+        [[SAMCDataBaseManager sharedManager].messageDB markAllMessagesReadInSession:session];
     });
 }
 

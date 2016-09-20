@@ -22,8 +22,8 @@
 
 @property (nonatomic, strong, readonly) UIRefreshControl *refreshControl;
 
-@property (nonatomic, strong, readonly) NIMSession *session;
-@property (nonatomic, assign, readonly) SAMCUserModeType currentUserMode;
+@property (nonatomic, strong, readonly) SAMCSession *samcSession;
+
 @property (nonatomic, strong) NSNumber *questionId;
 
 @property (nonatomic, strong, readonly) NIMSessionViewLayoutManager *layoutManager;
