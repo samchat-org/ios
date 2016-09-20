@@ -282,7 +282,7 @@ NIMUserManagerDelegate>
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         // TODO: need check here, should insert message after sendMessage ok?
-        [[SAMCChatManager sharedManager] insertMessages:@[samcmessage] unreadCount:0];
+        [[SAMCConversationManager sharedManager] insertMessages:@[samcmessage] unreadCount:0];
         dispatch_async(dispatch_get_main_queue(), ^{
             NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];
             setting.roamingEnabled = false;

@@ -15,8 +15,6 @@
 
 + (instancetype)sharedManager;
 
-- (void)insertMessages:(NSArray<SAMCMessage *> *)messages unreadCount:(NSInteger)unreadCount;
-
 - (void)addDelegate:(id<SAMCChatManagerDelegate>)delegate;
 - (void)removeDelegate:(id<SAMCChatManagerDelegate>)delegate;
 

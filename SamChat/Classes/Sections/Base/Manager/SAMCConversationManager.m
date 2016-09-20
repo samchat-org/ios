@@ -78,6 +78,13 @@
     });
 }
 
+- (void)insertMessages:(NSArray<SAMCMessage *> *)messages unreadCount:(NSInteger)unreadCount
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].messageDB insertMessages:messages unreadCount:unreadCount];
+    });
+}
+
 - (void)deleteMessage:(SAMCMessage *)message
 {
     if (message.session.sessionType == NIMSessionTypeP2P) {

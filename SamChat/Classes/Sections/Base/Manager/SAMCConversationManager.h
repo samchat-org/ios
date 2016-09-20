@@ -29,6 +29,7 @@
 
 - (void)markAllMessagesReadInSession:(SAMCSession *)session;
 
+- (void)insertMessages:(NSArray<SAMCMessage *> *)messages unreadCount:(NSInteger)unreadCount;
 - (void)deleteMessage:(SAMCMessage *)message;
 
 - (void)deleteRecentSession:(SAMCRecentSession *)recentSession;
