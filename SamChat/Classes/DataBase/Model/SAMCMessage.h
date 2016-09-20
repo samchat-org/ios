@@ -18,6 +18,4 @@
 
 + (instancetype)message:(NSString *)messageId session:(SAMCSession *)session;
 
-- (void)loadNIMMessage;
-
 @end

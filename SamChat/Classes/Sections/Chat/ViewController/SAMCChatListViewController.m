@@ -179,8 +179,7 @@
     cell.nameLabel.text = [self nameForRecentSession:recent];
     [cell.avatarImageView setAvatarBySession:nimsession];
     [cell.nameLabel sizeToFit];
-//    cell.messageLabel.text  = [self contentForRecentSession:recent];
-    cell.messageLabel.text = [recent.lastMessage.nimMessage messageContent];
+    cell.messageLabel.text = recent.lastMessageContent;
     [cell.messageLabel sizeToFit];
     cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
     [cell.timeLabel sizeToFit];
@@ -210,10 +209,6 @@
     }
     for (SAMCRecentSession *recent in self.recentSessions) {
         if ([recentSession.session.sessionId isEqualToString:recent.session.sessionId]) {
-            if (recentSession.lastMessage == nil) {
-                // if local operation update recent session, then lastMessage remain unchanged
-                recentSession.lastMessage = recent.lastMessage;
-            }
             [self.recentSessions removeObject:recent];
             break;
         }
@@ -308,7 +303,7 @@
 
 - (NSString *)timestampDescriptionForRecentSession:(SAMCRecentSession *)recent
 {
-    return [NIMKitUtil showTime:recent.lastMessage.nimMessage.timestamp showDetail:NO];
+    return [NIMKitUtil showTime:recent.lastMessageTime showDetail:NO];
 }
 
 - (void)refreshSubview
@@ -327,7 +322,7 @@
     __block BOOL find = NO;
     [self.recentSessions enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         SAMCRecentSession *item = obj;
-        if (item.lastMessage.nimMessage.timestamp <= recentSession.lastMessage.nimMessage.timestamp) {
+        if (item.lastMessageTime <= recentSession.lastMessageTime) {
             *stop = YES;
             find  = YES;
             matchIdx = idx;
@@ -345,10 +340,10 @@
     [self.recentSessions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         SAMCRecentSession *item1 = obj1;
         SAMCRecentSession *item2 = obj2;
-        if (item1.lastMessage.nimMessage.timestamp < item2.lastMessage.nimMessage.timestamp) {
+        if (item1.lastMessageTime < item2.lastMessageTime) {
             return NSOrderedDescending;
         }
-        if (item1.lastMessage.nimMessage.timestamp > item2.lastMessage.nimMessage.timestamp) {
+        if (item1.lastMessageTime > item2.lastMessageTime) {
             return NSOrderedAscending;
         }
         return NSOrderedSame;

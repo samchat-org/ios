@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-// | name | session_id | session_mode | session_type | unread_count | tag |
 @interface SAMCSession : NSObject<NSCopying>
 
 @property (nonatomic, copy, readonly) NSString *tableName;

@@ -20,7 +20,9 @@
     DDLogDebug(@"SAMCMessageDB_2016082201");
     NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS session_table(name TEXT NOT NULL UNIQUE, \
                       session_id TEXT NOT NULL, session_mode INTEGER DEFAULT 0, \
-                      session_type INTEGER DEFAULT 0, last_msg_id text, unread_count INTEGER DEFAULT 0, tag INTEGER DEFAULT 0)",
+                      session_type INTEGER DEFAULT 0, last_msg_id TEXT, last_msg_state INTEGER, \
+                      last_msg_content TEXT, last_msg_time INTEGER, unread_count INTEGER DEFAULT 0, \
+                      tag INTEGER DEFAULT 0)",
                       @"CREATE INDEX IF NOT EXISTS session_id_index ON session_table(session_id)"];
     for (NSString *sql in sqls) {
         if (![db executeUpdate:sql]) {

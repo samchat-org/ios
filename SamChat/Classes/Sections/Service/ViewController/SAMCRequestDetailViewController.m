@@ -130,7 +130,7 @@
     cell.nameLabel.text = [self nameForRecentSession:recent];
     [cell.avatarImageView setAvatarBySession:nimsession];
     [cell.nameLabel sizeToFit];
-    cell.messageLabel.text = [recent.lastMessage.nimMessage messageContent];
+    cell.messageLabel.text = recent.lastMessageContent;
     [cell.messageLabel sizeToFit];
     cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
     [cell.timeLabel sizeToFit];
@@ -150,10 +150,10 @@
     [self.answerSessions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         SAMCRecentSession *item1 = obj1;
         SAMCRecentSession *item2 = obj2;
-        if (item1.lastMessage.nimMessage.timestamp < item2.lastMessage.nimMessage.timestamp) {
+        if (item1.lastMessageTime < item2.lastMessageTime) {
             return NSOrderedDescending;
         }
-        if (item1.lastMessage.nimMessage.timestamp > item2.lastMessage.nimMessage.timestamp) {
+        if (item1.lastMessageTime > item2.lastMessageTime) {
             return NSOrderedAscending;
         }
         return NSOrderedSame;
@@ -191,7 +191,7 @@
 
 - (NSString *)timestampDescriptionForRecentSession:(SAMCRecentSession *)recent
 {
-    return [NIMKitUtil showTime:recent.lastMessage.nimMessage.timestamp showDetail:NO];
+    return [NIMKitUtil showTime:recent.lastMessageTime showDetail:NO];
 }
 
 #pragma mark - SAMCQuestionManagerDelegate

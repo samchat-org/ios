@@ -19,12 +19,18 @@
 @implementation SAMCRecentSession
 
 + (instancetype)recentSession:(SAMCSession *)session
-                  lastMessage:(SAMCMessage *)message
+                lastMessageId:(NSString *)messageId
+                        state:(NIMMessageDeliveryState)messageState
+                      content:(NSString *)messageContent
+                         time:(NSTimeInterval)messageTime
                   unreadCount:(NSInteger)count
 {
     SAMCRecentSession *recentSession = [[SAMCRecentSession alloc] init];
     recentSession.session = session;
-    recentSession.lastMessage = message;
+    recentSession.lastMessageId = messageId;
+    recentSession.lastMessageDeliveryState = messageState;
+    recentSession.lastMessageContent = messageContent;
+    recentSession.lastMessageTime = messageTime;
     recentSession.unreadCount = count;
     return recentSession;
 }
