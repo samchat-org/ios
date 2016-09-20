@@ -11,6 +11,7 @@
 #import "SAMCQuestionManager.h"
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
+#import "SAMCResourceManager.h"
 
 @interface SAMCNewRequestViewController ()
 
@@ -66,6 +67,7 @@
     self.locationTextField.placeholder = @"Current location";
 //    self.locationTextField.layer.cornerRadius = 6.0f;
     self.locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.locationTextField addTarget:self action:@selector(locationTextFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
     [self.view addSubview:self.locationTextField];
     
     self.popularTabeView = [[UITableView alloc] init];
@@ -118,6 +120,18 @@
             return;
         }
         [wself.view makeToast:@"send request successful" duration:2.0f position:CSToastPositionCenter];
+    }];
+}
+
+- (void)locationTextFieldDidChanged:(id)sender
+{
+    NSString *key = self.locationTextField.text;
+    if ([key length] <= 0) {
+        // TODO: clear ui
+        return;
+    }
+    [[SAMCResourceManager sharedManager] getPlacesInfo:key completion:^(NSArray<SAMCPlaceInfo *> *places, NSError *error) {
+        DDLogDebug(@"places info: %@", places);
     }];
 }
 

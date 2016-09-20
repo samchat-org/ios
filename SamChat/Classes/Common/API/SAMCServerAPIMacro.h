@@ -117,6 +117,7 @@
 #define SAMC_THUMB                      @"thumb"
 #define SAMC_DESCRIPTION                @"description"
 #define SAMC_PLACE_ID                   @"place_id"
+#define SAMC_PLACES_INFO                @"places_info"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

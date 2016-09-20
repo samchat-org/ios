@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCPlaceInfo.h"
 
 @interface SAMCResourceManager : NSObject
 
@@ -17,5 +18,8 @@
    contentType:(NSString *)contentType
       progress:(void(^)(CGFloat progress))progressBlock
     completion:(void(^)(NSString *urlString, NSError *error))completionBlock;
+
+- (void)getPlacesInfo:(NSString *)key
+           completion:(void(^)(NSArray<SAMCPlaceInfo *> *places, NSError *error))completion;
 
 @end
