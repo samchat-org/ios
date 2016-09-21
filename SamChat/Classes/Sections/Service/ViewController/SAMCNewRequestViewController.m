@@ -117,7 +117,9 @@
 {
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
-    NSDictionary *location = @{SAMC_ADDRESS:self.locationTextField.text}; // TODO: change to real one
+    // TODO: add longitude & latitude to location
+    NSDictionary *location = @{SAMC_PLACE_ID:self.selectedPlaceInfo.placeId,
+                               SAMC_ADDRESS:self.selectedPlaceInfo.desc};
     [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
