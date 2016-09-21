@@ -34,8 +34,8 @@
 #define SAMC_URL_PROFILE_AVATAR_UPDATE              SAMC_API_PREFIX@"api_1.0_profile_avatarUpdate.do"
 #define SAMC_URL_PROFILE_GET_PLACESINFO             SAMC_API_PREFIX@"api_1.0_profile_getPlacesInfoRequest.do"
 
-#define SAMC_AWSS3_URLPREFIX            @"https://s3-us-west-2.amazonaws.com/samchat-test/"
-#define SAMC_AWSS3_BUCKETNAME           @"samchat-test"
+#define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
+#define SAMC_AWSS3_BUCKETNAME           @"storage-test.samchat.com"
 #define SAMC_AWSS3_ADV_ORG_PATH         @"advertisement/origin/"
 #define SAMC_AWSS3_AVATAR_ORG_PATH      @"avatar/origin/"
 
