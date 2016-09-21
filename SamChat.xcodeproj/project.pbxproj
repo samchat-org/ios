@@ -2856,7 +2856,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.gknows.samchat;
 				PRODUCT_NAME = SamChat;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ec305154-4e06-4df6-b10e-f20284515faf";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
@@ -2897,7 +2897,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.gknows.samchat;
 				PRODUCT_NAME = SamChat;
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "ec305154-4e06-4df6-b10e-f20284515faf";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};
