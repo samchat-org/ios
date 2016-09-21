@@ -118,8 +118,8 @@
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
     // TODO: add longitude & latitude to location
-    NSDictionary *location = @{SAMC_PLACE_ID:self.selectedPlaceInfo.placeId,
-                               SAMC_ADDRESS:self.selectedPlaceInfo.desc};
+    NSDictionary *location = @{SAMC_PLACE_ID:self.selectedPlaceInfo.placeId ?:@"",
+                               SAMC_ADDRESS:self.selectedPlaceInfo.desc ? :@""};
     [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
