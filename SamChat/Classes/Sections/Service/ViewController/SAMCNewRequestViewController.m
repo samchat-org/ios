@@ -13,13 +13,17 @@
 #import "UIView+Toast.h"
 #import "SAMCResourceManager.h"
 
-@interface SAMCNewRequestViewController ()
+@interface SAMCNewRequestViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UILabel *requestLabel;
 @property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UITextField *requestTextField;
 @property (nonatomic, strong) UITextField *locationTextField;
-@property (nonatomic, strong) UITableView *popularTabeView;
+@property (nonatomic, strong) UITableView *tableView;
+
+@property (nonatomic, strong) NSMutableArray *data;
+
+@property (nonatomic, strong) SAMCPlaceInfo *selectedPlaceInfo;
 
 @end
 
@@ -27,6 +31,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.data = [[NSMutableArray alloc] init];
+    // TODO: init default selected place info
     [self setupSubviews];
 }
 
@@ -70,10 +76,12 @@
     [self.locationTextField addTarget:self action:@selector(locationTextFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
     [self.view addSubview:self.locationTextField];
     
-    self.popularTabeView = [[UITableView alloc] init];
-    self.popularTabeView.backgroundColor = [UIColor yellowColor];
-    self.popularTabeView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.popularTabeView];
+    self.tableView = [[UITableView alloc] init];
+    self.tableView.backgroundColor = [UIColor yellowColor];
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_requestLabel][_sendButton(120)]-20-|"
                                                                       options:0
@@ -94,15 +102,15 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_locationTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_popularTabeView]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_tableView]-20-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_popularTabeView)]];
-//    NSString *visualFomat = [NSString stringWithFormat:@"V:|-%f-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_popularTabeView]|", SAMCTopBarHeight+10];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_popularTabeView]|"
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+//    NSString *visualFomat = [NSString stringWithFormat:@"V:|-%f-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_tableView]|", SAMCTopBarHeight+10];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_tableView]|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_popularTabeView)]];
+                                                                        views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_tableView)]];
 }
 
 - (void)sendRequest:(UIButton *)sender
@@ -130,9 +138,59 @@
         // TODO: clear ui
         return;
     }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(getPlacesInfo:) withObject:key afterDelay:0.5];
+}
+
+- (void)getPlacesInfo:(NSString *)key
+{
+    DDLogDebug(@"getPlacesInfo: %@", key);
+    __weak typeof(self) wself = self;
     [[SAMCResourceManager sharedManager] getPlacesInfo:key completion:^(NSArray<SAMCPlaceInfo *> *places, NSError *error) {
         DDLogDebug(@"places info: %@", places);
+        [wself.data removeAllObjects];
+        [wself.data addObjectsFromArray:places];
+        [wself.tableView reloadData];
     }];
+}
+
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.data count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * cellId = @"SAMCSLocationCellId";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    SAMCPlaceInfo *placeInfo = self.data[indexPath.row];
+    cell.textLabel.text = placeInfo.desc;
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.selectedPlaceInfo = self.data[indexPath.row];
+    self.locationTextField.text = self.selectedPlaceInfo.desc;
+    [self.data removeAllObjects];
+    [self.tableView reloadData];
+    [self.requestTextField becomeFirstResponder];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40.f;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
 }
 
 @end
