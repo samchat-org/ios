@@ -227,7 +227,9 @@
             msgContent = [customObject.attachment encodeAttachment];
         }
         msgContent = msgContent ?:@"";
-        [db executeUpdate:sql, @(message.messageType), message.from, message.messageId ,@(message.serverId), message.text, msgContent, @(message.deliveryState),@(message.timestamp)];
+        // init delivery state to failed incase app crash mess the state
+        NIMMessageDeliveryState state = NIMMessageDeliveryStateFailed;
+        [db executeUpdate:sql, @(message.messageType), message.from, message.messageId ,@(message.serverId), message.text, msgContent, @(state),@(message.timestamp)];
         
         // if it's not received message, need not update session list
         if (message.publicSession.isOutgoing) {

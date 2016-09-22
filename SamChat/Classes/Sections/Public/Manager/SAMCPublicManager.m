@@ -23,6 +23,8 @@
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCPublicManagerDelegate> *publicDelegate;
 
+@property (nonatomic, strong) NSMutableArray *sendingMessages;
+
 @end
 
 @implementation SAMCPublicManager
@@ -40,6 +42,7 @@
 - (instancetype)init
 {
     if (self = [super init]) {
+        _sendingMessages = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -151,13 +154,30 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                          limit:(NSInteger)limit
                         result:(void(^)(NSError *error, NSArray<SAMCPublicMessage *> *messages))handler
 {
+    __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSArray<SAMCPublicMessage *> *messages = [[SAMCDataBaseManager sharedManager].publicDB messagesInSession:session
                                                                                                          message:message
                                                                                                            limit:limit];
-        if (handler) {
-            handler(nil, messages);
-        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (session.isOutgoing && [messages count]) {
+                // as outgoing message init to failed in db, should check if it's sending after query from db
+                // and set the deliveryState to NIMMessageDeliveryStateDelivering if it's sending
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    for (SAMCPublicMessage *obj in messages) {
+                        if ([wself.sendingMessages count] <= 0) {
+                            break;
+                        }
+                        if ([wself.sendingMessages containsObject:obj.messageId]) {
+                            obj.deliveryState = NIMMessageDeliveryStateDelivering;
+                        }
+                    }
+                });
+            }
+            if (handler) {
+                handler(nil, messages);
+            }
+        });
     });
 }
 
@@ -187,6 +207,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut
 {
     [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+    [self.sendingMessages addObject:message.messageId];
     if (message.messageType == NIMMessageTypeCustom) {
         [self sendPublicImageMessage:message];
     } else if(message.messageType == NIMMessageTypeText) {
@@ -247,6 +268,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
             if (error) {
                 message.deliveryState = NIMMessageDeliveryStateFailed;
                 [wself.publicDelegate sendMessage:message didCompleteWithError:error];
+                [wself.sendingMessages removeObject:message.messageId];
                 [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
             } else {
                 attachment.url = [NSString stringWithFormat:@"%@%@%@",SAMC_AWSS3_URLPREFIX,SAMC_AWSS3_ADV_ORG_PATH,[attachment filename]];
@@ -267,6 +289,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 message.deliveryState = NIMMessageDeliveryStateFailed;
                 [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
                 [wself.publicDelegate sendMessage:message didCompleteWithError:task.error];
+                [wself.sendingMessages removeObject:message.messageId];
             });
         }
         if (task.result) {
@@ -291,6 +314,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         DDLogDebug(@"sendPublicMessage success: %@", responseObject);
         NSError *sendError = nil;
@@ -312,13 +336,15 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
             sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError];
         }
         [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
-        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
+        [wself.publicDelegate sendMessage:message didCompleteWithError:sendError];
+        [wself.sendingMessages removeObject:message.messageId];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         DDLogError(@"sendPublicMessage failed: %@", error);
         message.deliveryState = NIMMessageDeliveryStateFailed;
         NSError *sendError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable];
         [[SAMCDataBaseManager sharedManager].publicDB updateMessage:message];
-        [self.publicDelegate sendMessage:message didCompleteWithError:sendError];
+        [wself.publicDelegate sendMessage:message didCompleteWithError:sendError];
+        [wself.sendingMessages removeObject:message.messageId];
     }];
 }
 
