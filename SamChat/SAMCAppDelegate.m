@@ -224,6 +224,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)doLogout
 {
+    [GeTuiSdk unbindAlias:[[[NTESLoginManager sharedManager] currentLoginData] getuiAlias]];
     [[SAMCPushManager sharedManager] close];
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
