@@ -138,6 +138,15 @@
                 [delegateNodes removeObjectAtIndex:(i-1)];
             }
         }
+        // SAMC_BEGIN
+        else if (nodeDelegate == nil) {
+            // if you remove the delegate in the delegate's delloc function
+            // access to node.delegate (a weak point) is done through a ARC runtime function
+            // that returns nil as the deallocation has already begun.
+            // this case, the nodeDelegate is nil
+            [delegateNodes removeObjectAtIndex:(i-1)];
+        }
+        // SAMC_END
     }
 }
 
