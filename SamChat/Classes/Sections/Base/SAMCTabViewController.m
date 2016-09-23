@@ -8,9 +8,7 @@
 
 #import "SAMCTabViewController.h"
 #import "UIBarButtonItem+Badge.h"
-
-NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotification";
-NSString * const SAMCSwitchToUserModeKey = @"SAMCSwitchToUserModeKey";
+#import "SVProgressHUD.h"
 
 @interface SAMCTabViewController ()
 
@@ -37,34 +35,26 @@ NSString * const SAMCSwitchToUserModeKey = @"SAMCSwitchToUserModeKey";
     self.navigationItem.leftBarButtonItem = navLeftButton;
     
 //    self.navigationItem.leftBarButtonItem.badgeValue = @"1";
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(switchToUserMode:)
-                                                 name:SAMCUserModeSwitchNotification object:nil];
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)touchSwitchUserMode:(id)sender
 {
-    NSDictionary *userInfo;
+    self.navigationItem.leftBarButtonItem.enabled = false;
+    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        userInfo = @{SAMCSwitchToUserModeKey : @(SAMCUserModeTypeSP)};
         self.currentUserMode = SAMCUserModeTypeSP;
     } else {
-        userInfo = @{SAMCSwitchToUserModeKey : @(SAMCUserModeTypeCustom)};
         self.currentUserMode = SAMCUserModeTypeCustom;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
-                                                        object:nil
-                                                      userInfo:userInfo];
-}
-
-- (void)switchToUserMode:(NSNotification *)notification
-{
+    __weak typeof(self) wself = self;
+    [self.delegate switchToUserMode:self.currentUserMode completion:^{
+        wself.navigationItem.leftBarButtonItem.enabled = true;
+        [SVProgressHUD dismiss];
+    }];
 }
 
 #pragma mark - currentUserMode

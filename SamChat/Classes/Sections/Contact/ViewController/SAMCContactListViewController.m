@@ -105,8 +105,8 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 - (void)switchToUserMode:(NSNotification *)notification
 {
-    [self prepareData];
-    [self.tableView reloadData];
+//    [self prepareData];
+//    [self.tableView reloadData];
 }
 
 - (void)setUpNavItem{

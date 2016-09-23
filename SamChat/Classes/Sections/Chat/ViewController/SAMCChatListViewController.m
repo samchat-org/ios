@@ -110,13 +110,6 @@
     [self refreshSubview];
 }
 
-- (void)switchToUserMode:(NSNotification *)notification
-{
-    _recentSessions = [self allCurrentUserModeRecentSessions];
-    [self reload];
-    [self sort];
-}
-
 - (void)reload
 {
     if (!self.recentSessions.count) {

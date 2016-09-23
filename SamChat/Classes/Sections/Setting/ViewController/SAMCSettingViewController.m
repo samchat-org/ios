@@ -48,17 +48,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)switchToUserMode:(NSNotification *)notification
-{
-    SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
-    if (mode == SAMCUserModeTypeCustom) {
-        [self prepareCustomModeData];
-    } else {
-        [self prepareSPModeData];
-    }
-    [self.tableView reloadData];
-}
-
 - (void)setupSubviews
 {
     self.navigationItem.title = @"Settings";

@@ -32,16 +32,6 @@
     }
 }
 
-- (void)switchToUserMode:(NSNotification *)notification
-{
-    SAMCUserModeType mode = [[[notification userInfo] objectForKey:SAMCSwitchToUserModeKey] integerValue];
-    if (mode == SAMCUserModeTypeCustom) {
-        [self setupCustomModeViews];
-    } else {
-        [self setupSPModeViews];
-    }
-}
-
 - (void)setupCustomModeViews
 {
     if (self.publicMessageVC) {

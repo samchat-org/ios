@@ -9,10 +9,15 @@
 #import <UIKit/UIKit.h>
 #import "SAMCPreferenceManager.h"
 
-extern NSString * const SAMCSwitchToUserModeKey;
+@protocol SAMCSwitchUserModeDelegate <NSObject>
+
+- (void)switchToUserMode:(SAMCUserModeType)userMode completion:(void(^)())completion;
+
+@end
 
 @interface SAMCTabViewController : UIViewController
 
 @property (nonatomic, assign) SAMCUserModeType currentUserMode;
+@property (nonatomic, weak) id<SAMCSwitchUserModeDelegate> delegate;
 
 @end
