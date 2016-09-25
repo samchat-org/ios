@@ -199,10 +199,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)setupLoginViewController
 {
-    [SAMCPreferenceManager sharedManager].currentUserMode = SAMCUserModeTypeCustom;
-    [SAMCPreferenceManager sharedManager].followListSyncFlag = @(NO);
-    [SAMCPreferenceManager sharedManager].contactListCustomerSyncFlag = @(NO);
-    [SAMCPreferenceManager sharedManager].contactListServicerSyncFlag = @(NO);
+    [[SAMCPreferenceManager sharedManager] reset];
     SAMCLoginViewController *vc = [[SAMCLoginViewController alloc] init];
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.navigationBar.translucent = NO;

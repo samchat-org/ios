@@ -15,7 +15,9 @@
 @property (nonatomic, strong) NSNumber *followListSyncFlag;
 @property (nonatomic, strong) NSNumber *contactListCustomerSyncFlag;
 @property (nonatomic, strong) NSNumber *contactListServicerSyncFlag;
+@property (nonatomic, strong) NSNumber *sendClientIdFlag;
 
 + (instancetype)sharedManager;
+- (void)reset;
 
 @end

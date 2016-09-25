@@ -13,6 +13,7 @@
 #define SAMC_FOLLOWLISTSYNCFLAG_KEY     @"samc_followlistsyncflag_key"
 #define SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY    @"samc_contactlistcustomersyncflag_key"
 #define SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY    @"samc_contactlistservicersyncflag_key"
+#define SAMC_SENDCLIENTIDFLAG_KEY               @"samc_sendclientidflag_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -27,6 +28,7 @@
 @synthesize followListSyncFlag = _followListSyncFlag;
 @synthesize contactListCustomerSyncFlag = _contactListCustomerSyncFlag;
 @synthesize contactListServicerSyncFlag = _contactListServicerSyncFlag;
+@synthesize sendClientIdFlag = _sendClientIdFlag;
 
 + (instancetype)sharedManager
 {
@@ -45,6 +47,24 @@
         _syncQueue = dispatch_queue_create("com.github.gknows.samchat.preferenceQueue", DISPATCH_QUEUE_CONCURRENT);
     }
     return self;
+}
+
+- (void)reset
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _currentUserMode = @(SAMCUserModeTypeCustom);
+        [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
+        _followListSyncFlag = @(NO);
+        [[NSUserDefaults standardUserDefaults] setValue:_followListSyncFlag forKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
+        _contactListCustomerSyncFlag = @(NO);
+        [[NSUserDefaults standardUserDefaults] setValue:_contactListCustomerSyncFlag forKey:SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY];
+        _contactListServicerSyncFlag = @(NO);
+        [[NSUserDefaults standardUserDefaults] setValue:_contactListServicerSyncFlag forKey:SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY];
+        _getuiBindedAlias = @"";
+        [[NSUserDefaults standardUserDefaults] setValue:_getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
+        _sendClientIdFlag = @(NO);
+        [[NSUserDefaults standardUserDefaults] setValue:_sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
+    });
 }
 
 #pragma mark - currentUserMode
@@ -153,6 +173,28 @@
     dispatch_barrier_async(_syncQueue, ^{
         _contactListServicerSyncFlag = contactListServicerSyncFlag;
         [[NSUserDefaults standardUserDefaults] setValue:contactListServicerSyncFlag forKey:SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY];
+    });
+}
+
+#pragma mark - sendClientIdFlag
+- (NSNumber *)sendClientIdFlag
+{
+    __block NSNumber *flag;
+    dispatch_sync(_syncQueue, ^{
+        if (_sendClientIdFlag == nil) {
+            _sendClientIdFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_SENDCLIENTIDFLAG_KEY];
+            _sendClientIdFlag = _sendClientIdFlag ?:@(NO);
+        }
+        flag = _sendClientIdFlag;
+    });
+    return flag;
+}
+
+- (void)setSendClientIdFlag:(NSNumber *)sendClientIdFlag
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _sendClientIdFlag = sendClientIdFlag;
+        [[NSUserDefaults standardUserDefaults] setValue:sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
     });
 }
 

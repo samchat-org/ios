@@ -78,4 +78,6 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 
 + (NSDictionary *)getPlacesInfo:(NSString *)key;
 
++ (NSDictionary *)sendClientId:(NSString *)clientId;
+
 @end

@@ -15,6 +15,11 @@
 #import "SAMCAccountManager.h"
 #import "SAMCPublicManager.h"
 #import "SAMCImageAttachment.h"
+#import "SAMCServerAPIMacro.h"
+#import "AFNetworking.h"
+#import "SAMCDataPostSerializer.h"
+#import "SAMCServerAPI.h"
+#import "SAMCServerErrorHelper.h"
 
 #define SAMCGeTuiAppId        @"e56px9TMay6OJRDrwE21P9"
 #define SAMCGeTuiAppKey       @"PUnNqMKGxaAdRoWFDmaTX5"
@@ -47,11 +52,6 @@
 - (void)open
 {
     [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
-    NSString *bindedAlias = [[SAMCPreferenceManager sharedManager] getuiBindedAlias];
-    NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
-    if ((bindedAlias == nil) || (![bindedAlias isEqualToString:getuiAlias])) {
-        [GeTuiSdk bindAlias:getuiAlias];
-    }
 }
 
 - (void)close
@@ -64,6 +64,15 @@
 - (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
     // [4-EXT-1]: 个推SDK已注册，返回clientId
     DDLogDebug(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
+    NSString *bindedAlias = [[SAMCPreferenceManager sharedManager] getuiBindedAlias];
+    NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
+    if (![bindedAlias isEqualToString:getuiAlias]) {
+        [GeTuiSdk bindAlias:getuiAlias];
+        [SAMCPreferenceManager sharedManager].getuiBindedAlias = getuiAlias;
+    }
+    if (![[[SAMCPreferenceManager sharedManager] sendClientIdFlag] isEqual:@(YES)]) {
+        [self sendClientId:clientId];
+    }
 }
 
 /** SDK遇到错误回调 */
@@ -109,6 +118,44 @@
         return;
     }
     DDLogDebug(@"\n>>>[GexinSdk SetModeOff]:%@\n\n", isModeOff ? @"开启" : @"关闭");
+}
+
+- (void)sendClientId:(NSString *)clientId
+{
+    DDLogDebug(@"sendClientId");
+    __weak typeof(self) wself = self;
+    [self sendClientId:clientId completion:^(NSError *error) {
+        if (error) {
+            [wself performSelector:@selector(sendClientId:) withObject:clientId afterDelay:10.0];
+        } else {
+            [SAMCPreferenceManager sharedManager].sendClientIdFlag = @(YES);
+        }
+    }];
+}
+
+- (void)sendClientId:(NSString *)clientId
+          completion:(void(^)(NSError *error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI sendClientId:clientId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_PROFILE_SEND_CLIENTID parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        DDLogDebug(@"sendClientId result:%@", responseObject);
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode =  [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
 }
 
 #pragma mark - Private

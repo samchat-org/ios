@@ -576,6 +576,25 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "send-clientId"
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//        “client_id”:”1231”
+//    } 
+//}
++ (NSDictionary *)sendClientId:(NSString *)clientId
+{
+    clientId = clientId ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_SEND_CLIENTID,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_CLIENT_ID:clientId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {
