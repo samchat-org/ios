@@ -94,7 +94,7 @@
 {
     __block NSString *alias;
     dispatch_sync(_syncQueue, ^{
-        if (_getuiBindedAlias) {
+        if (_getuiBindedAlias == nil) {
             _getuiBindedAlias = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_GETUIBINDEDALIAS_KEY];
         }
         alias = _getuiBindedAlias;
