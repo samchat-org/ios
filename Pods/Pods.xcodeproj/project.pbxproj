@@ -294,6 +294,19 @@
 			<key>isa</key>
 			<string>PBXBuildFile</string>
 		</dict>
+		<key>07E3236ED178ABA35FFB51F1395B8DCF</key>
+		<dict>
+			<key>includeInIndex</key>
+			<string>1</string>
+			<key>isa</key>
+			<string>PBXFileReference</string>
+			<key>lastKnownFileType</key>
+			<string>archive.ar</string>
+			<key>path</key>
+			<string>libGeTuiSdk-1.5.0-noidfa.a</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>08689EEF154465C3AF815F2EF4711675</key>
 		<dict>
 			<key>isa</key>
@@ -6405,6 +6418,19 @@
 				</array>
 			</dict>
 		</dict>
+		<key>821CE80B960BD6173A8944146508111E</key>
+		<dict>
+			<key>children</key>
+			<array>
+				<string>07E3236ED178ABA35FFB51F1395B8DCF</string>
+			</array>
+			<key>isa</key>
+			<string>PBXGroup</string>
+			<key>name</key>
+			<string>Frameworks</string>
+			<key>sourceTree</key>
+			<string>&lt;group&gt;</string>
+		</dict>
 		<key>8246B0417B2E32728AD1ABAE1558E3C4</key>
 		<dict>
 			<key>fileRef</key>
@@ -6431,19 +6457,6 @@
 			<string>Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS9.0.sdk/System/Library/Frameworks/UIKit.framework</string>
 			<key>sourceTree</key>
 			<string>DEVELOPER_DIR</string>
-		</dict>
-		<key>827730C3984EBA5BF17513FC2C80EE86</key>
-		<dict>
-			<key>includeInIndex</key>
-			<string>1</string>
-			<key>isa</key>
-			<string>PBXFileReference</string>
-			<key>lastKnownFileType</key>
-			<string>archive.ar</string>
-			<key>path</key>
-			<string>libGeTuiSdk-1.4.3-noidfa.a</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
 		</dict>
 		<key>829BE717916597DADF8D777B6ACD87AC</key>
 		<dict>
@@ -8393,7 +8406,7 @@
 			<key>children</key>
 			<array>
 				<string>7BAC68F238DFE0D6CF16947CA5A29523</string>
-				<string>D2DFB1094131183A472E9D6DDBDDB43A</string>
+				<string>821CE80B960BD6173A8944146508111E</string>
 			</array>
 			<key>isa</key>
 			<string>PBXGroup</string>
@@ -10658,19 +10671,6 @@
 					<string>Public</string>
 				</array>
 			</dict>
-		</dict>
-		<key>D2DFB1094131183A472E9D6DDBDDB43A</key>
-		<dict>
-			<key>children</key>
-			<array>
-				<string>827730C3984EBA5BF17513FC2C80EE86</string>
-			</array>
-			<key>isa</key>
-			<string>PBXGroup</string>
-			<key>name</key>
-			<string>Frameworks</string>
-			<key>sourceTree</key>
-			<string>&lt;group&gt;</string>
 		</dict>
 		<key>D31FEE51AF4BE2A6CC059F80B983CD3B</key>
 		<dict>

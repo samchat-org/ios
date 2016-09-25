@@ -27,6 +27,8 @@
 
 @interface SAMCPushManager ()<GeTuiSdkDelegate>
 
+@property (nonatomic, strong) NSString *clientId;
+
 @end
 
 @implementation SAMCPushManager
@@ -51,11 +53,18 @@
 
 - (void)open
 {
+    // [ GTSdk ]：是否允许APP后台运行
+    [GeTuiSdk runBackgroundEnable:YES];
+    // [ GTSdk ]：是否运行电子围栏Lbs功能和是否SDK主动请求用户定位
+    [GeTuiSdk lbsLocationEnable:NO andUserVerify:NO];
+    // [ GTSdk ]：使用APPID/APPKEY/APPSECRENT创建个推实例
     [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
 }
 
 - (void)close
 {
+    NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
+    [GeTuiSdk unbindAlias:getuiAlias andSequenceNum:@"123456"];
     [GeTuiSdk destroy];
 }
 
@@ -64,14 +73,12 @@
 - (void)GeTuiSdkDidRegisterClient:(NSString *)clientId {
     // [4-EXT-1]: 个推SDK已注册，返回clientId
     DDLogDebug(@"\n>>>[GeTuiSdk RegisterClient]:%@\n\n", clientId);
+    self.clientId = clientId;
     NSString *bindedAlias = [[SAMCPreferenceManager sharedManager] getuiBindedAlias];
     NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
     if (![bindedAlias isEqualToString:getuiAlias]) {
-        [GeTuiSdk bindAlias:getuiAlias];
-        [SAMCPreferenceManager sharedManager].getuiBindedAlias = getuiAlias;
-    }
-    if (![[[SAMCPreferenceManager sharedManager] sendClientIdFlag] isEqual:@(YES)]) {
-        [self sendClientId:clientId];
+        DDLogDebug(@"bindAlias:%@", getuiAlias);
+        [GeTuiSdk bindAlias:getuiAlias andSequenceNum:@"123456"];
     }
 }
 
@@ -120,6 +127,24 @@
     DDLogDebug(@"\n>>>[GexinSdk SetModeOff]:%@\n\n", isModeOff ? @"开启" : @"关闭");
 }
 
+- (void)GeTuiSdkDidAliasAction:(NSString *)action
+                        result:(BOOL)isSuccess
+                   sequenceNum:(NSString *)aSn
+                         error:(NSError *)aError;
+{
+    if ([action isEqualToString:kGtResponseBindType]) {
+        DDLogDebug(@"\n>>>[GexinSdk GeTuiSdkDidAliasAction]:%@,result:%@,sequenceNum:%@,error:%@\n\n", action, isSuccess?@"成功":@"失败",aSn, [aError localizedDescription]);
+        if (!aError) {
+            NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
+            [SAMCPreferenceManager sharedManager].getuiBindedAlias = getuiAlias;
+            if (![[[SAMCPreferenceManager sharedManager] sendClientIdFlag] isEqual:@(YES)]) {
+                [self sendClientId:self.clientId];
+            }
+        }
+    }
+}
+
+#pragma mark -
 - (void)sendClientId:(NSString *)clientId
 {
     DDLogDebug(@"sendClientId");
