@@ -36,7 +36,7 @@
 #define SAMC_URL_PROFILE_SEND_CLIENTID              SAMC_API_PREFIX@"api_1.0_profile_sendClientId.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
-#define SAMC_AWSS3_BUCKETNAME           @"storage-test.samchat.com"
+#define SAMC_AWSS3_BUCKETNAME           @"samchat-test"
 #define SAMC_AWSS3_ADV_ORG_PATH         @"advertisement/origin/"
 #define SAMC_AWSS3_AVATAR_ORG_PATH      @"avatar/origin/"
 
