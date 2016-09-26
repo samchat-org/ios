@@ -35,7 +35,8 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorUnfollowed = -507, // 还未关注此商家
     SAMCServerErrorContactNotAdded = -508, // 还未添加此联系人
     SAMCServerErrorQuestionTooOften = -509, // 发送问题过于频繁
-    SAMCServerErrorIamNotSP = -510, // 自己不是商家用户
+    SAMCServerErrorCustomerCannotAddCustomer = -510, // 普通用户无法添加普通用户
+    SAMCServerErrorCustomerCannotDoThis = -511, // 普通用户无法添加商户联系人列表
     
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,

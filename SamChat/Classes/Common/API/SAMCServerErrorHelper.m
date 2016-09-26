@@ -92,8 +92,11 @@
         case SAMCServerErrorQuestionTooOften: // 发送问题过于频繁
             localizedDescription = @"发送问题过于频繁";
             break;
-        case SAMCServerErrorIamNotSP: // 自己不是商家用户
-            localizedDescription = @"还未升级为商家用户";
+        case SAMCServerErrorCustomerCannotAddCustomer: // 普通用户无法添加普通用户
+            localizedDescription = @"普通用户无法添加普通用户";
+            break;
+        case SAMCServerErrorCustomerCannotDoThis: // 普通用户无法添加商户联系人列表
+            localizedDescription = @"普通用户无法添加商户联系人列表";
             break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
