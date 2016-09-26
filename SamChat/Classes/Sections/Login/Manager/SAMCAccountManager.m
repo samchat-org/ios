@@ -123,7 +123,16 @@
             } else {
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
-                [self loginNetEase:userInfo token:token completion:completion];
+                SAMCUser *user = [[SAMCUser alloc] init];
+                user.userId = [userInfo[SAMC_ID] stringValue];
+                SAMCUserInfo *info = [[SAMCUserInfo alloc] init];
+                info.countryCode = countryCode;
+                info.usertype = @(SAMCUserTypeCustom);
+                info.cellPhone = cellPhone;
+                info.username = username;
+                info.lastupdate = userInfo[SAMC_LASTUPDATE];
+                user.userInfo = info;
+                [self loginNetEase:user token:token completion:completion];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -183,7 +192,8 @@
             } else {
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
-                [self loginNetEase:userInfo token:token completion:completion];
+                SAMCUser *user = [SAMCUser userFromDict:userInfo];
+                [self loginNetEase:user token:token completion:completion];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
@@ -193,15 +203,15 @@
     }];
 }
 
-- (void)loginNetEase:(NSDictionary *)userInfo
+- (void)loginNetEase:(SAMCUser *)user
                token:(NSString *)token
           completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *sdkData = [[LoginData alloc] init];
-    sdkData.username = userInfo[SAMC_USERNAME] ?:@"";
+    sdkData.username = user.userInfo.username;
     // netease account is the id of samchat
-    sdkData.account = [NSString stringWithFormat:@"%@",userInfo[SAMC_ID]];
+    sdkData.account = user.userId;
     sdkData.token = token;
     [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
         if (error == nil) {
@@ -212,7 +222,7 @@
                 [[SAMCDataBaseManager sharedManager] doMigration];
             }
             [SAMCChatManager sharedManager];
-            [[SAMCAccountManager sharedManager] updateUser:[SAMCUser userFromDict:userInfo]];
+            [[SAMCAccountManager sharedManager] updateUser:user];
             [[SAMCPushManager sharedManager] open];
             [[SAMCSyncManager sharedManager] start];
             [[SAMCUnreadCountManager sharedManager] refresh];
