@@ -130,7 +130,7 @@
 
 - (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;
 {
-    DDLogDebug(@"updateContactList: %@", users);
+    DDLogDebug(@"update %@ list: %@", listType==SAMCContactListTypeServicer?@"servicer":@"customer", users);
     if (![self resetContactListTable:(SAMCContactListType)listType]) {
         return NO;
     }
