@@ -107,6 +107,9 @@
         case SAMCServerErrorNetEaseLoginFailed:
             localizedDescription = @"登录失败";
             break;
+        case SAMCServerErrorSyncFailed:
+            localizedDescription = @"同步失败";
+            break;
         default:
             break;
     }

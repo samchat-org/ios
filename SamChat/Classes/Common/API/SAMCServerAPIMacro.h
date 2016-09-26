@@ -34,6 +34,7 @@
 #define SAMC_URL_PROFILE_AVATAR_UPDATE              SAMC_API_PREFIX@"api_1.0_profile_avatarUpdate.do"
 #define SAMC_URL_PROFILE_GET_PLACESINFO             SAMC_API_PREFIX@"api_1.0_profile_getPlacesInfoRequest.do"
 #define SAMC_URL_PROFILE_SEND_CLIENTID              SAMC_API_PREFIX@"api_1.0_profile_sendClientId.do"
+#define SAMC_URL_PROFILE_QUERY_STATE_DATE           SAMC_API_PREFIX@"api_1.0_profile_queryStateDate.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
 #define SAMC_AWSS3_BUCKETNAME           @"samchat-test"
@@ -75,6 +76,7 @@
 #define SAMC_AVATAR_UPDATE              @"avatar-update"
 #define SAMC_GET_PLACES_INFO_REQUEST    @"get-places-info-request"
 #define SAMC_SEND_CLIENTID              @"send-clientId"
+#define SAMC_QUERY_STATE_DATE           @"query-state-date"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -121,6 +123,10 @@
 #define SAMC_DESCRIPTION                @"description"
 #define SAMC_PLACE_ID                   @"place_id"
 #define SAMC_PLACES_INFO                @"places_info"
+#define SAMC_STATE_DATE_INFO            @"state_date_info"
+#define SAMC_SERVICER_LIST              @"servicer_list"
+#define SAMC_CUSTOMER_LIST              @"customer_list"
+#define SAMC_FOLLOW_LIST                @"follow_list"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

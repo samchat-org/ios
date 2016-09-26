@@ -8,12 +8,12 @@
 
 #import "SAMCPreferenceManager.h"
 
-#define SAMC_CURRENTUSERMODE_KEY        @"samc_currentusermode_key"
-#define SAMC_GETUIBINDEDALIAS_KEY       @"samc_getuibindedalias_key"
-#define SAMC_FOLLOWLISTSYNCFLAG_KEY     @"samc_followlistsyncflag_key"
-#define SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY    @"samc_contactlistcustomersyncflag_key"
-#define SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY    @"samc_contactlistservicersyncflag_key"
-#define SAMC_SENDCLIENTIDFLAG_KEY               @"samc_sendclientidflag_key"
+#define SAMC_CURRENTUSERMODE_KEY            @"samc_currentusermode_key"
+#define SAMC_GETUIBINDEDALIAS_KEY           @"samc_getuibindedalias_key"
+#define SAMC_SENDCLIENTIDFLAG_KEY           @"samc_sendclientidflag_key"
+#define SAMC_LOCALFOLLOWLISTVERSION_KEY     @"samc_localfollowlistversion_key"
+#define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
+#define SAMC_LOCALSERVICERLISTVERSION_KEY   @"samc_localservicerlistversion_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -25,10 +25,10 @@
 
 @synthesize currentUserMode = _currentUserMode;
 @synthesize getuiBindedAlias = _getuiBindedAlias;
-@synthesize followListSyncFlag = _followListSyncFlag;
-@synthesize contactListCustomerSyncFlag = _contactListCustomerSyncFlag;
-@synthesize contactListServicerSyncFlag = _contactListServicerSyncFlag;
 @synthesize sendClientIdFlag = _sendClientIdFlag;
+@synthesize localFollowListVersion = _localFollowListVersion;
+@synthesize localCustomerListVersion = _localCustomerListVersion;
+@synthesize localServicerListVersion = _localServicerListVersion;
 
 + (instancetype)sharedManager
 {
@@ -54,16 +54,16 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = @(SAMCUserModeTypeCustom);
         [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
-        _followListSyncFlag = @(NO);
-        [[NSUserDefaults standardUserDefaults] setValue:_followListSyncFlag forKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
-        _contactListCustomerSyncFlag = @(NO);
-        [[NSUserDefaults standardUserDefaults] setValue:_contactListCustomerSyncFlag forKey:SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY];
-        _contactListServicerSyncFlag = @(NO);
-        [[NSUserDefaults standardUserDefaults] setValue:_contactListServicerSyncFlag forKey:SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY];
         _getuiBindedAlias = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
         _sendClientIdFlag = @(NO);
         [[NSUserDefaults standardUserDefaults] setValue:_sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
+        _localFollowListVersion = @"";
+        [[NSUserDefaults standardUserDefaults] setValue:_localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
+        _localServicerListVersion = @"";
+        [[NSUserDefaults standardUserDefaults] setValue:_localServicerListVersion forKey:SAMC_LOCALSERVICERLISTVERSION_KEY];
+        _localCustomerListVersion = @"";
+        [[NSUserDefaults standardUserDefaults] setValue:_localCustomerListVersion forKey:SAMC_LOCALCUSTOMERLISTVERSION_KEY];
     });
 }
 
@@ -110,69 +110,69 @@
     });
 }
 
-#pragma mark - followListSyncFlag
-- (NSNumber *)followListSyncFlag
+#pragma mark - localFollowListVersion
+- (NSString *)localFollowListVersion
 {
-    __block NSNumber *flag;
+    __block NSString *version;
     dispatch_sync(_syncQueue, ^{
-        if (_followListSyncFlag == nil) {
-            _followListSyncFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
-            _followListSyncFlag = _followListSyncFlag ?:@(NO);
+        if (_localFollowListVersion == nil) {
+            _localFollowListVersion = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
+            _localFollowListVersion = _localFollowListVersion ?:@"";
         }
-        flag = _followListSyncFlag;
+        version = _localFollowListVersion;
     });
-    return flag;
+    return version;
 }
 
-- (void)setFollowListSyncFlag:(NSNumber *)followListSyncFlag
+- (void)setLocalFollowListVersion:(NSString *)localFollowListVersion
 {
     dispatch_barrier_async(_syncQueue, ^{
-        _followListSyncFlag = followListSyncFlag;
-        [[NSUserDefaults standardUserDefaults] setValue:followListSyncFlag forKey:SAMC_FOLLOWLISTSYNCFLAG_KEY];
+        _localFollowListVersion = localFollowListVersion;
+        [[NSUserDefaults standardUserDefaults] setValue:localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
     });
 }
 
-#pragma mark - contactListCustomerSyncFlag
-- (NSNumber *)contactListCustomerSyncFlag
+#pragma mark - localCustomerListVersion
+- (NSString *)localCustomerListVersion
 {
-    __block NSNumber *flag;
+    __block NSString *version;
     dispatch_sync(_syncQueue, ^{
-        if (_contactListCustomerSyncFlag == nil) {
-            _contactListCustomerSyncFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY];
-            _contactListCustomerSyncFlag = _contactListCustomerSyncFlag ?:@(NO);
+        if (_localCustomerListVersion == nil) {
+            _localCustomerListVersion = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_LOCALCUSTOMERLISTVERSION_KEY];
+            _localCustomerListVersion = _localCustomerListVersion ?:@"";
         }
-        flag = _contactListCustomerSyncFlag;
+        version = _localCustomerListVersion;
     });
-    return flag;
+    return version;
 }
 
-- (void)setContactListCustomerSyncFlag:(NSNumber *)contactListCustomerSyncFlag
+- (void)setLocalCustomerListVersion:(NSString *)localCustomerListVersion
 {
     dispatch_barrier_async(_syncQueue, ^{
-        _contactListCustomerSyncFlag = contactListCustomerSyncFlag;
-        [[NSUserDefaults standardUserDefaults] setValue:contactListCustomerSyncFlag forKey:SAMC_CONTACTLISTCUSTOMERSYNCFLAG_KEY];
+        _localCustomerListVersion = localCustomerListVersion;
+        [[NSUserDefaults standardUserDefaults] setValue:localCustomerListVersion forKey:SAMC_LOCALCUSTOMERLISTVERSION_KEY];
     });
 }
 
-#pragma mark - contactListServicerSyncFlag
-- (NSNumber *)contactListServicerSyncFlag
+#pragma mrak - localServicerListVersion
+- (NSString *)localServicerListVersion
 {
-    __block NSNumber *flag;
+    __block NSString *version;
     dispatch_sync(_syncQueue, ^{
-        if (_contactListServicerSyncFlag == nil) {
-            _contactListServicerSyncFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY];
-            _contactListServicerSyncFlag = _contactListServicerSyncFlag ?:@(NO);
+        if (_localServicerListVersion == nil) {
+            _localServicerListVersion = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_LOCALSERVICERLISTVERSION_KEY];
+            _localServicerListVersion = _localServicerListVersion ?:@"";
         }
-        flag = _contactListServicerSyncFlag;
+        version = _localServicerListVersion;
     });
-    return flag;
+    return version;
 }
 
-- (void)setContactListServicerSyncFlag:(NSNumber *)contactListServicerSyncFlag
+- (void)setLocalServicerListVersion:(NSString *)localServicerListVersion
 {
     dispatch_barrier_async(_syncQueue, ^{
-        _contactListServicerSyncFlag = contactListServicerSyncFlag;
-        [[NSUserDefaults standardUserDefaults] setValue:contactListServicerSyncFlag forKey:SAMC_CONTACTLISTSERVICERSYNCFLAG_KEY];
+        _localServicerListVersion = localServicerListVersion;
+        [[NSUserDefaults standardUserDefaults] setValue:localServicerListVersion forKey:SAMC_LOCALSERVICERLISTVERSION_KEY];
     });
 }
 

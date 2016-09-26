@@ -120,16 +120,6 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     }];
 }
 
-- (void)queryFollowListIfNecessary
-{
-    if ([[SAMCPreferenceManager sharedManager].followListSyncFlag isEqual:@(YES)]) {
-        return;
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [self queryFollowList];
-    });
-}
-
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
     return [[SAMCDataBaseManager sharedManager].publicDB myFollowList];
@@ -216,30 +206,6 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 }
 
 #pragma mark - Private
-- (void)queryFollowList
-{
-    NSDictionary *parameters = [SAMCServerAPI queryFollowList];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode == 0) {
-                NSArray *users = response[SAMC_USERS];
-                if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
-                    BOOL result = [[SAMCDataBaseManager sharedManager].publicDB updateFollowList:users];
-                    if (result) {
-                        [SAMCPreferenceManager sharedManager].followListSyncFlag = @(YES);
-                    }
-                }
-            }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        // TODO: check Reachability and retry
-    }];
-}
-
 - (void)sendPublicTextMessage:(SAMCPublicMessage *)message
 {
     [self.publicDelegate willSendMessage:message];

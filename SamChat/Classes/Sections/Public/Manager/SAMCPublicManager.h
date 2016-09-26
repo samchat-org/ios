@@ -28,8 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 officialAccount:(SAMCSPBasicInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion;
 
-- (void)queryFollowListIfNecessary;
-
 - (NSArray<SAMCPublicSession *> *)myFollowList;
 
 - (void)fetchMessagesInSession:(SAMCPublicSession *)session

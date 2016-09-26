@@ -148,21 +148,6 @@
     }];
 }
 
-- (void)queryContactListIfNecessary
-{
-    // TODO: add if i am pros checking
-    if (![[SAMCPreferenceManager sharedManager].contactListCustomerSyncFlag isEqual:@(YES)]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self queryContactList:SAMCContactListTypeCustomer];
-        });
-    }
-    if (![[SAMCPreferenceManager sharedManager].contactListServicerSyncFlag isEqual:@(YES)]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            [self queryContactList:SAMCContactListTypeServicer];
-        });
-    }
-}
-
 - (void)updateAvatar:(NSString *)url
           completion:(void (^)(SAMCUser * __nullable userDict, NSError * __nullable error))completion
 {
@@ -201,33 +186,5 @@
     return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
 }
 
-#pragma mark - Private
-- (void)queryContactList:(SAMCContactListType)type
-{
-    NSDictionary *parameters = [SAMCServerAPI queryContactList:type];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_CONTACT_CONTACT_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode == 0) {
-                NSArray *users = response[SAMC_USERS];
-                if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
-                    BOOL result = [[SAMCDataBaseManager sharedManager].userInfoDB updateContactList:users type:type];
-                    if (result) {
-                        if (type == SAMCContactListTypeCustomer) {
-                            [SAMCPreferenceManager sharedManager].contactListCustomerSyncFlag = @(YES);
-                        } else {
-                            [SAMCPreferenceManager sharedManager].contactListServicerSyncFlag = @(YES);
-                        }
-                    }
-                }
-            }
-        }
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        // TODO: check Reachability and retry
-    }];
-}
 
 @end

@@ -23,6 +23,7 @@
 #import "SAMCPublicManager.h"
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
+#import "SAMCSyncManager.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
@@ -213,8 +214,7 @@
             [SAMCChatManager sharedManager];
             [[SAMCAccountManager sharedManager] updateUser:[SAMCUser userFromDict:userInfo]];
             [[SAMCPushManager sharedManager] open];
-            [[SAMCPublicManager sharedManager] queryFollowListIfNecessary];
-            [[SAMCUserManager sharedManager] queryContactListIfNecessary];
+            [[SAMCSyncManager sharedManager] start];
             [[SAMCUnreadCountManager sharedManager] refresh];
             completion(nil);
         }else{
@@ -253,8 +253,7 @@
     }
     [SAMCChatManager sharedManager];
     [[SAMCPushManager sharedManager] open];
-    [[SAMCPublicManager sharedManager] queryFollowListIfNecessary];
-    [[SAMCUserManager sharedManager] queryContactListIfNecessary];
+    [[SAMCSyncManager sharedManager] start];
     [[SAMCUnreadCountManager sharedManager] refresh];
     [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];
 }

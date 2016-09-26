@@ -595,6 +595,24 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "query-state-date"
+//        "token": "token",
+//    },
+//    "body" :
+//    {
+//        
+//    } 
+//}
++ (NSDictionary *)queryStateDate
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_STATE_DATE,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

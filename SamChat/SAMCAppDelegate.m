@@ -30,6 +30,7 @@
 #import "SAMCAccountManager.h"
 #import "SAMCPushManager.h"
 #import <AWSS3/AWSS3.h>
+#import "SAMCSyncManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
@@ -83,7 +84,6 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [self setupUserViewController];
-    
     
     return YES;
 }
@@ -220,6 +220,7 @@ NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
 
 - (void)doLogout
 {
+    [[SAMCSyncManager sharedManager] close];
     [[SAMCPushManager sharedManager] close];
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];

@@ -80,4 +80,6 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 
 + (NSDictionary *)sendClientId:(NSString *)clientId;
 
++ (NSDictionary *)queryStateDate;
+
 @end

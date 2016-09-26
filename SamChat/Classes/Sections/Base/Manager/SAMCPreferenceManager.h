@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCStateDateInfo.h"
 
 @interface SAMCPreferenceManager : NSObject
 
 @property (nonatomic, strong) NSNumber *currentUserMode;
 @property (nonatomic, copy) NSString *getuiBindedAlias;
-@property (nonatomic, strong) NSNumber *followListSyncFlag;
-@property (nonatomic, strong) NSNumber *contactListCustomerSyncFlag;
-@property (nonatomic, strong) NSNumber *contactListServicerSyncFlag;
 @property (nonatomic, strong) NSNumber *sendClientIdFlag;
+
+@property (nonatomic, copy) NSString *localServicerListVersion;
+@property (nonatomic, copy) NSString *localCustomerListVersion;
+@property (nonatomic, copy) NSString *localFollowListVersion;
 
 + (instancetype)sharedManager;
 - (void)reset;
