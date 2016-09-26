@@ -127,6 +127,7 @@
 #define SAMC_SERVICER_LIST              @"servicer_list"
 #define SAMC_CUSTOMER_LIST              @"customer_list"
 #define SAMC_FOLLOW_LIST                @"follow_list"
+#define SAMC_MESSAGE_ID                 @"message_id"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

@@ -527,10 +527,14 @@
 //}
 + (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
                                  content:(NSString *)content
+                               messageId:(NSString *)messageId
 {
     content = content ?:@"";
+    messageId = messageId ?:@"";
     NSDictionary *header = @{SAMC_ACTION:SAMC_ADVERTISEMENT_WRITE,SAMC_TOKEN:[SAMCServerAPI token]};
-    NSDictionary *body = @{SAMC_TYPE:@(type),SAMC_CONTENT:content};
+    NSDictionary *body = @{SAMC_TYPE:@(type),
+                           SAMC_CONTENT:content,
+                           SAMC_MESSAGE_ID:messageId};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

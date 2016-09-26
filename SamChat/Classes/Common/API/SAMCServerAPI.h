@@ -72,7 +72,8 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 + (NSDictionary *)sendInviteMsg:(NSArray *)phones;
 
 + (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
-                                 content:(NSString *)content;
+                                 content:(NSString *)content
+                               messageId:(NSString *)messageId;
 
 + (NSDictionary *)updateAvatar:(NSString *)url;
 

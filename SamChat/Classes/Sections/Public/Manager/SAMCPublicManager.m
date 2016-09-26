@@ -272,11 +272,11 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 {
     NSDictionary *parameters = nil;
     if (message.messageType == NIMMessageTypeText) {
-        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeText content:message.text];
+        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeText content:message.text messageId:message.messageId];
     } else if(message.messageType == NIMMessageTypeCustom) {
         NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
         SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
-        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeImage content:attachment.url];
+        parameters = [SAMCServerAPI writeAdvertisementType:SAMCAdvertisementTypeImage content:attachment.url messageId:message.messageId];
     }
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
