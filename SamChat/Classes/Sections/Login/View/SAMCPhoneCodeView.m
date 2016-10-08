@@ -7,11 +7,11 @@
 //
 
 #import "SAMCPhoneCodeView.h"
+#import "SAMCOneCodeView.h"
 
 @interface SAMCPhoneCodeView ()
 
 @property (nonatomic, strong) NSArray *codeViews;
-@property (nonatomic, strong) NSArray *inputViews;
 @property (nonatomic, strong) NSMutableString *phoneCode;
 
 @end
@@ -31,10 +31,9 @@
 - (void)setupSubviews
 {
     self.backgroundColor = [UIColor clearColor];
-    self.codeViews = @[[UIView new],[UIView new],[UIView new],[UIView new]];
+    self.codeViews = @[[SAMCOneCodeView new],[SAMCOneCodeView new],[SAMCOneCodeView new],[SAMCOneCodeView new]];
     for (UIView *view in self.codeViews) {
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        view.backgroundColor = [UIColor grayColor];
         [self addSubview:view];
     }
     NSDictionary *viewsDictionary = @{
@@ -43,7 +42,7 @@
                                       @"view3" : self.codeViews[2],
                                       @"view4" : self.codeViews[3],
                                       };
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view1]-20-[view2(==view1)]-20-[view3(==view1)]-20-[view4(==view1)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view1]-30-[view2(==view1)]-30-[view3(==view1)]-30-[view4(==view1)]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDictionary]];
@@ -64,44 +63,6 @@
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
                                                             toItem:self
-                                                         attribute:NSLayoutAttributeCenterY
-                                                        multiplier:1.0f
-                                                          constant:0.0f]];
-    }
-    
-    self.inputViews = @[[UIView new],[UIView new],[UIView new],[UIView new]];
-    for (int i=0; i<4; i++) {
-        UIView *view = self.inputViews[i];
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-        view.backgroundColor = [UIColor blackColor];
-        view.hidden = YES;
-        view.layer.cornerRadius = 10.0f;
-        [self addSubview:view];
-        [view addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                         attribute:NSLayoutAttributeWidth
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:nil
-                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                        multiplier:0.0f
-                                                          constant:20.0f]];
-        [view addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                         attribute:NSLayoutAttributeHeight
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:nil
-                                                         attribute:NSLayoutAttributeNotAnAttribute
-                                                        multiplier:0.0f
-                                                          constant:20.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                         attribute:NSLayoutAttributeCenterX
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.codeViews[i]
-                                                         attribute:NSLayoutAttributeCenterX
-                                                        multiplier:1.0f
-                                                          constant:0.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:view
-                                                         attribute:NSLayoutAttributeCenterY
-                                                         relatedBy:NSLayoutRelationEqual
-                                                            toItem:self.codeViews[i]
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f
                                                           constant:0.0f]];
@@ -139,7 +100,7 @@
         return;
     }
     if ([@"0123456789" rangeOfString:text].location != NSNotFound) {
-        [self.inputViews[self.phoneCode.length] setHidden:NO];
+        [self.codeViews[self.phoneCode.length] inputText:text];
         [self.phoneCode appendString:text];
         if ([self.delegate respondsToSelector:@selector(phonecodeDidChange:)]) {
             [self.delegate phonecodeDidChange:self];
@@ -157,7 +118,7 @@
 {
     if (self.phoneCode.length > 0) {
         [self.phoneCode deleteCharactersInRange:NSMakeRange(self.phoneCode.length-1, 1)];
-        [self.inputViews[self.phoneCode.length] setHidden:YES];
+        [self.codeViews[self.phoneCode.length] inputText:@""];
         if ([self.delegate respondsToSelector:@selector(phonecodeDidChange:)]) {
             [self.delegate phonecodeDidChange:self];
         }
