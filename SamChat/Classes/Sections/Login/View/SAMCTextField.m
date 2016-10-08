@@ -36,7 +36,7 @@
     [_leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_leftButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     _leftButton.backgroundColor = [UIColor clearColor];
-    _leftButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+    _leftButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
     [self addSubview:_leftButton];
     
     _splitLabel = [[UILabel alloc] init];
@@ -49,7 +49,7 @@
     _rightTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _rightTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _rightTextField.backgroundColor = [UIColor clearColor];
-    _rightTextField.font = [UIFont systemFontOfSize:14.0f];
+    _rightTextField.font = [UIFont systemFontOfSize:15.0f];
     [_rightTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     [self addSubview:_rightTextField];
     
