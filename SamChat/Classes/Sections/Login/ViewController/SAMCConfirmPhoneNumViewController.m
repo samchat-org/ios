@@ -168,7 +168,7 @@
 
 - (void)phoneNumberEditingChanged:(id)sender
 {
-    if ([self.phoneTextField.rightTextField.text length]) {
+    if ([self isValidCellphone:self.phoneTextField.rightTextField.text]) {
         self.sendButton.enabled = YES;
         self.sendButton.backgroundColor = UIColorFromRGB(0x67D45F);
     } else {
