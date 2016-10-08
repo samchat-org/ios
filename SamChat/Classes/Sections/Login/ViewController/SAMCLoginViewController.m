@@ -21,12 +21,14 @@
 
 @interface SAMCLoginViewController ()
 
+@property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) SAMCTextField *usernameTextField;
 @property (nonatomic, strong) SAMCTextField *passwordTextField;
 @property (nonatomic, strong) UIButton *signinButton;
 @property (nonatomic, strong) UIButton *signupButton;
 @property (nonatomic, strong) UIButton *forgotPasswordButton;
 @property (nonatomic, strong) NSLayoutConstraint *bottomSpaceConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *logoBottonSpaceContraint;
 
 @end
 
@@ -49,38 +51,59 @@ NTES_USE_CLEAR_BAR
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:NO];
     [self.usernameTextField.rightTextField becomeFirstResponder];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 }
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = UIColorFromRGB(0x174164);
+    
+    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_logo"]];
+    self.logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.logoImageView];
+    
     self.usernameTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.usernameTextField.backgroundColor = UIColorFromRGB(0x345470);
     [self.usernameTextField.leftButton setTitle:@"+1" forState:UIControlStateNormal];
     [self.usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
     self.usernameTextField.rightTextField.placeholder = @"Username or phone no.";
+    [self.usernameTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.usernameTextField.rightTextField.textColor = [UIColor whiteColor];
     [self.view addSubview:self.usernameTextField];
     
     self.passwordTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
+    self.passwordTextField.backgroundColor = UIColorFromRGB(0x345470);
     [self.passwordTextField.leftButton setTitle:@"Pass" forState:UIControlStateNormal];
     [self.passwordTextField.rightTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.passwordTextField.rightTextField.returnKeyType = UIReturnKeyDone;
     self.passwordTextField.rightTextField.placeholder = @"Enter your password";
     self.passwordTextField.rightTextField.secureTextEntry = YES;
+    [self.passwordTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.passwordTextField.rightTextField.textColor = [UIColor whiteColor];
     [self.view addSubview:self.passwordTextField];
     
     self.signinButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.signinButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.signinButton.exclusiveTouch = YES;
-    self.signinButton.layer.cornerRadius = 5.0f;
+    self.signinButton.layer.cornerRadius = 17.5f;
     self.signinButton.backgroundColor = [UIColor grayColor];
+    self.signinButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [self.signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.signinButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self.signinButton setTitle:@"SIGN IN" forState:UIControlStateNormal];
+    [self.signinButton setTitle:@"Sign In" forState:UIControlStateNormal];
     [self.signinButton addTarget:self action:@selector(signin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.signinButton];
     
@@ -88,8 +111,9 @@ NTES_USE_CLEAR_BAR
     self.signupButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.signupButton.exclusiveTouch = YES;
     self.signupButton.backgroundColor = [UIColor clearColor];
+    self.signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:14.0f];
     [self.signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
-    [self.signupButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [self.signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.signupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [self.signupButton addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.signupButton];
@@ -98,9 +122,10 @@ NTES_USE_CLEAR_BAR
     self.forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.forgotPasswordButton.exclusiveTouch = YES;
     self.forgotPasswordButton.backgroundColor = [UIColor clearColor];
+    self.forgotPasswordButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     self.forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
     [self.forgotPasswordButton setTitle:@"Forgot password?" forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [self.forgotPasswordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.forgotPasswordButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [self.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.forgotPasswordButton];
@@ -132,10 +157,31 @@ NTES_USE_CLEAR_BAR
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(50)]-10-[_passwordTextField(50)]-10-[_signinButton(50)]-10-[_signupButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(35)]-10-[_passwordTextField(35)]-10-[_signinButton(35)]-10-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField,_passwordTextField,_signinButton,_signupButton)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.logoImageView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
+                                                                   attribute:NSLayoutAttributeWidth
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:nil
+                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                  multiplier:0.0f
+                                                                    constant:150.0f]];
+    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
+                                                                   attribute:NSLayoutAttributeHeight
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:nil
+                                                                   attribute:NSLayoutAttributeNotAnAttribute
+                                                                  multiplier:0.0f
+                                                                    constant:150.0f]];
     self.bottomSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.signupButton
                                                               attribute:NSLayoutAttributeBottom
                                                               relatedBy:NSLayoutRelationEqual
@@ -144,6 +190,14 @@ NTES_USE_CLEAR_BAR
                                                              multiplier:1.0f
                                                                constant:-20.0f];
     [self.view addConstraint:self.bottomSpaceConstraint];
+    self.logoBottonSpaceContraint = [NSLayoutConstraint constraintWithItem:self.logoImageView
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.usernameTextField
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0f
+                                                                  constant:-100.0f];
+    [self.view addConstraint:self.logoBottonSpaceContraint];
 }
 
 #pragma mark 
@@ -221,6 +275,7 @@ NTES_USE_CLEAR_BAR
     [UIView animateWithDuration:0.3f
                      animations:^{
                          [self.bottomSpaceConstraint setConstant:-keyboardHeight-5];
+                         [self.logoBottonSpaceContraint setConstant:-30.0f];
                          [self.view layoutIfNeeded];
                      }];
 }
@@ -230,6 +285,7 @@ NTES_USE_CLEAR_BAR
     [UIView animateWithDuration:0.3f
                      animations:^{
                          [self.bottomSpaceConstraint setConstant:-20];
+                         [self.logoBottonSpaceContraint setConstant:-100.f];
                          [self.view layoutIfNeeded];
                      }];
 }

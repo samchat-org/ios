@@ -36,6 +36,7 @@
     [_leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
     [_leftButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     _leftButton.backgroundColor = [UIColor clearColor];
+    _leftButton.titleLabel.font = [UIFont systemFontOfSize:14.0f];
     [self addSubview:_leftButton];
     
     _splitLabel = [[UILabel alloc] init];
@@ -48,6 +49,7 @@
     _rightTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _rightTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _rightTextField.backgroundColor = [UIColor clearColor];
+    _rightTextField.font = [UIFont systemFontOfSize:14.0f];
     [_rightTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     [self addSubview:_rightTextField];
     
@@ -57,8 +59,8 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:70.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_leftButton]-5-[_splitLabel(1)]-20-[_rightTextField]-5-|"
+                                                             constant:50.0f]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_leftButton]-5-[_splitLabel(1)]-5-[_rightTextField]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_leftButton,_splitLabel,_rightTextField)]];
@@ -66,7 +68,7 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_leftButton)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_splitLabel]-5-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-1-[_splitLabel]-1-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_splitLabel)]];

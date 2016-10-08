@@ -17,8 +17,8 @@
 + (void)load{
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        swizzling_exchangeMethod([UINavigationItem class] ,@selector(setTitle:), @selector(swizzling_setTitle:));
-        swizzling_exchangeMethod([UINavigationItem class] ,@selector(title), @selector(swizzling_title));
+//        swizzling_exchangeMethod([UINavigationItem class] ,@selector(setTitle:), @selector(swizzling_setTitle:));
+//        swizzling_exchangeMethod([UINavigationItem class] ,@selector(title), @selector(swizzling_title));
     });
 }
 
