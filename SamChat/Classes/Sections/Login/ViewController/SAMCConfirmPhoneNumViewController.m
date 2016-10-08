@@ -19,7 +19,10 @@
 
 @interface SAMCConfirmPhoneNumViewController ()
 
+@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) SAMCTextField *phoneTextField;
+@property (nonatomic, strong) UILabel *detailLabel;
 @property (nonatomic, strong) UIButton *sendButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *sendButtonBottomContraint;
@@ -44,9 +47,9 @@
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     [self.phoneTextField.rightTextField becomeFirstResponder];
 }
 
@@ -62,35 +65,75 @@
     } else {
         self.navigationItem.title = @"Reset Password";
     }
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = UIColorFromRGB(0xECEDF0);
+    
+    self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step1"]];
+    self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.stepImageView];
+    
+    self.tipLabel = [[UILabel alloc] init];
+    self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tipLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    self.tipLabel.textColor = UIColorFromRGB(0x3B4E6E);
+    self.tipLabel.text = @"Enter your phone number";
+    [self.view addSubview:self.tipLabel];
 
     self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.phoneTextField.leftButton setTitle:self.countryCode?:@"+1" forState:UIControlStateNormal];
     [self.phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
+    [self.phoneTextField.rightTextField addTarget:self action:@selector(phoneNumberEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     self.phoneTextField.rightTextField.placeholder = @"Your phone number";
     self.phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
     [self.view addSubview:self.phoneTextField];
     
+    self.detailLabel = [[UILabel alloc] init];
+    self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.detailLabel.numberOfLines = 0;
+    self.detailLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.detailLabel.textColor = [UIColor grayColor];
+    self.detailLabel.text = @"A confirmation code will be sent to the phone number your entered via SMS";
+    [self.view addSubview:self.detailLabel];
+    
     self.sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.sendButton.exclusiveTouch = YES;
-    self.sendButton.layer.cornerRadius = 5.0f;
-    self.sendButton.backgroundColor = [UIColor grayColor];
+    self.sendButton.layer.cornerRadius = 17.5f;
+    self.sendButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+    self.sendButton.enabled = NO;
+    self.sendButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
     [self.sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
     [self.sendButton addTarget:self action:@selector(sendConfirmationCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.sendButton];
     
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepImageView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_phoneTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_phoneTextField(50)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-35-[_detailLabel]-35-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_phoneTextField)]];
+                                                                        views:NSDictionaryOfVariableBindings(_detailLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-20-[_tipLabel(35)]-20-[_phoneTextField(35)]-20-[_detailLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_phoneTextField,_detailLabel)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_sendButton]-20-|"
                                                                       options:0
                                                                       metrics:nil
@@ -101,7 +144,7 @@
                                                                    toItem:nil
                                                                 attribute:NSLayoutAttributeNotAnAttribute
                                                                multiplier:1.0f
-                                                                 constant:50.0f]];
+                                                                 constant:35.0f]];
     self.sendButtonBottomContraint = [NSLayoutConstraint constraintWithItem:self.sendButton
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
@@ -121,6 +164,17 @@
         [weakSelf.phoneTextField.leftButton setTitle:text forState:UIControlStateNormal];
     };
     [self.navigationController pushViewController:countryCodeController animated:YES];
+}
+
+- (void)phoneNumberEditingChanged:(id)sender
+{
+    if ([self.phoneTextField.rightTextField.text length]) {
+        self.sendButton.enabled = YES;
+        self.sendButton.backgroundColor = UIColorFromRGB(0x67D45F);
+    } else {
+        self.sendButton.enabled = NO;
+        self.sendButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+    }
 }
 
 - (void)sendConfirmationCode:(UIButton *)sender

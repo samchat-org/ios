@@ -27,7 +27,7 @@
 
 - (void)setupSubviews
 {
-    self.backgroundColor = [UIColor groupTableViewBackgroundColor];
+    self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = 5.0f;
     
     _leftButton = [[UIButton alloc] init];
@@ -68,7 +68,7 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_leftButton)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-1-[_splitLabel]-1-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_splitLabel]-0-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_splitLabel)]];
