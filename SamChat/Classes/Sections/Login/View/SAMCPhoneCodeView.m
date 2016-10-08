@@ -24,18 +24,17 @@
     if (self) {
         self.phoneCode = [NSMutableString string];
         [self setupSubviews];
-        [self becomeFirstResponder];
     }
     return self;
 }
 
 - (void)setupSubviews
 {
-    self.backgroundColor = [UIColor whiteColor];
+    self.backgroundColor = [UIColor clearColor];
     self.codeViews = @[[UIView new],[UIView new],[UIView new],[UIView new]];
     for (UIView *view in self.codeViews) {
         view.translatesAutoresizingMaskIntoConstraints = NO;
-        view.backgroundColor = [UIColor groupTableViewBackgroundColor];
+        view.backgroundColor = [UIColor grayColor];
         [self addSubview:view];
     }
     NSDictionary *viewsDictionary = @{

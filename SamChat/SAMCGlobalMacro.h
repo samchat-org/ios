@@ -39,6 +39,9 @@ alpha:alphaValue]
 
 #define UIColorFromRGB(rgbValue) UIColorFromRGBA(rgbValue, 1.0)
 
+#define SAMC_MAIN_BACKGROUNDCOLOR   UIColorFromRGB(0xECEDF0)
+
+
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
 block();\

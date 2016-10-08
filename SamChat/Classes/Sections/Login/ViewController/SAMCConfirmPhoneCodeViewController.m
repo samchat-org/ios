@@ -16,8 +16,12 @@
 
 @interface SAMCConfirmPhoneCodeViewController ()<SAMCPhoneCodeViewDelegate>
 
-@property (nonatomic, strong) SAMCTextField *phoneTextField;
+@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) SAMCPhoneCodeView *phoneCodeView;
+@property (nonatomic, strong) UILabel *splitLabel;
+@property (nonatomic, strong) UILabel *phoneLabel;
+@property (nonatomic, strong) UILabel *detailLabel;
 
 @end
 
@@ -29,6 +33,12 @@
     [self setupSubviews];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.phoneCodeView becomeFirstResponder];
+}
+
 - (void)setupSubviews
 {
     if (self.isSignupOperation) {
@@ -36,35 +46,81 @@
     } else {
         self.navigationItem.title = @"Reset Password";
     }
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
     
-    self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
-    self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.phoneTextField.userInteractionEnabled = false;
-    [self.phoneTextField.leftButton setTitle:self.countryCode forState:UIControlStateNormal];
-    [self.phoneTextField.leftButton setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    self.phoneTextField.rightTextField.text = self.phoneNumber;
-    self.phoneTextField.rightTextField.textColor = [UIColor grayColor];
-    [self.view addSubview:self.phoneTextField];
+    self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step2"]];
+    self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.stepImageView];
+    
+    self.tipLabel = [[UILabel alloc] init];
+    self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tipLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    self.tipLabel.textColor = UIColorFromRGB(0x3B4E6E);
+    self.tipLabel.text = @"Enter the confirmation code";
+    [self.view addSubview:self.tipLabel];
     
     self.phoneCodeView = [[SAMCPhoneCodeView alloc] initWithFrame:CGRectZero];
     self.phoneCodeView.translatesAutoresizingMaskIntoConstraints = NO;
     self.phoneCodeView.delegate = self;
     [self.view addSubview:self.phoneCodeView];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneTextField]-20-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_phoneTextField)]];
+    self.splitLabel = [[UILabel alloc] init];
+    self.splitLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.splitLabel.backgroundColor = UIColorFromRGB(0xE8EAED);
+    [self.view addSubview:self.splitLabel];
+    
+    self.phoneLabel = [[UILabel alloc] init];
+    self.phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.phoneLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+    self.phoneLabel.textColor = [UIColor grayColor];
+    self.phoneLabel.textAlignment = NSTextAlignmentCenter;
+    self.phoneLabel.text = self.phoneNumber;
+    [self.view addSubview:self.phoneLabel];
+    
+    self.detailLabel = [[UILabel alloc] init];
+    self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+    self.detailLabel.numberOfLines = 0;
+    self.detailLabel.font = [UIFont systemFontOfSize:14.0f];
+    self.detailLabel.textColor = [UIColor grayColor];
+    self.detailLabel.textAlignment = NSTextAlignmentCenter;
+    self.detailLabel.text = @"A confirmation code has been sent to your phone, enter the code to continue";
+    [self.view addSubview:self.detailLabel];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepImageView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneCodeView]-20-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_phoneCodeView)]];
-//    NSString *visualFormat = [NSString stringWithFormat:@"V:|-20-[_phoneTextField(50)]-20-[_phoneCodeView(%f)]",]
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_phoneTextField(50)]-20-[_phoneCodeView]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_splitLabel]-10-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_phoneTextField,_phoneCodeView)]];
+                                                                        views:NSDictionaryOfVariableBindings(_splitLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_phoneLabel]-10-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_phoneLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-35-[_detailLabel]-35-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_detailLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-10-[_tipLabel(35)]-10-[_phoneCodeView]-10-[_splitLabel(2)]-10-[_phoneLabel(35)]-10-[_detailLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_phoneCodeView,_splitLabel,_phoneLabel,_detailLabel)]];
 }
 
 #pragma mark - SAMCPhoneCodeViewDelegate

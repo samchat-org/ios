@@ -65,7 +65,7 @@
     } else {
         self.navigationItem.title = @"Reset Password";
     }
-    self.view.backgroundColor = UIColorFromRGB(0xECEDF0);
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
     
     self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step1"]];
     self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -92,6 +92,7 @@
     self.detailLabel.numberOfLines = 0;
     self.detailLabel.font = [UIFont systemFontOfSize:14.0f];
     self.detailLabel.textColor = [UIColor grayColor];
+    self.detailLabel.textAlignment = NSTextAlignmentCenter;
     self.detailLabel.text = @"A confirmation code will be sent to the phone number your entered via SMS";
     [self.view addSubview:self.detailLabel];
     
@@ -130,7 +131,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-20-[_tipLabel(35)]-20-[_phoneTextField(35)]-20-[_detailLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-10-[_tipLabel(35)]-10-[_phoneTextField(35)]-10-[_detailLabel]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_phoneTextField,_detailLabel)]];
