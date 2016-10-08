@@ -59,7 +59,7 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:50.0f]];
+                                                             constant:30.0f]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_leftButton]-5-[_splitLabel(1)]-5-[_rightTextField]-5-|"
                                                                  options:0
                                                                  metrics:nil

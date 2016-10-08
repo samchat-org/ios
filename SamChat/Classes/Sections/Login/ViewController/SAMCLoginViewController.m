@@ -23,7 +23,7 @@
 
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) SAMCTextField *usernameTextField;
-@property (nonatomic, strong) SAMCTextField *passwordTextField;
+@property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *signinButton;
 @property (nonatomic, strong) UIButton *signupButton;
 @property (nonatomic, strong) UIButton *forgotPasswordButton;
@@ -83,16 +83,23 @@ NTES_USE_CLEAR_BAR
     self.usernameTextField.rightTextField.textColor = [UIColor whiteColor];
     [self.view addSubview:self.usernameTextField];
     
-    self.passwordTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
+    self.passwordTextField = [[UITextField alloc] initWithFrame:CGRectZero];
     self.passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.passwordTextField.backgroundColor = UIColorFromRGB(0x345470);
-    [self.passwordTextField.leftButton setTitle:@"Pass" forState:UIControlStateNormal];
-    [self.passwordTextField.rightTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.passwordTextField.rightTextField.returnKeyType = UIReturnKeyDone;
-    self.passwordTextField.rightTextField.placeholder = @"Enter your password";
-    self.passwordTextField.rightTextField.secureTextEntry = YES;
-    [self.passwordTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.passwordTextField.rightTextField.textColor = [UIColor whiteColor];
+    [self.passwordTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
+    self.passwordTextField.returnKeyType = UIReturnKeyDone;
+    self.passwordTextField.secureTextEntry = YES;
+    self.passwordTextField.placeholder = @"Enter your password";
+    self.passwordTextField.textColor = [UIColor whiteColor];
+    self.passwordTextField.layer.cornerRadius = 5.0f;
+    self.passwordTextField.leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 5, 0)];
+    self.passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+    UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+    [showPWDButton setImage:[UIImage imageNamed:@"login_pwd_eye"] forState:UIControlStateNormal];
+    showPWDButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
+    self.passwordTextField.rightView = showPWDButton;
+    self.passwordTextField.rightViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:self.passwordTextField];
     
     self.signinButton = [[UIButton alloc] initWithFrame:CGRectZero];
@@ -207,14 +214,14 @@ NTES_USE_CLEAR_BAR
     UIView *view = (UIView *)[touch view];
     if (view == self.view) {
         [self.usernameTextField.rightTextField resignFirstResponder];
-        [self.passwordTextField.rightTextField resignFirstResponder];
+        [self.passwordTextField resignFirstResponder];
     }
 }
 
 #pragma mark - Action
 - (void)usernameTextFieldEditingDidEndOnExit
 {
-    [self.passwordTextField.rightTextField becomeFirstResponder];
+    [self.passwordTextField becomeFirstResponder];
 }
 
 - (void)selectCountryCode:(UIButton *)sender
@@ -227,16 +234,25 @@ NTES_USE_CLEAR_BAR
     [self.navigationController pushViewController:countryCodeController animated:YES];
 }
 
+- (void)showPassword:(UIButton *)sender
+{
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    // fix cursor location unchanged issue
+    NSString *tempString = self.passwordTextField.text;
+    self.passwordTextField.text = @"";
+    self.passwordTextField.text = tempString;
+}
+
 - (void)signin:(UIButton *)sender
 {
     extern NSString *SAMCLoginNotification;
     [_usernameTextField.rightTextField resignFirstResponder];
-    [_passwordTextField.rightTextField resignFirstResponder];
+    [_passwordTextField resignFirstResponder];
     
     NSString *countryCode = _usernameTextField.leftButton.titleLabel.text;
     countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = _passwordTextField.rightTextField.text;
+    NSString *password = _passwordTextField.text;
     [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCAccountManager sharedManager] loginWithCountryCode:countryCode account:account password:password completion:^(NSError * _Nullable error) {
