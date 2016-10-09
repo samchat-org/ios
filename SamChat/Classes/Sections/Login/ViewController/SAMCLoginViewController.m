@@ -285,7 +285,10 @@ NTES_USE_CLEAR_BAR
 {
     SAMCConfirmPhoneNumViewController *vc = [[SAMCConfirmPhoneNumViewController alloc] init];
     vc.signupOperation = NO;
-    vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    NSString *countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    if ([countryCode hasPrefix:@"+"]) {
+        vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
