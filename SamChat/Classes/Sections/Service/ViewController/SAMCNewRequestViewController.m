@@ -135,12 +135,12 @@
 
 - (void)locationTextFieldDidChanged:(id)sender
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     NSString *key = self.locationTextField.text;
     if ([key length] <= 0) {
         // TODO: clear ui
         return;
     }
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [self performSelector:@selector(getPlacesInfo:) withObject:key afterDelay:0.5];
 }
 
