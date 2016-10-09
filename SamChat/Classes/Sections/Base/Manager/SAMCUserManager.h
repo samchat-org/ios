@@ -15,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedManager;
 
+- (void)checkExistOfUser:(NSString *)username
+              completion:(void (^)(BOOL isExists, NSError * __nullable error))completion;
+
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 

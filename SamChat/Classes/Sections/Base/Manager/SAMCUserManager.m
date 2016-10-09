@@ -38,6 +38,31 @@
 {
 }
 
+- (void)checkExistOfUser:(NSString *)username
+              completion:(void (^)(BOOL isExists, NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI queryWithoutToken:username];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_USER_QUERYWITHOUTTOKEN parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(NO, [SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                NSInteger count = [((NSNumber *)response[SAMC_COUNT]) integerValue];
+                completion(count, nil);
+            }
+        } else {
+            completion(NO, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(NO, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion
 {
