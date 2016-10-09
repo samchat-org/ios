@@ -74,7 +74,7 @@
     self.phoneLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.phoneLabel.textColor = [UIColor grayColor];
     self.phoneLabel.textAlignment = NSTextAlignmentCenter;
-    self.phoneLabel.text = self.phoneNumber;
+    self.phoneLabel.text = [NSString stringWithFormat:@"+%@-%@",self.countryCode,self.phoneNumber];
     [self.view addSubview:self.phoneLabel];
     
     self.detailLabel = [[UILabel alloc] init];
