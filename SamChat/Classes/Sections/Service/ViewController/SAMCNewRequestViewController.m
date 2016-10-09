@@ -16,7 +16,6 @@
 @interface SAMCNewRequestViewController ()<UITableViewDataSource,UITableViewDelegate>
 
 @property (nonatomic, strong) UILabel *requestLabel;
-@property (nonatomic, strong) UIButton *sendButton;
 @property (nonatomic, strong) UITextField *requestTextField;
 @property (nonatomic, strong) UITextField *locationTextField;
 @property (nonatomic, strong) UITableView *tableView;
@@ -34,6 +33,7 @@
     self.data = [[NSMutableArray alloc] init];
     // TODO: init default selected place info
     [self setupSubviews];
+    [self setUpNavItem];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,74 +43,44 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
     self.navigationItem.title = @"New Request";
     
-    self.requestLabel = [[UILabel alloc] init];
-    self.requestLabel.text = @"Your Request";
-    self.requestLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.requestLabel];
-    
-    self.sendButton = [[UIButton alloc] init];
-    [self.sendButton setTitle:@"Send" forState:UIControlStateNormal];
-    self.sendButton.backgroundColor = [UIColor greenColor];
-    self.sendButton.layer.cornerRadius = 6.0f;
-    self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.sendButton addTarget:self action:@selector(sendRequest:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.sendButton];
-    
-    self.requestTextField = [[UITextField alloc] init];
-    self.requestTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.requestTextField.backgroundColor = [UIColor lightGrayColor];
-    self.requestTextField.placeholder = @"What do you need help with today?";
-//    self.requestTextField.layer.cornerRadius = 6.0f;
-    self.requestTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.requestTextField];
-    
-    self.locationTextField = [[UITextField alloc] init];
-    self.locationTextField.borderStyle = UITextBorderStyleRoundedRect;
-    self.locationTextField.backgroundColor = [UIColor lightGrayColor];
-    self.locationTextField.placeholder = @"Current location";
-//    self.locationTextField.layer.cornerRadius = 6.0f;
-    self.locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.locationTextField addTarget:self action:@selector(locationTextFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
     [self.view addSubview:self.locationTextField];
-    
-    self.tableView = [[UITableView alloc] init];
-    self.tableView.backgroundColor = [UIColor yellowColor];
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
     [self.view addSubview:self.tableView];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_requestLabel][_sendButton(120)]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_requestLabel]-10-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_requestLabel,_sendButton)]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.requestLabel
-                                                          attribute:NSLayoutAttributeCenterY
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.sendButton
-                                                          attribute:NSLayoutAttributeCenterY
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_requestTextField]-20-|"
+                                                                        views:NSDictionaryOfVariableBindings(_requestLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_requestTextField]-10-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_locationTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_locationTextField]-10-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_locationTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_tableView]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_tableView]-0-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
-//    NSString *visualFomat = [NSString stringWithFormat:@"V:|-%f-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_tableView]|", SAMCTopBarHeight+10];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(40)]-10-[_requestTextField(50)]-10-[_locationTextField(50)]-20-[_tableView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(35)]-10-[_requestTextField(35)]-10-[_locationTextField(35)]-5-[_tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_tableView)]];
+}
+
+- (void)setUpNavItem{
+    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [sendButton addTarget:self action:@selector(sendRequest:) forControlEvents:UIControlEventTouchUpInside];
+    [sendButton setTitle:@"Send" forState:UIControlStateNormal];
+    [sendButton setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
+    [sendButton sizeToFit];
+    UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
+    self.navigationItem.rightBarButtonItem = sendItem;
 }
 
 - (void)sendRequest:(UIButton *)sender
@@ -129,7 +99,8 @@
             [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
             return;
         }
-        [wself.view makeToast:@"send request successful" duration:2.0f position:CSToastPositionCenter];
+        [wself.navigationController popViewControllerAnimated:YES];
+//        [wself.view makeToast:@"send request successful" duration:2.0f position:CSToastPositionCenter];
     }];
 }
 
@@ -152,6 +123,7 @@
         DDLogDebug(@"places info: %@", places);
         [wself.data removeAllObjects];
         [wself.data addObjectsFromArray:places];
+        wself.tableView.hidden = ![wself.data count];
         [wself.tableView reloadData];
     }];
 }
@@ -181,6 +153,7 @@
     self.selectedPlaceInfo = self.data[indexPath.row];
     self.locationTextField.text = self.selectedPlaceInfo.desc;
     [self.data removeAllObjects];
+    self.tableView.hidden = YES;
     [self.tableView reloadData];
     [self.requestTextField becomeFirstResponder];
 }
@@ -193,6 +166,97 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NO;
+}
+
+#pragma mark - lazy load
+- (UILabel *)requestLabel
+{
+    if (_requestLabel == nil) {
+        _requestLabel = [[UILabel alloc] init];
+        _requestLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _requestLabel.text = @"How can we help?";
+        _requestLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+        _requestLabel.textColor = SAMC_MAIN_DARKCOLOR;
+    }
+    return _requestLabel;
+}
+
+- (UITextField *)requestTextField
+{
+    if (_requestTextField == nil) {
+        _requestTextField = [[UITextField alloc] init];
+        _requestTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _requestTextField.borderStyle = UITextBorderStyleNone;
+        _requestTextField.backgroundColor = [UIColor whiteColor];
+        _requestTextField.placeholder = @"What service do you need today?";
+        _requestTextField.layer.cornerRadius = 6.0f;
+        _requestTextField.font = [UIFont systemFontOfSize:15.0f];
+        
+        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 5, 0)];
+        _requestTextField.leftView = leftLabel;
+        _requestTextField.leftViewMode = UITextFieldViewModeAlways;
+        
+        UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+        [rightView setImage:[UIImage imageNamed:@"service_edit"]];
+        rightView.contentMode = UIViewContentModeScaleAspectFit;
+        _requestTextField.rightView = rightView;
+        _requestTextField.rightViewMode = UITextFieldViewModeAlways;
+    }
+    return _requestTextField;
+}
+
+- (UITextField *)locationTextField
+{
+    if (_locationTextField == nil) {
+        _locationTextField = [[UITextField alloc] init];
+        _locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _locationTextField.borderStyle = UITextBorderStyleNone;
+        _locationTextField.backgroundColor = [UIColor whiteColor];
+        _locationTextField.placeholder = @"Current location";
+        _locationTextField.layer.cornerRadius = 6.0f;
+        _locationTextField.font = [UIFont systemFontOfSize:15.0f];
+        
+        UILabel *leftLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 5, 0)];
+        _locationTextField.leftView = leftLabel;
+        _locationTextField.leftViewMode = UITextFieldViewModeAlways;
+        
+        UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+        [rightView setImage:[UIImage imageNamed:@"service_location"]];
+        rightView.contentMode = UIViewContentModeScaleAspectFit;
+        _locationTextField.rightView = rightView;
+        _locationTextField.rightViewMode = UITextFieldViewModeAlways;
+        
+        [_locationTextField addTarget:self action:@selector(locationTextFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
+    }
+    return _locationTextField;
+}
+
+- (UITableView *)tableView
+{
+    if (_tableView == nil) {
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+        _tableView.dataSource = self;
+        _tableView.delegate = self;
+        _tableView.hidden = YES;
+        _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+        
+        [_tableView setSeparatorInset:UIEdgeInsetsZero];
+        if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+            [_tableView setLayoutMargins:UIEdgeInsetsZero];
+        }
+    }
+    return _tableView;
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    UIView *view = (UIView *)[touch view];
+    if ((view != self.requestTextField) && (view != self.locationTextField)) {
+        [self.requestTextField resignFirstResponder];
+        [self.locationTextField resignFirstResponder];
+    }
 }
 
 @end
