@@ -74,7 +74,7 @@ NTES_USE_CLEAR_BAR
     self.usernameTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
     self.usernameTextField.backgroundColor = UIColorFromRGB(0x345470);
-    [self.usernameTextField.leftButton setTitle:@"+1" forState:UIControlStateNormal];
+    [self.usernameTextField.leftButton setTitle:@"USA" forState:UIControlStateNormal];
     [self.usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
     self.usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
@@ -250,7 +250,11 @@ NTES_USE_CLEAR_BAR
     [_passwordTextField resignFirstResponder];
     
     NSString *countryCode = _usernameTextField.leftButton.titleLabel.text;
-    countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    if ([countryCode isEqualToString:@"USA"]) {
+        countryCode = @"";
+    } else {
+        countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    }
     NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = _passwordTextField.text;
     [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
