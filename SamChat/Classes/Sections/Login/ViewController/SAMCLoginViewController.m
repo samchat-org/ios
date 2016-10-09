@@ -250,8 +250,8 @@ NTES_USE_CLEAR_BAR
     [_passwordTextField resignFirstResponder];
     
     NSString *countryCode = _usernameTextField.leftButton.titleLabel.text;
-    if (![countryCode hasPrefix:@"+"]) {
-        countryCode = @"";
+    if ([countryCode isEqualToString:@"USA"]) {
+        countryCode = @"1";
     } else {
         countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     }
