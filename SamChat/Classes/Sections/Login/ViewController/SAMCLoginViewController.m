@@ -250,7 +250,7 @@ NTES_USE_CLEAR_BAR
     [_passwordTextField resignFirstResponder];
     
     NSString *countryCode = _usernameTextField.leftButton.titleLabel.text;
-    if ([countryCode isEqualToString:@"USA"]) {
+    if (![countryCode hasPrefix:@"+"]) {
         countryCode = @"";
     } else {
         countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
@@ -274,7 +274,10 @@ NTES_USE_CLEAR_BAR
 {
     SAMCConfirmPhoneNumViewController *vc = [[SAMCConfirmPhoneNumViewController alloc] init];
     vc.signupOperation = YES;
-    vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    NSString *countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    if ([countryCode hasPrefix:@"+"]) {
+        vc.countryCode = self.usernameTextField.leftButton.titleLabel.text;
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
