@@ -401,6 +401,32 @@
 //{
 //    "header":
 //    {
+//        "action" : "query-without-token"
+//    },
+//    "body":
+//    {
+//        "opt":4,   4: User Query Without Token
+//        "param":
+//        {
+//            "type":[0/1/2] 0: cellphone 2:username
+//            "username":"" //optional
+//            "countrycode":"" //optional
+//            "cellphone ":"" //optional
+//        }
+//    }
+//}
++ (NSDictionary *)queryWithoutToken:(NSString *)username
+{
+    username = username ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_WITHOUT_TOKEN};
+    NSDictionary *body = @{SAMC_OPT:@(2),
+                           SAMC_PARAM:@{SAMC_USERNAME:username}};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action" : "public-query"
 //        "token": "token",
 //    },

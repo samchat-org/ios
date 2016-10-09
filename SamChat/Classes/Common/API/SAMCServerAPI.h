@@ -58,6 +58,7 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
 + (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId;
 + (NSDictionary *)queryUsers:(NSArray<NSString *> *)userIds;
++ (NSDictionary *)queryWithoutToken:(NSString *)username;
 
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
                             location:(NSDictionary *)location;
