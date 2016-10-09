@@ -419,8 +419,8 @@
 {
     username = username ?:@"";
     NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_WITHOUT_TOKEN};
-    NSDictionary *body = @{SAMC_OPT:@(2),
-                           SAMC_PARAM:@{SAMC_USERNAME:username}};
+    NSDictionary *body = @{SAMC_OPT:@(4),
+                           SAMC_PARAM:@{SAMC_TYPE:@(2),SAMC_USERNAME:username}};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
