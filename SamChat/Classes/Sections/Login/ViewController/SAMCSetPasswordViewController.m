@@ -15,6 +15,7 @@
 #import "SAMCServerErrorHelper.h"
 #import "SAMCPreferenceManager.h"
 #import "SAMCLoginViewController.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -28,12 +29,15 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *doneButtonBottomContraint;
 
+@property (nonatomic, assign) BOOL isUsernameExists;
+
 @end
 
 @implementation SAMCSetPasswordViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _isUsernameExists = NO;
     if (self.isSignupOperation) {
         self.navigationItem.title = @"Sign Up";
         [self setupSignUpViews];
@@ -53,9 +57,9 @@
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     if (self.isSignupOperation) {
         [self.usernameTextField becomeFirstResponder];
     } else {
@@ -63,10 +67,21 @@
     }
 }
 
+//- (void)viewWillAppear:(BOOL)animated
+//{
+//    [super viewWillAppear:animated];
+//    if (self.isSignupOperation) {
+//        [self.usernameTextField becomeFirstResponder];
+//    } else {
+//        [self.passwordTextField becomeFirstResponder];
+//    }
+//}
+
 - (void)setupSignUpViews
 {
     [self.view addSubview:self.stepImageView];
     [self.view addSubview:self.tipLabel];
+    [self.view addSubview:self.usernameCheckLabel];
     [self.view addSubview:self.usernameTextField];
     [self.view addSubview:self.passwordTextField];
     [self.view addSubview:self.agreeLabel];
@@ -87,6 +102,10 @@
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_usernameCheckLabel]-40-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_usernameCheckLabel)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_usernameTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
@@ -99,23 +118,42 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_agreeLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_usernameTextField(35)]-10-[_passwordTextField(35)]-10-[_agreeLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(35)]-10-[_passwordTextField(35)]-10-[_agreeLabel]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_usernameTextField,_passwordTextField,_agreeLabel)]];
+                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_usernameCheckLabel,_usernameTextField,_passwordTextField,_agreeLabel)]];
 }
 
 - (void)setupResetPasswordViews
 {
+    [self.view addSubview:self.stepImageView];
+    [self.view addSubview:self.tipLabel];
     [self.view addSubview:self.passwordTextField];
+    
+    self.tipLabel.text = @"Enter your new password";
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepImageView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_passwordTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_passwordTextField(35)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_passwordTextField(35)]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_passwordTextField)]];
+                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_passwordTextField)]];
 }
 
 - (void)setupDoneButton
@@ -171,10 +209,6 @@
 {
     NSString *username = self.usernameTextField.text;
     NSString *password = self.passwordTextField.text;
-    if ([self isPasswordFormatOK]) {
-        [self.view makeToast:@"password format wrong" duration:2.0f position:CSToastPositionCenter];
-        return;
-    }
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"signing up" maskType:SVProgressHUDMaskTypeBlack];
     [[SAMCAccountManager sharedManager] registerWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode username:username password:password completion:^(NSError * _Nullable error) {
@@ -195,10 +229,6 @@
 - (void)resetPassword
 {
     NSString *password = self.passwordTextField.text;
-    if ([self isPasswordFormatOK]) {
-        [self.view makeToast:@"password format wrong" duration:2.0f position:CSToastPositionCenter];
-        return;
-    }
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"resetting password" maskType:SVProgressHUDMaskTypeBlack];
     [[SAMCAccountManager sharedManager] findPWDUpdateWithCountryCode:self.countryCode cellPhone:self.phoneNumber verifyCode:self.verifyCode password:password completion:^(NSError * _Nullable error) {
@@ -222,6 +252,35 @@
     [window makeToast:toast duration:2.0 position:CSToastPositionCenter];
 }
 
+- (void)checkExistOfUsername:(NSString *)username
+{
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] checkExistOfUser:username completion:^(BOOL isExists, NSError * _Nullable error) {
+        DDLogDebug(@"checkExistOfUsername:%@ isExists:%@", username, isExists?@"YES":@"NO");
+        if ([wself.usernameTextField.text isEqualToString:username]) {
+            wself.isUsernameExists = isExists;
+            wself.doneButton.enabled = [self isAllInputOK];
+            UIImageView *rightView = (UIImageView *)self.usernameTextField.rightView;
+            if (error == nil) {
+                if (isExists) {
+                   [rightView setImage:[UIImage imageNamed:@"input_wrong"]];
+                } else {
+                   [rightView setImage:[UIImage imageNamed:@"input_ok"]];
+                }
+            }
+        }
+    }];
+}
+
+- (void)showPassword:(UIButton *)sender
+{
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    // fix cursor location unchanged issue
+    NSString *tempString = self.passwordTextField.text;
+    self.passwordTextField.text = @"";
+    self.passwordTextField.text = tempString;
+}
+
 - (BOOL)isPasswordFormatOK
 {
     NSString *password = self.passwordTextField.text;
@@ -233,12 +292,20 @@
     if (!self.signupOperation) {
         return YES;
     }
-    return YES; // TODO: add username check
+    return ([self.usernameTextField.text length] && (!self.isUsernameExists));
 }
 
 - (BOOL)isAllInputOK
 {
-    return ([self isPasswordFormatOK] && [self isUsernameValid]);
+    BOOL isOk = ([self isPasswordFormatOK] && [self isUsernameValid]);
+    if (isOk) {
+        self.doneButton.enabled = YES;
+        self.doneButton.backgroundColor = UIColorFromRGB(0x67D45F);
+    } else {
+        self.doneButton.enabled = NO;
+        self.doneButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+    }
+    return isOk;
 }
 
 #pragma mark - UIKeyBoard Notification
@@ -289,9 +356,11 @@
     if (_usernameCheckLabel == nil) {
         _usernameCheckLabel = [[UILabel alloc] init];
         _usernameCheckLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _usernameCheckLabel.font = [UIFont systemFontOfSize:14.0f];
+        _usernameCheckLabel.font = [UIFont systemFontOfSize:12.0f];
         _usernameCheckLabel.numberOfLines = 0;
+        _usernameCheckLabel.textAlignment = NSTextAlignmentCenter;
         _usernameCheckLabel.textColor = UIColorFromRGB(0xFF883A);
+        _usernameCheckLabel.text = @" ";
     }
     return _usernameCheckLabel;
 }
@@ -308,13 +377,19 @@
         _usernameTextField.returnKeyType = UIReturnKeyNext;
         [_usernameTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
         [_usernameTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
-        [_usernameTextField addTarget:self action:@selector(textFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
+        [_usernameTextField addTarget:self action:@selector(usernameTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
         UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
         [leftView setImage:[UIImage imageNamed:@"signup_username"]];
         leftView.contentMode = UIViewContentModeScaleAspectFit;
         _usernameTextField.leftView = leftView;
         _usernameTextField.leftViewMode = UITextFieldViewModeAlways;
+        
+        UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+        [rightView setImage:[UIImage new]];
+        rightView.contentMode = UIViewContentModeScaleAspectFit;
+        _usernameTextField.rightView = rightView;
+        _usernameTextField.rightViewMode = UITextFieldViewModeAlways;
     }
     return _usernameTextField;
 }
@@ -332,13 +407,20 @@
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         [_passwordTextField addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [_passwordTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
-        [_passwordTextField addTarget:self action:@selector(textFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
+        [_passwordTextField addTarget:self action:@selector(passwordTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
         UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
         [leftView setImage:[UIImage imageNamed:@"signup_password"]];
         leftView.contentMode = UIViewContentModeScaleAspectFit;
         _passwordTextField.leftView = leftView;
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+        
+        UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
+        [showPWDButton setImage:[UIImage imageNamed:@"login_pwd_eye"] forState:UIControlStateNormal];
+        showPWDButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
+        self.passwordTextField.rightView = showPWDButton;
+        self.passwordTextField.rightViewMode = UITextFieldViewModeAlways;
     }
     return _passwordTextField;
 }
@@ -357,6 +439,22 @@
     return _agreeLabel;
 }
 
+- (void)setIsUsernameExists:(BOOL)isUsernameExists
+{
+    _isUsernameExists = isUsernameExists;
+    if (isUsernameExists) {
+        self.usernameCheckLabel.text = @"Ooops, username already token. Try a combination of letters and numbers";
+        self.usernameTextField.textColor = UIColorFromRGB(0xFF883A);
+        UIImageView *leftView = (UIImageView *)self.usernameTextField.leftView;
+        [leftView setImage:[UIImage imageNamed:@"signup_username_wrong"]];
+    } else {
+        self.usernameCheckLabel.text = @" ";
+        self.usernameTextField.textColor = UIColorFromRGB(0x3B4E6E);
+        UIImageView *leftView = (UIImageView *)self.usernameTextField.leftView;
+        [leftView setImage:[UIImage imageNamed:@"signup_username"]];
+    }
+}
+
 #pragma mark -
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -364,15 +462,23 @@
     [textField layoutIfNeeded];
 }
 
-- (void)textFieldDidChangedEditing:(UITextField *)textField
+- (void)usernameTextFieldDidChangedEditing:(id)sender
 {
-    if ([self isAllInputOK]) {
-        _doneButton.enabled = YES;
-        _doneButton.backgroundColor = UIColorFromRGB(0x67D45F);
-    } else {
-        _doneButton.enabled = NO;
-        _doneButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    self.isUsernameExists = NO;
+    UIImageView *rightView = (UIImageView *)self.usernameTextField.rightView;
+    [rightView setImage:[UIImage new]];
+    NSString *username = self.usernameTextField.text;
+    [self isAllInputOK];
+    if ([username length] <= 0) {
+        return;
     }
+    [self performSelector:@selector(checkExistOfUsername:) withObject:username afterDelay:2];
+}
+
+- (void)passwordTextFieldDidChangedEditing:(id)sender
+{
+    [self isAllInputOK];
 }
 
 @end
