@@ -40,6 +40,8 @@ alpha:alphaValue]
 #define UIColorFromRGB(rgbValue) UIColorFromRGBA(rgbValue, 1.0)
 
 #define SAMC_MAIN_BACKGROUNDCOLOR   UIColorFromRGB(0xECEDF0)
+#define SAMC_MAIN_DARKCOLOR         UIColorFromRGB(0x1D4D73)
+#define SAMC_MAIN_LIGHTCOLOR        UIColorFromRGB(0x9BAFBF)
 
 
 #define dispatch_sync_main_safe(block)\

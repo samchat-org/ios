@@ -116,9 +116,14 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         vc.hidesBottomBarWhenPushed = NO;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
+        UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title
-                                                       image:[UIImage imageNamed:imageName]
-                                               selectedImage:[UIImage imageNamed:imageSelected]];
+                                                       image:normalImage
+                                               selectedImage:pressedImage];
+        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_MAIN_LIGHTCOLOR} forState:UIControlStateNormal];
+        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_MAIN_DARKCOLOR} forState:UIControlStateSelected];
+        
         nav.tabBarItem.tag = idx;
         NSInteger badge = [item[TabbarItemBadgeValue] integerValue];
         if (badge) {
@@ -242,22 +247,22 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                      @(SAMCMainTabTypeService) : @{
                              TabbarVC           : @"SAMCServiceViewController",
                              TabbarTitle        : @"Service",
-                             TabbarImage        : @"icon_message_normal",
-                             TabbarSelectedImage: @"icon_message_pressed",
+                             TabbarImage        : @"icon_service_normal",
+                             TabbarSelectedImage: @"icon_service_pressed",
                              TabbarItemBadgeValue: @(serviceUnreadCount)
                              },
                      @(SAMCMainTabTypePublic) : @{
                              TabbarVC           : @"SAMCPublicContainerViewController",
                              TabbarTitle        : @"Public",
-                             TabbarImage        : @"icon_message_normal",
-                             TabbarSelectedImage: @"icon_message_pressed",
+                             TabbarImage        : @"icon_public_normal",
+                             TabbarSelectedImage: @"icon_public_pressed",
                              TabbarItemBadgeValue: @(publicUnreadCount)
                              },
                      @(SAMCMainTabTypeChat) : @{
                              TabbarVC           : @"SAMCChatListViewController",
                              TabbarTitle        : @"Chat",
-                             TabbarImage        : @"icon_message_normal",
-                             TabbarSelectedImage: @"icon_message_pressed",
+                             TabbarImage        : @"icon_chat_normal",
+                             TabbarSelectedImage: @"icon_chat_pressed",
                              TabbarItemBadgeValue: @(chatUnreadCount)
                              },
                      @(SAMCMainTabTypeContact) : @{
@@ -269,9 +274,9 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              },
                      @(SAMCMainTabTypeSetting) : @{
                              TabbarVC           : @"SAMCSettingViewController",
-                             TabbarTitle        : @"Settings",
-                             TabbarImage        : @"icon_setting_normal",
-                             TabbarSelectedImage: @"icon_setting_pressed",
+                             TabbarTitle        : @"Me",
+                             TabbarImage        : @"icon_me_normal",
+                             TabbarSelectedImage: @"icon_me_pressed",
                              TabbarItemBadgeValue: @(self.customSystemUnreadCount)
                              }
                      };
