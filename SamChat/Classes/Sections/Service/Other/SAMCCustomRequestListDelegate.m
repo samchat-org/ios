@@ -82,6 +82,9 @@
         [[SAMCQuestionManager sharedManager] deleteSendQuestion:session];
         [[self data] removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if (![[self data] count]) {
+            [self.viewController sortAndReload];
+        }
     }
 }
 
