@@ -35,7 +35,7 @@
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>云信想使用您的地理位置信息</string>
-	<key>NSLocationWhenInUseDescription</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>云信想使用您的地理位置信息</string>
 	<key>UIBackgroundModes</key>
 	<array>

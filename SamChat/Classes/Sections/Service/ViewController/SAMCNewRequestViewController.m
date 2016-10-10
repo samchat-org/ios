@@ -13,7 +13,8 @@
 #import "UIView+Toast.h"
 #import "SAMCResourceManager.h"
 
-@interface SAMCNewRequestViewController ()<UITableViewDataSource,UITableViewDelegate>
+@import CoreLocation;
+@interface SAMCNewRequestViewController ()<UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate>
 
 @property (nonatomic, strong) UILabel *requestLabel;
 @property (nonatomic, strong) UITextField *requestTextField;
@@ -23,6 +24,8 @@
 @property (nonatomic, strong) NSMutableArray *data;
 
 @property (nonatomic, strong) SAMCPlaceInfo *selectedPlaceInfo;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) CLLocation *currentLocation;
 
 @end
 
@@ -31,9 +34,27 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.data = [[NSMutableArray alloc] init];
-    // TODO: init default selected place info
     [self setupSubviews];
     [self setUpNavItem];
+    
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    [_locationManager requestWhenInUseAuthorization];
+    
+    if ([CLLocationManager locationServicesEnabled]) {
+        CLAuthorizationStatus status = CLLocationManager.authorizationStatus;
+        if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
+            [self.view makeToast:@"请在设置-隐私里允许程序使用地理位置服务"
+                        duration:2
+                        position:CSToastPositionCenter];
+        }else{
+            [_locationManager startUpdatingLocation];
+        }
+    }else{
+        [self.view makeToast:@"请打开地理位置服务"
+                    duration:2
+                    position:CSToastPositionCenter];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -87,9 +108,14 @@
 {
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
-    // TODO: add longitude & latitude to location
-    NSDictionary *location = @{SAMC_PLACE_ID:self.selectedPlaceInfo.placeId ?:@"",
-                               SAMC_ADDRESS:self.selectedPlaceInfo.desc ? :@""};
+    NSMutableDictionary *location = [[NSMutableDictionary alloc] init];
+    [location setObject:self.locationTextField.text forKey:SAMC_ADDRESS];
+    if (self.selectedPlaceInfo.placeId) {
+        [location setObject:self.selectedPlaceInfo.placeId forKey:SAMC_PLACE_ID];
+    }
+    if (self.currentLocation && ([self.locationTextField.text isEqualToString:@"Current location"])) {
+        [location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
+    }
     [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
@@ -107,9 +133,9 @@
 - (void)locationTextFieldDidChanged:(id)sender
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    self.selectedPlaceInfo = nil;
     NSString *key = self.locationTextField.text;
     if ([key length] <= 0) {
-        // TODO: clear ui
         return;
     }
     [self performSelector:@selector(getPlacesInfo:) withObject:key afterDelay:0.5];
@@ -168,6 +194,14 @@
     return NO;
 }
 
+#pragma mark - CLLocationManagerDelegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    _currentLocation = [locations lastObject];
+    DDLogDebug(@"location: %@", _currentLocation);
+    [_locationManager stopUpdatingLocation];
+}
+
 #pragma mark - lazy load
 - (UILabel *)requestLabel
 {
@@ -212,7 +246,8 @@
         _locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _locationTextField.borderStyle = UITextBorderStyleNone;
         _locationTextField.backgroundColor = [UIColor whiteColor];
-        _locationTextField.placeholder = @"Current location";
+//        _locationTextField.placeholder = @"Current location";
+        _locationTextField.text = @"Current location";
         _locationTextField.layer.cornerRadius = 6.0f;
         _locationTextField.font = [UIFont systemFontOfSize:15.0f];
         
