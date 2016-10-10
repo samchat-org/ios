@@ -24,16 +24,17 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    UIImage *image = [UIImage imageNamed:@"icon_message_normal"];
+    UIImage *image = [UIImage imageNamed:@"icon_switch_customer_normal"];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0,0,30,30);
-    //button.backgroundColor = [UIColor grayColor];
     [button addTarget:self action:@selector(touchSwitchUserMode:) forControlEvents:UIControlEventTouchUpInside];
     [button setBackgroundImage:image forState:UIControlStateNormal];
     
     UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-    self.navigationItem.leftBarButtonItem = navLeftButton;
-    
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -10;
+//    self.navigationItem.leftBarButtonItem = navLeftButton;
+    self.navigationItem.leftBarButtonItems = @[negativeSpacer,navLeftButton];
 //    self.navigationItem.leftBarButtonItem.badgeValue = @"1";
 }
 
