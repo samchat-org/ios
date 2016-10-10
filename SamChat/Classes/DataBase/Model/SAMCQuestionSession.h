@@ -46,5 +46,6 @@
 - (NSString *)newResponseDescription;
 - (NSString *)responseTimeDescription;
 - (NSString *)questionTimeDescription;
+- (NSInteger)daysEarlier;
 
 @end

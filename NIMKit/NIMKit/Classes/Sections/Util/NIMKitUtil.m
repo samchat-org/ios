@@ -77,6 +77,32 @@
     return result;
 }
 
+// SAMC_BEGIN
++ (NSInteger)daysEarlierWithTime:(NSTimeInterval)msglastTime
+{
+    NSInteger result = 0;
+    NSDate * nowDate = [NSDate date];
+    NSDate * msgDate = [NSDate dateWithTimeIntervalSince1970:msglastTime];
+    NSCalendarUnit components = (NSCalendarUnit)(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitHour | NSCalendarUnitMinute);
+    NSDateComponents *nowDateComponents = [[NSCalendar currentCalendar] components:components fromDate:nowDate];
+    NSDateComponents *msgDateComponents = [[NSCalendar currentCalendar] components:components fromDate:msgDate];
+    
+    NSTimeInterval gapTime = -msgDate.timeIntervalSinceNow;
+    double onedayTimeIntervalValue = 24*60*60;  //一天的秒数
+    int gapDay = gapTime/(60*60*24) ;
+    if(gapDay == 0) //在24小时内,存在跨天的现象. 判断两个时间是否在同一天内
+    {
+        BOOL isSameDay = msgDateComponents.day == nowDateComponents.day;
+        result = isSameDay ? 0:1;
+    }
+    else
+    {
+        result = gapDay;
+    }
+    return result;
+}
+// SAMC_END
+
 #pragma mark - Private
 
 + (NSString *)getPeriodOfTime:(NSInteger)time withMinute:(NSInteger)minute

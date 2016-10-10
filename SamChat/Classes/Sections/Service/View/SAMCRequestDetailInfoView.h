@@ -11,6 +11,6 @@
 
 @interface SAMCRequestDetailInfoView : UIView
 
-- (instancetype)initWithQuestionSession:(SAMCQuestionSession *)questionSession;
+@property (nonatomic, strong) SAMCQuestionSession *questionSession;
 
 @end

@@ -68,4 +68,9 @@
     return [NIMKitUtil showTime:self.datetime/1000 showDetail:NO];
 }
 
+- (NSInteger)daysEarlier
+{
+    return [NIMKitUtil daysEarlierWithTime:self.datetime/1000];
+}
+
 @end

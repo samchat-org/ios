@@ -17,6 +17,9 @@
 + (NSString *)showNick:(NSString *)uid inSession:(NIMSession *)session;
 
 + (NSString *)showTime:(NSTimeInterval)msglastTime showDetail:(BOOL)showDetail;
+// SAMC_BEGIN
++ (NSInteger)daysEarlierWithTime:(NSTimeInterval)msglastTime;
+// SAMC_END
 
 + (NSString *)messageTipContent:(NIMMessage *)message;
 

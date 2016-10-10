@@ -306,6 +306,9 @@
 #pragma mark - Private
 - (NSArray<NSString *> *)answersFromString:(NSString *)answersStr
 {
+    if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
+        return nil;
+    }
     return [answersStr componentsSeparatedByString:@","];
 }
 
