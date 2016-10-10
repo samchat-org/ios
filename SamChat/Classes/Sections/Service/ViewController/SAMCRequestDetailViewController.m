@@ -17,11 +17,13 @@
 #import "NIMKitUtil.h"
 #import "NIMMessage+SAMC.h"
 #import "SAMCQuestionManager.h"
+#import "SAMCRequestEmptyView.h"
 
 @interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCQuestionManagerDelegate>
 
 @property (nonatomic, strong) SAMCRequestDetailInfoView *requestView;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) SAMCRequestEmptyView *emptyView;
 
 @property (nonatomic, strong) NSMutableArray<SAMCRecentSession *> *answerSessions;
 
@@ -63,11 +65,17 @@
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    _tableView.backgroundColor = [UIColor greenColor];
-    self.tableView.delegate         = self;
-    self.tableView.dataSource       = self;
-    self.tableView.tableFooterView  = [[UIView alloc] init];
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.delegate         = self;
+    _tableView.dataSource       = self;
+    _tableView.tableFooterView  = [[UIView alloc] init];
+    _tableView.hidden = YES;
     [self.view addSubview:_tableView];
+    
+    _emptyView = [[SAMCRequestEmptyView alloc] init];
+    _emptyView.translatesAutoresizingMaskIntoConstraints = NO;
+    _emptyView.daysEarlier = [self.questionSession daysEarlier];
+    [self.view addSubview:_emptyView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_requestView]|"
                                                                       options:0
@@ -77,6 +85,17 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_emptyView]-40-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_emptyView)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_emptyView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_requestView][_tableView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -149,6 +168,13 @@
 
 - (void)sort
 {
+    if ([self.answerSessions count]) {
+        self.tableView.hidden = NO;
+        self.emptyView.hidden = YES;
+    } else {
+        self.tableView.hidden = YES;
+        self.emptyView.hidden = NO;
+    }
     [self.answerSessions sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         SAMCRecentSession *item1 = obj1;
         SAMCRecentSession *item2 = obj2;
