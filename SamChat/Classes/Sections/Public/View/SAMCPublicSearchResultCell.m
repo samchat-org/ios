@@ -100,7 +100,7 @@
 - (void)setIsFollowed:(BOOL)isFollowed
 {
     _isFollowed = isFollowed;
-    [_followButton setTitle:isFollowed?@"unfollow":@"follow" forState:UIControlStateNormal];
+    [_followButton setTitle:isFollowed?@"Unfollow":@"Follow" forState:UIControlStateNormal];
     [_followButton setTitleColor:isFollowed?UIColorFromRGB(0xA2AEBC):UIColorFromRGB(0x2676B6) forState:UIControlStateNormal];
 //    [_followButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
 }
