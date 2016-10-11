@@ -10,13 +10,15 @@
 #import "SAMCPublicManager.h"
 #import "SAMCSPProfileViewController.h"
 #import "UIView+Toast.h"
+#import "SAMCNavSearchBar.h"
+#import "SAMCPublicSearchResultCell.h"
+#import "SAMCPublicManager.h"
+#import "SAMCAccountManager.h"
 
-@interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,SAMCPublicSearchResultDelegate>
 
-@property (nonatomic, strong) UITextField *searchKeyTextField;
-@property (nonatomic, strong) UITextField *locationTextField;
-@property (nonatomic, strong) UITableView *searchResultTabeView;
-
+@property (nonatomic, strong) SAMCNavSearchBar *searchBar;
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
 
 @end
@@ -26,6 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setupSubviews];
+    [self.searchBar becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -34,58 +37,50 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.navigationItem.title = @"Public Search";
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    [self.navigationItem setHidesBackButton:YES];
     
-    UIButton *searchButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 44, 44)];
-    searchButton.backgroundColor = [UIColor grayColor];
-    [searchButton addTarget:self action:@selector(onTouchSearch:) forControlEvents:UIControlEventTouchUpInside];
+    _searchBar = [[SAMCNavSearchBar alloc] initWithFrame:CGRectMake(8, 0, self.view.frame.size.width-16, 44)];
+    _searchBar.showsCancelButton = YES;
+    for (UIView* subview in [[_searchBar.subviews lastObject] subviews]) {
+        if ([subview isKindOfClass:[UITextField class]]) {
+            UITextField *textField = (UITextField*)subview;
+            [textField setBackgroundColor:SAMC_MAIN_BACKGROUNDCOLOR];
+        }
+    }
+    _searchBar.delegate = self;
+    self.navigationItem.titleView = _searchBar;
     
-    _searchKeyTextField = [[UITextField alloc] init];
-    _searchKeyTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    _searchKeyTextField.backgroundColor = UIColorFromRGB(0xF3F3F3);
-    _searchKeyTextField.placeholder = @"Search by keywords, name, phone number...";
-    _searchKeyTextField.rightView = searchButton;
-    _searchKeyTextField.rightViewMode = UITextFieldViewModeAlways;
-    [self.view addSubview:_searchKeyTextField];
+    _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    _tableView.backgroundColor = [UIColor clearColor];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.view addSubview:_tableView];
     
-    _locationTextField = [[UITextField alloc] init];
-    _locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    _locationTextField.backgroundColor = UIColorFromRGB(0xF3F3F3);
-    _locationTextField.placeholder = @"Current Location";
-    [self.view addSubview:_locationTextField];
-    
-    _searchResultTabeView = [[UITableView alloc] init];
-    _searchResultTabeView.translatesAutoresizingMaskIntoConstraints = NO;
-    _searchResultTabeView.backgroundColor = [UIColor greenColor];
-    _searchResultTabeView.delegate = self;
-    _searchResultTabeView.dataSource = self;
-    [self.view addSubview:_searchResultTabeView];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_searchKeyTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_tableView]-0-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_searchKeyTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_locationTextField]-20-|"
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_tableView]-0-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_locationTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_searchResultTabeView]-20-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_searchResultTabeView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_searchKeyTextField(50)]-10-[_locationTextField(50)]-20-[_searchResultTabeView]-10-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_searchKeyTextField,_locationTextField,_searchResultTabeView)]];
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
 }
 
-#pragma mark - Action
-- (void)onTouchSearch:(id)sender
+#pragma mark - UISearchBarDelegate
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    NSString *key = self.searchKeyTextField.text;
+    [self.searchBar resignFirstResponder];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    NSString *key = self.searchBar.text;
     [self.data removeAllObjects];
-    [self.searchResultTabeView reloadData];
+    [self.tableView reloadData];
     __weak typeof(self) wself = self;
     [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
         if (error) {
@@ -97,8 +92,32 @@
         for (NSDictionary *userDict in users) {
             SAMCUser *user = [SAMCUser userFromDict:userDict];
             [wself.data addObject:user];
-            [wself.searchResultTabeView reloadData];
+            [wself.tableView reloadData];
         }
+    }];
+}
+
+#pragma mark - SAMCPublicSearchResultDelegate
+- (void)follow:(BOOL)isFollow user:(SAMCUser *)user completion:(void (^)(BOOL))completion
+{
+    __weak typeof(self) wself = self;
+    [[SAMCPublicManager sharedManager] follow:isFollow officialAccount:user.spBasicInfo completion:^(NSError * _Nullable error) {
+        NSString *toast;
+        if (error) {
+            toast =error.userInfo[NSLocalizedDescriptionKey];
+            completion(NO);
+        } else {
+            if (isFollow) {
+                toast = @"follow success";
+                [[SAMCAccountManager sharedManager] updateUser:user];
+                [self.myFollowIdList addObject:user.userId];
+            } else {
+                toast = @"unfollow success";
+                [self.myFollowIdList removeObject:user.userId];
+            }
+            completion(YES);
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
     }];
 }
 
@@ -110,14 +129,16 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"cellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    static NSString * cellId = @"SAMCPublicSearchCellId";
+    SAMCPublicSearchResultCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[SAMCPublicSearchResultCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell.delegate = self;
     }
     
     SAMCUser *user = self.data[indexPath.row];
-    cell.textLabel.text = user.userInfo.username;
+    cell.user = user;
+    cell.isFollowed = [self.myFollowIdList containsObject:user.userId];
     return cell;
 }
 
@@ -132,7 +153,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 70.f;
+    return 50.f;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

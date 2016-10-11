@@ -6,8 +6,8 @@
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCTabViewController.h"
+#import <UIKit/UIKit.h>
 
-@interface SAMCPublicListViewController : SAMCTabViewController
+@interface SAMCPublicListViewController : UIViewController
 
 @end

@@ -14,8 +14,6 @@
 @interface SAMCPublicListViewController ()<SAMCTableReloadDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UISearchDisplayController *searchResultController;
-@property (nonatomic, strong) UISearchBar *searchBar;
 
 @property (nonatomic, strong) SAMCTableViewDelegate *delegator;
 @property (nonatomic, strong) NSMutableArray *data;
@@ -29,6 +27,7 @@
     [super viewDidLoad];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupSubviews];
+    [self setUpNavItem];
 }
 
 - (void)didReceiveMemoryWarning
@@ -38,6 +37,7 @@
 
 - (void)setupSubviews
 {
+    self.parentViewController.navigationItem.title = @"Public";
     [self.data removeAllObjects];
     [self.data addObjectsFromArray:[[SAMCPublicManager sharedManager] myFollowList]];
     __weak typeof(self) weakSelf = self;
@@ -47,8 +47,6 @@
     
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    self.navigationItem.title = @"Public";
-    
     self.tableView = [[UITableView alloc] init];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.backgroundColor = [UIColor greenColor];
@@ -57,17 +55,6 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
-    
-    self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-    self.searchBar.delegate = self;
-    self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.tableView.tableHeaderView = self.searchBar;
-    
-    //    self.searchResultController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar
-    //                                                                          contentsController:self];
-    //    self.searchResultController.delegate = self;
-    //    self.searchResultController.searchResultsDataSource = self;
-    //    self.searchResultController.searchResultsDelegate = self;
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
                                                                       options:0
@@ -79,59 +66,34 @@
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
 }
 
+- (void)setUpNavItem
+{
+    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addBtn addTarget:self action:@selector(searchPublic:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn setImage:[UIImage imageNamed:@"public_add_normal"] forState:UIControlStateNormal];
+    //    [addBtn setImage:[UIImage imageNamed:@"public_add_pressed"] forState:UIControlStateHighlighted];
+    [addBtn sizeToFit];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
+    self.parentViewController.navigationItem.rightBarButtonItem = addItem;
+}
+
+#pragma mark - Action
+- (void)searchPublic:(id)sender
+{
+    SAMCPublicSearchViewController *vc = [[SAMCPublicSearchViewController alloc] init];
+    NSMutableArray *ids = [[NSMutableArray alloc] init];
+    for (SAMCPublicSession *session in self.data) {
+        [ids addObject:session.userId];
+    }
+    vc.myFollowIdList = ids;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - SAMCTableReloadDelegate
 - (void)sortAndReload
 {
     // TODO: add sorting
-    if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        [self.tableView reloadData];
-    } else {
-    }
-}
-
-#pragma mark - UISearchBarDelegate
-- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
-{
-    // TODO: just for test
-    SAMCPublicSearchViewController *vc = [[SAMCPublicSearchViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    [self.searchBar resignFirstResponder];
-}
-
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
-{
-    //    NSPredicate *predicate = [NSPredicate predicateWithBlock:^BOOL(NSString *value, NSDictionary<NSString *,id> * _Nullable bindings) {
-    //        NSRange range = [value rangeOfString:searchText options:NSCaseInsensitiveSearch];
-    //        return range.location != NSNotFound;
-    //    }];
-    //
-    //    NSMutableArray *tempResultArray = [[NSMutableArray alloc] init];
-    //    [self.countryCodeDictionary enumerateKeysAndObjectsUsingBlock:^(NSString *key, NSArray *obj, BOOL * _Nonnull stop) {
-    //        if ([key isEqualToString:@"#"]) {
-    //            return;
-    //        }
-    //        [tempResultArray addObjectsFromArray:[obj filteredArrayUsingPredicate:predicate]];
-    //    }];
-    //
-    //    self.searchResultArray = [tempResultArray sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
-    //        return [obj1 compare:obj2];
-    //    }];
-    //    [self.searchResultController.searchResultsTableView reloadData];
-}
-
-- (void)headerRereshing:(id)sender
-{
-    //    __weak NIMSessionViewLayoutManager *layoutManager = self.layoutManager;
-    //    __weak typeof(self) wself = self;
-    //    __weak UIRefreshControl *refreshControl = self.refreshControl;
-    //    [self.sessionDatasource loadHistoryMessagesWithComplete:^(NSInteger index,NSArray *memssages, NSError *error) {
-    //        [refreshControl endRefreshing];
-    //        if (memssages.count) {
-    //            [layoutManager reloadData];
-    //            [wself checkAttachmentState:memssages];
-    //            [wself checkReceipt];
-    //        }
-    //    }];
+    [self.tableView reloadData];
 }
 
 #pragma mark - lazy load

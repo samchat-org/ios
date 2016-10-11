@@ -116,6 +116,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         vc.hidesBottomBarWhenPushed = NO;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
+        nav.navigationBar.barTintColor = UIColorFromRGB(0xF8F9F9);
         UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title

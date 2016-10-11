@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCPublicSession.h"
 
 @interface SAMCPublicSearchViewController : UIViewController
+
+@property (nonatomic, strong) NSMutableArray<NSString *> *myFollowIdList;
 
 @end
