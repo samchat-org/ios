@@ -53,6 +53,7 @@
     AWSS3TransferUtilityUploadCompletionHandlerBlock completionHandler = ^(AWSS3TransferUtilityUploadTask *task, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
             if (error) {
+                DDLogDebug(@"update image error:%@", error);
                 if (completionBlock) {
                     completionBlock(nil, error);
                 }

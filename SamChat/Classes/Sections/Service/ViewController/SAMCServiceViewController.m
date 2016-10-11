@@ -274,10 +274,10 @@
         _tableView.delegate = self.delegator;
         _tableView.dataSource = self.delegator;
         
-        [_tableView setSeparatorInset:UIEdgeInsetsZero];
-        if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_tableView setLayoutMargins:UIEdgeInsetsZero];
-        }
+//        [_tableView setSeparatorInset:UIEdgeInsetsZero];
+//        if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+//            [_tableView setLayoutMargins:UIEdgeInsetsZero];
+//        }
     }
     return _tableView;
 }

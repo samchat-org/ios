@@ -7,15 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCQuestionSession.h"
 
 @interface SAMCCustomRequestListCell : UITableViewCell
 
-@property (nonatomic, strong) UILabel *messageLabel;
-@property (nonatomic, strong) UILabel *locationLabel;
-@property (nonatomic, strong) UILabel *timeLabel;
-
-@property (nonatomic, strong) UIImage *avatarImage1;
-@property (nonatomic, strong) UIImage *avatarImage2;
-@property (nonatomic, strong) UIImage *avatarImage3;
+- (void)updateWithSession:(SAMCQuestionSession *)questionSession;
 
 @end

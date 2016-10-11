@@ -7,7 +7,7 @@
 //
 
 #import "SAMCCustomRequestListDelegate.h"
-#import "SAMCRequestListCell.h"
+#import "SAMCCustomRequestListCell.h"
 #import "SAMCRequestDetailViewController.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCQuestionSession.h"
@@ -41,16 +41,17 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * cellId = @"cellId";
-    SAMCRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    SAMCCustomRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[SAMCCustomRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
     SAMCQuestionSession *session = [self data][indexPath.row];
-    cell.messageLabel.text = session.question;
-    cell.leftLabel.text = [session newResponseDescription];
-    cell.middleLabel.text = [session responseTimeDescription];
-    cell.rightLabel.text = session.address;
+    [cell updateWithSession:session];
+//    cell.messageLabel.text = session.question;
+//    cell.leftLabel.text = [session newResponseDescription];
+//    cell.middleLabel.text = [session responseTimeDescription];
+//    cell.rightLabel.text = session.address;
     return cell;
 }
 
