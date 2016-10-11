@@ -59,10 +59,20 @@
                                                                              options:0
                                                                              metrics:nil
                                                                                views:NSDictionaryOfVariableBindings(_avatarsView)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_locationLabel]-10-|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:NSDictionaryOfVariableBindings(_locationLabel)]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
+                                                                 attribute:NSLayoutAttributeLeft
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:_locationLabel
+                                                                 attribute:NSLayoutAttributeLeft
+                                                                multiplier:1.0f
+                                                                  constant:0.0f]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
+                                                                 attribute:NSLayoutAttributeRight
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:_locationLabel
+                                                                 attribute:NSLayoutAttributeRight
+                                                                multiplier:1.0f
+                                                                  constant:0.0f]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_timeLabel
                                                                  attribute:NSLayoutAttributeRight
                                                                  relatedBy:NSLayoutRelationEqual
