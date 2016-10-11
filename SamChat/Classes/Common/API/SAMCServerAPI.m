@@ -303,6 +303,24 @@
 //{
 //    "header":
 //    {
+//        "action" : "query-popular-request"
+//        "token": "token"
+//    },
+//    "body" :
+//    {
+//        “count”:50
+//    } 
+//}
++ (NSDictionary *)queryPopularRequest:(NSInteger)count
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_POPULAR_REQUEST,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_COUNT:@(count)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action" : "follow",
 //        "token"  : "token"
 //    },

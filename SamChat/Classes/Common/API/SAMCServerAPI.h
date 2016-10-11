@@ -50,6 +50,7 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 
 + (NSDictionary *)sendQuestion:(NSString *)question
                       location:(NSDictionary *)location;
++ (NSDictionary *)queryPopularRequest:(NSInteger)count;
 
 + (NSDictionary *)follow:(BOOL)isFollow
          officialAccount:(NSString *)userId;

@@ -81,6 +81,30 @@
     }];
 }
 
+- (void)queryPopularRequest:(NSInteger)count
+                 completion:(void (^)(NSArray<NSString *> * _Nullable populars))completion;
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI queryPopularRequest:count];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_QUESTION_QUERYPOPULARREQUEST parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion(nil);
+            } else {
+                DDLogDebug(@"%@", response[SAMC_POPULAR_REQUEST]);
+            }
+        } else {
+            completion(nil);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil);
+    }];
+}
+
 #pragma mark - QuestionDB
 - (void)insertSendQuestion:(NSDictionary *)questionInfo
 {

@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
             location:(NSDictionary *)location
           completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)queryPopularRequest:(NSInteger)count
+                 completion:(void (^)(NSArray<NSString *> * _Nullable populars))completion;
+
 - (NSArray<SAMCQuestionSession *> *)allSendQuestion;
 - (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
 - (void)insertReceivedQuestion:(NSDictionary *)questionInfo;

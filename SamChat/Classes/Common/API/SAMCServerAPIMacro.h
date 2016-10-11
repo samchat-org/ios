@@ -25,6 +25,7 @@
 #define SAMC_URL_USER_QUERYGROUP            SAMC_API_PREFIX@"api_1.0_user_queryGroup.do"
 #define SAMC_URL_USER_QUERYWITHOUTTOKEN     SAMC_API_PREFIX@"api_1.0_user_queryWithoutToken.do"
 #define SAMC_URL_QUESTION_QUESTION          SAMC_API_PREFIX@"api_1.0_question_question.do"
+#define SAMC_URL_QUESTION_QUERYPOPULARREQUEST       SAMC_API_PREFIX@"api_1.0_question_queryPopularRequest.do"
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW             SAMC_API_PREFIX@"api_1.0_officialAccount_follow.do"
 #define SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY  SAMC_API_PREFIX@"api_1.0_officialAccount_followListQuery.do"
 #define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@"api_1.0_officialAccount_publicQuery.do"
@@ -79,6 +80,7 @@
 #define SAMC_GET_PLACES_INFO_REQUEST    @"get-places-info-request"
 #define SAMC_SEND_CLIENTID              @"send-clientId"
 #define SAMC_QUERY_STATE_DATE           @"query-state-date"
+#define SAMC_QUERY_POPULAR_REQUEST      @"query-popular-request"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -130,6 +132,7 @@
 #define SAMC_CUSTOMER_LIST              @"customer_list"
 #define SAMC_FOLLOW_LIST                @"follow_list"
 #define SAMC_MESSAGE_ID                 @"message_id"
+#define SAMC_POPULAR_REQUEST            @"popular_request"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
