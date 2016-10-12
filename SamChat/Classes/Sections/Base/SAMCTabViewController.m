@@ -32,7 +32,7 @@
     
     UIBarButtonItem *navLeftButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    negativeSpacer.width = -10;
+    negativeSpacer.width = -5;
 //    self.navigationItem.leftBarButtonItem = navLeftButton;
     self.navigationItem.leftBarButtonItems = @[negativeSpacer,navLeftButton];
 //    self.navigationItem.leftBarButtonItem.badgeValue = @"1";

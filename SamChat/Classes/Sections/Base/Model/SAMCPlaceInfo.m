@@ -19,4 +19,9 @@
     return info;
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"\r%@\rDescription:%@\rPlaceId:%@", [super description], _desc, _placeId];
+}
+
 @end

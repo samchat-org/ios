@@ -12,6 +12,7 @@
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
 #import "SAMCResourceManager.h"
+#import "SAMCSelectLocationViewController.h"
 
 @import CoreLocation;
 @interface SAMCNewRequestViewController ()<UITableViewDataSource,UITableViewDelegate,CLLocationManagerDelegate>
@@ -23,9 +24,10 @@
 
 @property (nonatomic, strong) NSMutableArray *data;
 
-@property (nonatomic, strong) SAMCPlaceInfo *selectedPlaceInfo;
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *currentLocation;
+
+@property (nonatomic, strong) NSMutableDictionary *location;
 
 @end
 
@@ -108,17 +110,17 @@
 {
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
-    NSMutableDictionary *location = [[NSMutableDictionary alloc] init];
-    [location setObject:self.locationTextField.text forKey:SAMC_ADDRESS];
-    if (self.selectedPlaceInfo.placeId) {
-        [location setObject:self.selectedPlaceInfo.placeId forKey:SAMC_PLACE_ID];
+    if (self.location == nil) {
+        self.location = [[NSMutableDictionary alloc] init];
+        if (self.currentLocation) {
+            [self.location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),
+                                       SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
+        }
     }
-    if (self.currentLocation && ([self.locationTextField.text isEqualToString:@"Current location"])) {
-        [location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
-    }
+    [self.location setObject:self.locationTextField.text forKey:SAMC_ADDRESS];
     [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCQuestionManager sharedManager] sendQuestion:question location:location completion:^(NSError * _Nullable error) {
+    [[SAMCQuestionManager sharedManager] sendQuestion:question location:self.location completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
@@ -130,28 +132,20 @@
     }];
 }
 
-- (void)locationTextFieldDidChanged:(id)sender
+- (void)locationTextFieldEditingDidBegin:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    self.selectedPlaceInfo = nil;
-    NSString *key = self.locationTextField.text;
-    if ([key length] <= 0) {
-        return;
-    }
-    [self performSelector:@selector(getPlacesInfo:) withObject:key afterDelay:0.5];
-}
-
-- (void)getPlacesInfo:(NSString *)key
-{
-    DDLogDebug(@"getPlacesInfo: %@", key);
+    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] init];
     __weak typeof(self) wself = self;
-    [[SAMCResourceManager sharedManager] getPlacesInfo:key completion:^(NSArray<SAMCPlaceInfo *> *places, NSError *error) {
-        DDLogDebug(@"places info: %@", places);
-        [wself.data removeAllObjects];
-        [wself.data addObjectsFromArray:places];
-        wself.tableView.hidden = ![wself.data count];
-        [wself.tableView reloadData];
-    }];
+    vc.selectBlock = ^(NSDictionary *location, BOOL isCurrentLocation){
+        if (isCurrentLocation) {
+            wself.location = nil;
+            wself.locationTextField.text = @"Current Location";
+        } else {
+            wself.location = [location mutableCopy];
+            wself.locationTextField.text = location[SAMC_ADDRESS];
+        }
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - UITableViewDataSource
@@ -175,13 +169,13 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    self.selectedPlaceInfo = self.data[indexPath.row];
-    self.locationTextField.text = self.selectedPlaceInfo.desc;
-    [self.data removeAllObjects];
-    self.tableView.hidden = YES;
-    [self.tableView reloadData];
-    [self.requestTextField becomeFirstResponder];
+//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+//    self.selectedPlaceInfo = self.data[indexPath.row];
+//    self.locationTextField.text = self.selectedPlaceInfo.desc;
+//    [self.data removeAllObjects];
+//    self.tableView.hidden = YES;
+//    [self.tableView reloadData];
+//    [self.requestTextField becomeFirstResponder];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -261,7 +255,7 @@
         _locationTextField.rightView = rightView;
         _locationTextField.rightViewMode = UITextFieldViewModeAlways;
         
-        [_locationTextField addTarget:self action:@selector(locationTextFieldDidChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_locationTextField addTarget:self action:@selector(locationTextFieldEditingDidBegin:) forControlEvents:UIControlEventEditingDidBegin];
     }
     return _locationTextField;
 }
