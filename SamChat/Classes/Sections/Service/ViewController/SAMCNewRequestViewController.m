@@ -110,14 +110,11 @@
 {
     DDLogDebug(@"sendRequest");
     NSString *question = self.requestTextField.text;
-    if (self.location == nil) {
+    if ((self.location == nil) && (self.currentLocation)) {
         self.location = [[NSMutableDictionary alloc] init];
-        if (self.currentLocation) {
-            [self.location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),
-                                       SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
-        }
+        [self.location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),
+                                   SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
     }
-    [self.location setObject:self.locationTextField.text forKey:SAMC_ADDRESS];
     [SVProgressHUD showWithStatus:@"sending" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCQuestionManager sharedManager] sendQuestion:question location:self.location completion:^(NSError * _Nullable error) {
