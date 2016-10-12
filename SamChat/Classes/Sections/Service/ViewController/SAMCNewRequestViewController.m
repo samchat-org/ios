@@ -57,6 +57,8 @@
                     duration:2
                     position:CSToastPositionCenter];
     }
+    
+    [self queryPopularRequests];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,7 +92,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(35)]-10-[_requestTextField(35)]-10-[_locationTextField(35)]-5-[_tableView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_requestLabel(35)]-10-[_requestTextField(35)]-10-[_locationTextField(35)]-10-[_tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestLabel,_requestTextField,_locationTextField,_tableView)]];
@@ -145,7 +147,22 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)queryPopularRequests
+{
+    __weak typeof(self) wself = self;
+    [[SAMCQuestionManager sharedManager] queryPopularRequest:20 completion:^(NSArray<NSString *> * _Nullable populars) {
+        DDLogDebug(@"tet:%@", populars);
+        wself.data = [populars mutableCopy];
+        [wself.tableView reloadData];
+    }];
+}
+
 #pragma mark - UITableViewDataSource
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"popular requests";
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [self.data count];
@@ -153,26 +170,28 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"SAMCSLocationCellId";
+    static NSString * cellId = @"SAMCSPopularRequestCellId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    SAMCPlaceInfo *placeInfo = self.data[indexPath.row];
-    cell.textLabel.text = placeInfo.desc;
+    cell.textLabel.text = self.data[indexPath.row];
+    cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
+    cell.textLabel.textColor = UIColorFromRGB(0x52626F);
     return cell;
 }
 
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//    self.selectedPlaceInfo = self.data[indexPath.row];
-//    self.locationTextField.text = self.selectedPlaceInfo.desc;
-//    [self.data removeAllObjects];
-//    self.tableView.hidden = YES;
-//    [self.tableView reloadData];
-//    [self.requestTextField becomeFirstResponder];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    self.requestTextField.text = self.data[indexPath.row];
+    [self.requestTextField becomeFirstResponder];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 35.0f;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -237,8 +256,7 @@
         _locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _locationTextField.borderStyle = UITextBorderStyleNone;
         _locationTextField.backgroundColor = [UIColor whiteColor];
-//        _locationTextField.placeholder = @"Current location";
-        _locationTextField.text = @"Current location";
+        _locationTextField.placeholder = @"Current Location";
         _locationTextField.layer.cornerRadius = 6.0f;
         _locationTextField.font = [UIFont systemFontOfSize:15.0f];
         
@@ -260,17 +278,11 @@
 - (UITableView *)tableView
 {
     if (_tableView == nil) {
-        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
         _tableView.translatesAutoresizingMaskIntoConstraints = NO;
         _tableView.dataSource = self;
         _tableView.delegate = self;
-        _tableView.hidden = YES;
         _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-        
-        [_tableView setSeparatorInset:UIEdgeInsetsZero];
-        if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-            [_tableView setLayoutMargins:UIEdgeInsetsZero];
-        }
     }
     return _tableView;
 }

@@ -96,6 +96,14 @@
                 completion(nil);
             } else {
                 DDLogDebug(@"%@", response[SAMC_POPULAR_REQUEST]);
+                NSMutableArray *popularsArray = [[NSMutableArray alloc] init];
+                for (NSDictionary *questionDict in response[SAMC_POPULAR_REQUEST]) {
+                    NSString *question = questionDict[SAMC_CONTENT];
+                    if (question) {
+                        [popularsArray addObject:question];
+                    }
+                }
+                completion(popularsArray);
             }
         } else {
             completion(nil);
