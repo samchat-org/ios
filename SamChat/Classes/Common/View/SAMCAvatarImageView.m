@@ -92,7 +92,7 @@ static char imageURLKey;
         [self.circleColor getRed:&red green:&green blue:&blue alpha:&alpha];
         CGContextAddArc(context, self.frame.size.width * .5f, self.frame.size.height * .5f, (self.frame.size.height-2) / 2, 0, 2 * M_PI, 0);
         CGContextSetRGBStrokeColor(context, red, green, blue, alpha);
-        CGContextSetLineWidth(context, 1);
+        CGContextSetLineWidth(context, 2);
         CGContextStrokePath(context);
     }
     

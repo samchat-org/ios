@@ -83,6 +83,7 @@
             }
             info.avatarUrlString = userInfo.avatar;
             info.avatarImage = self.defaultUserAvatar;
+            info.serviceCategory = userInfo.spInfo.serviceCategory;
             
             if (userInfo == nil)
             {

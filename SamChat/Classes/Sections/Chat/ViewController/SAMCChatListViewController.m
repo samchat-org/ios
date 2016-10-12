@@ -25,6 +25,7 @@
 #import "SAMCConversationManager.h"
 #import "NIMMessage+SAMC.h"
 #import "SAMCAccountManager.h"
+#import "SAMCCustomChatListCell.h"
 
 #define SessionListTitle @"Chat"
 
@@ -162,23 +163,25 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * cellId = @"cellId";
-    NIMSessionListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    NIMSessionListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    SAMCCustomChatListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[NIMSessionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [cell.avatarImageView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
+        cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+//        [cell.avatarImageView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
     }
-    SAMCRecentSession *recent = self.recentSessions[indexPath.row];
-    NIMSession *nimsession = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
-    cell.nameLabel.text = [self nameForRecentSession:recent];
-    [cell.avatarImageView setAvatarBySession:nimsession];
-    [cell.nameLabel sizeToFit];
-    cell.messageLabel.text = recent.lastMessageContent;
-    [cell.messageLabel sizeToFit];
-    cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
-    [cell.timeLabel sizeToFit];
-    
-//    [cell refresh:recent];
-    [cell refreshBadge:recent.unreadCount];
+    cell.recentSession = self.recentSessions[indexPath.row];
+//    SAMCRecentSession *recent = self.recentSessions[indexPath.row];
+//    NIMSession *nimsession = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
+//    cell.nameLabel.text = [self nameForRecentSession:recent];
+//    [cell.avatarImageView setAvatarBySession:nimsession];
+//    [cell.nameLabel sizeToFit];
+//    cell.messageLabel.text = recent.lastMessageContent;
+//    [cell.messageLabel sizeToFit];
+//    cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
+//    [cell.timeLabel sizeToFit];
+//    
+////    [cell refresh:recent];
+//    [cell refreshBadge:recent.unreadCount];
     return cell;
 }
 
