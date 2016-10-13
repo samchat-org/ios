@@ -11,6 +11,7 @@
 #import "SAMCServicerInfoCell.h"
 #import "SAMCProfileSwitcherCell.h"
 #import "SAMCSessionViewController.h"
+#import "SAMCServicerQRViewController.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -34,24 +35,29 @@
     self.navigationItem.title = @"Profile";
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.estimatedRowHeight = 100;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     [self.view addSubview:self.tableView];
     UIEdgeInsets separatorInset   = self.tableView.separatorInset;
     separatorInset.right          = 0;
     self.tableView.separatorInset = separatorInset;
     self.tableView.delegate   = self;
     self.tableView.dataSource = self;
-    [self refresh];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
     
     SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 100)];
     headerView.avatarUrl = _user.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-}
-
-- (void)refresh
-{
-    [self.tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate
@@ -69,6 +75,8 @@
             nav.viewControllers = @[root,vc];
         }
         if (indexPath.row == 2) {
+            SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }

@@ -280,6 +280,7 @@
 		31DB304C1DAF302C0072BE34 /* SAMCCardPortraitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB304B1DAF302C0072BE34 /* SAMCCardPortraitView.m */; };
 		31DB304F1DAF58C60072BE34 /* SAMCServicerInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB304E1DAF58C60072BE34 /* SAMCServicerInfoCell.m */; };
 		31DB30521DAF67440072BE34 /* SAMCProfileSwitcherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30511DAF67440072BE34 /* SAMCProfileSwitcherCell.m */; };
+		31DB30581DAF8EBE0072BE34 /* SAMCServicerQRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30571DAF8EBE0072BE34 /* SAMCServicerQRViewController.m */; };
 		31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B761D6589E900832CC8 /* SAMCPushManager.m */; };
 		31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B7A1D65923A00832CC8 /* SAMCSettingManager.m */; };
 		31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B801D65B17000832CC8 /* SAMCTextView.m */; };
@@ -847,6 +848,8 @@
 		31DB304E1DAF58C60072BE34 /* SAMCServicerInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCServicerInfoCell.m; sourceTree = "<group>"; };
 		31DB30501DAF67440072BE34 /* SAMCProfileSwitcherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCProfileSwitcherCell.h; sourceTree = "<group>"; };
 		31DB30511DAF67440072BE34 /* SAMCProfileSwitcherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCProfileSwitcherCell.m; sourceTree = "<group>"; };
+		31DB30561DAF8EBE0072BE34 /* SAMCServicerQRViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCServicerQRViewController.h; sourceTree = "<group>"; };
+		31DB30571DAF8EBE0072BE34 /* SAMCServicerQRViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCServicerQRViewController.m; sourceTree = "<group>"; };
 		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
 		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31E37B791D65923A00832CC8 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -1173,6 +1176,8 @@
 				3195DE2D1D5AC152001BD2B4 /* SAMCSessionCardViewController.m */,
 				31DB30471DAF26020072BE34 /* SAMCServicerCardViewController.h */,
 				31DB30481DAF26020072BE34 /* SAMCServicerCardViewController.m */,
+				31DB30561DAF8EBE0072BE34 /* SAMCServicerQRViewController.h */,
+				31DB30571DAF8EBE0072BE34 /* SAMCServicerQRViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2748,6 +2753,7 @@
 				312C1CDB1D35D85B00242906 /* NTESSessionUtil.m in Sources */,
 				31E37B911D69727E00832CC8 /* SAMCQuestionManager.m in Sources */,
 				316A67421D8577A600B56A5D /* SAMCSessionImageContentView.m in Sources */,
+				31DB30581DAF8EBE0072BE34 /* SAMCServicerQRViewController.m in Sources */,
 				314444F61D49F6820062B797 /* SAMCPhoneCodeView.m in Sources */,
 				31F8FCD21D77C25600734068 /* SAMCSPPublicMessageDelegate.m in Sources */,
 				312C1C4E1D35D85B00242906 /* NTESColorButtonCell.m in Sources */,
