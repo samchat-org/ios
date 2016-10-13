@@ -147,7 +147,9 @@
 {
     [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:self.data[indexPath.row]];
+    SAMCUser *user = self.data[indexPath.row];
+    BOOL isFollow = [self.myFollowIdList containsObject:user.userId];
+    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

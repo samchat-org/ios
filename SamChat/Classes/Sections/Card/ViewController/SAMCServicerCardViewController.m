@@ -12,20 +12,27 @@
 #import "SAMCProfileSwitcherCell.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCServicerQRViewController.h"
+#import "SAMCPublicManager.h"
+#import "SAMCAccountManager.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) SAMCUser *user;
+@property (nonatomic, assign) BOOL isFollow;
 @property (nonatomic, strong) UITableView *tableView;
 
 @end
 
 @implementation SAMCServicerCardViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user{
+- (instancetype)initWithUser:(SAMCUser *)user isFollow:(BOOL)isFollow
+{
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _user = user;
+        _isFollow = isFollow;
     }
     return self;
 }
@@ -241,10 +248,36 @@
         cell.textLabel.textColor = UIColorFromRGB(0x172843);
         cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
     }
+    [cell.switcher setOn:_isFollow];
+    [cell.switcher addTarget:self action:@selector(follow:) forControlEvents:UIControlEventValueChanged];
     cell.textLabel.text = @"Follow";
     cell.imageView.image = [UIImage imageNamed:@"icon_follow_normal"];
     return cell;
 
+}
+
+- (void)follow:(UISwitch *)switcher
+{
+    DDLogDebug(@"follow");
+    [SVProgressHUD showWithStatus:@"operating..." maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    BOOL follow = !_isFollow;
+    [[SAMCPublicManager sharedManager] follow:follow officialAccount:_user.spBasicInfo completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        NSString *toast;
+        if (error) {
+            toast =error.userInfo[NSLocalizedDescriptionKey];
+            [switcher setOn:!follow animated:YES];
+        } else {
+            if (follow) {
+                toast = @"follow success";
+                [[SAMCAccountManager sharedManager] updateUser:_user];
+            } else {
+                toast = @"unfollow success";
+            }
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+    }];
 }
 
 #pragma mark - lazy load
