@@ -10,6 +10,7 @@
 #import "SAMCCardPortraitView.h"
 #import "SAMCServicerInfoCell.h"
 #import "SAMCProfileSwitcherCell.h"
+#import "SAMCSessionViewController.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -57,6 +58,19 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (indexPath.section == 0) {
+        // chat
+        if (indexPath.row == 1) {
+            UINavigationController *nav = self.navigationController;
+            SAMCSession *session = [SAMCSession session:self.user.userId type:NIMSessionTypeP2P mode:SAMCUserModeTypeCustom];
+            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
+            [nav pushViewController:vc animated:YES];
+            UIViewController *root = nav.viewControllers[0];
+            nav.viewControllers = @[root,vc];
+        }
+        if (indexPath.row == 2) {
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
