@@ -8,12 +8,12 @@
 
 #import "SAMCPublicSearchViewController.h"
 #import "SAMCPublicManager.h"
-#import "SAMCSPProfileViewController.h"
 #import "UIView+Toast.h"
 #import "SAMCNavSearchBar.h"
 #import "SAMCPublicSearchResultCell.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
+#import "SAMCServicerCardViewController.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,SAMCPublicSearchResultDelegate>
 
@@ -145,9 +145,9 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    SAMCSPProfileViewController *vc = [[SAMCSPProfileViewController alloc] init];
-    vc.user = self.data[indexPath.row];
+    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:self.data[indexPath.row]];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
