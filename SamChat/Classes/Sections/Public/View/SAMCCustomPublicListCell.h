@@ -7,12 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "SAMCAvatarImageView.h"
+#import "SAMCPublicSession.h"
 
 @interface SAMCCustomPublicListCell : UITableViewCell
 
-@property (nonatomic, strong) SAMCAvatarImageView *avatarImageView;
-@property (nonatomic, strong) UILabel *nameLabel;
-@property (nonatomic, strong) UILabel *messageLabel;
+@property (nonatomic, strong) SAMCPublicSession *publicSession;
 
 @end

@@ -7,6 +7,19 @@
 //
 
 #import "SAMCCustomPublicListCell.h"
+#import "SAMCAvatarImageView.h"
+#import "SAMCSession.h"
+#import "NIMKitUtil.h"
+
+@interface SAMCCustomPublicListCell ()
+
+@property (nonatomic, strong) SAMCAvatarImageView *avatarView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UILabel *categoryLabel;
+@property (nonatomic, strong) UILabel *messageLabel;
+@property (nonatomic, strong) UILabel *timeLabel;
+
+@end
 
 @implementation SAMCCustomPublicListCell
 
@@ -20,60 +33,140 @@
 
 - (void)setupSubviews
 {
-    _avatarImageView = [[SAMCAvatarImageView alloc] init];
-    _avatarImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    _avatarImageView.layer.cornerRadius = 20.0f;
-    _avatarImageView.circleColor = [UIColor greenColor];
-    _avatarImageView.image = [UIImage imageNamed:@"1"]; // TODO: for test
-    [self addSubview:_avatarImageView];
+    [self addSubview:self.avatarView];
+    [self addSubview:self.nameLabel];
+    [self addSubview:self.categoryLabel];
+    [self addSubview:self.timeLabel];
+    [self addSubview:self.messageLabel];
     
-    _nameLabel = [[UILabel alloc] init];
-    _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _nameLabel.backgroundColor = [UIColor whiteColor];
-    _nameLabel.font = [UIFont systemFontOfSize:15.0f];
-    [self addSubview:_nameLabel];
-    
-    _messageLabel = [[UILabel alloc] init];
-    _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _messageLabel.backgroundColor = [UIColor whiteColor];
-    _messageLabel.font = [UIFont systemFontOfSize:14.0f];
-    _messageLabel.textColor = [UIColor lightGrayColor];
-    [self addSubview:_messageLabel];
-    
-    [_avatarImageView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarImageView
-                                                                 attribute:NSLayoutAttributeWidth
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_avatarImageView
-                                                                 attribute:NSLayoutAttributeHeight
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:self
+    [_avatarView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:_avatarView
+                                                            attribute:NSLayoutAttributeHeight
+                                                           multiplier:1.0f
+                                                             constant:0.0f]];
+    [_avatarView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
+                                                            attribute:NSLayoutAttributeWidth
+                                                            relatedBy:NSLayoutRelationEqual
+                                                               toItem:nil
+                                                            attribute:NSLayoutAttributeNotAnAttribute
+                                                           multiplier:0.0f
+                                                             constant:40.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:_avatarImageView
+                                                        toItem:self
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_avatarImageView(40)]-5-[_messageLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-5-[_nameLabel]-5-[_categoryLabel]-5-[_timeLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarImageView,_messageLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[_nameLabel]"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_nameLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_messageLabel]-15-|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_messageLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_categoryLabel,_timeLabel)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
-                                                     attribute:NSLayoutAttributeLeading
+                                                     attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:_messageLabel
-                                                     attribute:NSLayoutAttributeLeading
+                                                        toItem:_categoryLabel
+                                                     attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
                                                       constant:0.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_timeLabel
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-10-|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel)]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
+                                                     attribute:NSLayoutAttributeTop
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeTop
+                                                    multiplier:1.0f
+                                                      constant:15.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0f
+                                                      constant:-15.0f]];
+    [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+}
+
+- (void)setPublicSession:(SAMCPublicSession *)publicSession
+{
+    self.nameLabel.text = publicSession.spBasicInfo.username;
+    self.categoryLabel.text = publicSession.spBasicInfo.spServiceCategory;
+    self.timeLabel.text = [NIMKitUtil showTime:publicSession.lastMessageTime showDetail:NO];
+    self.messageLabel.text = publicSession.lastMessageContent;
     
+    NSURL *url = publicSession.spBasicInfo.avatar? [NSURL URLWithString:publicSession.spBasicInfo.avatar] : nil;
+    [self.avatarView samc_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"avatar_user"] options:SDWebImageRetryFailed];
+}
+
+#pragma mark - lazy load
+- (SAMCAvatarImageView *)avatarView
+{
+    if (_avatarView == nil) {
+        _avatarView = [[SAMCAvatarImageView alloc] init];
+        _avatarView.translatesAutoresizingMaskIntoConstraints = NO;
+        _avatarView.userInteractionEnabled = false;
+    }
+    return _avatarView;
+}
+
+- (UILabel *)nameLabel
+{
+    if (_nameLabel == nil) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _nameLabel.font = [UIFont boldSystemFontOfSize:14.0f];
+        _nameLabel.textColor = SAMC_MAIN_DARKCOLOR;
+    }
+    return _nameLabel;
+}
+
+- (UILabel *)categoryLabel
+{
+    if (_categoryLabel == nil) {
+        _categoryLabel = [[UILabel alloc] init];
+        _categoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _categoryLabel.font = [UIFont systemFontOfSize:14.0f];
+        _categoryLabel.textColor = SAMC_MAIN_DARKCOLOR;
+    }
+    return _categoryLabel;
+}
+
+- (UILabel *)timeLabel
+{
+    if (_timeLabel == nil) {
+        _timeLabel = [[UILabel alloc] init];
+        _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _timeLabel.font = [UIFont systemFontOfSize:12.0f];
+        _timeLabel.textColor = UIColorFromRGB(0xC3C3C3);
+        _timeLabel.textAlignment = NSTextAlignmentRight;
+    }
+    return _timeLabel;
+}
+
+- (UILabel *)messageLabel
+{
+    if (_messageLabel == nil) {
+        _messageLabel = [[UILabel alloc] init];
+        _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _messageLabel.font = [UIFont systemFontOfSize:15.0f];
+        _messageLabel.textColor = UIColorFromRGB(0x92959B);
+    }
+    return _messageLabel;
 }
 
 @end

@@ -47,9 +47,7 @@
     }
     
     SAMCPublicSession *session = [self data][indexPath.row];
-    cell.messageLabel.text = session.lastMessageContent;
-    cell.nameLabel.text = session.spBasicInfo.username;
-    
+    cell.publicSession = session;
     return cell;
 }
 
