@@ -58,6 +58,11 @@
     [self.workphoneTextField becomeFirstResponder];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setupSubviews
 {
     [self.navigationItem setTitle:@"Create Service Profile"];

@@ -50,7 +50,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//    [self.descriptionTextView becomeFirstResponder];
+    [self.descriptionTextView becomeFirstResponder];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)setupSubviews
