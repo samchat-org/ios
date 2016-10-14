@@ -22,6 +22,7 @@
 #import "SAMCPublicContainerViewController.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCTabViewController.h"
+#import "SAMCMeContainerViewController.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -274,7 +275,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
                      @(SAMCMainTabTypeSetting) : @{
-                             TabbarVC           : @"SAMCSettingViewController",
+                             TabbarVC           : @"SAMCMeContainerViewController",
                              TabbarTitle        : @"Me",
                              TabbarImage        : @"icon_me_normal",
                              TabbarSelectedImage: @"icon_me_pressed",
