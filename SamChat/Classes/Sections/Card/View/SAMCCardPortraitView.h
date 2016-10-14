@@ -12,4 +12,6 @@
 
 @property (nonatomic, strong) NSString *avatarUrl;
 
+- (instancetype)initWithFrame:(CGRect)frame effect:(BOOL)effect;
+
 @end

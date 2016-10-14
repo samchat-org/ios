@@ -20,43 +20,32 @@
 
 @implementation SAMCCardPortraitView
 
-- (instancetype)initWithFrame:(CGRect)frame
+- (instancetype)initWithFrame:(CGRect)frame effect:(BOOL)effect
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupSubviews];
+        [self setupSubviews:effect];
     }
     return self;
 }
 
-- (void)setupSubviews
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self.backgroundColor = [UIColor whiteColor];
-    [self addSubview:self.backgroundImageView];
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupSubviews:YES];
+    }
+    return self;
+}
+
+- (void)setupSubviews:(BOOL)effect
+{
+    self.backgroundColor = [UIColor clearColor];
+    if (effect) {
+        [self setupEffect];
+    }
     [self addSubview:self.shadowView];
     [self addSubview:self.avatarView];
-    
-    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
-    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:effect];
-    effectView.translatesAutoresizingMaskIntoConstraints = NO;
-    [_backgroundImageView addSubview:effectView];
-    
-    [_backgroundImageView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[effectView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(effectView)]];
-    [_backgroundImageView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[effectView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(effectView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_backgroundImageView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_backgroundImageView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_backgroundImageView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_backgroundImageView)]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_shadowView
                                                      attribute:NSLayoutAttributeCenterX
@@ -111,6 +100,34 @@
                                                                    views:NSDictionaryOfVariableBindings(_avatarView)]];
 }
 
+- (void)setupEffect
+{
+    [self addSubview:self.backgroundImageView];
+    
+    UIBlurEffect *blur = [UIBlurEffect effectWithStyle:UIBlurEffectStyleExtraLight];
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc] initWithEffect:blur];
+    effectView.translatesAutoresizingMaskIntoConstraints = NO;
+    [_backgroundImageView addSubview:effectView];
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_backgroundImageView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_backgroundImageView)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_backgroundImageView]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:NSDictionaryOfVariableBindings(_backgroundImageView)]];
+    
+    [_backgroundImageView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[effectView]|"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:NSDictionaryOfVariableBindings(effectView)]];
+    [_backgroundImageView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[effectView]|"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:NSDictionaryOfVariableBindings(effectView)]];
+}
+
 #pragma mark - 
 - (void)layoutSubviews
 {
@@ -158,7 +175,6 @@
         _avatarView = [[SAMCAvatarImageView alloc] init];
         _avatarView.translatesAutoresizingMaskIntoConstraints = NO;
         _avatarView.circleColor = [UIColor whiteColor];
-        _avatarView.image = [UIImage imageNamed:@"1"];
     }
     return _avatarView;
 }
