@@ -7,18 +7,21 @@
 //
 
 #import "SAMCCSAStepTwoViewController.h"
+#import "SAMCCSAStepThreeViewController.h"
+#import "SAMCTextView.h"
 #import "SAMCServerAPIMacro.h"
-#import "SAMCCSADoneViewController.h"
-#import "SAMCSettingManager.h"
-#import "UIView+Toast.h"
-#import "SVProgressHUD.h"
 
 @interface SAMCCSAStepTwoViewController ()
 
-@property (nonatomic, strong) UIImageView *avatarView;
-@property (nonatomic, strong) UITextField *phoneTextField;
-@property (nonatomic, strong) UITextField *emailTextField;
-@property (nonatomic, strong) UITextField *locationTextField;
+@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) UILabel *tipLabel;
+@property (nonatomic, strong) UITextField *workphoneTextField;
+@property (nonatomic, strong) UITextField *serviceEmailTextField;
+@property (nonatomic, strong) UITextField *serviceLocationTextField;
+@property (nonatomic, strong) UIButton *skipButton;
+@property (nonatomic, strong) UIButton *nextButton;
+
+@property (nonatomic, strong) NSLayoutConstraint *nextButtonBottomContraint;
 
 @end
 
@@ -28,109 +31,283 @@
 {
     [super viewDidLoad];
     [self setupSubviews];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.workphoneTextField becomeFirstResponder];
 }
 
 - (void)setupSubviews
 {
-    [self.navigationItem setTitle:@"Create Service Account"];
+    [self.navigationItem setTitle:@"Create Service Profile"];
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
     [self setUpNavItem];
-    self.view.backgroundColor = [UIColor whiteColor];
     
-    _avatarView = [[UIImageView alloc] init];
-    _avatarView.translatesAutoresizingMaskIntoConstraints = NO;
-    _avatarView.backgroundColor = [UIColor blueColor]; // TODO: delete it, just for test
-    [self.view addSubview:_avatarView];
+    [self.view addSubview:self.stepImageView];
+    [self.view addSubview:self.tipLabel];
+    [self.view addSubview:self.workphoneTextField];
+    [self.view addSubview:self.serviceEmailTextField];
+    [self.view addSubview:self.serviceLocationTextField];
+    [self.view addSubview:self.skipButton];
+    [self.view addSubview:self.nextButton];
     
-    _phoneTextField = [[UITextField alloc] init];
-    _phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    _phoneTextField.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    _phoneTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 1)];
-    _phoneTextField.leftViewMode = UITextFieldViewModeAlways;
-    _phoneTextField.placeholder = @"your phone";
-    [self.view addSubview:_phoneTextField];
-    
-    _emailTextField = [[UITextField alloc] init];
-    _emailTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    _emailTextField.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    _emailTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 1)];
-    _emailTextField.leftViewMode = UITextFieldViewModeAlways;
-    _emailTextField.placeholder = @"your email";
-    [self.view addSubview:_emailTextField];
-    
-    _locationTextField = [[UITextField alloc] init];
-    _locationTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    _locationTextField.backgroundColor = [UIColor groupTableViewBackgroundColor];
-    _locationTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 1)];
-    _locationTextField.leftViewMode = UITextFieldViewModeAlways;
-    _locationTextField.placeholder = @"company location";
-    [self.view addSubview:_locationTextField];
-    
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepImageView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [_avatarView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
-                                                            attribute:NSLayoutAttributeWidth
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:_avatarView
-                                                            attribute:NSLayoutAttributeHeight
-                                                           multiplier:1.0f
-                                                             constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_tipLabel]-40-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_phoneTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_emailTextField]-20-|"
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_workphoneTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_emailTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_locationTextField]-20-|"
+                                                                        views:NSDictionaryOfVariableBindings(_workphoneTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_serviceEmailTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_locationTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_avatarView(120)]-20-[_phoneTextField(50)]-5-[_emailTextField(50)]-5-[_locationTextField(50)]"
+                                                                        views:NSDictionaryOfVariableBindings(_serviceEmailTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_serviceLocationTextField]-20-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_avatarView,_phoneTextField,_emailTextField,_locationTextField)]];
+                                                                        views:NSDictionaryOfVariableBindings(_serviceLocationTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(16)]-10-[_tipLabel]-20-[_workphoneTextField(35)]-5-[_serviceEmailTextField(35)]-5-[_serviceLocationTextField(35)]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_workphoneTextField,_serviceEmailTextField,_serviceLocationTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_skipButton]-10-[_nextButton(==_skipButton)]-20-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_skipButton,_nextButton)]];
+    
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_skipButton
+                                                          attribute:NSLayoutAttributeBottom
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:_nextButton
+                                                          attribute:NSLayoutAttributeBottom
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
+    self.nextButtonBottomContraint = [NSLayoutConstraint constraintWithItem:_nextButton
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.view
+                                                                  attribute:NSLayoutAttributeBottom
+                                                                 multiplier:1.0f
+                                                                   constant:-20.0f];
+    [self.view addConstraint:self.nextButtonBottomContraint];
 }
 
 - (void)setUpNavItem{
-    UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [nextButton addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
-    [nextButton setTitle:@"Next" forState:UIControlStateNormal];
-    [nextButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [nextButton sizeToFit];
-    UIBarButtonItem *nextItem = [[UIBarButtonItem alloc] initWithCustomView:nextButton];
-    self.navigationItem.rightBarButtonItem = nextItem;
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton addTarget:self action:@selector(onCancel) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+    [cancelButton setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
+    [cancelButton sizeToFit];
+    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    self.navigationItem.rightBarButtonItem = cancelItem;
+}
+
+- (void)onCancel
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)onNext:(id)sender
 {
-    NSString *phone = _phoneTextField.text;
-    NSString *email = _emailTextField.text;
-    NSDictionary *location = @{SAMC_ADDRESS:_locationTextField.text};
+    NSString *phone= _workphoneTextField.text;
+    NSString *email= _serviceEmailTextField.text;
+    NSString *location = _serviceLocationTextField.text;
     
     [self.samProsInformation setObject:phone forKey:SAMC_PHONE];
     [self.samProsInformation setObject:email forKey:SAMC_EMAIL];
     [self.samProsInformation setObject:location forKey:SAMC_LOCATION];
     
-    [SVProgressHUD showWithStatus:@"Creating" maskType:SVProgressHUDMaskTypeBlack];
-    __weak typeof(self) wself = self;
-    [[SAMCSettingManager sharedManager] createSamPros:self.samProsInformation completion:^(NSError * _Nullable error) {
-        [SVProgressHUD dismiss];
-        if (error) {
-            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
-            return;
-        }
-        SAMCCSADoneViewController *vc = [[SAMCCSADoneViewController alloc] init];
-        [wself.navigationController pushViewController:vc animated:YES];
-    }];
-    
+    SAMCCSAStepThreeViewController *vc = [[SAMCCSAStepThreeViewController alloc] init];
+    vc.samProsInformation = self.samProsInformation;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark -
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    // fix the issue: text bounces after resigning first responder
+    [textField layoutIfNeeded];
+}
 
+- (void)textFieldEditingChanged:(UITextField *)textField
+{
+    if ([_workphoneTextField.text length] && [_serviceEmailTextField.text length]) {
+        _nextButton.backgroundColor = UIColorFromRGB(0x2676B6);
+    } else {
+        _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+    }
+}
+
+- (void)textFieldEditingDidEndOnExit:(UITextField *)textField
+{
+    if ([textField isEqual:_workphoneTextField]) {
+        [_serviceEmailTextField becomeFirstResponder];
+    } else if ([textField isEqual:_serviceEmailTextField]) {
+        [_serviceLocationTextField becomeFirstResponder];
+    } else {
+        [self onNext:nil];
+    }
+}
+
+#pragma mark - UIKeyBoard Notification
+- (void)keyboardWillShow:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGRect keyboardRect = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGFloat keyboardHeight = keyboardRect.size.height;
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         [self.nextButtonBottomContraint setConstant:-keyboardHeight-5];
+                         [self.view layoutIfNeeded];
+                     }];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         [self.nextButtonBottomContraint setConstant:-20];
+                         [self.view layoutIfNeeded];
+                     }];
+}
+
+#pragma mark - lazy load
+- (UIImageView *)stepImageView
+{
+    if (_stepImageView == nil) {
+        _stepImageView = [[UIImageView alloc] init];
+        _stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
+        _stepImageView.image = [UIImage imageNamed:@"create_servicer_step2"];
+    }
+    return _stepImageView;
+}
+
+- (UILabel *)tipLabel
+{
+    if (_tipLabel == nil) {
+        _tipLabel = [[UILabel alloc] init];
+        _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _tipLabel.text = @"Your business contact details";
+        _tipLabel.numberOfLines = 0;
+        _tipLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        _tipLabel.textColor = UIColorFromRGB(0x1B3257);
+        _tipLabel.textAlignment = NSTextAlignmentCenter;
+        _tipLabel.font = [UIFont systemFontOfSize:15.0f];
+    }
+    return _tipLabel;
+}
+
+- (UITextField *)workphoneTextField
+{
+    if (_workphoneTextField == nil) {
+        _workphoneTextField = [[UITextField alloc] init];
+        _workphoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _workphoneTextField.backgroundColor = [UIColor whiteColor];
+        _workphoneTextField.layer.cornerRadius = 5.0f;
+        _workphoneTextField.placeholder = @"Service work phone no.";
+        _workphoneTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_phone_normal"]];
+        _workphoneTextField.leftViewMode = UITextFieldViewModeAlways;
+        _workphoneTextField.returnKeyType = UIReturnKeyNext;
+        [_workphoneTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_workphoneTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_workphoneTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    }
+    return _workphoneTextField;
+}
+
+- (UITextField *)serviceEmailTextField
+{
+    if (_serviceEmailTextField == nil) {
+        _serviceEmailTextField = [[UITextField alloc] init];
+        _serviceEmailTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _serviceEmailTextField.backgroundColor = [UIColor whiteColor];
+        _serviceEmailTextField.layer.cornerRadius = 5.0f;
+        _serviceEmailTextField.placeholder = @"Service email";
+        _serviceEmailTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_email_normal"]];
+        _serviceEmailTextField.leftViewMode = UITextFieldViewModeAlways;
+        _serviceEmailTextField.returnKeyType = UIReturnKeyNext;
+        [_serviceEmailTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_serviceEmailTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_serviceEmailTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    }
+    return _serviceEmailTextField;
+}
+
+- (UITextField *)serviceLocationTextField
+{
+    if (_serviceLocationTextField == nil) {
+        _serviceLocationTextField = [[UITextField alloc] init];
+        _serviceLocationTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _serviceLocationTextField.backgroundColor = [UIColor whiteColor];
+        _serviceLocationTextField.layer.cornerRadius = 5.0f;
+        _serviceLocationTextField.placeholder = @"Location";
+        _serviceLocationTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_address_normal"]];
+        _serviceLocationTextField.leftViewMode = UITextFieldViewModeAlways;
+        _serviceLocationTextField.returnKeyType = UIReturnKeyDone;
+        [_serviceLocationTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_serviceLocationTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_serviceLocationTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    }
+    return _serviceLocationTextField;
+}
+
+- (UIButton *)skipButton
+{
+    if (_skipButton == nil) {
+        _skipButton = [[UIButton alloc] init];
+        _skipButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_skipButton setTitle:@"Skip" forState:UIControlStateNormal];
+        [_skipButton addConstraint:[NSLayoutConstraint constraintWithItem:_skipButton
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0f
+                                                                 constant:30.0f]];
+        _skipButton.layer.cornerRadius = 15.0f;
+        _skipButton.backgroundColor = UIColorFromRGB(0xA2AEBC);
+        [_skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
+    return _skipButton;
+}
+
+- (UIButton *)nextButton
+{
+    if (_nextButton == nil) {
+        _nextButton = [[UIButton alloc] init];
+        _nextButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [_nextButton setTitle:@"Next" forState:UIControlStateNormal];
+        [_nextButton addConstraint:[NSLayoutConstraint constraintWithItem:_nextButton
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0f
+                                                                 constant:30.0f]];
+        _nextButton.layer.cornerRadius = 15.0f;
+        _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+        [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_nextButton addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _nextButton;
+}
 
 @end
