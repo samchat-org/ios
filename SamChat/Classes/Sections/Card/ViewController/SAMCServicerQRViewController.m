@@ -136,7 +136,7 @@
 
 - (UIImage *)myQRCodeImage
 {
-    UIImage *qrImage = [SAMCQRScanner createQRWithString:self.user.userId
+    UIImage *qrImage = [SAMCQRScanner createQRWithString:[NSString stringWithFormat:@"%@%@",SAMC_QR_ADDCONTACT_PREFIX, self.user.userId]
                                                   QRSize:CGSizeMake(300,300)
                                                  QRColor:SAMC_MAIN_DARKCOLOR
                                                  bkColor:SAMC_MAIN_BACKGROUNDCOLOR];

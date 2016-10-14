@@ -110,7 +110,7 @@
     SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
     _portraitView.avatarUrl = user.userInfo.avatar;
     _nameLabel.text = user.userInfo.username;
-    UIImage *qrImage = [SAMCQRScanner createQRWithString:user.userId
+    UIImage *qrImage = [SAMCQRScanner createQRWithString:[NSString stringWithFormat:@"%@%@",SAMC_QR_ADDCONTACT_PREFIX, user.userId]
                                                   QRSize:CGSizeMake(300,300)
                                                  QRColor:SAMC_MAIN_DARKCOLOR
                                                  bkColor:SAMC_MAIN_BACKGROUNDCOLOR];
