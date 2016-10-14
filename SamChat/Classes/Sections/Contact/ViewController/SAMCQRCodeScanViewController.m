@@ -14,21 +14,29 @@
 #import "SAMCUserManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCCardPortraitView.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCQRCodeScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
+@property (nonatomic, strong) UISegmentedControl *segmentedControl;
+
 @property (nonatomic, strong) SAMCQRScanner *qrScanner;
 @property (nonatomic, strong) SAMCQRScanView *qrScanView;
-
-@property(nonatomic, strong) UIImage *scanImage;
-@property(nonatomic, assign) BOOL isOpenFlash;
-
 @property (nonatomic, strong) UILabel *topTitle;
 
-@property (nonatomic, strong) UIView *bottomItemsView;
-@property (nonatomic, strong) UIButton *photoButton;
-@property (nonatomic, strong) UIButton *flashButton;
-@property (nonatomic, strong) UIButton *myQRButton;
+@property(nonatomic, strong) UIImage *scanImage;
+//@property(nonatomic, assign) BOOL isOpenFlash;
+//@property (nonatomic, strong) UIView *bottomItemsView;
+//@property (nonatomic, strong) UIButton *photoButton;
+//@property (nonatomic, strong) UIButton *flashButton;
+//@property (nonatomic, strong) UIButton *myQRButton;
+
+@property (nonatomic, strong) SAMCCardPortraitView *portraitView;
+@property (nonatomic, strong) UILabel *nameLabel;
+@property (nonatomic, strong) UIImageView *qrImageView;
+
+@property (nonatomic, strong) UIBarButtonItem *uploadItem;
 
 @end
 
@@ -38,24 +46,41 @@
 {
     [super viewDidLoad];
     [self setupSubviews];
-    self.view.backgroundColor = [UIColor blackColor];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if (self.segmentedControl.selectedSegmentIndex == 0) {
+        [self stopScan];
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (self.segmentedControl.selectedSegmentIndex == 0) {
+        [_qrScanView startDeviceReadyingWithText:@"starting..."];
+        
+        [self.view bringSubviewToFront:_topTitle];
+//        [self.view bringSubviewToFront:_bottomItemsView];
+        [self performSelector:@selector(startScan) withObject:nil afterDelay:0.2];
+    }
 }
 
 - (void)setupSubviews
 {
-    _qrScanView = [[SAMCQRScanView alloc] init];
-    _qrScanView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:_qrScanView];
-    
-    _topTitle = [[UILabel alloc] init];
-    _topTitle.translatesAutoresizingMaskIntoConstraints = NO;
-    _topTitle.textAlignment = NSTextAlignmentCenter;
-    _topTitle.numberOfLines = 0;
-    _topTitle.text = @"将取景框对准二维码即可自动扫描";
-    _topTitle.textColor = [UIColor whiteColor];
-    _topTitle.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:_topTitle];
-    
+    self.navigationItem.titleView = self.segmentedControl;
+    [self setupQRScanView];
+}
+
+- (void)setupQRScanView
+{
+    self.navigationItem.rightBarButtonItem = self.uploadItem;
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:self.qrScanView];
+    [self.view addSubview:self.topTitle];
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_qrScanView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -72,115 +97,167 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_topTitle)]];
-
-    
-
-    [self setupBottomItems];
 }
 
-- (void)setupBottomItems
+- (void)setupMyQRCodeView
 {
-    _bottomItemsView = [[UIView alloc] init];
-    _bottomItemsView.translatesAutoresizingMaskIntoConstraints = NO;
-    _bottomItemsView.backgroundColor = [UIColor blackColor];
-    _bottomItemsView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
-    [self.view addSubview:_bottomItemsView];
+    self.navigationItem.rightBarButtonItem = nil;
+    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    [self.view addSubview:self.portraitView];
+    [self.view addSubview:self.nameLabel];
+    [self.view addSubview:self.qrImageView];
     
-    _photoButton = [[UIButton alloc] init];
-    _photoButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [_photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_nor"] forState:UIControlStateNormal];
-    [_photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_down"] forState:UIControlStateHighlighted];
-    [_photoButton addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
-    [_bottomItemsView addSubview:_photoButton];
+    SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
+    _portraitView.avatarUrl = user.userInfo.avatar;
+    _nameLabel.text = user.userInfo.username;
+    UIImage *qrImage = [SAMCQRScanner createQRWithString:user.userId
+                                                  QRSize:CGSizeMake(300,300)
+                                                 QRColor:SAMC_MAIN_DARKCOLOR
+                                                 bkColor:SAMC_MAIN_BACKGROUNDCOLOR];
+    _qrImageView.image = qrImage;
     
-    _flashButton = [[UIButton alloc] init];
-    _flashButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_nor"] forState:UIControlStateNormal];
-    [_flashButton addTarget:self action:@selector(openOrCloseFlash) forControlEvents:UIControlEventTouchUpInside];
-    [_bottomItemsView addSubview:_flashButton];
-    
-    _myQRButton = [[UIButton alloc] init];
-    _myQRButton.translatesAutoresizingMaskIntoConstraints = NO;
-    [_myQRButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_myqrcode_nor"] forState:UIControlStateNormal];
-    [_myQRButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_myqrcode_down"] forState:UIControlStateHighlighted];
-    [_myQRButton addTarget:self action:@selector(myQRCode) forControlEvents:UIControlEventTouchUpInside];
-    [_bottomItemsView addSubview:_myQRButton];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomItemsView(100)]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_portraitView]|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_bottomItemsView)]];
-
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_bottomItemsView]|"
+                                                                        views:NSDictionaryOfVariableBindings(_portraitView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_nameLabel]-10-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_bottomItemsView)]];
-    [_bottomItemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_photoButton(65)]-10-[_flashButton(65)]-10-[_myQRButton(65)]"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:NSDictionaryOfVariableBindings(_photoButton,_flashButton,_myQRButton)]];
-    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
-                                                                 attribute:NSLayoutAttributeCenterX
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_flashButton
-                                                                 attribute:NSLayoutAttributeCenterX
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [_photoButton addConstraint:[NSLayoutConstraint constraintWithItem:_photoButton
-                                                             attribute:NSLayoutAttributeHeight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:0.0f
-                                                              constant:87.0f]];
-    [_flashButton addConstraint:[NSLayoutConstraint constraintWithItem:_flashButton
-                                                             attribute:NSLayoutAttributeHeight
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:0.0f
-                                                              constant:87.0f]];
-    [_myQRButton addConstraint:[NSLayoutConstraint constraintWithItem:_myQRButton
-                                                            attribute:NSLayoutAttributeHeight
-                                                            relatedBy:NSLayoutRelationEqual
-                                                               toItem:nil
-                                                            attribute:NSLayoutAttributeNotAnAttribute
-                                                           multiplier:0.0f
-                                                             constant:87.0f]];
+                                                                        views:NSDictionaryOfVariableBindings(_nameLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-30-[_portraitView(100)][_nameLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_portraitView,_nameLabel)]];
     
-    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_photoButton
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_flashButton
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
-    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                 relatedBy:NSLayoutRelationEqual
-                                                                    toItem:_myQRButton
-                                                                 attribute:NSLayoutAttributeCenterY
-                                                                multiplier:1.0f
-                                                                  constant:0.0f]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-50-[_qrImageView]-50-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_qrImageView)]];
+    [_qrImageView addConstraint:[NSLayoutConstraint constraintWithItem:_qrImageView
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:_qrImageView
+                                                             attribute:NSLayoutAttributeHeight
+                                                            multiplier:1.0f
+                                                              constant:0.0f]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_qrImageView
+                                                          attribute:NSLayoutAttributeTop
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
 }
 
-
-- (void)viewDidAppear:(BOOL)animated
+- (void)setUpNavItem
 {
-    [super viewDidAppear:animated];
-    [_qrScanView startDeviceReadyingWithText:@"相机启动中"];
-    
-    [self.view bringSubviewToFront:_topTitle];
-    [self.view bringSubviewToFront:_bottomItemsView];
-    [self performSelector:@selector(startScan) withObject:nil afterDelay:0.2];
+    UIButton *uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [uploadBtn addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
+    //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
+    //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
+    [uploadBtn setTitle:@"Upload" forState:UIControlStateNormal];
+    [uploadBtn setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
+    uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+    uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    [uploadBtn sizeToFit];
+    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
+    self.navigationItem.rightBarButtonItem = uploadItem;
 }
+
+//- (void)setupBottomItems
+//{
+//    _bottomItemsView = [[UIView alloc] init];
+//    _bottomItemsView.translatesAutoresizingMaskIntoConstraints = NO;
+//    _bottomItemsView.backgroundColor = [UIColor blackColor];
+//    _bottomItemsView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.6];
+//    [self.view addSubview:_bottomItemsView];
+//    
+//    _photoButton = [[UIButton alloc] init];
+//    _photoButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    [_photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_nor"] forState:UIControlStateNormal];
+//    [_photoButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_photo_down"] forState:UIControlStateHighlighted];
+//    [_photoButton addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
+//    [_bottomItemsView addSubview:_photoButton];
+//    
+//    _flashButton = [[UIButton alloc] init];
+//    _flashButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_nor"] forState:UIControlStateNormal];
+//    [_flashButton addTarget:self action:@selector(openOrCloseFlash) forControlEvents:UIControlEventTouchUpInside];
+//    [_bottomItemsView addSubview:_flashButton];
+//    
+//    _myQRButton = [[UIButton alloc] init];
+//    _myQRButton.translatesAutoresizingMaskIntoConstraints = NO;
+//    [_myQRButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_myqrcode_nor"] forState:UIControlStateNormal];
+//    [_myQRButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_myqrcode_down"] forState:UIControlStateHighlighted];
+//    [_myQRButton addTarget:self action:@selector(myQRCode) forControlEvents:UIControlEventTouchUpInside];
+//    [_bottomItemsView addSubview:_myQRButton];
+//    
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_bottomItemsView(100)]|"
+//                                                                      options:0
+//                                                                      metrics:nil
+//                                                                        views:NSDictionaryOfVariableBindings(_bottomItemsView)]];
+//
+//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_bottomItemsView]|"
+//                                                                      options:0
+//                                                                      metrics:nil
+//                                                                        views:NSDictionaryOfVariableBindings(_bottomItemsView)]];
+//    [_bottomItemsView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_photoButton(65)]-10-[_flashButton(65)]-10-[_myQRButton(65)]"
+//                                                                             options:0
+//                                                                             metrics:nil
+//                                                                               views:NSDictionaryOfVariableBindings(_photoButton,_flashButton,_myQRButton)]];
+//    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
+//                                                                 attribute:NSLayoutAttributeCenterX
+//                                                                 relatedBy:NSLayoutRelationEqual
+//                                                                    toItem:_flashButton
+//                                                                 attribute:NSLayoutAttributeCenterX
+//                                                                multiplier:1.0f
+//                                                                  constant:0.0f]];
+//    [_photoButton addConstraint:[NSLayoutConstraint constraintWithItem:_photoButton
+//                                                             attribute:NSLayoutAttributeHeight
+//                                                             relatedBy:NSLayoutRelationEqual
+//                                                                toItem:nil
+//                                                             attribute:NSLayoutAttributeNotAnAttribute
+//                                                            multiplier:0.0f
+//                                                              constant:87.0f]];
+//    [_flashButton addConstraint:[NSLayoutConstraint constraintWithItem:_flashButton
+//                                                             attribute:NSLayoutAttributeHeight
+//                                                             relatedBy:NSLayoutRelationEqual
+//                                                                toItem:nil
+//                                                             attribute:NSLayoutAttributeNotAnAttribute
+//                                                            multiplier:0.0f
+//                                                              constant:87.0f]];
+//    [_myQRButton addConstraint:[NSLayoutConstraint constraintWithItem:_myQRButton
+//                                                            attribute:NSLayoutAttributeHeight
+//                                                            relatedBy:NSLayoutRelationEqual
+//                                                               toItem:nil
+//                                                            attribute:NSLayoutAttributeNotAnAttribute
+//                                                           multiplier:0.0f
+//                                                             constant:87.0f]];
+//    
+//    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                 relatedBy:NSLayoutRelationEqual
+//                                                                    toItem:_photoButton
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                multiplier:1.0f
+//                                                                  constant:0.0f]];
+//    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                 relatedBy:NSLayoutRelationEqual
+//                                                                    toItem:_flashButton
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                multiplier:1.0f
+//                                                                  constant:0.0f]];
+//    [_bottomItemsView addConstraint:[NSLayoutConstraint constraintWithItem:_bottomItemsView
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                 relatedBy:NSLayoutRelationEqual
+//                                                                    toItem:_myQRButton
+//                                                                 attribute:NSLayoutAttributeCenterY
+//                                                                multiplier:1.0f
+//                                                                  constant:0.0f]];
+//}
+
+
 
 - (void)reStartDevice
 {
@@ -222,31 +299,30 @@
     self.view.backgroundColor = [UIColor clearColor];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)stopScan
 {
-    [super viewWillDisappear:animated];
-    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
-    [_qrScanner stopScan];
-    [_qrScanView stopScanAnimation];
-}
-
-- (void)openOrCloseFlash
-{
-    [_qrScanner openOrCloseFlash];
-    
-    self.isOpenFlash =!self.isOpenFlash;
-    
-    
-    if (self.isOpenFlash) {
-        [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_down"]
-                   forState:UIControlStateNormal];
-    } else {
-        [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_nor"]
-                   forState:UIControlStateNormal];
+    if (_qrScanner) {
+        [_qrScanner stopScan];
+        [_qrScanView stopScanAnimation];
     }
 }
+//
+//- (void)openOrCloseFlash
+//{
+//    [_qrScanner openOrCloseFlash];
+//    
+//    self.isOpenFlash =!self.isOpenFlash;
+//    
+//    
+//    if (self.isOpenFlash) {
+//        [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_down"]
+//                   forState:UIControlStateNormal];
+//    } else {
+//        [_flashButton setImage:[UIImage imageNamed:@"qrcode_scan_btn_flash_nor"]
+//                   forState:UIControlStateNormal];
+//    }
+//}
 
 - (void)openLocalPhoto
 {
@@ -255,6 +331,33 @@
     picker.delegate = self;
     picker.allowsEditing = YES;
     [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)segmentedControlChanged:(UISegmentedControl *)sender
+{
+    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (sender.selectedSegmentIndex == 0) {
+        _portraitView = nil;
+        _nameLabel = nil;
+        _qrImageView = nil;
+        [self setupQRScanView];
+        
+        [_qrScanView startDeviceReadyingWithText:@"starting..."];
+        [self.view bringSubviewToFront:_topTitle];
+        [self performSelector:@selector(startScan) withObject:nil afterDelay:0.2];
+    } else {
+        [self stopScan];
+        _qrScanView = nil;
+        _topTitle = nil;
+        _qrScanner = nil;
+        [self setupMyQRCodeView];
+    }
+//    SAMCMyQRCodeViewController *vc = [[SAMCMyQRCodeViewController alloc] init];
+//    [UIView beginAnimations:@"animation" context:nil];
+//    [UIView setAnimationDuration:0.7];
+//    [self.navigationController pushViewController:vc animated:NO];
+//    [UIView setAnimationTransition:UIViewAnimationTransitionFlipFromLeft forView:self.navigationController.view cache:NO];
+//    [UIView commitAnimations];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -396,6 +499,88 @@
     SAMCMyQRCodeViewController *vc = [[SAMCMyQRCodeViewController alloc] init];
     vc.currentUserMode = self.currentUserMode;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - lazy load
+- (UISegmentedControl *)segmentedControl
+{
+    if (_segmentedControl == nil) {
+        _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Scan",@"My QR Code"]];
+        _segmentedControl.selectedSegmentIndex = 0;
+        _segmentedControl.tintColor = SAMC_MAIN_DARKCOLOR;
+        [_segmentedControl addTarget:self action:@selector(segmentedControlChanged:)forControlEvents:UIControlEventValueChanged];
+    }
+    return _segmentedControl;
+}
+
+- (SAMCCardPortraitView *)portraitView
+{
+    if (_portraitView == nil) {
+        _portraitView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectZero effect:NO];
+        _portraitView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _portraitView;
+}
+
+- (UILabel *)nameLabel
+{
+    if (_nameLabel == nil) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _nameLabel.textColor = UIColorFromRGB(0x13243F);
+        _nameLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+        _nameLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _nameLabel;
+}
+
+- (UIImageView *)qrImageView
+{
+    if (_qrImageView == nil) {
+        _qrImageView = [[UIImageView alloc] init];
+        _qrImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _qrImageView;
+}
+
+- (SAMCQRScanView *)qrScanView
+{
+    if (_qrScanView == nil) {
+        _qrScanView = [[SAMCQRScanView alloc] init];
+        _qrScanView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _qrScanView;
+}
+
+- (UILabel *)topTitle
+{
+    if (_topTitle == nil) {
+        _topTitle = [[UILabel alloc] init];
+        _topTitle.translatesAutoresizingMaskIntoConstraints = NO;
+        _topTitle.textAlignment = NSTextAlignmentCenter;
+        _topTitle.numberOfLines = 0;
+        _topTitle.text = @"Place QR code at the center to scan";
+        _topTitle.textColor = [UIColor whiteColor];
+        _topTitle.backgroundColor = [UIColor clearColor];
+    }
+    return _topTitle;
+}
+
+- (UIBarButtonItem *)uploadItem
+{
+    if (_uploadItem == nil) {
+        UIButton *uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [uploadBtn addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
+        //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
+        //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
+        [uploadBtn setTitle:@"Upload" forState:UIControlStateNormal];
+        [uploadBtn setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
+        uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+        [uploadBtn sizeToFit];
+        _uploadItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
+    }
+    return _uploadItem;
 }
 
 @end

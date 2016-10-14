@@ -169,7 +169,7 @@
     
     diffAngle = linewidthAngle/3; //框外面4个角，与框紧密联系在一起
     
-    UIColor *colorAngle = [UIColor colorWithRed:0. green:167./255. blue:231./255. alpha:1.0];
+    UIColor *colorAngle = [UIColor colorWithRed:167./255. green:179./255. blue:192./255. alpha:1.0];
     CGContextSetStrokeColorWithColor(context, colorAngle.CGColor);
     CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
     
