@@ -125,11 +125,9 @@
 {
     NSString *companyName = _companyNameTextField.text;
     NSString *serviceCategory = _serviceCategoryTextField.text;
-//    NSString *serviceDesc = _serviceDescTextView.text;
     
     [self.samProsInformation setObject:companyName forKey:SAMC_COMPANY_NAME];
     [self.samProsInformation setObject:serviceCategory forKey:SAMC_SERVICE_CATEGORY];
-//    [self.samProsInformation setObject:serviceDesc forKey:SAMC_SERVICE_DESCRIPTION];
     
     SAMCCSAStepTwoViewController *vc = [[SAMCCSAStepTwoViewController alloc] initWithInformation:self.samProsInformation];
     [self.navigationController pushViewController:vc animated:YES];
@@ -146,8 +144,10 @@
 {
     if ([_companyNameTextField.text length] && [_serviceCategoryTextField.text length]) {
         _nextButton.backgroundColor = UIColorFromRGB(0x2676B6);
+        _nextButton.enabled = YES;
     } else {
         _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+        _nextButton.enabled = NO;
     }
 }
 
@@ -289,6 +289,7 @@
         _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
         [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_nextButton addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
+        _nextButton.enabled = NO;
     }
     return _nextButton;
 }

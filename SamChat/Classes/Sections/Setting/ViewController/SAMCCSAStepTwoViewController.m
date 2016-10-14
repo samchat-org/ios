@@ -159,10 +159,12 @@
 
 - (void)textFieldEditingChanged:(UITextField *)textField
 {
-    if ([_workphoneTextField.text length] && [_serviceEmailTextField.text length]) {
+    if ([_workphoneTextField.text length] && [_serviceEmailTextField.text length] && [_serviceLocationTextField.text length]) {
         _nextButton.backgroundColor = UIColorFromRGB(0x2676B6);
+        _nextButton.enabled = YES;
     } else {
         _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+        _nextButton.enabled = NO;
     }
 }
 
@@ -316,6 +318,7 @@
         _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
         [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_nextButton addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
+        _nextButton.enabled = NO;
     }
     return _nextButton;
 }
