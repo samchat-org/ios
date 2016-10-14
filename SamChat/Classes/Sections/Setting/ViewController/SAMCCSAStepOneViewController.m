@@ -118,6 +118,7 @@
 
 - (void)onCancel
 {
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 - (void)onNext:(id)sender
