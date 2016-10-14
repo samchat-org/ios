@@ -72,6 +72,7 @@ NS_ASSUME_NONNULL_BEGIN
              completion:(NIMLoginHandler)completion;
 
 - (NSString *)currentAccount;
+- (SAMCUser *)currentUser;
 
 - (BOOL)isLogined;
 

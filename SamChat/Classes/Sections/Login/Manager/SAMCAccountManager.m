@@ -28,6 +28,7 @@
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCLoginManagerDelegate> *multicastDelegate;
+@property (nonatomic, strong) SAMCUser *currentUser;
 
 @end
 
@@ -280,6 +281,15 @@
     // 自动登录的时候，未登录云信时，就需要检查数据库是否需要升级
     // 未登录云信时不能使用云信sdk的loginManager.currentAccount
     return [[[NTESLoginManager sharedManager] currentLoginData] account];
+}
+
+- (SAMCUser *)currentUser
+{
+    NSString *userId = self.currentAccount;
+    if ((_currentUser == nil) || (![userId isEqualToString:_currentUser.userId])) {
+        _currentUser = [[SAMCUserManager sharedManager] userInfo:userId];
+    }
+    return _currentUser;
 }
 
 - (BOOL)isLogined
