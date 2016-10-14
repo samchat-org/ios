@@ -20,4 +20,6 @@
 @property (nonatomic, assign) SAMCUserModeType currentUserMode;
 @property (nonatomic, weak) id<SAMCSwitchUserModeDelegate> delegate;
 
+- (void)touchSwitchUserMode:(id)sender;
+
 @end

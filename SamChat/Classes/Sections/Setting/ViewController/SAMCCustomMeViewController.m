@@ -10,6 +10,8 @@
 #import "SAMCCardPortraitView.h"
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCAccountManager.h"
+#import "SAMCCSAStepOneViewController.h"
+#import "SAMCTabViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -73,7 +75,16 @@
             }
         }
             break;
-            
+        case 1:
+        {
+            if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
+                SAMCTabViewController *tabViewController = (SAMCTabViewController *)self.parentViewController;
+                [tabViewController touchSwitchUserMode:nil];
+            } else {
+                [self createSamPros];
+            }
+        }
+            break;
         default:
             break;
     }
@@ -239,6 +250,12 @@
                 break;
         }
     }];
+}
+
+- (void)createSamPros
+{
+    SAMCCSAStepOneViewController *vc = [[SAMCCSAStepOneViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
