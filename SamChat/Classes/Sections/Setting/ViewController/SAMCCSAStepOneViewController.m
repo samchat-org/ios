@@ -131,8 +131,7 @@
     [self.samProsInformation setObject:serviceCategory forKey:SAMC_SERVICE_CATEGORY];
 //    [self.samProsInformation setObject:serviceDesc forKey:SAMC_SERVICE_DESCRIPTION];
     
-    SAMCCSAStepTwoViewController *vc = [[SAMCCSAStepTwoViewController alloc] init];
-    vc.samProsInformation = self.samProsInformation;
+    SAMCCSAStepTwoViewController *vc = [[SAMCCSAStepTwoViewController alloc] initWithInformation:self.samProsInformation];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

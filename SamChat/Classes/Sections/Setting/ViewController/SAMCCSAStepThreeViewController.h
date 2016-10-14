@@ -10,6 +10,6 @@
 
 @interface SAMCCSAStepThreeViewController : UIViewController
 
-@property (nonatomic, strong) NSMutableDictionary *samProsInformation;
+- (instancetype)initWithInformation:(NSMutableDictionary *)information;
 
 @end

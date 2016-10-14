@@ -23,9 +23,20 @@
 
 @property (nonatomic, strong) NSLayoutConstraint *nextButtonBottomContraint;
 
+@property (nonatomic, strong) NSMutableDictionary *samProsInformation;
+
 @end
 
 @implementation SAMCCSAStepTwoViewController
+
+- (instancetype)initWithInformation:(NSMutableDictionary *)information
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _samProsInformation = information;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -135,8 +146,7 @@
     [self.samProsInformation setObject:email forKey:SAMC_EMAIL];
     [self.samProsInformation setObject:location forKey:SAMC_LOCATION];
     
-    SAMCCSAStepThreeViewController *vc = [[SAMCCSAStepThreeViewController alloc] init];
-    vc.samProsInformation = self.samProsInformation;
+    SAMCCSAStepThreeViewController *vc = [[SAMCCSAStepThreeViewController alloc] initWithInformation:self.samProsInformation];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

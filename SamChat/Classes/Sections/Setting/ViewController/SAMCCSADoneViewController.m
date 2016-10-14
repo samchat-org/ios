@@ -106,4 +106,28 @@
     }
 }
 
+//- (void)onNext:(id)sender
+//{
+//    NSString *phone = _phoneTextField.text;
+//    NSString *email = _emailTextField.text;
+//    NSDictionary *location = @{SAMC_ADDRESS:_locationTextField.text};
+//    
+//    [self.samProsInformation setObject:phone forKey:SAMC_PHONE];
+//    [self.samProsInformation setObject:email forKey:SAMC_EMAIL];
+//    [self.samProsInformation setObject:location forKey:SAMC_LOCATION];
+//    
+//    [SVProgressHUD showWithStatus:@"Creating" maskType:SVProgressHUDMaskTypeBlack];
+//    __weak typeof(self) wself = self;
+//    [[SAMCSettingManager sharedManager] createSamPros:self.samProsInformation completion:^(NSError * _Nullable error) {
+//        [SVProgressHUD dismiss];
+//        if (error) {
+//            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+//            return;
+//        }
+//        SAMCCSADoneViewController *vc = [[SAMCCSADoneViewController alloc] init];
+//        [wself.navigationController pushViewController:vc animated:YES];
+//    }];
+//    
+//}
+
 @end
