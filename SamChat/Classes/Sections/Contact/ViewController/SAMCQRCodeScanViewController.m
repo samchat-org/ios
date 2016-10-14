@@ -149,21 +149,6 @@
                                                            constant:0.0f]];
 }
 
-- (void)setUpNavItem
-{
-    UIButton *uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [uploadBtn addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
-    //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
-    //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
-    [uploadBtn setTitle:@"Upload" forState:UIControlStateNormal];
-    [uploadBtn setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
-    uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
-    uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-    [uploadBtn sizeToFit];
-    UIBarButtonItem *uploadItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
-    self.navigationItem.rightBarButtonItem = uploadItem;
-}
-
 //- (void)setupBottomItems
 //{
 //    _bottomItemsView = [[UIView alloc] init];
