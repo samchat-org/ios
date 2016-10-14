@@ -121,6 +121,11 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (void)onSkip:(id)sender
+{
+    [self pushToNextStepVC];
+}
+
 - (void)onNext:(id)sender
 {
     NSString *companyName = _companyNameTextField.text;
@@ -128,7 +133,11 @@
     
     [self.samProsInformation setObject:companyName forKey:SAMC_COMPANY_NAME];
     [self.samProsInformation setObject:serviceCategory forKey:SAMC_SERVICE_CATEGORY];
-    
+    [self pushToNextStepVC];
+}
+
+- (void)pushToNextStepVC
+{
     SAMCCSAStepTwoViewController *vc = [[SAMCCSAStepTwoViewController alloc] initWithInformation:self.samProsInformation];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -268,6 +277,7 @@
         _skipButton.layer.cornerRadius = 15.0f;
         _skipButton.backgroundColor = UIColorFromRGB(0xA2AEBC);
         [_skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_skipButton addTarget:self action:@selector(onSkip:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _skipButton;
 }
