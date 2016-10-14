@@ -136,6 +136,11 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+- (void)onSkip:(id)sender
+{
+    [self pushToNextStepVC];
+}
+
 - (void)onNext:(id)sender
 {
     NSString *phone= _workphoneTextField.text;
@@ -145,7 +150,11 @@
     [self.samProsInformation setObject:phone forKey:SAMC_PHONE];
     [self.samProsInformation setObject:email forKey:SAMC_EMAIL];
     [self.samProsInformation setObject:location forKey:SAMC_LOCATION];
-    
+    [self pushToNextStepVC];
+}
+
+- (void)pushToNextStepVC
+{
     SAMCCSAStepThreeViewController *vc = [[SAMCCSAStepThreeViewController alloc] initWithInformation:self.samProsInformation];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -297,6 +306,7 @@
         _skipButton.layer.cornerRadius = 15.0f;
         _skipButton.backgroundColor = UIColorFromRGB(0xA2AEBC);
         [_skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_skipButton addTarget:self action:@selector(onSkip:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _skipButton;
 }
