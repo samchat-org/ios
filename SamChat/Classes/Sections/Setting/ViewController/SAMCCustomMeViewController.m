@@ -8,6 +8,8 @@
 
 #import "SAMCCustomMeViewController.h"
 #import "SAMCCardPortraitView.h"
+#import "UIAlertView+NTESBlock.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -62,6 +64,10 @@
                 }
                     break;
                     
+                case 4:
+                {
+                    [self logoutCurrentAccount];
+                }
                 default:
                     break;
             }
@@ -71,21 +77,6 @@
         default:
             break;
     }
-//    if (indexPath.section == 0) {
-//        // chat
-//        if (indexPath.row == 1) {
-//            UINavigationController *nav = self.navigationController;
-//            SAMCSession *session = [SAMCSession session:self.user.userId type:NIMSessionTypeP2P mode:SAMCUserModeTypeCustom];
-//            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-//            [nav pushViewController:vc animated:YES];
-//            UIViewController *root = nav.viewControllers[0];
-//            nav.viewControllers = @[root,vc];
-//        }
-//        if (indexPath.row == 2) {
-//            SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
-//            [self.navigationController pushViewController:vc animated:YES];
-//        }
-//    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -225,6 +216,24 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
+}
+
+#pragma mark - Action
+- (void)logoutCurrentAccount
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"logout?" message:nil delegate:nil cancelButtonTitle:@"NO" otherButtonTitles:@"YES", nil];
+    [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
+        switch (alertIndex) {
+            case 1:
+                [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
+                    extern NSString *NTESNotificationLogout;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
+                }];
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 @end
