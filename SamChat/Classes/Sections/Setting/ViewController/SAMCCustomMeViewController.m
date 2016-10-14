@@ -164,8 +164,13 @@
                 case 0:
                 {
                     cell = [self commonBasicCell:tableView];
-                    cell.textLabel.text = @"Switch to Service Account";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_switch_normal"];
+                    if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
+                        cell.textLabel.text = @"Switch to Service Account";
+                        cell.imageView.image = [UIImage imageNamed:@"icon_switch_normal"];
+                    } else {
+                        cell.textLabel.text = @"List my service";
+                        cell.imageView.image = [UIImage imageNamed:@"icon_listmyservice_normal"];
+                    }
                 }
                     break;
                     

@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)currentAccount;
 - (SAMCUser *)currentUser;
+- (BOOL)isCurrentUserServicer;
 
 - (BOOL)isLogined;
 

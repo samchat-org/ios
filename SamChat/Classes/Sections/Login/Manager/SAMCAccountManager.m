@@ -292,6 +292,11 @@
     return _currentUser;
 }
 
+- (BOOL)isCurrentUserServicer
+{
+    return [[SAMCAccountManager sharedManager].currentUser.userInfo.usertype isEqual:@(SAMCuserTypeSamPros)];
+}
+
 - (BOOL)isLogined
 {
     return [[[NIMSDK sharedSDK] loginManager] isLogined];
