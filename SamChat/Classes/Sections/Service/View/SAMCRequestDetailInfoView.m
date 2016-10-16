@@ -7,10 +7,11 @@
 //
 
 #import "SAMCRequestDetailInfoView.h"
+#import "SAMCBannerView.h"
 
 @interface SAMCRequestDetailInfoView ()
 
-@property (nonatomic, strong) UIImageView *statusBannerImageView;
+@property (nonatomic, strong) SAMCBannerView *statusBannerView;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *infoLabel;
 @property (nonatomic, strong) UILabel *locationLabel;
@@ -32,15 +33,15 @@
 {
     self.backgroundColor = [UIColor whiteColor];
     
-    [self addSubview:self.statusBannerImageView];
+    [self addSubview:self.statusBannerView];
     [self addSubview:self.timeLabel];
     [self addSubview:self.infoLabel];
     [self addSubview:self.locationLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_statusBannerImageView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_statusBannerView]|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_statusBannerImageView)]];
+                                                                   views:NSDictionaryOfVariableBindings(_statusBannerView)]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_timeLabel]-20-|"
                                                                  options:0
                                                                  metrics:nil
@@ -53,10 +54,10 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_locationLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_statusBannerImageView(4)]-5-[_timeLabel]-5-[_infoLabel]-5-[_locationLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_statusBannerView(5)]-5-[_timeLabel]-5-[_infoLabel]-5-[_locationLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_statusBannerImageView,_timeLabel,_infoLabel,_locationLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_statusBannerView,_timeLabel,_infoLabel,_locationLabel)]];
     
 }
 
@@ -67,26 +68,25 @@
     self.infoLabel.text = questionSession.question;
     self.locationLabel.text = questionSession.address;
     if ([[questionSession answers] count]) {
-        self.statusBannerImageView.image = [UIImage imageNamed:@"request_banner_answered"];
+        [self.statusBannerView updateGradientColors:@[UIColorFromRGB(0x67D45F), UIColorFromRGB(0x67D45F)]];
     } else {
         NSInteger daysEarlier = [questionSession daysEarlier];
         if (daysEarlier < 3) {
-            self.statusBannerImageView.image = [UIImage imageNamed:@"request_banner_new"];
+            [self.statusBannerView updateGradientColors:@[UIColorFromRGB(0x2EBDEF), UIColorFromRGB(0xD1F43B)]];
         } else {
-            self.statusBannerImageView.image = [UIImage imageNamed:@"request_banner_embarass"];
+            [self.statusBannerView updateGradientColors:@[UIColorFromRGB(0xA2AEBC), [UIColor whiteColor]]];
         }
     }
 }
 
 #pragma mark - lazy load
-- (UIImageView *)statusBannerImageView
+- (SAMCBannerView *)statusBannerView
 {
-    if (_statusBannerImageView == nil) {
-        _statusBannerImageView = [[UIImageView alloc] init];
-        _statusBannerImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        _statusBannerImageView.contentMode = UIViewContentModeScaleToFill;
+    if (_statusBannerView == nil) {
+        _statusBannerView = [[SAMCBannerView alloc] init];
+        _statusBannerView.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    return _statusBannerImageView;
+    return _statusBannerView;
 }
 
 - (UILabel *)timeLabel
