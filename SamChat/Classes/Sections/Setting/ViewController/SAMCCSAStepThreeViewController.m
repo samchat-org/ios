@@ -9,6 +9,10 @@
 #import "SAMCCSAStepThreeViewController.h"
 #import "SAMCTextView.h"
 #import "SAMCServerAPIMacro.h"
+#import "SVProgressHUD.h"
+#import "SAMCSettingManager.h"
+#import "UIView+Toast.h"
+#import "SAMCCSADoneViewController.h"
 
 @interface SAMCCSAStepThreeViewController ()<UITextViewDelegate>
 
@@ -132,6 +136,18 @@
 {
     NSString *serviceDesc = _descriptionTextView.text;
     [self.samProsInformation setObject:serviceDesc forKey:SAMC_SERVICE_DESCRIPTION];
+    
+    [SVProgressHUD showWithStatus:@"Creating" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCSettingManager sharedManager] createSamPros:self.samProsInformation completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        SAMCCSADoneViewController *vc = [[SAMCCSADoneViewController alloc] init];
+        [wself.navigationController pushViewController:vc animated:YES];
+    }];
 }
 
 #pragma mark - UIKeyBoard Notification
@@ -230,7 +246,7 @@
     if (_doneButton == nil) {
         _doneButton = [[UIButton alloc] init];
         _doneButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_doneButton setTitle:@"Next" forState:UIControlStateNormal];
+        [_doneButton setTitle:@"Done" forState:UIControlStateNormal];
         [_doneButton addConstraint:[NSLayoutConstraint constraintWithItem:_doneButton
                                                                 attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
