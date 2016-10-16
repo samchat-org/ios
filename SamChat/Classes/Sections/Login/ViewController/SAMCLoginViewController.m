@@ -18,13 +18,14 @@
 #import "UIView+Toast.h"
 #import "NTESService.h"
 #import "SAMCAccountManager.h"
+#import "SAMCGradientButton.h"
 
 @interface SAMCLoginViewController ()
 
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) SAMCTextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
-@property (nonatomic, strong) UIButton *signinButton;
+@property (nonatomic, strong) SAMCGradientButton *signinButton;
 @property (nonatomic, strong) UIButton *signupButton;
 @property (nonatomic, strong) UIButton *forgotPasswordButton;
 @property (nonatomic, strong) NSLayoutConstraint *bottomSpaceConstraint;
@@ -102,11 +103,13 @@ NTES_USE_CLEAR_BAR
     self.passwordTextField.rightViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:self.passwordTextField];
     
-    self.signinButton = [[UIButton alloc] initWithFrame:CGRectZero];
+    self.signinButton = [[SAMCGradientButton alloc] initWithFrame:CGRectZero];
     self.signinButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.signinButton.exclusiveTouch = YES;
     self.signinButton.layer.cornerRadius = 17.5f;
     self.signinButton.backgroundColor = [UIColor grayColor];
+    self.signinButton.gradientLayer.colors = @[(__bridge id)UIColorFromRGB(0x20CB9D).CGColor,(__bridge id)UIColorFromRGB(0x80E22F).CGColor];
+    self.signinButton.gradientLayer.cornerRadius = 17.5f;
     self.signinButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
     [self.signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.signinButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
