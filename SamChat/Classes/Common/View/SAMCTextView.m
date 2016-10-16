@@ -34,14 +34,16 @@
 
 - (void)setupSubviews
 {
-    self.font = [UIFont systemFontOfSize:17.0f];
+    self.font = [UIFont systemFontOfSize:15.0f];
     self.textContainerInset = UIEdgeInsetsMake(10, 20, 10, 20);
     _placeholderLabel = [[UILabel alloc] init];
     _placeholderLabel.translatesAutoresizingMaskIntoConstraints = NO;
     _placeholderLabel.backgroundColor = [UIColor clearColor];
-    _placeholderLabel.numberOfLines = 0;
-    _placeholderLabel.font = [UIFont systemFontOfSize:17.0f];
+    _placeholderLabel.textAlignment = NSTextAlignmentLeft;
+    _placeholderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _placeholderLabel.font = [UIFont systemFontOfSize:15.0f];
     _placeholderLabel.textColor = [UIColor lightGrayColor];
+    _placeholderLabel.numberOfLines = 0;
     [self addSubview:_placeholderLabel];
     
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_placeholderLabel]-20-|"
@@ -72,6 +74,12 @@
 - (void)setPlaceholder:(NSString *)placeholder
 {
     [_placeholderLabel setText:placeholder];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _placeholderLabel.preferredMaxLayoutWidth = self.bounds.size.width-40.0f;
 }
 
 @end

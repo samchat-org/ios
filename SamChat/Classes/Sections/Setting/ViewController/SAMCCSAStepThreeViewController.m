@@ -7,13 +7,14 @@
 //
 
 #import "SAMCCSAStepThreeViewController.h"
+#import "SAMCTextView.h"
 #import "SAMCServerAPIMacro.h"
 
-@interface SAMCCSAStepThreeViewController ()
+@interface SAMCCSAStepThreeViewController ()<UITextViewDelegate>
 
 @property (nonatomic, strong) UIImageView *stepImageView;
 @property (nonatomic, strong) UILabel *tipLabel;
-@property (nonatomic, strong) UITextView *descriptionTextView;
+@property (nonatomic, strong) SAMCTextView *descriptionTextView;
 @property (nonatomic, strong) UIButton *skipButton;
 @property (nonatomic, strong) UIButton *doneButton;
 
@@ -47,9 +48,9 @@
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     [self.descriptionTextView becomeFirstResponder];
 }
 
@@ -155,6 +156,18 @@
                      }];
 }
 
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView
+{
+    if ([_descriptionTextView.text length]) {
+        _doneButton.backgroundColor = UIColorFromRGB(0x2676B6);
+        _doneButton.enabled = YES;
+    } else {
+        _doneButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+        _doneButton.enabled = NO;
+    }
+}
+
 #pragma mark - lazy load
 - (UIImageView *)stepImageView
 {
@@ -181,11 +194,13 @@
     return _tipLabel;
 }
 
-- (UITextView *)descriptionTextView
+- (SAMCTextView *)descriptionTextView
 {
     if (_descriptionTextView == nil) {
-        _descriptionTextView = [[UITextView alloc] init];
+        _descriptionTextView = [[SAMCTextView alloc] init];
         _descriptionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        _descriptionTextView.placeholder = @"i.e. your specialization, years of experience, how do you work with your client, etc.";
+        _descriptionTextView.delegate = self;
     }
     return _descriptionTextView;
 }

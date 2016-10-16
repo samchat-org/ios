@@ -41,9 +41,9 @@
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewWillAppear:animated];
+    [super viewDidAppear:animated];
     [self.companyNameTextField becomeFirstResponder];
 }
 
