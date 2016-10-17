@@ -74,8 +74,9 @@ NTES_USE_CLEAR_BAR
     _gradientLayer.colors = @[(__bridge id)SAMC_COLOR_DARKBLUE_GRADIENT_DARK.CGColor,(__bridge id)SAMC_COLOR_DARKBLUE_GRADIENT_LIGHT.CGColor];
     [self.view.layer addSublayer:_gradientLayer];
     
-    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_logo"]];
+    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img_BKG_signin"]];
     self.logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.view addSubview:self.logoImageView];
     
     [self.view addSubview:self.usernameTextField];
@@ -128,14 +129,14 @@ NTES_USE_CLEAR_BAR
                                                                       toItem:nil
                                                                    attribute:NSLayoutAttributeNotAnAttribute
                                                                   multiplier:0.0f
-                                                                    constant:150.0f]];
-    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
-                                                                   attribute:NSLayoutAttributeHeight
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:0.0f
-                                                                    constant:150.0f]];
+                                                                    constant:170.0f]];
+//    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
+//                                                                   attribute:NSLayoutAttributeHeight
+//                                                                   relatedBy:NSLayoutRelationEqual
+//                                                                      toItem:nil
+//                                                                   attribute:NSLayoutAttributeNotAnAttribute
+//                                                                  multiplier:0.0f
+//                                                                    constant:150.0f]];
     self.bottomSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.signupButton
                                                               attribute:NSLayoutAttributeBottom
                                                               relatedBy:NSLayoutRelationEqual
@@ -278,7 +279,7 @@ NTES_USE_CLEAR_BAR
     [UIView animateWithDuration:0.3f
                      animations:^{
                          [self.bottomSpaceConstraint setConstant:-keyboardHeight-5];
-                         [self.logoBottonSpaceContraint setConstant:-30.0f];
+                         [self.logoBottonSpaceContraint setConstant:30.0f];
                          [self.view layoutIfNeeded];
                      }];
 }
