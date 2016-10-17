@@ -40,10 +40,10 @@
                   selectedImage:[UIImage imageNamed:@"bk_media_shoot_pressed"]
                           title:@"拍摄"],
              
-             [NIMMediaItem item:NTESMediaButtonLocation
-                    normalImage:[UIImage imageNamed:@"bk_media_position_normal"]
-                  selectedImage:[UIImage imageNamed:@"bk_media_position_pressed"]
-                          title:@"位置"],
+//             [NIMMediaItem item:NTESMediaButtonLocation
+//                    normalImage:[UIImage imageNamed:@"bk_media_position_normal"]
+//                  selectedImage:[UIImage imageNamed:@"bk_media_position_pressed"]
+//                          title:@"位置"],
              
              [NIMMediaItem item:NTESMediaButtonAudioChat
                     normalImage:[UIImage imageNamed:@"btn_media_telphone_message_normal"]
@@ -59,11 +59,7 @@
                     normalImage:[UIImage imageNamed:@"icon_file_trans_normal"]
                   selectedImage:[UIImage imageNamed:@"icon_file_trans_pressed"]
                           title:@"文件传输"],
-             
-             [NIMMediaItem item:NTESMediaButtonTip
-                    normalImage:[UIImage imageNamed:@"bk_media_tip_normal"]
-                  selectedImage:[UIImage imageNamed:@"bk_media_tip_pressed"]
-                          title:@"提醒消息"]];
+            ];
 }
 
 - (id<NIMKitMessageProvider>)messageDataProvider
