@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xN8-V1-ZGh">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="U8Q-Fv-8Ov">
+            <objects>
+                <viewController id="xN8-V1-ZGh" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wGB-3J-XK9"/>
+                        <viewControllerLayoutGuide type="bottom" id="4zL-pS-G1E"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="VYt-NK-Dm3">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="img_BKG_Launch" translatesAutoresizingMaskIntoConstraints="NO" id="Ku7-JN-Grd">
+                                <rect key="frame" x="203.5" y="173" width="193" height="254"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="240" id="Z0Q-o0-Wkr"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="Z0Q-o0-Wkr"/>
+                                    </mask>
+                                </variation>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.058823529411764705" green="0.10196078431372549" blue="0.19215686274509805" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Ku7-JN-Grd" firstAttribute="centerX" secondItem="VYt-NK-Dm3" secondAttribute="centerX" id="CL2-Xs-oxI"/>
+                            <constraint firstItem="Ku7-JN-Grd" firstAttribute="top" secondItem="wGB-3J-XK9" secondAttribute="bottom" constant="216" id="gZe-u7-r9r"/>
+                            <constraint firstItem="Ku7-JN-Grd" firstAttribute="centerY" secondItem="VYt-NK-Dm3" secondAttribute="centerY" id="nOU-TZ-Zgx"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="gZe-u7-r9r"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hbd-gn-2DF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="464" y="328"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="img_BKG_Launch" width="193" height="254"/>
+    </resources>
+</document>
