@@ -22,6 +22,8 @@
 
 @interface SAMCLoginViewController ()
 
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
+
 @property (nonatomic, strong) UIImageView *logoImageView;
 @property (nonatomic, strong) SAMCTextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -66,97 +68,39 @@ NTES_USE_CLEAR_BAR
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = UIColorFromRGB(0x174164);
+    _gradientLayer = [[CAGradientLayer alloc] init];
+    _gradientLayer.startPoint = CGPointMake(1, 1);
+    _gradientLayer.endPoint = CGPointMake(1, 0);
+    _gradientLayer.colors = @[(__bridge id)SAMC_COLOR_DARKBLUE_GRADIENT_DARK.CGColor,(__bridge id)SAMC_COLOR_DARKBLUE_GRADIENT_LIGHT.CGColor];
+    [self.view.layer addSublayer:_gradientLayer];
     
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login_logo"]];
     self.logoImageView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:self.logoImageView];
     
-    self.usernameTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
-    self.usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.usernameTextField.backgroundColor = UIColorFromRGB(0x345470);
-    [self.usernameTextField.leftButton setTitle:@"USA" forState:UIControlStateNormal];
-    [self.usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
-    [self.usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
-    self.usernameTextField.rightTextField.placeholder = @"Username or phone no.";
-    [self.usernameTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.usernameTextField.rightTextField.textColor = [UIColor whiteColor];
     [self.view addSubview:self.usernameTextField];
-    
-    self.passwordTextField = [[UITextField alloc] initWithFrame:CGRectZero];
-    self.passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    self.passwordTextField.backgroundColor = UIColorFromRGB(0x345470);
-    [self.passwordTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
-    self.passwordTextField.returnKeyType = UIReturnKeyDone;
-    self.passwordTextField.secureTextEntry = YES;
-    self.passwordTextField.placeholder = @"Enter your password";
-    self.passwordTextField.textColor = [UIColor whiteColor];
-    self.passwordTextField.layer.cornerRadius = 5.0f;
-    self.passwordTextField.leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 5, 0)];
-    self.passwordTextField.leftViewMode = UITextFieldViewModeAlways;
-    UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-    [showPWDButton setImage:[UIImage imageNamed:@"login_pwd_eye"] forState:UIControlStateNormal];
-    showPWDButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
-    self.passwordTextField.rightView = showPWDButton;
-    self.passwordTextField.rightViewMode = UITextFieldViewModeAlways;
     [self.view addSubview:self.passwordTextField];
-    
-    self.signinButton = [[SAMCGradientButton alloc] initWithFrame:CGRectZero];
-    self.signinButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.signinButton.exclusiveTouch = YES;
-    self.signinButton.layer.cornerRadius = 17.5f;
-    self.signinButton.backgroundColor = [UIColor grayColor];
-    self.signinButton.gradientLayer.colors = @[(__bridge id)UIColorFromRGB(0x20CB9D).CGColor,(__bridge id)UIColorFromRGB(0x80E22F).CGColor];
-    self.signinButton.gradientLayer.cornerRadius = 17.5f;
-    self.signinButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
-    [self.signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.signinButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self.signinButton setTitle:@"Sign In" forState:UIControlStateNormal];
-    [self.signinButton addTarget:self action:@selector(signin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.signinButton];
-    
-    self.signupButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    self.signupButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.signupButton.exclusiveTouch = YES;
-    self.signupButton.backgroundColor = [UIColor clearColor];
-    self.signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
-    [self.signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
-    [self.signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.signupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self.signupButton addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.signupButton];
-    
-    self.forgotPasswordButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    self.forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.forgotPasswordButton.exclusiveTouch = YES;
-    self.forgotPasswordButton.backgroundColor = [UIColor clearColor];
-    self.forgotPasswordButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
-    self.forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
-    [self.forgotPasswordButton setTitle:@"Forgot password?" forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.forgotPasswordButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self.forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.forgotPasswordButton];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_usernameTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_usernameTextField]-33-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_passwordTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_passwordTextField]-33-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_signinButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_signinButton]-33-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_signinButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_signupButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_signupButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_forgotPasswordButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_forgotPasswordButton]-33-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_forgotPasswordButton)]];
@@ -167,7 +111,7 @@ NTES_USE_CLEAR_BAR
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(35)]-10-[_passwordTextField(35)]-10-[_signinButton(35)]-10-[_signupButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(40)]-20-[_passwordTextField(40)]-20-[_signinButton(40)]-20-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField,_passwordTextField,_signinButton,_signupButton)]];
@@ -210,6 +154,12 @@ NTES_USE_CLEAR_BAR
     [self.view addConstraint:self.logoBottonSpaceContraint];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    _gradientLayer.frame = self.view.bounds;
+}
+
 #pragma mark 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -222,6 +172,24 @@ NTES_USE_CLEAR_BAR
 }
 
 #pragma mark - Action
+- (void)textFieldEditingChanged:(UITextField *)textField
+{
+    if ([self.usernameTextField.rightTextField.text length] &&
+        [self.passwordTextField.text length]) {
+        self.signinButton.enabled = YES;
+        self.signinButton.gradientLayer.colors = @[(__bridge id)UIColorFromRGB(0x20CB9D).CGColor,(__bridge id)UIColorFromRGB(0x80E22F).CGColor];
+    } else {
+        self.signinButton.enabled = NO;
+        self.signinButton.gradientLayer.colors = nil;
+    }
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    // fix the issue: text bounces after resigning first responder
+    [textField layoutIfNeeded];
+}
+
 - (void)usernameTextFieldEditingDidEndOnExit
 {
     [self.passwordTextField becomeFirstResponder];
@@ -240,6 +208,9 @@ NTES_USE_CLEAR_BAR
 - (void)showPassword:(UIButton *)sender
 {
     self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    UIButton *showPWDButton = (UIButton *)self.passwordTextField.rightView;
+    NSString *showImageName = self.passwordTextField.secureTextEntry ? @"icon_show_light" : @"icon_show_dark";
+    [showPWDButton setImage:[UIImage imageNamed:showImageName] forState:UIControlStateNormal];
     // fix cursor location unchanged issue
     NSString *tempString = self.passwordTextField.text;
     self.passwordTextField.text = @"";
@@ -248,6 +219,10 @@ NTES_USE_CLEAR_BAR
 
 - (void)signin:(UIButton *)sender
 {
+    if (self.signinButton.enabled == NO) {
+        return;
+    }
+    [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
     extern NSString *SAMCLoginNotification;
     [_usernameTextField.rightTextField resignFirstResponder];
     [_passwordTextField resignFirstResponder];
@@ -260,7 +235,6 @@ NTES_USE_CLEAR_BAR
     }
     NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     NSString *password = _passwordTextField.text;
-    [SVProgressHUD showWithStatus:@"login" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
     [[SAMCAccountManager sharedManager] loginWithCountryCode:countryCode account:account password:password completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
@@ -317,6 +291,103 @@ NTES_USE_CLEAR_BAR
                          [self.logoBottonSpaceContraint setConstant:-100.f];
                          [self.view layoutIfNeeded];
                      }];
+}
+
+#pragma mark - lazy load
+- (SAMCTextField *)usernameTextField
+{
+    if (_usernameTextField == nil) {
+        _usernameTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
+        _usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _usernameTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
+        [_usernameTextField.leftButton setTitle:@"USA" forState:UIControlStateNormal];
+        _usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
+        _usernameTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username or moible no." attributes:@{NSForegroundColorAttributeName:UIColorFromRGBA(0xFFFFFF, 0.5),NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        [_usernameTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _usernameTextField.rightTextField.textColor = [UIColor whiteColor];
+        [_usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
+        [_usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_usernameTextField.rightTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_usernameTextField.rightTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    }
+    return _usernameTextField;
+}
+
+- (UITextField *)passwordTextField
+{
+    if (_passwordTextField == nil) {
+        _passwordTextField = [[UITextField alloc] initWithFrame:CGRectZero];
+        _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _passwordTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
+        _passwordTextField.returnKeyType = UIReturnKeyDone;
+        _passwordTextField.secureTextEntry = YES;
+        _passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName:UIColorFromRGBA(0xFFFFFF, 0.5),NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        _passwordTextField.textColor = [UIColor whiteColor];
+        _passwordTextField.layer.cornerRadius = 5.0f;
+        _passwordTextField.leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 15, 0)];
+        _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
+        UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        [showPWDButton setImage:[UIImage imageNamed:@"icon_show_light"] forState:UIControlStateNormal];
+        showPWDButton.imageView.contentMode = UIViewContentModeCenter;
+        [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
+        _passwordTextField.rightView = showPWDButton;
+        _passwordTextField.rightViewMode = UITextFieldViewModeAlways;
+        [_passwordTextField addTarget:self action:@selector(signin:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_passwordTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        [_passwordTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
+    }
+    return _passwordTextField;
+}
+
+- (UIButton *)signinButton
+{
+    if (_signinButton == nil) {
+        _signinButton = [[SAMCGradientButton alloc] initWithFrame:CGRectZero];
+        _signinButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _signinButton.exclusiveTouch = YES;
+        _signinButton.layer.cornerRadius = 20.0f;
+        _signinButton.backgroundColor = SAMC_COLOR_GREY;
+        _signinButton.gradientLayer.cornerRadius = 20.0f;
+        _signinButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        [_signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signinButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_signinButton setTitle:@"Sign In" forState:UIControlStateNormal];
+        [_signinButton addTarget:self action:@selector(signin:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _signinButton;
+}
+
+- (UIButton *)signupButton
+{
+    if (_signupButton == nil) {
+        _signupButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _signupButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _signupButton.exclusiveTouch = YES;
+        _signupButton.backgroundColor = [UIColor clearColor];
+        _signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
+        [_signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
+        [_signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_signupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_signupButton addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _signupButton;
+}
+
+- (UIButton *)forgotPasswordButton
+{
+    if (_forgotPasswordButton == nil) {
+        _forgotPasswordButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _forgotPasswordButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _forgotPasswordButton.exclusiveTouch = YES;
+        _forgotPasswordButton.backgroundColor = [UIColor clearColor];
+        _forgotPasswordButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        _forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        [_forgotPasswordButton setTitle:@"Forgot password?" forState:UIControlStateNormal];
+        [_forgotPasswordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_forgotPasswordButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _forgotPasswordButton;
 }
 
 
