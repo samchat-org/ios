@@ -103,7 +103,14 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 
 
 - (void)setUpSubNav{
+    [self setUpStatusBar];
     _configs = nil;
+    UIColor *barColor;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        barColor = UIColorFromRGB(0xF8F9F9);
+    } else {
+        barColor = UIColorFromRGB(0x13243F);
+    }
     NSMutableArray *vcArray = [[NSMutableArray alloc] init];
     [self.tabbars enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         NSDictionary * item =[self vcInfoForTabType:[obj integerValue]];
@@ -117,9 +124,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         vc.hidesBottomBarWhenPushed = NO;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
-        nav.navigationBar.barTintColor = UIColorFromRGB(0xF8F9F9);
-//        UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        nav.navigationBar.barTintColor = barColor;
         UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title
@@ -141,9 +146,13 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 
 
 - (void)setUpStatusBar{
-    UIStatusBarStyle style = UIStatusBarStyleDefault;
-    [[UIApplication sharedApplication] setStatusBarStyle:style
-                                                animated:NO];
+    UIStatusBarStyle style;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        style = UIStatusBarStyleDefault;
+    } else {
+        style = UIStatusBarStyleLightContent;
+    }
+    [[UIApplication sharedApplication] setStatusBarStyle:style animated:NO];
 }
 
 
