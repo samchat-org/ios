@@ -14,12 +14,13 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "UIButton+SAMC.h"
+#import "SAMCStepperView.h"
 
 #define SAMC_SEND_CONFIRMATION_CODE @"Send Confirmation Code"
 
 @interface SAMCConfirmPhoneNumViewController ()
 
-@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) SAMCStepperView *stepperView;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) SAMCTextField *phoneTextField;
 @property (nonatomic, strong) UILabel *detailLabel;
@@ -67,13 +68,11 @@
     }
     self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
     
-    self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step1"]];
-    self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.stepImageView];
-    
+    [self.view addSubview:self.stepperView];
+
     self.tipLabel = [[UILabel alloc] init];
     self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tipLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+    self.tipLabel.font = [UIFont boldSystemFontOfSize:17.0f];
     self.tipLabel.textColor = UIColorFromRGB(0x3B4E6E);
     self.tipLabel.text = @"Enter your phone number";
     [self.view addSubview:self.tipLabel];
@@ -109,13 +108,21 @@
     [self.sendButton addTarget:self action:@selector(sendConfirmationCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.sendButton];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepImageView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+    [_stepperView addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:NSLayoutAttributeNotAnAttribute
+                                                            multiplier:0.0f
+                                                              constant:72.0f]];
+    
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
@@ -131,10 +138,10 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-10-[_tipLabel(35)]-10-[_phoneTextField(35)]-10-[_detailLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-10-[_tipLabel(35)]-10-[_phoneTextField(35)]-10-[_detailLabel]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_phoneTextField,_detailLabel)]];
+                                                                        views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_phoneTextField,_detailLabel)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_sendButton]-20-|"
                                                                       options:0
                                                                       metrics:nil
@@ -256,6 +263,16 @@
                          [self.sendButtonBottomContraint setConstant:-20];
                          [self.view layoutIfNeeded];
                      }];
+}
+
+#pragma mark - lazy load
+- (SAMCStepperView *)stepperView
+{
+    if (_stepperView == nil) {
+        _stepperView = [[SAMCStepperView alloc] initWithFrame:CGRectZero step:1 color:SAMC_COLOR_GREEN];
+        _stepperView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _stepperView;
 }
 
 @end
