@@ -118,6 +118,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
         nav.navigationBar.barTintColor = UIColorFromRGB(0xF8F9F9);
+//        UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UIImage *normalImage = [[UIImage imageNamed:imageName] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         UIImage *pressedImage = [[UIImage imageNamed:imageSelected] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title
@@ -245,40 +247,49 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         NSInteger chatUnreadCount = [unreadCountManager chatUnreadCountOfUserMode:self.currentUserMode];
         NSInteger serviceUnreadCount = [unreadCountManager serviceUnreadCountOfUserMode:self.currentUserMode];
         NSInteger publicUnreadCount = [unreadCountManager publicUnreadCountOfUserMode:self.currentUserMode];
+        NSString *iconTabAccountLineImageName;
+        NSString *iconTabAccountFillImageName;
+        if (self.currentUserMode == SAMCUserModeTypeCustom) {
+            iconTabAccountLineImageName = @"ico_tab_account_customer_line";
+            iconTabAccountFillImageName = @"ico_tab_account_customer_fill";
+        } else {
+            iconTabAccountLineImageName = @"ico_tab_account_sp_line";
+            iconTabAccountFillImageName = @"ico_tab_account_sp_fill";
+        }
         _configs = @{
                      @(SAMCMainTabTypeService) : @{
                              TabbarVC           : @"SAMCServiceViewController",
                              TabbarTitle        : @"Service",
-                             TabbarImage        : @"icon_service_normal",
-                             TabbarSelectedImage: @"icon_service_pressed",
+                             TabbarImage        : @"ico_tab_request_line",
+                             TabbarSelectedImage: @"ico_tab_request_fill",
                              TabbarItemBadgeValue: @(serviceUnreadCount)
                              },
                      @(SAMCMainTabTypePublic) : @{
                              TabbarVC           : @"SAMCPublicContainerViewController",
                              TabbarTitle        : @"Public",
-                             TabbarImage        : @"icon_public_normal",
-                             TabbarSelectedImage: @"icon_public_pressed",
+                             TabbarImage        : @"ico_tab_public_line",
+                             TabbarSelectedImage: @"ico_tab_public_fill",
                              TabbarItemBadgeValue: @(publicUnreadCount)
                              },
                      @(SAMCMainTabTypeChat) : @{
                              TabbarVC           : @"SAMCChatListViewController",
                              TabbarTitle        : @"Chat",
-                             TabbarImage        : @"icon_chat_normal",
-                             TabbarSelectedImage: @"icon_chat_pressed",
+                             TabbarImage        : @"ico_tab_chat_line",
+                             TabbarSelectedImage: @"ico_tab_chat_fill",
                              TabbarItemBadgeValue: @(chatUnreadCount)
                              },
                      @(SAMCMainTabTypeContact) : @{
                              TabbarVC           : @"SAMCContactListViewController",
                              TabbarTitle        : @"Contact",
-                             TabbarImage        : @"icon_contact_normal",
-                             TabbarSelectedImage: @"icon_contact_pressed",
+                             TabbarImage        : @"ico_tab_contacts_line",
+                             TabbarSelectedImage: @"ico_tab_contacts_fill",
                              TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
                      @(SAMCMainTabTypeSetting) : @{
                              TabbarVC           : @"SAMCMeContainerViewController",
                              TabbarTitle        : @"Me",
-                             TabbarImage        : @"icon_me_normal",
-                             TabbarSelectedImage: @"icon_me_pressed",
+                             TabbarImage        : iconTabAccountLineImageName,
+                             TabbarSelectedImage: iconTabAccountFillImageName,
                              TabbarItemBadgeValue: @(self.customSystemUnreadCount)
                              }
                      };
