@@ -43,6 +43,27 @@ alpha:alphaValue]
 #define SAMC_MAIN_DARKCOLOR         UIColorFromRGB(0x1D4D73)
 #define SAMC_MAIN_LIGHTCOLOR        UIColorFromRGB(0x9BAFBF)
 
+#define SAMC_COLOR_INGRABLUE        UIColorFromRGB(0x1D4D73)
+#define SAMC_COLOR_SKYBLUE          UIColorFromRGB(0x2EBDEF)
+#define SAMC_COLOR_GREEN            UIColorFromRGB(0x67D45F)
+#define SAMC_COLOR_LEMMON           UIColorFromRGB(0xD1F43B)
+#define SAMC_COLOR_LAKE             UIColorFromRGB(0x2676B6)
+#define SAMC_COLOR_DARKBLUE         UIColorFromRGB(0x1B3257)
+#define SAMC_COLOR_INK              UIColorFromRGB(0x13243F)
+#define SAMC_COLOR_LIME             UIColorFromRGB(0x0CAC0C)
+#define SAMC_COLOR_RED              UIColorFromRGB(0xDC374B)
+#define SAMC_COLOR_LIGHTGREY        UIColorFromRGB(0xECEDF0)
+#define SAMC_COLOR_LIMEGREY         UIColorFromRGB(0xD8DCE2)
+#define SAMC_COLOR_GREY             UIColorFromRGB(0xA2AEBC)
+#define SAMC_COLOR_CHARCOAL         UIColorFromRGB(0x030303)
+#define SAMC_COLOR_DARKBLUE_GRADIENT_DARK       UIColorFromRGB(0x1D4D73)
+#define SAMC_COLOR_DARKBLUE_GRADIENT_LIGHT      UIColorFromRGB(0x1B3257)
+#define SAMC_COLOR_LIGHTBLUE_GRADIENT_DARK      UIColorFromRGB(0x2676B6)
+#define SAMC_COLOR_LIGHTBLUE_GRADIENT_LIGHT     UIColorFromRGB(0x2EBDEF)
+#define SAMC_COLOR_GRASSFIELD_GRADIENT_DARK     UIColorFromRGB(0x20CB9D)
+#define SAMC_COLOR_GRASSFIELD_GRADIENT_LIGHT    UIColorFromRGB(0x80E22F)
+#define SAMC_COLOR_HORIZON_GRADIENT_DARK        UIColorFromRGB(0x2EBDEF)
+#define SAMC_COLOR_HORIZON_GRADIENT_LIGHT       UIColorFromRGB(0xD1F43B)
 
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
