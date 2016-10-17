@@ -44,7 +44,7 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self.navigationItem setHidesBackButton:YES];
     
     _searchBar = [[SAMCNavSearchBar alloc] initWithFrame:CGRectMake(8, 0, self.view.frame.size.width-16, 44)];
@@ -52,7 +52,7 @@
     for (UIView* subview in [[_searchBar.subviews lastObject] subviews]) {
         if ([subview isKindOfClass:[UITextField class]]) {
             UITextField *textField = (UITextField*)subview;
-            [textField setBackgroundColor:SAMC_MAIN_BACKGROUNDCOLOR];
+            [textField setBackgroundColor:SAMC_COLOR_LIGHTGREY];
         }
     }
     _searchBar.delegate = self;

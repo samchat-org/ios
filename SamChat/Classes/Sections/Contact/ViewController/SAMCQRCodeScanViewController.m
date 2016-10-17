@@ -102,7 +102,7 @@
 - (void)setupMyQRCodeView
 {
     self.navigationItem.rightBarButtonItem = nil;
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self.view addSubview:self.portraitView];
     [self.view addSubview:self.nameLabel];
     [self.view addSubview:self.qrImageView];
@@ -113,7 +113,7 @@
     UIImage *qrImage = [SAMCQRScanner createQRWithString:[NSString stringWithFormat:@"%@%@",SAMC_QR_ADDCONTACT_PREFIX, user.userId]
                                                   QRSize:CGSizeMake(300,300)
                                                  QRColor:SAMC_MAIN_DARKCOLOR
-                                                 bkColor:SAMC_MAIN_BACKGROUNDCOLOR];
+                                                 bkColor:SAMC_COLOR_LIGHTGREY];
     _qrImageView.image = qrImage;
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_portraitView]|"

@@ -66,7 +66,7 @@
 - (void)setupSubviews
 {
     [self.navigationItem setTitle:@"Create Service Profile"];
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self setUpNavItem];
     
     [self.view addSubview:self.stepImageView];

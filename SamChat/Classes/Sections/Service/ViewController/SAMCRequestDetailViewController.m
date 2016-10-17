@@ -57,7 +57,7 @@
 - (void)setupSubviews
 {
     self.navigationItem.title = @"Request Details";
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     _requestView = [[SAMCRequestDetailInfoView alloc] init];
     _requestView.questionSession = _questionSession;
     _requestView.translatesAutoresizingMaskIntoConstraints = NO;

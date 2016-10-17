@@ -41,7 +41,7 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         [self setupCustomModeViews];
     } else {

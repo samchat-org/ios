@@ -68,7 +68,7 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     self.navigationItem.title = @"New Request";
     
     [self.view addSubview:self.requestLabel];

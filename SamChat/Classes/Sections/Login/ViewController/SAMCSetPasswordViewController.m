@@ -45,7 +45,7 @@
         self.navigationItem.title = @"Reset Password";
         [self setupResetPasswordViews];
     }
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self setupDoneButton];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)

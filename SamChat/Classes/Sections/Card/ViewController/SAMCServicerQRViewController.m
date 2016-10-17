@@ -45,7 +45,7 @@
 
 - (void)setupSubviews
 {
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     self.navigationItem.title = @"Service Provider QR Code";
     
     [self.view addSubview:self.shadowView];
@@ -139,7 +139,7 @@
     UIImage *qrImage = [SAMCQRScanner createQRWithString:[NSString stringWithFormat:@"%@%@",SAMC_QR_ADDCONTACT_PREFIX, self.user.userId]
                                                   QRSize:CGSizeMake(300,300)
                                                  QRColor:SAMC_MAIN_DARKCOLOR
-                                                 bkColor:SAMC_MAIN_BACKGROUNDCOLOR];
+                                                 bkColor:SAMC_COLOR_LIGHTGREY];
     return qrImage;
 }
 

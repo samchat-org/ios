@@ -46,7 +46,7 @@
     } else {
         self.navigationItem.title = @"Reset Password";
     }
-    self.view.backgroundColor = SAMC_MAIN_BACKGROUNDCOLOR;
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     
     self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step2"]];
     self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
