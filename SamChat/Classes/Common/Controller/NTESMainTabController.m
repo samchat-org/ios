@@ -23,6 +23,7 @@
 #import "SAMCUnreadCountManager.h"
 #import "SAMCTabViewController.h"
 #import "SAMCMeContainerViewController.h"
+#import "SVProgressHUD.h"
 
 #define TabbarVC    @"vc"
 #define TabbarTitle @"title"
@@ -39,7 +40,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     SAMCMainTabTypeSetting,
 };
 
-@interface NTESMainTabController ()<NIMSystemNotificationManagerDelegate,SAMCUnreadCountManagerDelegate,SAMCSwitchUserModeDelegate>
+@interface NTESMainTabController ()<NIMSystemNotificationManagerDelegate,SAMCUnreadCountManagerDelegate>
 
 @property (nonatomic, assign) NSInteger systemUnreadCount;
 
@@ -71,7 +72,13 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     extern NSString *NTESCustomNotificationCountChanged;
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onCustomNotifyChanged:)
-                                                 name:NTESCustomNotificationCountChanged object:nil];
+                                                 name:NTESCustomNotificationCountChanged
+                                               object:nil];
+    extern NSString *SAMCUserModeSwitchNotification;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onSwitchUserMode:)
+                                                 name:SAMCUserModeSwitchNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -120,7 +127,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         NSString *imageSelected = item[TabbarSelectedImage];
         Class clazz = NSClassFromString(vcName);
         UIViewController *vc = [[clazz alloc] initWithNibName:nil bundle:nil];
-        ((SAMCTabViewController *)vc).delegate = self;
         vc.hidesBottomBarWhenPushed = NO;
         UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
         nav.navigationBar.translucent = NO;
@@ -191,6 +197,17 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     NTESCustomNotificationDB *db = [NTESCustomNotificationDB sharedInstance];
     self.customSystemUnreadCount = db.unreadCount;
     [self refreshSettingBadge];
+}
+
+- (void)onSwitchUserMode:(NSNotification *)notification
+{
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        self.currentUserMode = SAMCUserModeTypeSP;
+    } else {
+        self.currentUserMode = SAMCUserModeTypeCustom;
+    }
+    [self setUpSubNav];
+    [SVProgressHUD dismiss];
 }
 
 - (void)refreshServiceBadge:(NSInteger)unreadCount
@@ -306,19 +323,15 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     return _configs[@(type)];
 }
 
-#pragma mark - SAMCSwitchUserModeDelegate
-- (void)switchToUserMode:(SAMCUserModeType)userMode completion:(void (^)())completion
-{
-    [self setUpSubNav];
-    if (completion) {
-        completion();
-    }
-}
-
 #pragma mark - Private
 - (SAMCUserModeType)currentUserMode
 {
     return [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
+}
+
+- (void)setCurrentUserMode:(SAMCUserModeType)currentUserMode
+{
+    [[SAMCPreferenceManager sharedManager] setCurrentUserMode:@(currentUserMode)];
 }
 
 @end

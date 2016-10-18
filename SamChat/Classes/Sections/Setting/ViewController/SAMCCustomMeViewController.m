@@ -12,6 +12,7 @@
 #import "SAMCAccountManager.h"
 #import "SAMCCSAStepOneViewController.h"
 #import "SAMCTabViewController.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -78,8 +79,11 @@
         case 1:
         {
             if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
-                SAMCTabViewController *tabViewController = (SAMCTabViewController *)self.parentViewController;
-                [tabViewController touchSwitchUserMode:nil];
+                [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
+                extern NSString *SAMCUserModeSwitchNotification;
+                [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
+                                                                    object:nil
+                                                                  userInfo:nil];
             } else {
                 [self createSamPros];
             }

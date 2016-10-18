@@ -9,16 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "SAMCPreferenceManager.h"
 
-@protocol SAMCSwitchUserModeDelegate <NSObject>
-
-- (void)switchToUserMode:(SAMCUserModeType)userMode completion:(void(^)())completion;
-
-@end
-
 @interface SAMCTabViewController : UIViewController
 
 @property (nonatomic, assign) SAMCUserModeType currentUserMode;
-@property (nonatomic, weak) id<SAMCSwitchUserModeDelegate> delegate;
 
 - (void)touchSwitchUserMode:(id)sender;
 

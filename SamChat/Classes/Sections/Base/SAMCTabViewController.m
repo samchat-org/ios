@@ -16,8 +16,6 @@
 
 @implementation SAMCTabViewController
 
-@synthesize currentUserMode = _currentUserMode;
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -44,27 +42,17 @@
 {
     self.navigationItem.leftBarButtonItem.enabled = false;
     [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
-    if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        self.currentUserMode = SAMCUserModeTypeSP;
-    } else {
-        self.currentUserMode = SAMCUserModeTypeCustom;
-    }
-    __weak typeof(self) wself = self;
-    [self.delegate switchToUserMode:self.currentUserMode completion:^{
-        wself.navigationItem.leftBarButtonItem.enabled = true;
-        [SVProgressHUD dismiss];
-    }];
+    
+    extern NSString *SAMCUserModeSwitchNotification;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
+                                                        object:nil
+                                                      userInfo:nil];
 }
 
 #pragma mark - currentUserMode
 - (SAMCUserModeType)currentUserMode
 {
     return [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-}
-
-- (void)setCurrentUserMode:(SAMCUserModeType)currentUserMode
-{
-    [[SAMCPreferenceManager sharedManager] setCurrentUserMode:@(currentUserMode)];
 }
 
 @end
