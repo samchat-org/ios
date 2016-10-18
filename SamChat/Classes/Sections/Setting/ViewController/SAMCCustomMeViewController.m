@@ -135,28 +135,28 @@
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"My profile";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_name_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
                 }
                     break;
                 case 1:
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"My QR code";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_qrcode_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
                     break;
                 case 2:
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"Change password";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_password_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_password"];
                 }
                     break;
                 case 3:
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"Notification";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_notification_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
                 }
                     break;
                 case 4:
@@ -181,10 +181,10 @@
                     cell = [self commonBasicCell:tableView];
                     if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
                         cell.textLabel.text = @"Switch to Service Account";
-                        cell.imageView.image = [UIImage imageNamed:@"icon_switch_normal"];
+                        cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
                     } else {
                         cell.textLabel.text = @"List my service";
-                        cell.imageView.image = [UIImage imageNamed:@"icon_listmyservice_normal"];
+                        cell.imageView.image = [UIImage imageNamed:@"icon_create_servicer_name"];
                     }
                 }
                     break;
