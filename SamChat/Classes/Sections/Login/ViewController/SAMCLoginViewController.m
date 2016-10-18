@@ -341,7 +341,7 @@ NTES_USE_CLEAR_BAR
     return _passwordTextField;
 }
 
-- (UIButton *)signinButton
+- (SAMCGradientButton *)signinButton
 {
     if (_signinButton == nil) {
         _signinButton = [[SAMCGradientButton alloc] initWithFrame:CGRectZero];
