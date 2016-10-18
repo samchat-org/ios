@@ -12,6 +12,7 @@
 #import "AFNetworking.h"
 #import "NTESLoginManager.h"
 #import "SAMCDataPostSerializer.h"
+#import "SAMCAccountManager.h"
 
 @implementation SAMCSettingManager
 
@@ -46,6 +47,10 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
+                DDLogDebug(@"createSamPros response:%@", response);
+                NSDictionary *userInfo = response[SAMC_USER];
+                SAMCUser *user = [SAMCUser userFromDict:userInfo];
+                [[SAMCAccountManager sharedManager] updateUser:user];
                 completion(nil);
             }
         } else {

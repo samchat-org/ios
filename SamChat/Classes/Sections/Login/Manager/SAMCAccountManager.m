@@ -320,6 +320,9 @@
 #pragma mark - UserInfoDB
 - (void)updateUser:(SAMCUser *)user
 {
+    if ([user.userId isEqualToString:_currentUser.userId]) {
+        _currentUser = nil;
+    }
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
     });
