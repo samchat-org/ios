@@ -22,7 +22,13 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = NO;
     
-    UIImage *image = [UIImage imageNamed:@"icon_nav_switch_light"];
+    NSString *icoSwitchName;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        icoSwitchName = @"ico_nav_switch_light";
+    } else {
+        icoSwitchName = @"ico_nav_switch_dark";
+    }
+    UIImage *image = [UIImage imageNamed:icoSwitchName];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0,0,24,24);
     [button addTarget:self action:@selector(touchSwitchUserMode:) forControlEvents:UIControlEventTouchUpInside];
