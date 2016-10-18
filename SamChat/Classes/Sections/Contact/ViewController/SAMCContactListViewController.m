@@ -49,10 +49,15 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     [super viewDidLoad];
     [self setupSubviews];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserInfoHasUpdatedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserInfoHasUpdatedNotification:) name:NIMKitUserBlackListHasUpdatedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onUserInfoHasUpdatedNotification:)
+                                                 name:NIMKitUserInfoHasUpdatedNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onUserInfoHasUpdatedNotification:)
+                                                 name:NIMKitUserBlackListHasUpdatedNotification
+                                               object:nil];
     
-    [self setUpNavItem];
     [self prepareData];
     
     [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
@@ -103,30 +108,25 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
 }
 
-- (void)switchToUserMode:(NSNotification *)notification
-{
-//    [self prepareData];
-//    [self.tableView reloadData];
-}
-
-- (void)setUpNavItem{
-    UIButton *teamBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [teamBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
-    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
-    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
-    [teamBtn sizeToFit];
-    UIBarButtonItem *teamItem = [[UIBarButtonItem alloc] initWithCustomView:teamBtn];
-    self.navigationItem.rightBarButtonItem = teamItem;
-}
-
 - (void)prepareData{
+    NSString *addButtonNormalImage;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         self.navigationItem.title = @"Service Provider";
+        addButtonNormalImage = @"ico_nav_add_light";
         _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeServicer];
     } else {
         self.navigationItem.title = @"My Clients";
+        addButtonNormalImage = @"ico_nav_add_dark";
         _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeCustomer];
     }
+    
+    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn setImage:[UIImage imageNamed:addButtonNormalImage] forState:UIControlStateNormal];
+    //    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
+    [addBtn sizeToFit];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
+    self.navigationItem.rightBarButtonItem = addItem;
     
     [_contacts addGroupAboveWithTitle:@"" members:self.contactUtils];
 }
