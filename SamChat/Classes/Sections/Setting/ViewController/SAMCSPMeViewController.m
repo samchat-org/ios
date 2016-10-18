@@ -8,6 +8,7 @@
 
 #import "SAMCSPMeViewController.h"
 #import "SAMCCardPortraitView.h"
+#import "SAMCServiceProfileViewController.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -60,6 +61,8 @@
             switch (indexPath.row) {
                 case 0:
                 {
+                    SAMCServiceProfileViewController *vc = [[SAMCServiceProfileViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                     
