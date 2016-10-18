@@ -101,7 +101,7 @@
 - (void)touchGetStarted:(id)sender
 {
     [self dismissViewControllerAnimated:NO completion:NULL];
-    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
+//    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
     extern NSString *SAMCUserModeSwitchNotification;
     [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
                                                         object:nil

@@ -41,7 +41,7 @@
 - (void)touchSwitchUserMode:(id)sender
 {
     self.navigationItem.leftBarButtonItem.enabled = false;
-    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
+//    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
     
     extern NSString *SAMCUserModeSwitchNotification;
     [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification

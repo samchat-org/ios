@@ -79,7 +79,7 @@
         case 1:
         {
             if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
-                [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
+//                [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
                 extern NSString *SAMCUserModeSwitchNotification;
                 [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
                                                                     object:nil
