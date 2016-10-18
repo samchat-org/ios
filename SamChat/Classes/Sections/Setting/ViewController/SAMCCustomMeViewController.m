@@ -232,7 +232,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
