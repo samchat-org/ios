@@ -12,6 +12,7 @@
 #import "UIResponder+NTESFirstResponder.h"
 #import "UIView+NTES.h"
 #import "UIImage+NTESColor.h"
+#import "SAMCPreferenceManager.h"
 
 @implementation UIViewController (Swizzling)
 
@@ -23,6 +24,7 @@
 //        swizzling_exchangeMethod([UIViewController class] ,@selector(viewWillDisappear:), @selector(swizzling_viewWillDisappear:));
         swizzling_exchangeMethod([UIViewController class] ,@selector(viewDidLoad),    @selector(swizzling_viewDidLoad));
         swizzling_exchangeMethod([UIViewController class], @selector(initWithNibName:bundle:), @selector(swizzling_initWithNibName:bundle:));
+        swizzling_exchangeMethod([UIViewController class], @selector(viewWillLayoutSubviews), @selector(swizzling_viewWillLayoutSubviews));
     });
 }
 
@@ -87,6 +89,22 @@ static char UIFirstResponderViewAddress;
         [view resignFirstResponder];
     }else{
         objc_setAssociatedObject(self, &UIFirstResponderViewAddress, nil, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+}
+
+#pragma mark - viewWillLayoutSubviews
+-(void)swizzling_viewWillLayoutSubviews
+{
+    [self swizzling_viewWillLayoutSubviews];
+    id titleView = self.navigationItem.titleView;
+    UILabel *label;
+    if ([titleView isKindOfClass:[UILabel class]]) {
+        label = (UILabel *)titleView;
+        if ([[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue] == SAMCUserModeTypeCustom) {
+            label.textColor = SAMC_COLOR_INK;
+        } else {
+            label.textColor = [UIColor whiteColor];
+        }
     }
 }
 
