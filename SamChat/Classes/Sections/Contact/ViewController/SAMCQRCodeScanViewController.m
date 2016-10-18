@@ -407,15 +407,14 @@
 
 - (void)handleScanResult:(NSString *)strResult
 {
-#define SAMC_ADD_CONTACT_PREFIX @"SAMC_CONTACT:"
     SAMCContactListType type = SAMCContactListTypeServicer;
     if ([self currentUserMode] == SAMCUserModeTypeSP) {
         type = SAMCContactListTypeCustomer;
     }
     
-    if ([strResult hasPrefix:SAMC_ADD_CONTACT_PREFIX]) {
+    if ([strResult hasPrefix:SAMC_QR_ADDCONTACT_PREFIX]) {
         [SVProgressHUD showWithStatus:@"adding ..." maskType:SVProgressHUDMaskTypeBlack];
-        strResult = [strResult substringFromIndex:[SAMC_ADD_CONTACT_PREFIX length]];
+        strResult = [strResult substringFromIndex:[SAMC_QR_ADDCONTACT_PREFIX length]];
         NSNumber *uniqueId = @([strResult integerValue]);
         __weak typeof(self) wself = self;
         
