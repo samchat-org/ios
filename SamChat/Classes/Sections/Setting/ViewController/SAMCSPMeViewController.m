@@ -53,6 +53,45 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                }
+                    break;
+                    
+                case 1:
+                {
+                }
+                default:
+                    break;
+            }
+        }
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                    break;
+                case 1:
+                {
+                    extern NSString *SAMCUserModeSwitchNotification;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
+                                                                        object:nil
+                                                                      userInfo:nil];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
