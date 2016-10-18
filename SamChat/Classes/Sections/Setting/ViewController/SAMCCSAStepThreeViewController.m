@@ -146,7 +146,9 @@
             return;
         }
         SAMCCSADoneViewController *vc = [[SAMCCSADoneViewController alloc] init];
-        [wself.navigationController pushViewController:vc animated:YES];
+        [wself presentViewController:vc animated:YES completion:^{
+            [wself.navigationController popToRootViewControllerAnimated:NO];
+        }];
     }];
 }
 

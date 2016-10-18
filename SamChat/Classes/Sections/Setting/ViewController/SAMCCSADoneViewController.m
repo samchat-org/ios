@@ -8,6 +8,7 @@
 
 #import "SAMCCSADoneViewController.h"
 #import "SAMCSettingViewController.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCCSADoneViewController ()
 
@@ -99,11 +100,12 @@
 
 - (void)touchGetStarted:(id)sender
 {
-    for (UIViewController *vc in self.navigationController.viewControllers) {
-        if ([vc isKindOfClass:[SAMCSettingViewController class]]) {
-            [self.navigationController popToViewController:vc animated:YES];
-        }
-    }
+    [self dismissViewControllerAnimated:NO completion:NULL];
+    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
+    extern NSString *SAMCUserModeSwitchNotification;
+    [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
+                                                        object:nil
+                                                      userInfo:nil];
 }
 
 @end
