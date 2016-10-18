@@ -64,6 +64,11 @@ alpha:alphaValue]
 #define SAMC_COLOR_HORIZON_GRADIENT_DARK        UIColorFromRGB(0x2EBDEF)
 #define SAMC_COLOR_HORIZON_GRADIENT_LIGHT       UIColorFromRGB(0xD1F43B)
 
+#define SAMC_COLOR_BODY_MID         UIColorFromRGBA(0x13243F, 0.6)
+#define SAMC_COLOR_INPUTTEXT_HINT   UIColorFromRGBA(0x13243F, 0.5)
+
+#define SAMC_COLOR_RGB_GREEN        0x67D45F
+
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
 block();\

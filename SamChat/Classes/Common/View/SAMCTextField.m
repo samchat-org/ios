@@ -10,7 +10,6 @@
 
 @interface SAMCTextField ()
 
-@property (nonatomic, strong) UILabel *splitLabel;
 
 @end
 

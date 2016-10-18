@@ -319,7 +319,8 @@ NTES_USE_CLEAR_BAR
     if (_passwordTextField == nil) {
         _passwordTextField = [[UITextField alloc] initWithFrame:CGRectZero];
         _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
-        _passwordTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
+//        _passwordTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
+        _passwordTextField.backgroundColor = UIColorFromRGBA(0x13243F, 0.3);
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         _passwordTextField.secureTextEntry = YES;
         _passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName:UIColorFromRGBA(0xFFFFFF, 0.5),NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];

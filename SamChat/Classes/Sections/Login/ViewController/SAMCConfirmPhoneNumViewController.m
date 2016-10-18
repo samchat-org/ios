@@ -72,25 +72,28 @@
 
     self.tipLabel = [[UILabel alloc] init];
     self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tipLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    self.tipLabel.textColor = UIColorFromRGB(0x3B4E6E);
+    self.tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
+    self.tipLabel.textColor = SAMC_COLOR_INK;
+    self.tipLabel.textAlignment = NSTextAlignmentCenter;
     self.tipLabel.text = @"Enter your phone number";
     [self.view addSubview:self.tipLabel];
 
     self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
     self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
     [self.phoneTextField.leftButton setTitle:self.countryCode?:@"+1" forState:UIControlStateNormal];
+    [self.phoneTextField.leftButton setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
     [self.phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.phoneTextField.rightTextField addTarget:self action:@selector(phoneNumberEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-    self.phoneTextField.rightTextField.placeholder = @"Your phone number";
+    self.phoneTextField.splitLabel.backgroundColor = SAMC_COLOR_INPUTTEXT_HINT;
+    self.phoneTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your phone number" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_INPUTTEXT_HINT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
     self.phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
     [self.view addSubview:self.phoneTextField];
     
     self.detailLabel = [[UILabel alloc] init];
     self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.detailLabel.numberOfLines = 0;
-    self.detailLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.detailLabel.textColor = [UIColor grayColor];
+    self.detailLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.detailLabel.textColor = SAMC_COLOR_BODY_MID;
     self.detailLabel.textAlignment = NSTextAlignmentCenter;
     self.detailLabel.text = @"A confirmation code will be sent to the phone number your entered via SMS";
     [self.view addSubview:self.detailLabel];
@@ -98,10 +101,10 @@
     self.sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
     self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
     self.sendButton.exclusiveTouch = YES;
-    self.sendButton.layer.cornerRadius = 17.5f;
-    self.sendButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+    self.sendButton.layer.cornerRadius = 20.0f;
+    self.sendButton.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_GREEN, 0.5);
     self.sendButton.enabled = NO;
-    self.sendButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.sendButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
     [self.sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
@@ -123,36 +126,61 @@
                                                             multiplier:0.0f
                                                               constant:72.0f]];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_tipLabel]-32-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.phoneTextField
+//                                                          attribute:NSLayoutAttributeCenterX
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeCenterX
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.phoneTextField
+//                                                          attribute:NSLayoutAttributeWidth
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:nil
+//                                                          attribute:NSLayoutAttributeNotAnAttribute
+//                                                         multiplier:1.0f
+//                                                           constant:310.0f]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_phoneTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_phoneTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-35-[_detailLabel]-35-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-48-[_detailLabel]-48-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-10-[_tipLabel(35)]-10-[_phoneTextField(35)]-10-[_detailLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-30-[_phoneTextField(40)]-20-[_detailLabel]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_phoneTextField,_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_sendButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_sendButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_sendButton)]];
+//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
+//                                                          attribute:NSLayoutAttributeCenterX
+//                                                          relatedBy:NSLayoutRelationEqual
+//                                                             toItem:self.view
+//                                                          attribute:NSLayoutAttributeCenterX
+//                                                         multiplier:1.0f
+//                                                           constant:0.0f]];
+//    [self.sendButton addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
+//                                                                attribute:NSLayoutAttributeWidth
+//                                                                relatedBy:NSLayoutRelationEqual
+//                                                                   toItem:nil
+//                                                                attribute:NSLayoutAttributeNotAnAttribute
+//                                                               multiplier:1.0f
+//                                                                 constant:310.0f]];
     [self.sendButton addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
                                                                 attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
                                                                    toItem:nil
                                                                 attribute:NSLayoutAttributeNotAnAttribute
                                                                multiplier:1.0f
-                                                                 constant:35.0f]];
+                                                                 constant:40.0f]];
     self.sendButtonBottomContraint = [NSLayoutConstraint constraintWithItem:self.sendButton
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
@@ -178,10 +206,10 @@
 {
     if ([self isValidCellphone:self.phoneTextField.rightTextField.text]) {
         self.sendButton.enabled = YES;
-        self.sendButton.backgroundColor = UIColorFromRGB(0x67D45F);
+        self.sendButton.backgroundColor = SAMC_COLOR_GREEN;
     } else {
         self.sendButton.enabled = NO;
-        self.sendButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
+        self.sendButton.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_GREEN, 0.5);
     }
 }
 
@@ -251,7 +279,7 @@
     CGFloat keyboardHeight = keyboardRect.size.height;
     [UIView animateWithDuration:0.3f
                      animations:^{
-                         [self.sendButtonBottomContraint setConstant:-keyboardHeight-5];
+                         [self.sendButtonBottomContraint setConstant:-keyboardHeight-20];
                          [self.view layoutIfNeeded];
                      }];
 }

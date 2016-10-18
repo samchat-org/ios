@@ -11,6 +11,7 @@
 @interface SAMCTextField : UIView
 
 @property (nonatomic, strong) UIButton *leftButton;
+@property (nonatomic, strong) UILabel *splitLabel;
 @property (nonatomic, strong) UITextField *rightTextField;
 
 @end
