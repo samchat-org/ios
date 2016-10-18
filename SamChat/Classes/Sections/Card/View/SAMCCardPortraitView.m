@@ -68,7 +68,7 @@
                                                             attribute:NSLayoutAttributeWidth
                                                            multiplier:1.0f
                                                              constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[_shadowView]-15-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_shadowView]-20-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_shadowView)]];
@@ -161,7 +161,7 @@
         _shadowView = [[UIView alloc] init];
         _shadowView.translatesAutoresizingMaskIntoConstraints = NO;
         _shadowView.backgroundColor = [UIColor clearColor];
-        _shadowView.layer.shadowColor = [UIColor blackColor].CGColor;
+        _shadowView.layer.shadowColor = SAMC_COLOR_INK.CGColor;
         _shadowView.layer.shadowOffset = CGSizeMake(0, 0);
         _shadowView.layer.shadowOpacity = 0.5;
         _shadowView.layer.shadowRadius = 3;
