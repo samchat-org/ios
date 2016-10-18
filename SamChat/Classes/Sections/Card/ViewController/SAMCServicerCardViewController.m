@@ -142,7 +142,7 @@
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"Chat now";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_chatnow_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_chat"];
                 }
                     break;
                     
@@ -150,13 +150,14 @@
                 {
                     cell = [self commonBasicCell:tableView];
                     cell.textLabel.text = @"QR code";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_qrcode_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
                     break;
                 case 3:
                 {
                     cell = [self followCell:tableView];
                 }
+                    break;
                 default:
                     break;
             }
@@ -169,24 +170,27 @@
                 {
                     cell = [self commonDetailCell:tableView];
                     cell.textLabel.text = @"Work phone";
-                    cell.detailTextLabel.text = self.user.userInfo.spInfo.phone;
-                    cell.imageView.image = [UIImage imageNamed:@"icon_phone_normal"];
+                    NSString *phone = self.user.userInfo.spInfo.phone;
+                    cell.detailTextLabel.text = [phone length] ? phone :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_phone"];
                 }
                     break;
                 case 1:
                 {
                     cell = [self commonDetailCell:tableView];
                     cell.textLabel.text = @"Email";
-                    cell.detailTextLabel.text = self.user.userInfo.spInfo.email;
-                    cell.imageView.image = [UIImage imageNamed:@"icon_email_normal"];
+                    NSString *email = self.user.userInfo.spInfo.email;
+                    cell.detailTextLabel.text = [email length] ? email :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_email"];
                 }
                     break;
                 case 2:
                 {
                     cell = [self commonDetailCell:tableView];
                     cell.textLabel.text = @"Location";
-                    cell.detailTextLabel.text = self.user.userInfo.spInfo.address;
-                    cell.imageView.image = [UIImage imageNamed:@"icon_address_normal"];
+                    NSString *address = self.user.userInfo.spInfo.address;
+                    cell.detailTextLabel.text = [address length] ? address :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_location"];
                 }
                     break;
                 default:
@@ -251,7 +255,7 @@
     [cell.switcher setOn:_isFollow];
     [cell.switcher addTarget:self action:@selector(follow:) forControlEvents:UIControlEventValueChanged];
     cell.textLabel.text = @"Follow";
-    cell.imageView.image = [UIImage imageNamed:@"icon_follow_normal"];
+    cell.imageView.image = [UIImage imageNamed:@"ico_option_follow"];
     return cell;
 
 }
