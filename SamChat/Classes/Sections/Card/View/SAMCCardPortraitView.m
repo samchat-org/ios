@@ -94,7 +94,7 @@
                                                             attribute:NSLayoutAttributeWidth
                                                            multiplier:1.0f
                                                              constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-15-[_avatarView]-15-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_avatarView]-20-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarView)]];
