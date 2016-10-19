@@ -9,6 +9,7 @@
 #import "SAMCCSAStepTwoViewController.h"
 #import "SAMCCSAStepThreeViewController.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCPadImageView.h"
 
 @interface SAMCCSAStepTwoViewController ()
 
@@ -248,7 +249,7 @@
         _workphoneTextField.backgroundColor = [UIColor whiteColor];
         _workphoneTextField.layer.cornerRadius = 5.0f;
         _workphoneTextField.placeholder = @"Service work phone no.";
-        _workphoneTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_phone"]];
+        _workphoneTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_phone"]];
         _workphoneTextField.leftViewMode = UITextFieldViewModeAlways;
         _workphoneTextField.returnKeyType = UIReturnKeyNext;
         [_workphoneTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -266,7 +267,7 @@
         _serviceEmailTextField.backgroundColor = [UIColor whiteColor];
         _serviceEmailTextField.layer.cornerRadius = 5.0f;
         _serviceEmailTextField.placeholder = @"Service email";
-        _serviceEmailTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_email"]];
+        _serviceEmailTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_email"]];
         _serviceEmailTextField.leftViewMode = UITextFieldViewModeAlways;
         _serviceEmailTextField.returnKeyType = UIReturnKeyNext;
         [_serviceEmailTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -284,7 +285,7 @@
         _serviceLocationTextField.backgroundColor = [UIColor whiteColor];
         _serviceLocationTextField.layer.cornerRadius = 5.0f;
         _serviceLocationTextField.placeholder = @"Location";
-        _serviceLocationTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_location"]];
+        _serviceLocationTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_location"]];
         _serviceLocationTextField.leftViewMode = UITextFieldViewModeAlways;
         _serviceLocationTextField.returnKeyType = UIReturnKeyDone;
         [_serviceLocationTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
