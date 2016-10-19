@@ -13,6 +13,7 @@
 #import "SAMCCSAStepOneViewController.h"
 #import "SAMCTabViewController.h"
 #import "SVProgressHUD.h"
+#import "SAMCMyProfileViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -64,6 +65,8 @@
             switch (indexPath.row) {
                 case 0:
                 {
+                    SAMCMyProfileViewController *vc = [[SAMCMyProfileViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                     

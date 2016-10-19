@@ -68,6 +68,7 @@ alpha:alphaValue]
 #define SAMC_COLOR_INPUTTEXT_HINT   UIColorFromRGBA(0x13243F, 0.5)
 
 #define SAMC_COLOR_RGB_GREEN        0x67D45F
+#define SAMC_COLOR_RGB_INK          0x13243F
 
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
