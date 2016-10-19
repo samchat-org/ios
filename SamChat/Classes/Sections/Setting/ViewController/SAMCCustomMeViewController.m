@@ -184,7 +184,7 @@
                         cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
                     } else {
                         cell.textLabel.text = @"List my service";
-                        cell.imageView.image = [UIImage imageNamed:@"icon_create_servicer_name"];
+                        cell.imageView.image = [UIImage imageNamed:@"ico_option_sp"];
                     }
                 }
                     break;

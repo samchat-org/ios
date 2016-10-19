@@ -237,7 +237,7 @@
         _companyNameTextField.backgroundColor = [UIColor whiteColor];
         _companyNameTextField.layer.cornerRadius = 5.0f;
         _companyNameTextField.placeholder = @"Business or service name";
-        _companyNameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_create_servicer_name"]];
+        _companyNameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_sp"]];
         _companyNameTextField.leftViewMode = UITextFieldViewModeAlways;
         _companyNameTextField.returnKeyType = UIReturnKeyNext;
         [_companyNameTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -255,7 +255,7 @@
         _serviceCategoryTextField.backgroundColor = [UIColor whiteColor];
         _serviceCategoryTextField.layer.cornerRadius = 5.0f;
         _serviceCategoryTextField.placeholder = @"Business or service category";
-        _serviceCategoryTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_create_servicer_category"]];
+        _serviceCategoryTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_category"]];
         _serviceCategoryTextField.leftViewMode = UITextFieldViewModeAlways;
         _serviceCategoryTextField.returnKeyType = UIReturnKeyDone;
         [_serviceCategoryTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
