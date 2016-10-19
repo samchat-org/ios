@@ -66,6 +66,11 @@ NTES_USE_CLEAR_BAR
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:NO];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)setupSubviews
 {
     _gradientLayer = [[CAGradientLayer alloc] init];
