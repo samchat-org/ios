@@ -10,40 +10,40 @@
 
 @implementation SAMCPadImageView
 
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithImage:(UIImage *)image
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectMake(0, 0, 40, 40)];
     if (self) {
-        [self setupSubviewsWithhpadding:10.0f vpadding:10.0f];
+        [self setupSubviews:image hpadding:10.0f vpadding:10.0f];
     }
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
+- (id)initWithImage:(UIImage *)image hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:CGRectMake(0, 0, 20+hpadding*2, 20+vpadding*2)];
     if (self) {
-        [self setupSubviewsWithhpadding:hpadding vpadding:vpadding];
+        [self setupSubviews:image hpadding:hpadding vpadding:vpadding];
     }
     return self;
 }
 
-- (void)setupSubviewsWithhpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
+- (void)setupSubviews:(UIImage *)image hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
 {
-    _imageView = [[UIImageView alloc] init];
-    _imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_imageView];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:imageView];
     
-    NSString *format = [NSString stringWithFormat:@"H:|-%f-[_imageView]-%f-|", hpadding, hpadding];
+    NSString *format = [NSString stringWithFormat:@"H:|-%f-[imageView]-%f-|", hpadding, hpadding];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_imageView)]];
-    format = [NSString stringWithFormat:@"V:|-%f-[_imageView]-%f-|", vpadding, vpadding];
+                                                                   views:NSDictionaryOfVariableBindings(imageView)]];
+    format = [NSString stringWithFormat:@"V:|-%f-[imageView]-%f-|", vpadding, vpadding];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_imageView)]];
+                                                                   views:NSDictionaryOfVariableBindings(imageView)]];
 }
 
 @end

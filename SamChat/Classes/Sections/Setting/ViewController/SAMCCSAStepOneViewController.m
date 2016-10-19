@@ -9,6 +9,7 @@
 #import "SAMCCSAStepOneViewController.h"
 #import "SAMCCSAStepTwoViewController.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCPadImageView.h"
 
 @interface SAMCCSAStepOneViewController ()
 
@@ -84,7 +85,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_serviceCategoryTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(16)]-10-[_tipLabel]-20-[_companyNameTextField(35)]-5-[_serviceCategoryTextField(35)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(16)]-10-[_tipLabel]-20-[_companyNameTextField(40)]-5-[_serviceCategoryTextField(40)]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_companyNameTextField,_serviceCategoryTextField)]];
@@ -237,7 +238,7 @@
         _companyNameTextField.backgroundColor = [UIColor whiteColor];
         _companyNameTextField.layer.cornerRadius = 5.0f;
         _companyNameTextField.placeholder = @"Business or service name";
-        _companyNameTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_sp"]];
+        _companyNameTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_sp"]];
         _companyNameTextField.leftViewMode = UITextFieldViewModeAlways;
         _companyNameTextField.returnKeyType = UIReturnKeyNext;
         [_companyNameTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -255,7 +256,7 @@
         _serviceCategoryTextField.backgroundColor = [UIColor whiteColor];
         _serviceCategoryTextField.layer.cornerRadius = 5.0f;
         _serviceCategoryTextField.placeholder = @"Business or service category";
-        _serviceCategoryTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_category"]];
+        _serviceCategoryTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_category"]];
         _serviceCategoryTextField.leftViewMode = UITextFieldViewModeAlways;
         _serviceCategoryTextField.returnKeyType = UIReturnKeyDone;
         [_serviceCategoryTextField addTarget:self action:@selector(textFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];

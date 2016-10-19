@@ -10,6 +10,7 @@
 
 @interface SAMCPadImageView : UIView
 
-@property (nonatomic, strong) UIImageView *imageView;
+- (id)initWithImage:(UIImage *)image;
+- (id)initWithImage:(UIImage *)image hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding;
 
 @end
