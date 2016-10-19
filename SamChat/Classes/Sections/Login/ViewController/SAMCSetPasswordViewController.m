@@ -392,6 +392,7 @@
     if (_usernameTextField == nil) {
         _usernameTextField = [[UITextField alloc] init];
         _usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _usernameTextField.layer.cornerRadius = 5.0f;
         _usernameTextField.backgroundColor = [UIColor whiteColor];
         _usernameTextField.font = [UIFont systemFontOfSize:17.0f];
@@ -418,6 +419,7 @@
     if (_passwordTextField == nil) {
         _passwordTextField = [[UITextField alloc] init];
         _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _passwordTextField.layer.cornerRadius = 5.0f;
         _passwordTextField.backgroundColor = [UIColor whiteColor];
         _passwordTextField.font = [UIFont systemFontOfSize:17.0f];

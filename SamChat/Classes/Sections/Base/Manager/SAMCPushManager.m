@@ -66,7 +66,6 @@
 {
     NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
     [GeTuiSdk unbindAlias:getuiAlias andSequenceNum:@"123456"];
-    [GeTuiSdk destroy];
 }
 
 #pragma mark - GeTuiSdkDelegate
@@ -136,13 +135,15 @@
                    sequenceNum:(NSString *)aSn
                          error:(NSError *)aError;
 {
+    DDLogDebug(@"\n>>>[GexinSdk GeTuiSdkDidAliasAction]:%@,result:%@,sequenceNum:%@,error:%@\n\n", action, isSuccess?@"成功":@"失败",aSn, [aError localizedDescription]);
     if ([action isEqualToString:kGtResponseBindType]) {
-        DDLogDebug(@"\n>>>[GexinSdk GeTuiSdkDidAliasAction]:%@,result:%@,sequenceNum:%@,error:%@\n\n", action, isSuccess?@"成功":@"失败",aSn, [aError localizedDescription]);
         if (!aError) {
             NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
             [SAMCPreferenceManager sharedManager].getuiBindedAlias = getuiAlias;
             [SAMCSyncManager sharedManager].clientId = self.clientId;
         }
+    } else if ([action isEqualToString:kGtResponseUnBindType]) {
+        [GeTuiSdk destroy];
     }
 }
 
