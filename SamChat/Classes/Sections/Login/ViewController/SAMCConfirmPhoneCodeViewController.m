@@ -13,10 +13,11 @@
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCStepperView.h"
 
 @interface SAMCConfirmPhoneCodeViewController ()<SAMCPhoneCodeViewDelegate>
 
-@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) SAMCStepperView *stepperView;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) SAMCPhoneCodeView *phoneCodeView;
 @property (nonatomic, strong) UILabel *splitLabel;
@@ -48,14 +49,13 @@
     }
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     
-    self.stepImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"signup_step2"]];
-    self.stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.view addSubview:self.stepImageView];
+    [self.view addSubview:self.stepperView];
     
     self.tipLabel = [[UILabel alloc] init];
     self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tipLabel.font = [UIFont boldSystemFontOfSize:15.0f];
-    self.tipLabel.textColor = UIColorFromRGB(0x3B4E6E);
+    self.tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
+    self.tipLabel.textAlignment = NSTextAlignmentCenter;
+    self.tipLabel.textColor = SAMC_COLOR_INK;
     self.tipLabel.text = @"Enter the confirmation code";
     [self.view addSubview:self.tipLabel];
     
@@ -66,13 +66,13 @@
     
     self.splitLabel = [[UILabel alloc] init];
     self.splitLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.splitLabel.backgroundColor = UIColorFromRGB(0xE8EAED);
+    self.splitLabel.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.1);
     [self.view addSubview:self.splitLabel];
     
     self.phoneLabel = [[UILabel alloc] init];
     self.phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.phoneLabel.font = [UIFont boldSystemFontOfSize:17.0f];
-    self.phoneLabel.textColor = [UIColor grayColor];
+    self.phoneLabel.font = [UIFont boldSystemFontOfSize:19.0f];
+    self.phoneLabel.textColor = SAMC_COLOR_INK;
     self.phoneLabel.textAlignment = NSTextAlignmentCenter;
     self.phoneLabel.text = [NSString stringWithFormat:@"+%@-%@",self.countryCode,self.phoneNumber];
     [self.view addSubview:self.phoneLabel];
@@ -80,47 +80,55 @@
     self.detailLabel = [[UILabel alloc] init];
     self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
     self.detailLabel.numberOfLines = 0;
-    self.detailLabel.font = [UIFont systemFontOfSize:14.0f];
-    self.detailLabel.textColor = [UIColor grayColor];
+    self.detailLabel.font = [UIFont systemFontOfSize:15.0f];
+    self.detailLabel.textColor = SAMC_COLOR_BODY_MID;
     self.detailLabel.textAlignment = NSTextAlignmentCenter;
     self.detailLabel.text = @"A confirmation code has been sent to your phone, enter the code to continue";
     [self.view addSubview:self.detailLabel];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.stepImageView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.tipLabel
-                                                          attribute:NSLayoutAttributeCenterX
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:self.view
-                                                          attribute:NSLayoutAttributeCenterX
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    [_stepperView addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:NSLayoutAttributeNotAnAttribute
+                                                            multiplier:0.0f
+                                                              constant:72.0f]];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_phoneCodeView]-20-|"
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_tipLabel]-32-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_phoneCodeView)]];
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_phoneCodeView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0f
+                                                           constant:0.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_splitLabel]-10-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_splitLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_phoneLabel]-10-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_phoneLabel]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_phoneLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-35-[_detailLabel]-35-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-48-[_detailLabel]-48-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(15)]-10-[_tipLabel(35)]-10-[_phoneCodeView]-10-[_splitLabel(2)]-10-[_phoneLabel(35)]-10-[_detailLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-25-[_phoneCodeView(50)]-25-[_splitLabel(1)]-30-[_phoneLabel]-15-[_detailLabel]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_phoneCodeView,_splitLabel,_phoneLabel,_detailLabel)]];
+                                                                        views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_phoneCodeView,_splitLabel,_phoneLabel,_detailLabel)]];
 }
 
 #pragma mark - SAMCPhoneCodeViewDelegate
@@ -154,6 +162,16 @@
                                                                   verifyCode:verifyCode
                                                                   completion:completionBlock];
     }
+}
+
+#pragma mark - lazy load
+- (SAMCStepperView *)stepperView
+{
+    if (_stepperView == nil) {
+        _stepperView = [[SAMCStepperView alloc] initWithFrame:CGRectZero step:2 color:SAMC_COLOR_GREEN];
+        _stepperView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _stepperView;
 }
 
 @end

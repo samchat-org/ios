@@ -10,7 +10,7 @@
 
 @interface SAMCOneCodeView ()
 
-@property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic, strong) UIImageView *backgroundView;
 @property (nonatomic, strong) UILabel *inputLabel;
 
 @end
@@ -28,8 +28,9 @@
 
 - (void)setupSubviews
 {
-    _backgroundView = [[UILabel alloc] init];
+    _backgroundView = [[UIImageView alloc] init];
     _backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    _backgroundView.contentMode = UIViewContentModeCenter;
     [self addSubview:_backgroundView];
     
     _inputLabel = [[UILabel alloc] init];
@@ -40,19 +41,19 @@
     _inputLabel.textAlignment = NSTextAlignmentCenter;
     [self addSubview:_inputLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-4-[_backgroundView]-4-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_backgroundView]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_backgroundView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-4-[_backgroundView]-4-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_backgroundView]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_backgroundView)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-4-[_inputLabel]-4-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_inputLabel]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_inputLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-4-[_inputLabel]-4-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_inputLabel]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_inputLabel)]];
@@ -66,12 +67,14 @@
     }
     _inputLabel.text = text;
     if ([text length]) {
-        self.backgroundColor = UIColorFromRGB(0xE1EDB8);
-        _backgroundView.backgroundColor = UIColorFromRGB(0x7ED321);
-        _inputLabel.font = [UIFont systemFontOfSize:15.0f];
+        self.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_LEMMON, 0.3);
+        _backgroundView.backgroundColor = SAMC_COLOR_LIME;
+        _backgroundView.image = nil;
+        _inputLabel.font = [UIFont systemFontOfSize:17.0f];
     } else {
         self.backgroundColor = [UIColor clearColor];
-        _backgroundView.backgroundColor = UIColorFromRGB(0xD8DCE2);
+        _backgroundView.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.1);
+        _backgroundView.image = [UIImage imageNamed:@"ico_code"];
         _inputLabel.font = [UIFont systemFontOfSize:27.0f];
     }
 }

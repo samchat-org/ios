@@ -42,7 +42,7 @@
                                       @"view3" : self.codeViews[2],
                                       @"view4" : self.codeViews[3],
                                       };
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view1]-30-[view2(==view1)]-30-[view3(==view1)]-30-[view4(==view1)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[view1]-40-[view2(==view1)]-40-[view3(==view1)]-40-[view4(==view1)]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:viewsDictionary]];
