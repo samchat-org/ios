@@ -8,6 +8,12 @@
 
 #import "SAMCPadImageView.h"
 
+@interface SAMCPadImageView ()
+
+@property (nonatomic, strong) UIImageView *imageView;
+
+@end
+
 @implementation SAMCPadImageView
 
 - (id)initWithImage:(UIImage *)image
@@ -30,20 +36,30 @@
 
 - (void)setupSubviews:(UIImage *)image hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:imageView];
+    _imageView = [[UIImageView alloc] initWithImage:image];
+    _imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self addSubview:_imageView];
     
-    NSString *format = [NSString stringWithFormat:@"H:|-%f-[imageView]-%f-|", hpadding, hpadding];
+    NSString *format = [NSString stringWithFormat:@"H:|-%f-[_imageView]-%f-|", hpadding, hpadding];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(imageView)]];
-    format = [NSString stringWithFormat:@"V:|-%f-[imageView]-%f-|", vpadding, vpadding];
+                                                                   views:NSDictionaryOfVariableBindings(_imageView)]];
+    format = [NSString stringWithFormat:@"V:|-%f-[_imageView]-%f-|", vpadding, vpadding];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:format
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(imageView)]];
+                                                                   views:NSDictionaryOfVariableBindings(_imageView)]];
+}
+
+- (UIImage *)image
+{
+    return _imageView.image;
+}
+
+- (void)setImage:(UIImage *)image
+{
+    _imageView.image = image;
 }
 
 @end

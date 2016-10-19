@@ -449,13 +449,13 @@
     if (isUsernameExists) {
         self.usernameCheckLabel.text = @"Ooops, username already token. Try a combination of letters and numbers";
         self.usernameTextField.textColor = UIColorFromRGB(0xFF883A);
-        UIImageView *leftView = (UIImageView *)self.usernameTextField.leftView;
+        SAMCPadImageView *leftView = (SAMCPadImageView *)self.usernameTextField.leftView;
         [leftView setImage:[UIImage imageNamed:@"signup_username_wrong"]];
     } else {
         self.usernameCheckLabel.text = @" ";
         self.usernameTextField.textColor = UIColorFromRGB(0x3B4E6E);
-        UIImageView *leftView = (UIImageView *)self.usernameTextField.leftView;
-        [leftView setImage:[UIImage imageNamed:@"signup_username"]];
+        SAMCPadImageView *leftView = (SAMCPadImageView *)self.usernameTextField.leftView;
+        [leftView setImage:[UIImage imageNamed:@"ico_option_username"]];
     }
 }
 
