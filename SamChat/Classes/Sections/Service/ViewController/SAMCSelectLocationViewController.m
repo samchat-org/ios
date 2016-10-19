@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
+@property (nonatomic, assign) NSInteger fixCellCount;
 
 @end
 
@@ -24,6 +25,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.fixCellCount = 0;
     self.data = [[NSMutableArray alloc] init];
     [self setupSubviews];
     [self setupNavItem];
@@ -132,7 +134,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.data count];
+    return [self.data count] + self.fixCellCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -144,8 +146,12 @@
     }
     cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
     cell.textLabel.textColor = UIColorFromRGB(0x13243F);
-    SAMCPlaceInfo *placeInfo = self.data[indexPath.row];
-    cell.textLabel.text = placeInfo.desc;
+    if (indexPath.row == 0) {
+        cell.textLabel.text = self.searchBar.text;
+    } else {
+        SAMCPlaceInfo *placeInfo = self.data[indexPath.row-self.fixCellCount];
+        cell.textLabel.text = placeInfo.desc;
+    }
     return cell;
 }
 
@@ -154,9 +160,13 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSMutableDictionary *location = [[NSMutableDictionary alloc] init];
-    SAMCPlaceInfo *info = self.data[indexPath.row];
-    [location setObject:info.desc forKey:SAMC_ADDRESS];
-    [location setObject:info.placeId forKey:SAMC_PLACE_ID];
+    if (indexPath.row == 0) {
+        [location setObject:self.searchBar.text forKey:SAMC_ADDRESS];
+    } else {
+        SAMCPlaceInfo *info = self.data[indexPath.row-self.fixCellCount];
+        [location setObject:info.desc forKey:SAMC_ADDRESS];
+        [location setObject:info.placeId forKey:SAMC_PLACE_ID];
+    }
     
     if (self.selectBlock != nil) {
         self.selectBlock(location, NO);
@@ -178,6 +188,14 @@
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    BOOL isInputEmpty = ([searchText length] == 0);
+    if ((self.fixCellCount == 0) || isInputEmpty) {
+        self.fixCellCount = isInputEmpty ? 0 : 1;
+        [self.tableView reloadData];
+    } else {
+        NSIndexPath *tmpIndexpath=[NSIndexPath indexPathForRow:0 inSection:0];
+        [self.tableView reloadRowsAtIndexPaths:@[tmpIndexpath] withRowAnimation:UITableViewRowAnimationNone];
+    }
     [self findLocation];
 }
 
