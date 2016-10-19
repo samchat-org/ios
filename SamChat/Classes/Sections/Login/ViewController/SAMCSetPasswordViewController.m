@@ -16,6 +16,7 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCLoginViewController.h"
 #import "SAMCUserManager.h"
+#import "SAMCPadImageView.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -123,7 +124,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_agreeLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(35)]-10-[_passwordTextField(35)]-10-[_agreeLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(40)]-10-[_passwordTextField(40)]-10-[_agreeLabel]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_usernameCheckLabel,_usernameTextField,_passwordTextField,_agreeLabel)]];
@@ -155,7 +156,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_passwordTextField(35)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView]-10-[_tipLabel]-10-[_passwordTextField(40)]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_passwordTextField)]];
@@ -384,10 +385,9 @@
         [_usernameTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
         [_usernameTextField addTarget:self action:@selector(usernameTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
-        UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-        [leftView setImage:[UIImage imageNamed:@"signup_username"]];
-        leftView.contentMode = UIViewContentModeScaleAspectFit;
-        _usernameTextField.leftView = leftView;
+        _usernameTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_username"]
+                                                                     hpadding:15.0f
+                                                                     vpadding:15.0f];
         _usernameTextField.leftViewMode = UITextFieldViewModeAlways;
         
         UIImageView *rightView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
@@ -414,10 +414,9 @@
         [_passwordTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
         [_passwordTextField addTarget:self action:@selector(passwordTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
-        UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-        [leftView setImage:[UIImage imageNamed:@"signup_password"]];
-        leftView.contentMode = UIViewContentModeScaleAspectFit;
-        _passwordTextField.leftView = leftView;
+        _passwordTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_password"]
+                                                                     hpadding:15.0f
+                                                                     vpadding:15.0f];
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
         
         UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
