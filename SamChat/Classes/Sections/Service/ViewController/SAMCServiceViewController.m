@@ -12,6 +12,8 @@
 #import "SAMCCustomRequestListDelegate.h"
 #import "SAMCSPRequestListDelegate.h"
 #import "SAMCQuestionManager.h"
+#import "SAMCServiceProfileViewController.h"
+#import "SAMCAddContactViewController.h"
 
 @interface SAMCServiceViewController()<SAMCTableReloadDelegate>//<UITableViewDelegate,UITableViewDataSource>
 
@@ -232,6 +234,7 @@
 
 - (void)hideSPNotEmptyRequestView:(BOOL)hidden
 {
+    self.tableView.hidden = hidden;
 }
 
 #pragma mark - Action
@@ -241,12 +244,22 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (NSMutableArray *)data
+- (void)touchUpdateServiceProfile:(id)sender
 {
-    if (_data == nil) {
-        _data = [[NSMutableArray alloc] init];
-    }
-    return _data;
+    SAMCServiceProfileViewController *vc = [[SAMCServiceProfileViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)touchSendPublicUpdate:(id)sender
+{
+    self.tabBarController.selectedIndex = 1;
+}
+
+- (void)touchAddCustomer:(id)sender
+{
+    SAMCAddContactViewController *vc = [[SAMCAddContactViewController alloc] init];
+    vc.currentUserMode = SAMCUserModeTypeSP;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - SAMCTableReloadDelegate
@@ -274,6 +287,14 @@
 }
 
 #pragma mark - lazy load
+- (NSMutableArray *)data
+{
+    if (_data == nil) {
+        _data = [[NSMutableArray alloc] init];
+    }
+    return _data;
+}
+
 - (UILabel *)firstRequestTipLabel
 {
     if (_firstRequestTipLabel == nil) {
@@ -393,6 +414,7 @@
         _updateSPProfileButton.backgroundColor = SAMC_COLOR_LAKE;
         _updateSPProfileButton.layer.cornerRadius = 20.0f;
         [_updateSPProfileButton setTitle:@"Update Service Profile" forState:UIControlStateNormal];
+        [_updateSPProfileButton addTarget:self action:@selector(touchUpdateServiceProfile:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _updateSPProfileButton;
 }
@@ -407,6 +429,7 @@
         _sendPublicUpdateButton.backgroundColor = SAMC_COLOR_GREY;
         _sendPublicUpdateButton.layer.cornerRadius = 20.0f;
         [_sendPublicUpdateButton setTitle:@"Send Public Update" forState:UIControlStateNormal];
+        [_sendPublicUpdateButton addTarget:self action:@selector(touchSendPublicUpdate:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _sendPublicUpdateButton;
 }
@@ -421,6 +444,7 @@
         _addCustomerButton.backgroundColor = SAMC_COLOR_GREY;
         _addCustomerButton.layer.cornerRadius = 20.0f;
         [_addCustomerButton setTitle:@"Add Existing Customers" forState:UIControlStateNormal];
+        [_addCustomerButton addTarget:self action:@selector(touchAddCustomer:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _addCustomerButton;
 }
