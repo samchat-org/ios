@@ -40,6 +40,7 @@ static char imageURLKey;
 
 - (void)setupSubviewsWithCircleWidth:(CGFloat)width
 {
+    self.circleColor = SAMC_COLOR_LIGHTGREY;
     self.backgroundColor = [UIColor clearColor];
     _imageView = [[UIImageView alloc] init];
     _imageView.translatesAutoresizingMaskIntoConstraints = NO;
