@@ -48,7 +48,7 @@
     NSDictionary *views = @{@"imageView1":_avatarImageViewArray[2],
                             @"imageView2":_avatarImageViewArray[1],
                             @"imageView3":_avatarImageViewArray[0]};
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[imageView1]-2-[imageView2(==imageView1)]-2-[imageView3(==imageView1)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[imageView1]-5-[imageView2(==imageView1)]-5-[imageView3(==imageView1)]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];

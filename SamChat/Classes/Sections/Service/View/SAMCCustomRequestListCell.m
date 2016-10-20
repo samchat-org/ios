@@ -43,22 +43,40 @@
     [self.contentView addSubview:self.timeLabel];
     [self.contentView addSubview:self.avatarsView];
     
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_messageLabel]-5-[_avatarsView]-10-|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_messageLabel]-5-[_avatarsView]-15-|"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:NSDictionaryOfVariableBindings(_messageLabel,_avatarsView)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_messageLabel]-5-[_locationLabel]-5-|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_messageLabel]"
                                                                              options:0
                                                                              metrics:nil
-                                                                               views:NSDictionaryOfVariableBindings(_messageLabel,_locationLabel)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_timeLabel]"
+                                                                               views:NSDictionaryOfVariableBindings(_messageLabel)]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_locationLabel]-10-|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:NSDictionaryOfVariableBindings(_locationLabel)]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                    toItem:_locationLabel
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0f
+                                                                  constant:-14.0f]];
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_timeLabel]"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:NSDictionaryOfVariableBindings(_timeLabel)]];
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_avatarsView(20)]-5-|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_avatarsView(25)]-10-|"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:NSDictionaryOfVariableBindings(_avatarsView)]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_timeLabel
+                                                                 attribute:NSLayoutAttributeBottom
+                                                                 relatedBy:NSLayoutRelationLessThanOrEqual
+                                                                    toItem:_avatarsView
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0f
+                                                                  constant:-10.0f]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
                                                                  attribute:NSLayoutAttributeLeft
                                                                  relatedBy:NSLayoutRelationEqual
@@ -104,8 +122,8 @@
         _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _messageLabel.numberOfLines = 2;
         _messageLabel.backgroundColor = [UIColor clearColor];
-        _messageLabel.font = [UIFont systemFontOfSize:15.f];
-        _messageLabel.textColor = SAMC_MAIN_DARKCOLOR;
+        _messageLabel.font = [UIFont systemFontOfSize:17.f];
+        _messageLabel.textColor = SAMC_COLOR_INK;
     }
     return _messageLabel;
 }
@@ -116,8 +134,8 @@
         _locationLabel = [[UILabel alloc] init];
         _locationLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _locationLabel.backgroundColor = [UIColor clearColor];
-        _locationLabel.font = [UIFont systemFontOfSize:12.0f];
-        _locationLabel.textColor = UIColorFromRGB(0x89949D);
+        _locationLabel.font = [UIFont systemFontOfSize:13.0f];
+        _locationLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
     }
     return _locationLabel;
 }
@@ -128,9 +146,9 @@
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _timeLabel.backgroundColor = [UIColor clearColor];
-        _timeLabel.font = [UIFont systemFontOfSize:12.0f];
+        _timeLabel.font = [UIFont systemFontOfSize:13.0f];
         _timeLabel.textAlignment = NSTextAlignmentRight;
-        _timeLabel.textColor = UIColorFromRGB(0xBDBDBD);
+        _timeLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
     }
     return _timeLabel;
 }
