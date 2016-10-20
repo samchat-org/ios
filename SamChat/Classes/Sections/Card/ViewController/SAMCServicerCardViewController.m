@@ -61,7 +61,7 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
     
-    SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 100)];
+    SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 140)];
     headerView.avatarUrl = _user.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
