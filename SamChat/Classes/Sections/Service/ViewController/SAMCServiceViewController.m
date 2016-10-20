@@ -29,6 +29,12 @@
 @property (nonatomic, strong) UIImageView *backgroundLogoImageView;
 @property (nonatomic, strong) UIButton *firstRequestButton;
 
+@property (nonatomic, strong) UILabel *noRequestTipLabel;
+@property (nonatomic, strong) UILabel *noRequestDetailLabel;
+@property (nonatomic, strong) UIButton *updateSPProfileButton;
+@property (nonatomic, strong) UIButton *sendPublicUpdateButton;
+@property (nonatomic, strong) UIButton *addCustomerButton;
+
 @end
 
 @implementation SAMCServiceViewController
@@ -101,7 +107,7 @@
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_firstRequestTipLabel,_firstRequestDetailLabel,_firstRequestButton)]];
     if ([self.data count]) {
-        [self hiddeCustomEmptyRequestView:YES];
+        [self hideCustomEmptyRequestView:YES];
     }
 }
 
@@ -124,7 +130,62 @@
                                                                         views:NSDictionaryOfVariableBindings(_requestButton, _tableView)]];
     
     if (![self.data count]) {
-        [self hiddeCustomNotEmptyRequestView:YES];
+        [self hideCustomNotEmptyRequestView:YES];
+    }
+}
+
+- (void)setupSPModeEmptyRequestViews
+{
+    [self.view addSubview:self.noRequestTipLabel];
+    [self.view addSubview:self.noRequestDetailLabel];
+    [self.view addSubview:self.updateSPProfileButton];
+    [self.view addSubview:self.sendPublicUpdateButton];
+    [self.view addSubview:self.addCustomerButton];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_noRequestTipLabel]-32-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_noRequestTipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-48-[_noRequestDetailLabel]-48-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_noRequestDetailLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_updateSPProfileButton]-65-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_updateSPProfileButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_sendPublicUpdateButton]-65-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_sendPublicUpdateButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_addCustomerButton]-65-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_addCustomerButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-40-[_noRequestTipLabel]-12-[_noRequestDetailLabel]-20-[_updateSPProfileButton(40)]-10-[_sendPublicUpdateButton(40)]-10-[_addCustomerButton(40)]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_noRequestTipLabel,_noRequestDetailLabel,_updateSPProfileButton,_sendPublicUpdateButton,_addCustomerButton)]];
+    if ([self.data count]) {
+        [self hideSPEmptyRequestView:YES];
+    }
+}
+
+- (void)setupSPModeNotEmptyRequestViews
+{
+    [self.view addSubview:self.tableView];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView]|"
+    //    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_tableView]|",SAMCTopBarHeight]
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+    if (![self.data count]) {
+        [self hideSPNotEmptyRequestView:YES];
     }
 }
 
@@ -141,20 +202,12 @@
     self.tableView = nil;
     self.requestButton = nil;
     self.navigationItem.title = @"Service Requests";
-    [self.view addSubview:self.tableView];
-    
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView]|"
-//    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%f-[_tableView]|",SAMCTopBarHeight]
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+
+    [self setupSPModeNotEmptyRequestViews];
+    [self setupSPModeEmptyRequestViews];
 }
 
-- (void)hiddeCustomEmptyRequestView:(BOOL)hidden
+- (void)hideCustomEmptyRequestView:(BOOL)hidden
 {
     self.backgroundLogoImageView.hidden = hidden;
     self.firstRequestTipLabel.hidden = hidden;
@@ -162,10 +215,23 @@
     self.firstRequestButton.hidden = hidden;
 }
 
-- (void)hiddeCustomNotEmptyRequestView:(BOOL)hidden
+- (void)hideCustomNotEmptyRequestView:(BOOL)hidden
 {
     self.tableView.hidden = hidden;
     self.requestButton.hidden = hidden;
+}
+
+- (void)hideSPEmptyRequestView:(BOOL)hidden
+{
+    self.noRequestTipLabel.hidden = hidden;
+    self.noRequestDetailLabel.hidden = hidden;
+    self.updateSPProfileButton.hidden = hidden;
+    self.sendPublicUpdateButton.hidden = hidden;
+    self.addCustomerButton.hidden = hidden;
+}
+
+- (void)hideSPNotEmptyRequestView:(BOOL)hidden
+{
 }
 
 #pragma mark - Action
@@ -188,11 +254,19 @@
 {
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         if ([self.data count]) {
-            [self hiddeCustomNotEmptyRequestView:NO];
-            [self hiddeCustomEmptyRequestView:YES];
+            [self hideCustomNotEmptyRequestView:NO];
+            [self hideCustomEmptyRequestView:YES];
         } else {
-            [self hiddeCustomNotEmptyRequestView:YES];
-            [self hiddeCustomEmptyRequestView:NO];
+            [self hideCustomNotEmptyRequestView:YES];
+            [self hideCustomEmptyRequestView:NO];
+        }
+    } else {
+        if ([self.data count]) {
+            [self hideSPNotEmptyRequestView:NO];
+            [self hideSPEmptyRequestView:YES];
+        } else {
+            [self hideSPNotEmptyRequestView:YES];
+            [self hideSPEmptyRequestView:NO];
         }
     }
     // TODO: add sort
@@ -280,6 +354,75 @@
 //        }
     }
     return _tableView;
+}
+
+- (UILabel *)noRequestTipLabel
+{
+    if (_noRequestTipLabel == nil) {
+        _noRequestTipLabel = [[UILabel alloc] init];
+        _noRequestTipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _noRequestTipLabel.font = [UIFont systemFontOfSize:19.0f];
+        _noRequestTipLabel.textColor = SAMC_COLOR_INK;
+        _noRequestTipLabel.text = @"No request yet, take a break!";
+        _noRequestTipLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _noRequestTipLabel;
+}
+
+- (UILabel *)noRequestDetailLabel
+{
+    if (_noRequestDetailLabel == nil) {
+        _noRequestDetailLabel = [[UILabel alloc] init];
+        _noRequestDetailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _noRequestDetailLabel.font = [UIFont systemFontOfSize:15.0f];
+        _noRequestDetailLabel.numberOfLines = 0;
+        _noRequestDetailLabel.textColor = SAMC_COLOR_BODY_MID;
+        _noRequestDetailLabel.text = @"Meanwhile, tell us more about your service and professional experience to increase your chance of getting a match.";
+        _noRequestDetailLabel.textAlignment = NSTextAlignmentCenter;
+    }
+    return _noRequestDetailLabel;
+}
+
+- (UIButton *)updateSPProfileButton
+{
+    if (_updateSPProfileButton == nil) {
+        _updateSPProfileButton = [[UIButton alloc] init];
+        _updateSPProfileButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _updateSPProfileButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        [_updateSPProfileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _updateSPProfileButton.backgroundColor = SAMC_COLOR_LAKE;
+        _updateSPProfileButton.layer.cornerRadius = 20.0f;
+        [_updateSPProfileButton setTitle:@"Update Service Profile" forState:UIControlStateNormal];
+    }
+    return _updateSPProfileButton;
+}
+
+- (UIButton *)sendPublicUpdateButton
+{
+    if (_sendPublicUpdateButton == nil) {
+        _sendPublicUpdateButton = [[UIButton alloc] init];
+        _sendPublicUpdateButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _sendPublicUpdateButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        [_sendPublicUpdateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _sendPublicUpdateButton.backgroundColor = SAMC_COLOR_GREY;
+        _sendPublicUpdateButton.layer.cornerRadius = 20.0f;
+        [_sendPublicUpdateButton setTitle:@"Send Public Update" forState:UIControlStateNormal];
+    }
+    return _sendPublicUpdateButton;
+}
+
+- (UIButton *)addCustomerButton
+{
+    if (_addCustomerButton == nil) {
+        _addCustomerButton = [[UIButton alloc] init];
+        _addCustomerButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _addCustomerButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        [_addCustomerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _addCustomerButton.backgroundColor = SAMC_COLOR_GREY;
+        _addCustomerButton.layer.cornerRadius = 20.0f;
+        [_addCustomerButton setTitle:@"Add Existing Customers" forState:UIControlStateNormal];
+    }
+    return _addCustomerButton;
 }
 
 @end
