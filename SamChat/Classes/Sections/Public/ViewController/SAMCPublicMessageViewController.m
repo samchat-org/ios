@@ -44,6 +44,9 @@
 #import "SAMCPublicCustomMsgCellLayoutConfig.h"
 #import "SAMCImageAttachment.h"
 #import "SAMCAccountManager.h"
+#import "SAMCPublicInputView.h"
+#import "NIMInputToolBar.h"
+#import "SAMCPublicSessionViewLayoutManager.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -57,13 +60,14 @@ UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) NIMSessionViewLayoutManager *layoutManager;
-@property (nonatomic, strong) NIMInputView *sessionInputView;
+@property (nonatomic, strong) SAMCPublicSessionViewLayoutManager *layoutManager;
 
 @property (nonatomic, strong) SAMCPublicMsgDataSource *sessionDatasource;
 @property (nonatomic, strong) NIMMessage *messageForMenu;
 
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+
+@property (nonatomic, strong) SAMCPublicInputView *publicInputView;
 
 @end
 
@@ -102,20 +106,32 @@ UITableViewDelegate>
     CGRect inputViewRect = CGRectMake(0, 0, self.view.nim_width, [NIMUIConfig topInputViewHeight]);
     
     if ([self.publicSession isOutgoing]) {
-        _sessionInputView = [[NIMInputView alloc] initWithFrame:inputViewRect];
-        _sessionInputView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        self.sessionInputView.nim_bottom = self.view.nim_height;
-        [self.sessionInputView setInputConfig:[[SAMCPublicSessionConfig alloc] init]];
-        [self.sessionInputView setInputActionDelegate:self];
-        [self.view addSubview:self.sessionInputView];
+        [self setUpNavItem];
+        _publicInputView = [[SAMCPublicInputView alloc] initWithFrame:inputViewRect];
+        _publicInputView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+        _publicInputView.nim_bottom = self.view.height;
+        [_publicInputView setInputConfig:[[SAMCPublicSessionConfig alloc] init]];
+        [_publicInputView setInputActionDelegate:self];
+        [self.view addSubview:_publicInputView];
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
 }
 
+- (void)setUpNavItem
+{
+    self.parentViewController.navigationItem.title = @"My Public Updates";
+    UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [addBtn addTarget:self action:@selector(newPublicMessage:) forControlEvents:UIControlEventTouchUpInside];
+    [addBtn setImage:[UIImage imageNamed:@"ico_public_new"] forState:UIControlStateNormal];
+    [addBtn sizeToFit];
+    UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
+    self.parentViewController.navigationItem.rightBarButtonItem = addItem;
+}
+
 - (void)makeHandlerAndDataSource
 {
-    _layoutManager = [[NIMSessionViewLayoutManager alloc] initWithInputView:self.sessionInputView tableView:self.tableView];
+    _layoutManager = [[SAMCPublicSessionViewLayoutManager alloc] initWithInputView:self.publicInputView tableView:self.tableView];
     
     //数据
     NSInteger limit = 10;
@@ -150,7 +166,7 @@ UITableViewDelegate>
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    [_sessionInputView endEditing:YES];
+    [_publicInputView endEditing:YES];
 }
 
 - (void)checkAttachmentState:(NSArray *)messages{
@@ -159,6 +175,11 @@ UITableViewDelegate>
             [[NIMSDK sharedSDK].chatManager fetchMessageAttachment:message error:nil];
         }
     }
+}
+
+- (void)newPublicMessage:(id)sender
+{
+    [self.publicInputView.toolBar.inputTextView becomeFirstResponder];
 }
 
 #pragma mark - 相册
@@ -401,7 +422,7 @@ UITableViewDelegate>
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     [super touchesBegan:touches withEvent:event];
-    [_sessionInputView endEditing:YES];
+    [_publicInputView endEditing:YES];
 }
 
 #pragma mark - NIMInputActionDelegate
@@ -606,7 +627,7 @@ UITableViewDelegate>
 
 - (void)headerRereshing:(id)sender
 {
-    __weak NIMSessionViewLayoutManager *layoutManager = self.layoutManager;
+    __weak SAMCPublicSessionViewLayoutManager *layoutManager = self.layoutManager;
     __weak typeof(self) wself = self;
     __weak UIRefreshControl *refreshControl = self.refreshControl;
     [self.sessionDatasource loadHistoryMessagesWithComplete:^(NSInteger index,NSArray *memssages, NSError *error) {

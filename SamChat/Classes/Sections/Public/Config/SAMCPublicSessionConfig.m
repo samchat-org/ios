@@ -22,6 +22,11 @@
     return self;
 }
 
+- (NSArray<NSNumber *> *)inputBarItemTypes{
+    return @[@(NIMInputBarItemTypeVoice),
+             @(NIMInputBarItemTypeTextAndRecord)];
+}
+
 - (NSArray *)mediaItems
 {
     return @[[NIMMediaItem item:NTESMediaButtonPicture
