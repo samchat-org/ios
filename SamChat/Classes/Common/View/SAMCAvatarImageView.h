@@ -2,7 +2,7 @@
 //  SAMCAvatarImageView.h
 //  SamChat
 //
-//  Created by HJ on 8/30/16.
+//  Created by HJ on 10/20/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
@@ -13,10 +13,7 @@
 @interface SAMCAvatarImageView : UIControl
 
 @property (nonatomic, strong) UIImage *image;
-@property (nonatomic, assign) BOOL clipPath;
 @property (nonatomic, strong) UIColor *circleColor;
-
-// TODO: add setAvatarBySession or something
 
 @end
 
