@@ -294,6 +294,7 @@
 		31DB308D1DB73DF10072BE34 /* SAMCMyProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB308C1DB73DF10072BE34 /* SAMCMyProfileViewController.m */; };
 		31DB30931DB7985C0072BE34 /* SAMCPublicInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30921DB7985C0072BE34 /* SAMCPublicInputView.m */; };
 		31DB30991DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30981DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.m */; };
+		31DB309C1DB890E00072BE34 /* SAMCSPRequestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB309B1DB890E00072BE34 /* SAMCSPRequestListCell.m */; };
 		31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B761D6589E900832CC8 /* SAMCPushManager.m */; };
 		31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B7A1D65923A00832CC8 /* SAMCSettingManager.m */; };
 		31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B801D65B17000832CC8 /* SAMCTextView.m */; };
@@ -888,6 +889,8 @@
 		31DB30921DB7985C0072BE34 /* SAMCPublicInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicInputView.m; path = Public/View/SAMCPublicInputView.m; sourceTree = "<group>"; };
 		31DB30971DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicSessionViewLayoutManager.h; path = Public/Other/SAMCPublicSessionViewLayoutManager.h; sourceTree = "<group>"; };
 		31DB30981DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicSessionViewLayoutManager.m; path = Public/Other/SAMCPublicSessionViewLayoutManager.m; sourceTree = "<group>"; };
+		31DB309A1DB890E00072BE34 /* SAMCSPRequestListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPRequestListCell.h; path = Service/View/SAMCSPRequestListCell.h; sourceTree = "<group>"; };
+		31DB309B1DB890E00072BE34 /* SAMCSPRequestListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPRequestListCell.m; path = Service/View/SAMCSPRequestListCell.m; sourceTree = "<group>"; };
 		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
 		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31E37B791D65923A00832CC8 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -2187,6 +2190,8 @@
 				3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */,
 				31F8FC9F1D73E09000734068 /* SAMCCustomRequestListCell.h */,
 				31F8FCA01D73E09000734068 /* SAMCCustomRequestListCell.m */,
+				31DB309A1DB890E00072BE34 /* SAMCSPRequestListCell.h */,
+				31DB309B1DB890E00072BE34 /* SAMCSPRequestListCell.m */,
 				3195DDD41D509E3A001BD2B4 /* SAMCRequestDetailInfoView.h */,
 				3195DDD51D509E3A001BD2B4 /* SAMCRequestDetailInfoView.m */,
 				31DB302C1DAB671C0072BE34 /* SAMCRequestEmptyView.h */,
@@ -2776,6 +2781,7 @@
 				31F8FC971D6D3A5800734068 /* SAMCQuestionDB_2016082201.m in Sources */,
 				316A67941D8EB83E00B56A5D /* SAMCResourceManager.m in Sources */,
 				314D5D3F1D6BDD3F004B3DE4 /* SAMCQRCodeScanViewController.m in Sources */,
+				31DB309C1DB890E00072BE34 /* SAMCSPRequestListCell.m in Sources */,
 				3195DE081D54B94E001BD2B4 /* SAMCSessionViewController.m in Sources */,
 				3195DE351D5B30F1001BD2B4 /* SAMCQuestionMessage.m in Sources */,
 				312C1CD21D35D85B00242906 /* NTESCADisplayLinkHolder.m in Sources */,

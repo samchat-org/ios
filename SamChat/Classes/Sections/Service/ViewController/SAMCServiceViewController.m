@@ -369,6 +369,8 @@
         _tableView.delegate = self.delegator;
         _tableView.dataSource = self.delegator;
         
+        _tableView.estimatedRowHeight = 100;
+        _tableView.rowHeight = UITableViewAutomaticDimension;
 //        [_tableView setSeparatorInset:UIEdgeInsetsZero];
 //        if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
 //            [_tableView setLayoutMargins:UIEdgeInsetsZero];

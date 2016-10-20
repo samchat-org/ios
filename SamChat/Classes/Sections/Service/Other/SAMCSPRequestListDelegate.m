@@ -12,6 +12,7 @@
 #import "SAMCQuestionSession.h"
 #import "SAMCConversationManager.h"
 #import "SAMCSessionViewController.h"
+#import "SAMCSPRequestListCell.h"
 
 @interface SAMCSPRequestListDelegate ()<SAMCQuestionManagerDelegate>
 
@@ -41,18 +42,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"cellId";
-    SAMCRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    static NSString * cellId = @"cellId";
+//    SAMCRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    if (!cell) {
+//        cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+//    }
+//    
+//    SAMCQuestionSession *session = [self data][indexPath.row];
+//    cell.messageLabel.text = session.question;
+//    cell.leftLabel.text = [session questionTimeDescription];
+//    cell.middleLabel.text = session.address;
+//    cell.rightLabel.text = session.senderUsername;
+    
+    static NSString *cellId = @"SAMCSPRequestListCellId";
+    SAMCSPRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell = [[SAMCSPRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    
     SAMCQuestionSession *session = [self data][indexPath.row];
-    cell.messageLabel.text = session.question;
-    cell.leftLabel.text = [session questionTimeDescription];
-    cell.middleLabel.text = session.address;
-    cell.rightLabel.text = session.senderUsername;
-    
+    [cell updateWithSession:session];
     return cell;
 }
 
@@ -75,10 +83,10 @@
     [self.viewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 70.f;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return 70.f;
+//}
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
