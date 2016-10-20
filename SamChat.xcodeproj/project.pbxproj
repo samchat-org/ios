@@ -236,7 +236,6 @@
 		31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB61D4064EA00878058 /* CountryCodeListCh.plist */; };
 		31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31799EB71D4064EA00878058 /* CountryCodeListEn.plist */; };
 		3195DDB31D4EE004001BD2B4 /* SAMCPreferenceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDB21D4EE004001BD2B4 /* SAMCPreferenceManager.m */; };
-		3195DDBF1D4F4A6C001BD2B4 /* SAMCRequestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */; };
 		3195DDCA1D50380F001BD2B4 /* SAMCTableViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDC91D50380F001BD2B4 /* SAMCTableViewDelegate.m */; };
 		3195DDCD1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDCC1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m */; };
 		3195DDD01D503C08001BD2B4 /* SAMCSPRequestListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DDCF1D503C08001BD2B4 /* SAMCSPRequestListDelegate.m */; };
@@ -771,8 +770,6 @@
 		31799EB71D4064EA00878058 /* CountryCodeListEn.plist */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = CountryCodeListEn.plist; sourceTree = "<group>"; };
 		3195DDB11D4EE004001BD2B4 /* SAMCPreferenceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPreferenceManager.h; path = Base/Manager/SAMCPreferenceManager.h; sourceTree = "<group>"; };
 		3195DDB21D4EE004001BD2B4 /* SAMCPreferenceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPreferenceManager.m; path = Base/Manager/SAMCPreferenceManager.m; sourceTree = "<group>"; };
-		3195DDBD1D4F4A6C001BD2B4 /* SAMCRequestListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestListCell.h; path = Service/View/SAMCRequestListCell.h; sourceTree = "<group>"; };
-		3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCRequestListCell.m; path = Service/View/SAMCRequestListCell.m; sourceTree = "<group>"; };
 		3195DDC81D50380F001BD2B4 /* SAMCTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCTableViewDelegate.h; path = Base/Other/SAMCTableViewDelegate.h; sourceTree = "<group>"; };
 		3195DDC91D50380F001BD2B4 /* SAMCTableViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCTableViewDelegate.m; path = Base/Other/SAMCTableViewDelegate.m; sourceTree = "<group>"; };
 		3195DDCB1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCustomRequestListDelegate.h; path = Service/Other/SAMCCustomRequestListDelegate.h; sourceTree = "<group>"; };
@@ -2186,8 +2183,6 @@
 		3195DDB91D4F48BF001BD2B4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				3195DDBD1D4F4A6C001BD2B4 /* SAMCRequestListCell.h */,
-				3195DDBE1D4F4A6C001BD2B4 /* SAMCRequestListCell.m */,
 				31F8FC9F1D73E09000734068 /* SAMCCustomRequestListCell.h */,
 				31F8FCA01D73E09000734068 /* SAMCCustomRequestListCell.m */,
 				31DB309A1DB890E00072BE34 /* SAMCSPRequestListCell.h */,
@@ -2820,7 +2815,6 @@
 				31DB30311DABB25E0072BE34 /* SAMCResponseAvatarsView.m in Sources */,
 				312C1CCC1D35D85B00242906 /* NTESSettingPortraitCell.m in Sources */,
 				314444BB1D45B21C0062B797 /* SAMCServiceViewController.m in Sources */,
-				3195DDBF1D4F4A6C001BD2B4 /* SAMCRequestListCell.m in Sources */,
 				312C1CB21D35D85B00242906 /* NTESTextHeaderView.m in Sources */,
 				312C1C851D35D85B00242906 /* NTESJanKenPonAttachment.m in Sources */,
 				31F8FCB41D75329100734068 /* SAMCCustomPublicListCell.m in Sources */,

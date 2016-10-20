@@ -7,7 +7,6 @@
 //
 
 #import "SAMCSPRequestListDelegate.h"
-#import "SAMCRequestListCell.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCQuestionSession.h"
 #import "SAMCConversationManager.h"
@@ -42,18 +41,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    static NSString * cellId = @"cellId";
-//    SAMCRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-//    if (!cell) {
-//        cell = [[SAMCRequestListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-//    }
-//    
-//    SAMCQuestionSession *session = [self data][indexPath.row];
-//    cell.messageLabel.text = session.question;
-//    cell.leftLabel.text = [session questionTimeDescription];
-//    cell.middleLabel.text = session.address;
-//    cell.rightLabel.text = session.senderUsername;
-    
     static NSString *cellId = @"SAMCSPRequestListCellId";
     SAMCSPRequestListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
