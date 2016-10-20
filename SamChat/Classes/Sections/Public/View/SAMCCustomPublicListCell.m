@@ -52,7 +52,7 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:40.0f]];
+                                                             constant:60.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
@@ -60,7 +60,7 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-5-[_nameLabel]-5-[_categoryLabel]-5-[_timeLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_avatarView]-10-[_nameLabel]-5-[_categoryLabel]-5-[_timeLabel]-16-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_categoryLabel,_timeLabel)]];
@@ -78,7 +78,7 @@
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-10-[_messageLabel]-16-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel)]];
@@ -88,14 +88,14 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0f
-                                                      constant:15.0f]];
+                                                      constant:12.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
-                                                     attribute:NSLayoutAttributeBottom
+                                                     attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
+                                                        toItem:_nameLabel
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
-                                                      constant:-15.0f]];
+                                                      constant:8.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -111,6 +111,11 @@
     
     NSURL *url = publicSession.spBasicInfo.avatar? [NSURL URLWithString:publicSession.spBasicInfo.avatar] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"avatar_user"] options:SDWebImageRetryFailed];
+    if (publicSession.unreadCount == 0) {
+        self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
+    } else {
+        self.avatarView.circleColor = SAMC_COLOR_LIME;
+    }
 }
 
 #pragma mark - lazy load
@@ -129,8 +134,8 @@
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _nameLabel.font = [UIFont boldSystemFontOfSize:14.0f];
-        _nameLabel.textColor = SAMC_MAIN_DARKCOLOR;
+        _nameLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+        _nameLabel.textColor = SAMC_COLOR_INK;
     }
     return _nameLabel;
 }
@@ -140,8 +145,8 @@
     if (_categoryLabel == nil) {
         _categoryLabel = [[UILabel alloc] init];
         _categoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _categoryLabel.font = [UIFont systemFontOfSize:14.0f];
-        _categoryLabel.textColor = SAMC_MAIN_DARKCOLOR;
+        _categoryLabel.font = [UIFont systemFontOfSize:13.0f];
+        _categoryLabel.textColor = SAMC_COLOR_INK;
     }
     return _categoryLabel;
 }
@@ -151,8 +156,8 @@
     if (_timeLabel == nil) {
         _timeLabel = [[UILabel alloc] init];
         _timeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _timeLabel.font = [UIFont systemFontOfSize:12.0f];
-        _timeLabel.textColor = UIColorFromRGB(0xC3C3C3);
+        _timeLabel.font = [UIFont systemFontOfSize:13.0f];
+        _timeLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
         _timeLabel.textAlignment = NSTextAlignmentRight;
     }
     return _timeLabel;
@@ -164,7 +169,8 @@
         _messageLabel = [[UILabel alloc] init];
         _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _messageLabel.font = [UIFont systemFontOfSize:15.0f];
-        _messageLabel.textColor = UIColorFromRGB(0x92959B);
+        _messageLabel.numberOfLines = 2;
+        _messageLabel.textColor = SAMC_COLOR_INK;
     }
     return _messageLabel;
 }

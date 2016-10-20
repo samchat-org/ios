@@ -139,9 +139,9 @@
     
     self.categoryLabel.text = info.serviceCategory;
     if (recentSession.unreadCount) {
-        self.avatarView.circleColor = UIColorFromRGB(0xB8E986);
+        self.avatarView.circleColor = SAMC_COLOR_LIME;
     } else {
-        self.avatarView.circleColor = UIColorFromRGB(0xD8DCE2);
+        self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
     }
     
     NSString *name = @"";

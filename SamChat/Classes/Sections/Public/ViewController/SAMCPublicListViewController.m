@@ -37,6 +37,7 @@
 
 - (void)setupSubviews
 {
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     self.parentViewController.navigationItem.title = @"Public";
     [self.data removeAllObjects];
     [self.data addObjectsFromArray:[[SAMCPublicManager sharedManager] myFollowList]];
@@ -49,7 +50,7 @@
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tableView.backgroundColor = [UIColor greenColor];
+    self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.dataSource = self.delegator;
     self.tableView.delegate = self.delegator;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];

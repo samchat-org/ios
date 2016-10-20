@@ -149,7 +149,7 @@
     if (_messageLabel == nil) {
         _messageLabel = [[UILabel alloc] init];
         _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _messageLabel.font = [UIFont systemFontOfSize:17.0f];
+        _messageLabel.font = [UIFont systemFontOfSize:15.0f];
         _messageLabel.textColor = SAMC_COLOR_INK;
         _messageLabel.textAlignment = NSTextAlignmentLeft;
         _messageLabel.numberOfLines = 2;
