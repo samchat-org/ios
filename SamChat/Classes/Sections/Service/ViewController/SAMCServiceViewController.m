@@ -15,7 +15,7 @@
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCAddContactViewController.h"
 
-@interface SAMCServiceViewController()<SAMCTableReloadDelegate>//<UITableViewDelegate,UITableViewDataSource>
+@interface SAMCServiceViewController()<SAMCTableReloadDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -96,15 +96,15 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_firstRequestTipLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_firstRequestDetailLabel]-40-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-48-[_firstRequestDetailLabel]-48-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_firstRequestDetailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_firstRequestButton]-40-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_firstRequestButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_firstRequestButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_firstRequestTipLabel]-10-[_firstRequestDetailLabel]-10-[_firstRequestButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_firstRequestTipLabel]-12-[_firstRequestDetailLabel]-20-[_firstRequestButton(40)]-40-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_firstRequestTipLabel,_firstRequestDetailLabel,_firstRequestButton)]];
@@ -118,7 +118,7 @@
     [self.view addSubview:self.requestButton];
     [self.view addSubview:self.tableView];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_requestButton]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_requestButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestButton)]];
@@ -126,7 +126,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_requestButton(35)]-20-[_tableView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_requestButton(40)]-20-[_tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_requestButton, _tableView)]];
@@ -152,15 +152,15 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_noRequestDetailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_updateSPProfileButton]-65-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-50-[_updateSPProfileButton]-50-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_updateSPProfileButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_sendPublicUpdateButton]-65-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-50-[_sendPublicUpdateButton]-50-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_sendPublicUpdateButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-65-[_addCustomerButton]-65-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-50-[_addCustomerButton]-50-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_addCustomerButton)]];
@@ -300,7 +300,8 @@
     if (_firstRequestTipLabel == nil) {
         _firstRequestTipLabel = [[UILabel alloc] init];
         _firstRequestTipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _firstRequestTipLabel.font = [UIFont boldSystemFontOfSize:15.0f];
+        _firstRequestTipLabel.font = [UIFont systemFontOfSize:19.0f];
+        _firstRequestTipLabel.textColor = SAMC_COLOR_INK;
         _firstRequestTipLabel.text = @"Make your first request";
         _firstRequestTipLabel.textAlignment = NSTextAlignmentCenter;
     }
@@ -312,9 +313,10 @@
     if (_firstRequestDetailLabel == nil) {
         _firstRequestDetailLabel = [[UILabel alloc] init];
         _firstRequestDetailLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _firstRequestDetailLabel.font = [UIFont systemFontOfSize:14.0f];
+        _firstRequestDetailLabel.font = [UIFont systemFontOfSize:15.0f];
         _firstRequestDetailLabel.text = @"Tell us what professional services do you need or what job do you need done. Get started now!";
         _firstRequestDetailLabel.numberOfLines = 0;
+        _firstRequestDetailLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
         _firstRequestDetailLabel.textAlignment = NSTextAlignmentCenter;
     }
     return _firstRequestDetailLabel;
@@ -336,11 +338,11 @@
     if (_firstRequestButton == nil) {
         _firstRequestButton = [[UIButton alloc] init];
         _firstRequestButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _firstRequestButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _firstRequestButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_firstRequestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_firstRequestButton setTitle:@"Make a New Request" forState:UIControlStateNormal];
-        _firstRequestButton.backgroundColor = UIColorFromRGB(0x67D45F);
-        _firstRequestButton.layer.cornerRadius = 17.5f;
+        _firstRequestButton.backgroundColor = SAMC_COLOR_GREEN;
+        _firstRequestButton.layer.cornerRadius = 20.0f;
         [_firstRequestButton addTarget:self action:@selector(touchMakeNewRequest:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _firstRequestButton;
@@ -351,11 +353,11 @@
     if (_requestButton == nil) {
         _requestButton = [[UIButton alloc] init];
         _requestButton.translatesAutoresizingMaskIntoConstraints = NO;
-        _requestButton.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+        _requestButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_requestButton setTitle:@"New Request" forState:UIControlStateNormal];
-        _requestButton.backgroundColor = UIColorFromRGB(0x67D45F);
-        _requestButton.layer.cornerRadius = 17.5f;
+        _requestButton.backgroundColor = SAMC_COLOR_GREEN;
+        _requestButton.layer.cornerRadius = 20.0f;
         [_requestButton addTarget:self action:@selector(touchMakeNewRequest:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _requestButton;
