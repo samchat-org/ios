@@ -27,7 +27,7 @@
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit;
 
-- (void)insertMessage:(SAMCPublicMessage *)message;
+- (void)insertMessage:(SAMCPublicMessage *)message initDeliveryState:(NIMMessageDeliveryState)deliveryState;
 - (void)updateMessage:(SAMCPublicMessage *)message;
 - (void)deleteMessage:(SAMCPublicMessage *)message;
 

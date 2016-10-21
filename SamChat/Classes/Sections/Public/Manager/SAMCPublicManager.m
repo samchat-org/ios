@@ -181,7 +181,7 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 - (void)receivePublicMessage:(SAMCPublicMessage *)message
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+        [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message initDeliveryState:message.deliveryState];
         [self.publicDelegate onRecvMessage:message];
     });
 }
@@ -196,7 +196,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 #pragma mark - Server
 - (void)sendPublicMessage:(SAMCPublicMessage *)message error:(NSError * __nullable *)errorOut
 {
-    [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message];
+    // init delivery state to failed incase app crash mess the state
+    [[SAMCDataBaseManager sharedManager].publicDB insertMessage:message initDeliveryState:NIMMessageDeliveryStateFailed];
     [self.sendingMessages addObject:message.messageId];
     if (message.messageType == NIMMessageTypeCustom) {
         [self sendPublicImageMessage:message];
