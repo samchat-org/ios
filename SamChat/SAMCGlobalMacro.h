@@ -15,7 +15,7 @@
 #define UISreenWidthScale   UIScreenWidth / 320
 
 
-#define UICommonTableBkgColor UIColorFromRGB(0xe4e7ec)
+#define UICommonTableBkgColor UIColorFromRGB(0xECEDF0)
 #define Message_Font_Size   14        // 普通聊天文字大小
 #define Notification_Font_Size   10   // 通知文字大小
 #define Chatroom_Message_Font_Size 16 // 聊天室聊天文字大小

@@ -90,9 +90,9 @@ UITableViewDelegate>
 
 - (void)makeUI
 {
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.backgroundColor = UIColorFromRGB(0xe4e7ec);
+    self.tableView.backgroundColor = SAMC_COLOR_LIGHTGREY;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

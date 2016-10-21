@@ -92,7 +92,9 @@ NIMUserManagerDelegate>
 
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.backgroundColor = NIMKit_UIColorFromRGB(0xe4e7ec);
+    //SAMC_BEGIN
+    self.tableView.backgroundColor = NIMKit_UIColorFromRGB(0xECEDF0);
+    //SAMC_END
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;

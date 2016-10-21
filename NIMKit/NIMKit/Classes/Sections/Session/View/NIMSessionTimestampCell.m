@@ -24,7 +24,9 @@
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = NIMKit_UIColorFromRGB(0xe4e7ec);
+        //SAMC_BEGIN
+        self.backgroundColor = NIMKit_UIColorFromRGB(0xECEDF0);
+        //SAMC_END
         self.selectionStyle = UITableViewCellSelectionStyleNone;
         _timeBGView = [[UIImageView alloc] initWithFrame:CGRectZero];
         [self addSubview:_timeBGView];
