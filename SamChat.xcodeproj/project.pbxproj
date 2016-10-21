@@ -295,6 +295,11 @@
 		31DB30991DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30981DB84B370072BE34 /* SAMCPublicSessionViewLayoutManager.m */; };
 		31DB309C1DB890E00072BE34 /* SAMCSPRequestListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB309B1DB890E00072BE34 /* SAMCSPRequestListCell.m */; };
 		31DB309F1DB8E57A0072BE34 /* SAMCAvatarImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB309E1DB8E57A0072BE34 /* SAMCAvatarImageView.m */; };
+		31DB30A11DB9BBD60072BE34 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31DB30A01DB9BBD60072BE34 /* AddressBook.framework */; };
+		31DB30A61DB9EAC00072BE34 /* SAMCPeopleDataMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30A51DB9EAC00072BE34 /* SAMCPeopleDataMember.m */; };
+		31DB30A91DB9EBD40072BE34 /* SAMCGroupedPeoples.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30A81DB9EBD40072BE34 /* SAMCGroupedPeoples.m */; };
+		31DB30AC1DB9FAB80072BE34 /* SAMCPeopleInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30AB1DB9FAB80072BE34 /* SAMCPeopleInfo.m */; };
+		31DB30AF1DBA08880072BE34 /* SAMCPeopleDataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30AE1DBA08880072BE34 /* SAMCPeopleDataCell.m */; };
 		31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B761D6589E900832CC8 /* SAMCPushManager.m */; };
 		31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B7A1D65923A00832CC8 /* SAMCSettingManager.m */; };
 		31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B801D65B17000832CC8 /* SAMCTextView.m */; };
@@ -889,6 +894,16 @@
 		31DB309B1DB890E00072BE34 /* SAMCSPRequestListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPRequestListCell.m; path = Service/View/SAMCSPRequestListCell.m; sourceTree = "<group>"; };
 		31DB309D1DB8E57A0072BE34 /* SAMCAvatarImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAvatarImageView.h; sourceTree = "<group>"; };
 		31DB309E1DB8E57A0072BE34 /* SAMCAvatarImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCAvatarImageView.m; sourceTree = "<group>"; };
+		31DB30A01DB9BBD60072BE34 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		31DB30A21DB9BBDB0072BE34 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		31DB30A41DB9EAC00072BE34 /* SAMCPeopleDataMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCPeopleDataMember.h; sourceTree = "<group>"; };
+		31DB30A51DB9EAC00072BE34 /* SAMCPeopleDataMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCPeopleDataMember.m; sourceTree = "<group>"; };
+		31DB30A71DB9EBD40072BE34 /* SAMCGroupedPeoples.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCGroupedPeoples.h; sourceTree = "<group>"; };
+		31DB30A81DB9EBD40072BE34 /* SAMCGroupedPeoples.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCGroupedPeoples.m; sourceTree = "<group>"; };
+		31DB30AA1DB9FAB80072BE34 /* SAMCPeopleInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCPeopleInfo.h; sourceTree = "<group>"; };
+		31DB30AB1DB9FAB80072BE34 /* SAMCPeopleInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCPeopleInfo.m; sourceTree = "<group>"; };
+		31DB30AD1DBA08880072BE34 /* SAMCPeopleDataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCPeopleDataCell.h; sourceTree = "<group>"; };
+		31DB30AE1DBA08880072BE34 /* SAMCPeopleDataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCPeopleDataCell.m; sourceTree = "<group>"; };
 		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
 		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31E37B791D65923A00832CC8 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -969,6 +984,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31DB30A11DB9BBD60072BE34 /* AddressBook.framework in Frameworks */,
 				31F8FC911D6D2A2A00734068 /* CoreBluetooth.framework in Frameworks */,
 				31F8FC8F1D6D2A2100734068 /* CoreLocation.framework in Frameworks */,
 				31F8FC8D1D6D2A1700734068 /* JavaScriptCore.framework in Frameworks */,
@@ -1342,6 +1358,12 @@
 				312C1B1D1D35D85B00242906 /* NTESGroupedUsrInfo.m */,
 				316A67061D7D98A900B56A5D /* SAMCGroupedContacts.h */,
 				316A67071D7D98A900B56A5D /* SAMCGroupedContacts.m */,
+				31DB30A41DB9EAC00072BE34 /* SAMCPeopleDataMember.h */,
+				31DB30A51DB9EAC00072BE34 /* SAMCPeopleDataMember.m */,
+				31DB30A71DB9EBD40072BE34 /* SAMCGroupedPeoples.h */,
+				31DB30A81DB9EBD40072BE34 /* SAMCGroupedPeoples.m */,
+				31DB30AA1DB9FAB80072BE34 /* SAMCPeopleInfo.h */,
+				31DB30AB1DB9FAB80072BE34 /* SAMCPeopleInfo.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1360,6 +1382,8 @@
 				314D5D411D6C0C6B004B3DE4 /* SAMCQRScanLineView.m */,
 				314D5D461D6C1FF0004B3DE4 /* SAMCQRScanView.h */,
 				314D5D471D6C1FF0004B3DE4 /* SAMCQRScanView.m */,
+				31DB30AD1DBA08880072BE34 /* SAMCPeopleDataCell.h */,
+				31DB30AE1DBA08880072BE34 /* SAMCPeopleDataCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2405,6 +2429,8 @@
 		5176189D0086B38FE643A26A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				31DB30A21DB9BBDB0072BE34 /* AddressBookUI.framework */,
+				31DB30A01DB9BBD60072BE34 /* AddressBook.framework */,
 				31F8FC901D6D2A2A00734068 /* CoreBluetooth.framework */,
 				31F8FC8E1D6D2A2100734068 /* CoreLocation.framework */,
 				31F8FC8C1D6D2A1700734068 /* JavaScriptCore.framework */,
@@ -2672,6 +2698,7 @@
 				31DB30611DB06CF10072BE34 /* SAMCCustomMeViewController.m in Sources */,
 				312C1CBB1D35D85B00242906 /* NTESNoDisturbTimeCell.m in Sources */,
 				312C1C911D35D85B00242906 /* NTESSessionJankenponContentView.m in Sources */,
+				31DB30AC1DB9FAB80072BE34 /* SAMCPeopleInfo.m in Sources */,
 				314D5D251D6ABCDE004B3DE4 /* SAMCMessageDB_2016082201.m in Sources */,
 				3195DDDE1D51CC01001BD2B4 /* SAMCMessageDB.m in Sources */,
 				3195DDD31D509A0F001BD2B4 /* SAMCRequestDetailViewController.m in Sources */,
@@ -2745,6 +2772,7 @@
 				312C1C5C1D35D85B00242906 /* NTESChatroomMaker.m in Sources */,
 				312C1CCA1D35D85B00242906 /* NTESBirthPickerView.m in Sources */,
 				312C1C8B1D35D85B00242906 /* NTESSessionCustomContentConfig.m in Sources */,
+				31DB30AF1DBA08880072BE34 /* SAMCPeopleDataCell.m in Sources */,
 				312C1CD61D35D85B00242906 /* NTESDevice.m in Sources */,
 				31DB309F1DB8E57A0072BE34 /* SAMCAvatarImageView.m in Sources */,
 				312C1CDD1D35D85B00242906 /* NTESUserUtil.m in Sources */,
@@ -2764,6 +2792,7 @@
 				3154F9501D79691B00C540EB /* SAMCPublicMessageMaker.m in Sources */,
 				312C1C381D35D85B00242906 /* UIActionSheet+NTESBlock.m in Sources */,
 				312C1C871D35D85B00242906 /* NTESSearchLocalHistoryObject.m in Sources */,
+				31DB30A61DB9EAC00072BE34 /* SAMCPeopleDataMember.m in Sources */,
 				3195DE0C1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m in Sources */,
 				312C1C6D1D35D85B00242906 /* NTESGroupedUsrInfo.m in Sources */,
 				3195DE3B1D604EA6001BD2B4 /* SAMCAccountManager.m in Sources */,
@@ -2812,6 +2841,7 @@
 				312C1CB21D35D85B00242906 /* NTESTextHeaderView.m in Sources */,
 				312C1C851D35D85B00242906 /* NTESJanKenPonAttachment.m in Sources */,
 				31F8FCB41D75329100734068 /* SAMCCustomPublicListCell.m in Sources */,
+				31DB30A91DB9EBD40072BE34 /* SAMCGroupedPeoples.m in Sources */,
 				312C1C4B1D35D85B00242906 /* NTESMarginButton.m in Sources */,
 				312C1C391D35D85B00242906 /* UIAlertView+NTESBlock.m in Sources */,
 				312C1CC21D35D85B00242906 /* NTESBirthSettingViewController.m in Sources */,
