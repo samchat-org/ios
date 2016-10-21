@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIView *shadowView;
-@property (nonatomic, strong) SAMCAvatarImageView *avatarView;
 
 @end
 

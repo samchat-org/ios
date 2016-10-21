@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SAMCAvatarImageView.h"
 
 @interface SAMCCardPortraitView : UIView
 
 @property (nonatomic, strong) NSString *avatarUrl;
+@property (nonatomic, strong) SAMCAvatarImageView *avatarView;
 
 - (instancetype)initWithFrame:(CGRect)frame effect:(BOOL)effect;
 

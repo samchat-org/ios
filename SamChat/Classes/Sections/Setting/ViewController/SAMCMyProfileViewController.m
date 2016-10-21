@@ -54,6 +54,7 @@
     
     SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 140)];
     headerView.avatarUrl = _user.userInfo.avatar;
+    [headerView.avatarView addTarget:self action:@selector(onTouchPortraitAvatar:) forControlEvents:UIControlEventTouchUpInside];
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
@@ -137,6 +138,17 @@
             break;
     }
     return cell;
+}
+
+#pragma mark - Action
+- (void)onTouchPortraitAvatar:(id)sender
+{
+    DDLogDebug(@"onTouchPortraitAvatar");
+//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+//    picker.delegate = self;
+//    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+//    picker.allowsEditing = YES;
+//    [self presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - Cell
