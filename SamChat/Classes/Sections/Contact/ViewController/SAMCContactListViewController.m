@@ -29,6 +29,8 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCAccountManager.h"
 #import "SAMCAddContactViewController.h"
+#import "NTESContactDataMember.h"
+#import "SAMCTableCellFactory.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
@@ -236,9 +238,11 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     return CGFLOAT_MIN;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
-    return contactItem.uiHeight;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60.0f;
+//    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
+//    return contactItem.uiHeight;
 }
 
 
@@ -251,25 +255,35 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     return [_contacts groupCount];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    id contactItem = [_contacts memberOfIndex:indexPath];
-    NSString * cellId = [contactItem reuseId];
-    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        Class cellClazz = NSClassFromString([contactItem cellName]);
-        cell = [[cellClazz alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    if ([contactItem showAccessoryView]) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else{
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
-    if ([cell isKindOfClass:[NTESContactUtilCell class]]) {
-        [(NTESContactUtilCell *)cell refreshWithContactItem:contactItem];
-        [(NTESContactUtilCell *)cell setDelegate:self];
-    }else{
-        [(NIMContactDataCell *)cell refreshUser:contactItem];
-        [(NIMContactDataCell *)cell setDelegate:self];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    id contactItem = [_contacts memberOfIndex:indexPath];
+//    NSString * cellId = [contactItem reuseId];
+//    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+//    if (!cell) {
+//        Class cellClazz = NSClassFromString([contactItem cellName]);
+//        cell = [[cellClazz alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+//    }
+//    if ([contactItem showAccessoryView]) {
+//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    }else{
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//    }
+//    if ([cell isKindOfClass:[NTESContactUtilCell class]]) {
+//        [(NTESContactUtilCell *)cell refreshWithContactItem:contactItem];
+//        [(NTESContactUtilCell *)cell setDelegate:self];
+//    }else{
+//        [(NIMContactDataCell *)cell refreshUser:contactItem];
+//        [(NIMContactDataCell *)cell setDelegate:self];
+//    }
+    NTESContactDataMember *member = [_contacts memberOfIndex:indexPath];
+    UITableViewCell *cell;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        cell = [SAMCTableCellFactory customContactCell:tableView];
+        [(SAMCCustomContactCell *)cell refreshData:member.info];
+    } else {
+        cell = [SAMCTableCellFactory spContactCell:tableView];
+        [(SAMCSPContactCell *)cell refreshData:member.info];
     }
     return cell;
 }

@@ -69,4 +69,24 @@
     return cell;
 }
 
++ (SAMCCustomContactCell *)customContactCell:(UITableView *)tableView
+{
+    static NSString *cellId = @"SAMCCustomContactCellId";
+    SAMCCustomContactCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCCustomContactCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    return cell;
+}
+
++ (SAMCSPContactCell *)spContactCell:(UITableView *)tableView
+{
+    static NSString *cellId = @"SAMCSPContactCellId";
+    SAMCSPContactCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCSPContactCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    return cell;
+}
+
 @end

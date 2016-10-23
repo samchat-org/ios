@@ -10,6 +10,8 @@
 #import "SAMCCommonSwitcherCell.h"
 #import "SAMCOptionPortraitCell.h"
 #import "SAMCServicerInfoCell.h"
+#import "SAMCCustomContactCell.h"
+#import "SAMCSPContactCell.h"
 
 @interface SAMCTableCellFactory : NSObject
 
@@ -20,5 +22,7 @@
 + (SAMCCommonSwitcherCell *)commonSwitcherCell:(UITableView *)tableView;
 + (SAMCOptionPortraitCell *)optionPortraitCell:(UITableView *)tableView;
 + (SAMCServicerInfoCell *)servicerInfoCell:(UITableView *)tableView;
++ (SAMCCustomContactCell *)customContactCell:(UITableView *)tableView;
++ (SAMCSPContactCell *)spContactCell:(UITableView *)tableView;
 
 @end
