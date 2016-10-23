@@ -1,5 +1,5 @@
 //
-//  SAMCProfileSwitcherCell.h
+//  SAMCCommonSwitcherCell.h
 //  SamChat
 //
 //  Created by HJ on 10/13/16.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SAMCProfileSwitcherCell : UITableViewCell
+@interface SAMCCommonSwitcherCell : UITableViewCell
 
 @property (nonatomic, strong) UISwitch *switcher;
 

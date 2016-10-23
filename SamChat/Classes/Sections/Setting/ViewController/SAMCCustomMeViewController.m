@@ -14,6 +14,7 @@
 #import "SAMCTabViewController.h"
 #import "SVProgressHUD.h"
 #import "SAMCMyProfileViewController.h"
+#import "SAMCTableCellFactory.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -136,35 +137,35 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"My profile";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
                 }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"My QR code";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
                     break;
                 case 2:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Change password";
                     cell.imageView.image = [UIImage imageNamed:@"ico_password"];
                 }
                     break;
                 case 3:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Notification";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
                 }
                     break;
                 case 4:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.textLabel.text = @"Log out";
                     cell.imageView.image = [UIImage imageNamed:@"icon_logout_normal"];
@@ -181,7 +182,7 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
                         cell.textLabel.text = @"Switch to Service Account";
                         cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
@@ -203,14 +204,14 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"About Samchat";
                     cell.imageView.image = [UIImage imageNamed:@"icon_about_normal"];
                 }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"F.A.Q";
                     cell.imageView.image = [UIImage imageNamed:@"icon_faq_normal"];
                 }
@@ -225,19 +226,6 @@
         default:
             break;
     }
-    return cell;
-}
-
-#pragma mark - 
-- (UITableViewCell *)commonBasicCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCMeCommonBasicCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 

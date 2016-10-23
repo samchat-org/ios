@@ -12,8 +12,8 @@
 #import "UIView+NTES.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCSession.h"
+#import "SAMCTableCellFactory.h"
 #import "SAMCOptionPortraitCell.h"
-#import "SAMCProfileSwitcherCell.h"
 
 @interface SAMCSessionCardViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -113,7 +113,9 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self optionPortraitCell:tableView];
+                    SAMCOptionPortraitCell *portraitCell = [SAMCTableCellFactory optionPortraitCell:tableView];
+                    [portraitCell refreshData:[[NIMKit sharedKit] infoByUser:self.session.sessionId inSession:self.session.nimSession]];
+                    cell = portraitCell;
                 }
                     break;
                 default:
@@ -126,21 +128,22 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonSwitcherCell:tableView];
-                    cell.textLabel.text = @"Mute chat";
+                    SAMCCommonSwitcherCell *swithCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
+                    swithCell.textLabel.text = @"Mute chat";
                     //    [cell.switcher setOn:];
                     //    [cell.switcher addTarget:self action:@selector() forControlEvents:UIControlEventValueChanged];
+                    cell = swithCell;
                 }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Clear chat history";
                 }
                     break;
                 case 2:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Report abuse";
                 }
                     break;
@@ -152,42 +155,6 @@
             break;
         default:
             break;
-    }
-    return cell;
-}
-
-#pragma mark -
-- (UITableViewCell *)optionPortraitCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCOptionPortraitCellId";
-    SAMCOptionPortraitCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCOptionPortraitCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    [cell refreshData:[[NIMKit sharedKit] infoByUser:self.session.sessionId inSession:self.session.nimSession]];
-    return cell;
-}
-
-- (UITableViewCell *)commonBasicCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCCommonBasicCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    return cell;
-}
-
-- (UITableViewCell *)commonSwitcherCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCCommonSwitcherCellId";
-    SAMCProfileSwitcherCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCProfileSwitcherCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.textColor = SAMC_COLOR_INK;
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
     }
     return cell;
 }

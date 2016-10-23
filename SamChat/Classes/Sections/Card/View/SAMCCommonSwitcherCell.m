@@ -6,9 +6,9 @@
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCProfileSwitcherCell.h"
+#import "SAMCCommonSwitcherCell.h"
 
-@implementation SAMCProfileSwitcherCell
+@implementation SAMCCommonSwitcherCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

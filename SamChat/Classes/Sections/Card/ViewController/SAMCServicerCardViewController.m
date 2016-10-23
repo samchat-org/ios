@@ -8,14 +8,13 @@
 
 #import "SAMCServicerCardViewController.h"
 #import "SAMCCardPortraitView.h"
-#import "SAMCServicerInfoCell.h"
-#import "SAMCProfileSwitcherCell.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCServicerQRViewController.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCTableCellFactory.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -136,11 +135,15 @@
         {
             switch (indexPath.row) {
                 case 0:
-                    cell = [self servicerInfoCell:tableView];
+                {
+                    SAMCServicerInfoCell *infoCell = [SAMCTableCellFactory servicerInfoCell:tableView];
+                    [infoCell refreshData:self.user];
+                    cell = infoCell;
+                }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Chat now";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_chat"];
                 }
@@ -148,7 +151,7 @@
                     
                 case 2:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"QR code";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
@@ -168,7 +171,7 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Work phone";
                     NSString *phone = self.user.userInfo.spInfo.phone;
                     cell.detailTextLabel.text = [phone length] ? phone :@" ";
@@ -177,7 +180,7 @@
                     break;
                 case 1:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Email";
                     NSString *email = self.user.userInfo.spInfo.email;
                     cell.detailTextLabel.text = [email length] ? email :@" ";
@@ -186,7 +189,7 @@
                     break;
                 case 2:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Location";
                     NSString *address = self.user.userInfo.spInfo.address;
                     cell.detailTextLabel.text = [address length] ? address :@" ";
@@ -205,53 +208,9 @@
 }
 
 #pragma mark -
-- (UITableViewCell *)servicerInfoCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCServicerInfoCellId";
-    SAMCServicerInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCServicerInfoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    [cell refreshData:self.user];
-    return cell;
-}
-
-- (UITableViewCell *)commonBasicCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCProfileCommonBasicCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.textColor = UIColorFromRGB(0x172843);
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }
-    return cell;
-}
-
-- (UITableViewCell *)commonDetailCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCProfileCommonDetailCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
-        cell.textLabel.textColor = UIColorFromRGB(0x586874);
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
-        cell.detailTextLabel.textColor = UIColorFromRGB(0x172843);
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
-    }
-    return cell;
-}
-
 - (UITableViewCell *)followCell:(UITableView *)tableView
 {
-    static NSString * cellId = @"SAMCProfileSwitcherCellId";
-    SAMCProfileSwitcherCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCProfileSwitcherCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.textColor = UIColorFromRGB(0x172843);
-        cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
-    }
+    SAMCCommonSwitcherCell *cell = [SAMCTableCellFactory commonSwitcherCell:tableView];
     [cell.switcher setOn:_isFollow];
     [cell.switcher addTarget:self action:@selector(follow:) forControlEvents:UIControlEventValueChanged];
     cell.textLabel.text = @"Follow";

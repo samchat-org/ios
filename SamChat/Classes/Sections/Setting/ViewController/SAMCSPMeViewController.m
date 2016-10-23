@@ -9,6 +9,7 @@
 #import "SAMCSPMeViewController.h"
 #import "SAMCCardPortraitView.h"
 #import "SAMCServiceProfileViewController.h"
+#import "SAMCTableCellFactory.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -136,14 +137,14 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Service profile";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_sp"];
                 }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"My service QR code";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
@@ -159,14 +160,14 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Subscription and plans";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_subscription"];
                 }
                     break;
                 case 1:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Switch to personal account";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
                 }
@@ -182,7 +183,7 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonBasicCell:tableView];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Notification";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
                     cell.imageView.frame = CGRectMake(0, 0, 44, 44);
@@ -197,19 +198,6 @@
         default:
             break;
     }
-    return cell;
-}
-
-#pragma mark -
-- (UITableViewCell *)commonBasicCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCMeCommonBasicCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 

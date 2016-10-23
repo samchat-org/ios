@@ -8,14 +8,13 @@
 
 #import "SAMCMyProfileViewController.h"
 #import "SAMCCardPortraitView.h"
-#import "SAMCServicerInfoCell.h"
-#import "SAMCProfileSwitcherCell.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCServicerQRViewController.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCTableCellFactory.h"
 
 @interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -104,7 +103,7 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Name";
                     NSString *name = self.user.userInfo.username;
                     cell.detailTextLabel.text = [name length] ? name :@" ";
@@ -113,7 +112,7 @@
                     break;
                 case 1:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Phone no.";
                     NSString *phone = self.user.userInfo.cellPhone;
                     cell.detailTextLabel.text = [phone length] ? phone :@" ";
@@ -122,7 +121,7 @@
                     break;
                 case 2:
                 {
-                    cell = [self commonDetailCell:tableView];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Location";
                     NSString *address = self.user.userInfo.address;
                     cell.detailTextLabel.text = [address length] ? address :@" ";
@@ -149,21 +148,6 @@
 //    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 //    picker.allowsEditing = YES;
 //    [self presentViewController:picker animated:YES completion:nil];
-}
-
-#pragma mark - Cell
-- (UITableViewCell *)commonDetailCell:(UITableView *)tableView
-{
-    static NSString * cellId = @"SAMCProfileCommonDetailCellId";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellId];
-        cell.textLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
-        cell.textLabel.font = [UIFont systemFontOfSize:13.0f];
-        cell.detailTextLabel.textColor = SAMC_COLOR_INK;
-        cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
-    }
-    return cell;
 }
 
 @end
