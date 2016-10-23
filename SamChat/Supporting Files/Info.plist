@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>zh_CN</string>
+	<string>en_US</string>
 	<key>CFBundleDisplayName</key>
 	<string>${XCCONFIG_BUNDLE_NAME}</string>
 	<key>CFBundleExecutable</key>
@@ -14,6 +14,7 @@
 	<string>6.0</string>
 	<key>CFBundleLocalizations</key>
 	<array>
+		<string>en</string>
 		<string>zh_CN</string>
 	</array>
 	<key>CFBundleName</key>
