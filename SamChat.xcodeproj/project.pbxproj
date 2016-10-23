@@ -199,7 +199,6 @@
 		314444CE1D461ECF0062B797 /* SAMCNewRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444CD1D461ECF0062B797 /* SAMCNewRequestViewController.m */; };
 		314444DB1D473D630062B797 /* SAMCChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444DA1D473D630062B797 /* SAMCChatListViewController.m */; };
 		314444DF1D473E1D0062B797 /* SAMCContactListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444DE1D473E1D0062B797 /* SAMCContactListViewController.m */; };
-		314444E31D4753C30062B797 /* SAMCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E21D4753C30062B797 /* SAMCSettingViewController.m */; };
 		314444E61D4860960062B797 /* SAMCSettingPortraitCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */; };
 		314444ED1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444EC1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.m */; };
 		314444F31D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */; };
@@ -704,8 +703,6 @@
 		314444DA1D473D630062B797 /* SAMCChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCChatListViewController.m; path = Chat/ViewController/SAMCChatListViewController.m; sourceTree = "<group>"; };
 		314444DD1D473E1D0062B797 /* SAMCContactListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCContactListViewController.h; sourceTree = "<group>"; };
 		314444DE1D473E1D0062B797 /* SAMCContactListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCContactListViewController.m; sourceTree = "<group>"; };
-		314444E11D4753C30062B797 /* SAMCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingViewController.h; path = ViewController/SAMCSettingViewController.h; sourceTree = "<group>"; };
-		314444E21D4753C30062B797 /* SAMCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSettingViewController.m; path = ViewController/SAMCSettingViewController.m; sourceTree = "<group>"; };
 		314444E41D4860960062B797 /* SAMCSettingPortraitCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSettingPortraitCell.h; sourceTree = "<group>"; };
 		314444E51D4860960062B797 /* SAMCSettingPortraitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSettingPortraitCell.m; sourceTree = "<group>"; };
 		314444EB1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCConfirmPhoneNumViewController.h; sourceTree = "<group>"; };
@@ -2088,8 +2085,6 @@
 		314444E01D4753A20062B797 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				314444E11D4753C30062B797 /* SAMCSettingViewController.h */,
-				314444E21D4753C30062B797 /* SAMCSettingViewController.m */,
 				31E37B821D65B83F00832CC8 /* SAMCCSAStepOneViewController.h */,
 				31E37B831D65B83F00832CC8 /* SAMCCSAStepOneViewController.m */,
 				31E37B851D65D94B00832CC8 /* SAMCCSAStepTwoViewController.h */,
@@ -2739,7 +2734,6 @@
 				312C1C401D35D85B00242906 /* UINavigationBar+Swizzling.m in Sources */,
 				31509C7C1D98B871004677B8 /* SAMCStateDateInfo.m in Sources */,
 				312C1C891D35D85B00242906 /* NTESSnapchatAttachment.m in Sources */,
-				314444E31D4753C30062B797 /* SAMCSettingViewController.m in Sources */,
 				312C1C471D35D85B00242906 /* NTESNavigationHandler.m in Sources */,
 				312C1CA41D35D85B00242906 /* NTESVideoViewController.m in Sources */,
 				314444DB1D473D630062B797 /* SAMCChatListViewController.m in Sources */,

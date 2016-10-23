@@ -18,7 +18,6 @@
 #import "SAMCServiceViewController.h"
 #import "SAMCChatListViewController.h"
 #import "SAMCContactListViewController.h"
-#import "SAMCSettingViewController.h"
 #import "SAMCPublicContainerViewController.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCTabViewController.h"
