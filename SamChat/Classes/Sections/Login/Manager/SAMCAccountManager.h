@@ -29,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface SAMCAccountManager : NSObject
 
+@property (nonatomic, strong) SAMCUser * __nullable currentUser;
+
 + (instancetype)sharedManager;
 
 - (void)registerCodeRequestWithCountryCode:(NSString *)countryCode
@@ -72,7 +74,6 @@ NS_ASSUME_NONNULL_BEGIN
              completion:(NIMLoginHandler)completion;
 
 - (NSString *)currentAccount;
-- (SAMCUser *)currentUser;
 - (BOOL)isCurrentUserServicer;
 
 - (BOOL)isLogined;
@@ -82,8 +83,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addDelegate:(id<SAMCLoginManagerDelegate>)delegate;
 
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate;
-
-- (void)updateUser:(SAMCUser *)user;
 
 @end
 

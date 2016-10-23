@@ -14,6 +14,7 @@
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "SAMCUserManager.h"
 #import "SAMCTableCellFactory.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -234,7 +235,7 @@
         } else {
             if (follow) {
                 toast = @"follow success";
-                [[SAMCAccountManager sharedManager] updateUser:_user];
+                [[SAMCUserManager sharedManager] updateUser:_user];
             } else {
                 toast = @"unfollow success";
             }

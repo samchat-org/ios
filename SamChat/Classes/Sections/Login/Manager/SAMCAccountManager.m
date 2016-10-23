@@ -28,7 +28,6 @@
 @interface SAMCAccountManager () <NIMLoginManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCLoginManagerDelegate> *multicastDelegate;
-@property (nonatomic, strong) SAMCUser *currentUser;
 
 @end
 
@@ -223,7 +222,7 @@
                 [[SAMCDataBaseManager sharedManager] doMigration];
             }
             [SAMCChatManager sharedManager];
-            [[SAMCAccountManager sharedManager] updateUser:user];
+            [[SAMCUserManager sharedManager] updateUser:user];
             [[SAMCPushManager sharedManager] open];
             [[SAMCSyncManager sharedManager] start];
             [[SAMCUnreadCountManager sharedManager] refresh];
@@ -315,17 +314,6 @@
 - (void)removeDelegate:(id<SAMCLoginManagerDelegate>)delegate
 {
     [self.multicastDelegate removeDelegate:delegate];
-}
-
-#pragma mark - UserInfoDB
-- (void)updateUser:(SAMCUser *)user
-{
-    if ([user.userId isEqualToString:_currentUser.userId]) {
-        _currentUser = nil;
-    }
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
-    });
 }
 
 #pragma mark - NIMLoginManagerDelegate

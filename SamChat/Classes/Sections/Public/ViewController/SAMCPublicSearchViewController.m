@@ -13,6 +13,7 @@
 #import "SAMCPublicSearchResultCell.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
+#import "SAMCUserManager.h"
 #import "SAMCServicerCardViewController.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,SAMCPublicSearchResultDelegate>
@@ -116,7 +117,7 @@
         } else {
             if (isFollow) {
                 toast = @"follow success";
-                [[SAMCAccountManager sharedManager] updateUser:user];
+                [[SAMCUserManager sharedManager] updateUser:user];
                 [self.myFollowIdList addObject:user.userId];
             } else {
                 toast = @"unfollow success";

@@ -39,6 +39,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (SAMCUser *)userInfo:(NSString *)userId;
 
+- (void)updateUser:(SAMCUser *)user;
+
 @end
 
 NS_ASSUME_NONNULL_END

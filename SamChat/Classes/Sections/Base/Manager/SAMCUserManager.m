@@ -191,6 +191,7 @@
                 user.userInfo.avatar = [response valueForKeyPath:SAMC_USER_THUMB];
                 user.userInfo.avatarOriginal = url;
                 [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+                [SAMCAccountManager sharedManager].currentUser = user;
                 completion(user, nil);
             }
         } else {
@@ -211,5 +212,14 @@
     return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
 }
 
+- (void)updateUser:(SAMCUser *)user
+{
+    if ([user.userId isEqualToString:[SAMCAccountManager sharedManager].currentUser.userId]) {
+        [SAMCAccountManager sharedManager].currentUser = nil;
+    }
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+    });
+}
 
 @end

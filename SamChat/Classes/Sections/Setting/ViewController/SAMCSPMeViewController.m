@@ -10,6 +10,7 @@
 #import "SAMCCardPortraitView.h"
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -44,9 +45,8 @@
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
     
     SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 140) effect:NO];
-    NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
-    NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:uid];
-    headerView.avatarUrl = info.avatarUrlString;
+    SAMCUser *currentUser = [SAMCAccountManager sharedManager].currentUser;
+    headerView.avatarUrl = currentUser.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
