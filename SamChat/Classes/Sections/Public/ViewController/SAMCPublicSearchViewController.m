@@ -21,6 +21,7 @@
 @property (nonatomic, strong) SAMCNavSearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
+@property (nonatomic, assign) BOOL isSearchBarFirstResponder;
 
 @end
 
@@ -30,6 +31,7 @@
 {
     [super viewDidLoad];
     [self setupSubviews];
+    self.isSearchBarFirstResponder = YES;
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,7 +42,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.searchBar becomeFirstResponder];
+    if (self.isSearchBarFirstResponder) {
+        [self.searchBar becomeFirstResponder];
+    }
 }
 
 - (void)setupSubviews
@@ -105,6 +109,12 @@
     }];
 }
 
+#pragma mark -
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.searchBar resignFirstResponder];
+}
+
 #pragma mark - SAMCPublicSearchResultDelegate
 - (void)follow:(BOOL)isFollow user:(SAMCUser *)user completion:(void (^)(BOOL))completion
 {
@@ -153,6 +163,7 @@
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.isSearchBarFirstResponder = [self.searchBar isFirstResponder];
     [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     SAMCUser *user = self.data[indexPath.row];
