@@ -7,27 +7,17 @@
 //
 
 #import "SAMCSessionCardViewController.h"
-#import "NIMCommonTableDelegate.h"
-#import "NIMCommonTableData.h"
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
-#import "NIMMemberGroupView.h"
 #import "UIView+NTES.h"
-#import "NIMContactSelectConfig.h"
-#import "NIMContactSelectViewController.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCSession.h"
-#import "NTESSessionViewController.h"
+#import "SAMCOptionPortraitCell.h"
+#import "SAMCProfileSwitcherCell.h"
 
-@interface SAMCSessionCardViewController ()<NIMMemberGroupViewDelegate,NIMContactSelectDelegate>
-
-@property (nonatomic,strong) NIMCommonTableDelegate *delegator;
-
-@property (nonatomic,copy  ) NSArray                 *data;
+@interface SAMCSessionCardViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) SAMCSession *session;
-
-@property (nonatomic,strong) NIMMemberGroupView *headerView;
 
 @end
 
@@ -43,119 +33,163 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"聊天信息";
-    __weak typeof(self) wself = self;
-    self.delegator = [[NIMCommonTableDelegate alloc] initWithTableData:^NSArray *{
-        return wself.data;
-    }];
+    self.navigationItem.title = @"Chat Options";
     
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView.backgroundColor = [UIColor colorWithRed:236.0/255.0 green:241.0/255.0 blue:245.0/255.0 alpha:1];
-    self.tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
-    self.tableView.delegate   = self.delegator;
-    self.tableView.dataSource = self.delegator;
-    [self.view addSubview:self.tableView];
+    _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    _tableView.estimatedRowHeight = 100;
+    _tableView.backgroundColor = SAMC_COLOR_LIGHTGREY;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    [self.view addSubview:_tableView];
+    _tableView.delegate   = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [[UITableView alloc] initWithFrame:CGRectZero];
+    _tableView.tableHeaderView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     
-    [self refresh];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tableView)]];
 }
 
-- (void)refresh{
-    [self buildData];
-    [self buildTableHeader:self.view.width];
-    [self.tableView reloadData];
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-- (void)buildData{
-    BOOL needNotify    = [[NIMSDK sharedSDK].userManager notifyForNewMsg:self.session.sessionId];
-    NSArray *data = @[
-                      @{
-                          HeaderTitle:@"",
-                          RowContent :@[
-                                  @{
-                                      Title         : @"消息提醒",
-                                      CellClass     : @"NTESSettingSwitcherCell",
-                                      RowHeight     : @(50),
-                                      CellAction    : @"onActionNeedNotifyValueChange:",
-                                      ExtraInfo     : @(needNotify),
-                                      ForbidSelect  : @(YES)
-                                      },
-                                  ],
-                          },
-                      ];
-    self.data = [NIMCommonTableSection sectionsWithData:data];
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
 }
 
-
-- (void)buildTableHeader:(CGFloat)width{
-    self.headerView = [[NIMMemberGroupView alloc] initWithFrame:CGRectZero];
-    self.headerView.delegate = self;
-    [self.headerView refreshUids:@[self.session.sessionId] operators:CardHeaderOpeatorAdd];
-    [self.headerView setTitle:@"创建讨论组" forOperator:CardHeaderOpeatorAdd];
-    CGSize size = [self.headerView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-    self.headerView.size = size;
-    self.tableView.tableHeaderView = self.headerView;
+#pragma mark - UITableViewDataSource
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 2;
 }
 
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger rows = 0;
+    switch (section) {
+        case 0:
+            rows = 1;
+            break;
+        case 1:
+            rows = 3;
+        default:
+            break;
+    }
+    return rows;
+}
 
-- (void)onActionNeedNotifyValueChange:(id)sender{
-    UISwitch *switcher = sender;
-    [SVProgressHUD show];
-    __weak typeof(self) wself = self;
-    [[NIMSDK sharedSDK].userManager updateNotifyState:switcher.on forUser:self.session.sessionId completion:^(NSError *error) {
-        [SVProgressHUD dismiss];
-        if (error) {
-            [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
-            [wself refresh];
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *title = @"";
+    switch (section) {
+        case 0:
+            title = @"";
+            break;
+        case 1:
+            title = @"options";
+            break;
+        default:
+            break;
+    }
+    return title;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell;
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    cell = [self optionPortraitCell:tableView];
+                }
+                    break;
+                default:
+                    break;
+            }
         }
-    }];
-}
-
-
-- (void)didSelectOperator:(NIMKitCardHeaderOpeator )opera{
-    if (opera == CardHeaderOpeatorAdd) {
-        NSMutableArray *users = [[NSMutableArray alloc] init];
-        NSString *currentUserID = [[[NIMSDK sharedSDK] loginManager] currentAccount];
-        [users addObject:currentUserID];
-        NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
-        config.filterIds = users;
-        config.needMutiSelected = YES;
-        config.alreadySelectedMemberId = @[self.session.sessionId];
-        NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
-        vc.delegate = self;
-        [vc show];
-        
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    cell = [self commonSwitcherCell:tableView];
+                    cell.textLabel.text = @"Mute chat";
+                    //    [cell.switcher setOn:];
+                    //    [cell.switcher addTarget:self action:@selector() forControlEvents:UIControlEventValueChanged];
+                }
+                    break;
+                case 1:
+                {
+                    cell = [self commonBasicCell:tableView];
+                    cell.textLabel.text = @"Clear chat history";
+                }
+                    break;
+                case 2:
+                {
+                    cell = [self commonBasicCell:tableView];
+                    cell.textLabel.text = @"Report abuse";
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+        default:
+            break;
     }
+    return cell;
 }
 
-
-#pragma mark - ContactSelectDelegate
-
-- (void)didFinishedSelect:(NSArray *)selectedContacts{
-    if (!selectedContacts.count) {
-        return;
+#pragma mark -
+- (UITableViewCell *)optionPortraitCell:(UITableView *)tableView
+{
+    static NSString * cellId = @"SAMCOptionPortraitCellId";
+    SAMCOptionPortraitCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCOptionPortraitCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
-    NSArray *users = [@[uid] arrayByAddingObjectsFromArray:selectedContacts];
-    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-    option.name = @"讨论组";
-    option.type = NIMTeamTypeNormal;
-    __weak typeof(self) wself = self;
-    [SVProgressHUD show];
-
-    [[NIMSDK sharedSDK].teamManager createTeam:option
-                                         users:users
-                                    completion:^(NSError *error, NSString *teamId) {
-                                        [SVProgressHUD dismiss];
-                                        if (!error) {
-                                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:SAMCUserModeTypeSP];
-                                            UINavigationController *nav = wself.navigationController;
-                                            [nav popToRootViewControllerAnimated:NO];
-                                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-                                            [nav pushViewController:vc animated:YES];
-                                        }else{
-                                            [wself.view makeToast:@"创建讨论组失败" duration:2.0 position:CSToastPositionCenter];
-                                        }
-                                    }];
+    [cell refreshData:[[NIMKit sharedKit] infoByUser:self.session.sessionId inSession:self.session.nimSession]];
+    return cell;
 }
+
+- (UITableViewCell *)commonBasicCell:(UITableView *)tableView
+{
+    static NSString * cellId = @"SAMCCommonBasicCellId";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
+    }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    return cell;
+}
+
+- (UITableViewCell *)commonSwitcherCell:(UITableView *)tableView
+{
+    static NSString * cellId = @"SAMCCommonSwitcherCellId";
+    SAMCProfileSwitcherCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCProfileSwitcherCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        cell.textLabel.textColor = SAMC_COLOR_INK;
+        cell.textLabel.font = [UIFont systemFontOfSize:17.0f];
+    }
+    return cell;
+}
+
 @end
