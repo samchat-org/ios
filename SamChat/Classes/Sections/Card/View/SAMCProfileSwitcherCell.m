@@ -23,6 +23,7 @@
 {
     _switcher = [[UISwitch alloc] initWithFrame:CGRectZero];
     _switcher.translatesAutoresizingMaskIntoConstraints = NO;
+    _switcher.onTintColor = SAMC_COLOR_LAKE;
     [self addSubview:_switcher];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_switcher
