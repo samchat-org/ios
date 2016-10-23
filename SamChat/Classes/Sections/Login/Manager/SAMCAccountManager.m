@@ -25,8 +25,9 @@
 #import "SAMCUnreadCountManager.h"
 #import "SAMCSyncManager.h"
 
-@interface SAMCAccountManager () <NIMLoginManagerDelegate>
+@interface SAMCAccountManager () <NIMLoginManagerDelegate, SAMCUserManagerDelegate>
 
+@property (nonatomic, strong) SAMCUser *currentUser;
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCLoginManagerDelegate> *multicastDelegate;
 
 @end
@@ -47,6 +48,7 @@
 {
     if (self = [super init]) {
         [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
+        [[SAMCUserManager sharedManager] addDelegate:self];
     }
     return self;
 }
@@ -54,6 +56,7 @@
 - (void)dealloc
 {
     [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
+    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 - (void)registerCodeRequestWithCountryCode:(NSString *)countryCode
@@ -393,6 +396,12 @@
     }];
 }
 
-
+#pragma mark - SAMCUserManagerDelegate
+- (void)onUserInfoChanged:(SAMCUser *)user
+{
+    if ([user.userId isEqualToString:_currentUser.userId]) {
+        _currentUser = user;
+    }
+}
 
 @end

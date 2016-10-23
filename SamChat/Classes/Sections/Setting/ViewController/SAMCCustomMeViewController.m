@@ -15,10 +15,12 @@
 #import "SVProgressHUD.h"
 #import "SAMCMyProfileViewController.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCUserManager.h"
 
-@interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) SAMCUser *currentUser;
 
 @end
 
@@ -49,10 +51,26 @@
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
     
     SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 140) effect:NO];
-    SAMCUser *currentUser = [SAMCAccountManager sharedManager].currentUser;
-    headerView.avatarUrl = currentUser.userInfo.avatar;
+    _currentUser = [SAMCAccountManager sharedManager].currentUser;
+    headerView.avatarUrl = _currentUser.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [[SAMCUserManager sharedManager] addDelegate:self];
+}
+
+- (void)dealloc
+{
+    [[SAMCUserManager sharedManager] removeDelegate:self];
+}
+
+#pragma mark - SAMCUserManagerDelegate
+- (void)onUserInfoChanged:(SAMCUser *)user
+{
+    if ([user.userId isEqualToString:_currentUser.userId]) {
+        _currentUser = user;
+        SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)self.tableView.tableHeaderView;
+        headerView.avatarUrl = user.userInfo.avatar;
+    }
 }
 
 #pragma mark - UITableViewDelegate

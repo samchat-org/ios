@@ -14,6 +14,13 @@
 #import "SAMCPreferenceManager.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCAccountManager.h"
+#import "GCDMulticastDelegate.h"
+
+@interface SAMCUserManager ()
+
+@property (nonatomic, strong) GCDMulticastDelegate<SAMCUserManagerDelegate> *multicastDelegate;
+
+@end
 
 @implementation SAMCUserManager
 
@@ -29,7 +36,8 @@
 
 - (instancetype)init
 {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
     }
     return self;
 }
@@ -38,6 +46,26 @@
 {
 }
 
+- (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate
+{
+    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)removeDelegate:(id<SAMCUserManagerDelegate>)delegate
+{
+    [self.multicastDelegate removeDelegate:delegate];
+}
+
+#pragma mark - lazy load
+- (GCDMulticastDelegate<SAMCUserManagerDelegate> *)multicastDelegate
+{
+    if (_multicastDelegate == nil) {
+        _multicastDelegate = (GCDMulticastDelegate <SAMCUserManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    }
+    return _multicastDelegate;
+}
+
+#pragma mark -
 - (void)checkExistOfUser:(NSString *)username
               completion:(void (^)(BOOL isExists, NSError * __nullable error))completion
 {
@@ -133,6 +161,7 @@
                 NSMutableArray *users = [[NSMutableArray alloc] init];
                 for (NSDictionary *userDict in response[SAMC_USERS]) {
                     SAMCUser *user = [SAMCUser userFromDict:userDict];
+                    // TODO: do not use this updateUser, as it will trigger onUserInfoChanged:
                     [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
                     [users addObject:user];
                 }
@@ -180,6 +209,7 @@
     NSDictionary *parameters = [SAMCServerAPI updateAvatar:url];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_PROFILE_AVATAR_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
@@ -190,8 +220,8 @@
                 SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
                 user.userInfo.avatar = [response valueForKeyPath:SAMC_USER_THUMB];
                 user.userInfo.avatarOriginal = url;
-                [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
-                [SAMCAccountManager sharedManager].currentUser = user;
+//                [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+                [wself updateUser:user];
                 completion(user, nil);
             }
         } else {
@@ -214,11 +244,10 @@
 
 - (void)updateUser:(SAMCUser *)user
 {
-    if ([user.userId isEqualToString:[SAMCAccountManager sharedManager].currentUser.userId]) {
-        [SAMCAccountManager sharedManager].currentUser = nil;
-    }
+    __weak typeof(self) wself = self;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+        [wself.multicastDelegate onUserInfoChanged:[wself userInfo:user.userId]];
     });
 }
 

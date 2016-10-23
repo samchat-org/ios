@@ -907,6 +907,7 @@
 		31DB30BA1DBC4EF40072BE34 /* SAMCOptionPortraitCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCOptionPortraitCell.m; sourceTree = "<group>"; };
 		31DB30BC1DBC616C0072BE34 /* SAMCTableCellFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCTableCellFactory.h; sourceTree = "<group>"; };
 		31DB30BD1DBC616C0072BE34 /* SAMCTableCellFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCTableCellFactory.m; sourceTree = "<group>"; };
+		31DB30BF1DBC95060072BE34 /* SAMCUserManagerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCUserManagerDelegate.h; path = Base/Protocol/SAMCUserManagerDelegate.h; sourceTree = "<group>"; };
 		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
 		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31E37B791D65923A00832CC8 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -2296,6 +2297,7 @@
 				31F8FC9B1D6D979700734068 /* SAMCQuestionManagerDelegate.h */,
 				31F8FCCC1D76A6E200734068 /* SAMCPublicManagerDelegate.h */,
 				316A678E1D8BD48A00B56A5D /* SAMCUnreadCountManagerDelegate.h */,
+				31DB30BF1DBC95060072BE34 /* SAMCUserManagerDelegate.h */,
 			);
 			name = Protocol;
 			sourceTree = "<group>";

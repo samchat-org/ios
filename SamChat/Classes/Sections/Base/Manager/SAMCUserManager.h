@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCUserManagerDelegate.h"
 #import "SAMCUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -14,6 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SAMCUserManager : NSObject
 
 + (instancetype)sharedManager;
+
+- (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate;
+- (void)removeDelegate:(id<SAMCUserManagerDelegate>)delegate;
 
 - (void)checkExistOfUser:(NSString *)username
               completion:(void (^)(BOOL isExists, NSError * __nullable error))completion;
