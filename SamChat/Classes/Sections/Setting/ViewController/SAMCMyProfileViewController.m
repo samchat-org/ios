@@ -15,8 +15,14 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCResourceManager.h"
+#import "UIImage+NTES.h"
+#import "NTESFileLocationHelper.h"
+#import "SAMCServerAPIMacro.h"
+#import "SAMCUserManager.h"
+#import "SDWebImageManager.h"
 
-@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, strong) UITableView *tableView;
@@ -142,12 +148,61 @@
 #pragma mark - Action
 - (void)onTouchPortraitAvatar:(id)sender
 {
-    DDLogDebug(@"onTouchPortraitAvatar");
-//    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-//    picker.delegate = self;
-//    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-//    picker.allowsEditing = YES;
-//    [self presentViewController:picker animated:YES completion:nil];
+    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+    picker.delegate = self;
+    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    picker.allowsEditing = YES;
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+#pragma mark - UIImagePickerControllerDelegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    [picker dismissViewControllerAnimated:YES completion:^{
+        [self uploadImage:image];
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Private
+- (void)uploadImage:(UIImage *)image
+{
+    UIImage *imageForAvatarUpload = [image imageForAvatarUpload];
+    //    NSString *fileName = [NTESFileLocationHelper genFilenameWithExt:@"jpg"];
+    NSString *currentAccount = [SAMCAccountManager sharedManager].currentAccount;
+    NSInteger timeInterval = [@([[NSDate date] timeIntervalSince1970] * 1000) integerValue];
+    NSString *fileName = [NSString stringWithFormat:@"org_%@_%ld.jpg",currentAccount,timeInterval];
+    
+    NSString *filePath = [[NTESFileLocationHelper getAppDocumentPath] stringByAppendingPathComponent:fileName];
+    NSData *data = UIImageJPEGRepresentation(imageForAvatarUpload, 1.0);
+    BOOL success = data && [data writeToFile:filePath atomically:YES];
+    __weak typeof(self) wself = self;
+    if (success) {
+        [SVProgressHUD showWithStatus:@"Updating" maskType:SVProgressHUDMaskTypeBlack];
+        NSString *key = [NSString stringWithFormat:@"%@%@", SAMC_AWSS3_AVATAR_ORG_PATH, fileName];
+        [[SAMCResourceManager sharedManager] upload:filePath key:key contentType:@"image/jpeg" progress:nil completion:^(NSString *urlString, NSError *error) {
+            [SVProgressHUD dismiss];
+            if (!error && wself) {
+                DDLogDebug(@"url: %@", urlString);
+                [[SAMCUserManager sharedManager] updateAvatar:urlString completion:^(SAMCUser * _Nullable user, NSError * _Nullable error) {
+                    if (!error) {
+                        [[SDWebImageManager sharedManager] saveImageToCache:imageForAvatarUpload forURL:[NSURL URLWithString:user.userInfo.avatar]];
+                        SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)wself.tableView.tableHeaderView;
+                        headerView.avatarUrl = user.userInfo.avatar;
+                    } else {
+                        [wself.view makeToast:@"设置头像失败，请重试" duration:2 position:CSToastPositionCenter];
+                    }
+                }];
+            } else {
+                [wself.view makeToast:@"图片上传失败，请重试" duration:2 position:CSToastPositionCenter];
+            }
+        }];
+    }else{
+        [self.view makeToast:@"图片保存失败，请重试" duration:2 position:CSToastPositionCenter];
+    }
 }
 
 @end
