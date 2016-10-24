@@ -34,6 +34,7 @@
 #import "SAMCServicerCardViewController.h"
 #import "SAMCCustomerCardViewController.h"
 #import "SAMCUserManager.h"
+#import "SAMCPublicManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
@@ -375,7 +376,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
     UIViewController *vc;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        BOOL isFollow = NO;
+        BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:userId];
         vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow];
     } else {
         BOOL isMyCustomer = YES;

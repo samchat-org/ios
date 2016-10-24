@@ -167,6 +167,22 @@
     }];
 }
 
+- (BOOL)isFollowing:(NSString *)userId
+{
+    if (userId == nil) {
+        return NO;
+    }
+    __block BOOL isFollowing;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSNumber *uniqueId = @([userId integerValue]);
+        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",uniqueId];
+        [s next];
+        isFollowing = ([s intForColumnIndex:0] > 0);
+        [s close];
+    }];
+    return isFollowing;
+}
+
 - (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit

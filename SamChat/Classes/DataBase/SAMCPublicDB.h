@@ -23,6 +23,8 @@
 - (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo;
 - (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo;
 
+- (BOOL)isFollowing:(NSString *)userId;
+
 - (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit;

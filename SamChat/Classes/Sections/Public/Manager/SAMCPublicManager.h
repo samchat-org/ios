@@ -30,6 +30,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 - (NSArray<SAMCPublicSession *> *)myFollowList;
 
+- (BOOL)isFollowing:(NSString *)userId;
+
 - (void)fetchMessagesInSession:(SAMCPublicSession *)session
                        message:(SAMCPublicMessage * __nullable)message
                          limit:(NSInteger)limit

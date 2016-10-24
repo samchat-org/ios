@@ -125,6 +125,11 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     return [[SAMCDataBaseManager sharedManager].publicDB myFollowList];
 }
 
+- (BOOL)isFollowing:(NSString *)userId
+{
+    return [[SAMCDataBaseManager sharedManager].publicDB isFollowing:userId];
+}
+
 - (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
