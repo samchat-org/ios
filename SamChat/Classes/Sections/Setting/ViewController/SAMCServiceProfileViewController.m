@@ -125,7 +125,7 @@
                     break;
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"QR code";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
