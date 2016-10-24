@@ -184,6 +184,7 @@
     NSDictionary *parameters = [SAMCServerAPI addOrRemove:isAdd contact:user.userId type:type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_CONTACT_CONTACT parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
@@ -193,8 +194,10 @@
             } else {
                 if (isAdd) {
                     [[SAMCDataBaseManager sharedManager].userInfoDB insertToContactList:user type:type];
+                    [wself.multicastDelegate didAddContact:user type:type];
                 } else {
                     [[SAMCDataBaseManager sharedManager].userInfoDB deleteFromContactList:user type:type];
+                    [wself.multicastDelegate didRemoveContact:user type:type];
                 }
                 completion(nil);
             }

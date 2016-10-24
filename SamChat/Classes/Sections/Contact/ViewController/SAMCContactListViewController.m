@@ -37,7 +37,7 @@
 #import "SAMCPublicManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
-NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
+NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate,SAMCUserManagerDelegate>
 {
     SAMCGroupedContacts *_contacts;
 }
@@ -68,12 +68,14 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     
     [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
     [[SAMCAccountManager sharedManager] addDelegate:self];
+    [[SAMCUserManager sharedManager] addDelegate:self];
 }
 
 - (void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[[NIMSDK sharedSDK] systemNotificationManager] removeDelegate:self];
     [[SAMCAccountManager sharedManager] removeDelegate:self];
+    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -309,23 +311,27 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     return [contactItem userId].length;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"删除好友" message:@"删除好友后，将同时解除双方的好友关系" delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
-        [alert showAlertWithCompletionHandler:^(NSInteger index) {
-            if (index == 1) {
-                [SVProgressHUD show];
-                id<NTESContactItem,NTESGroupMemberProtocol> contactItem = (id<NTESContactItem,NTESGroupMemberProtocol>)[_contacts memberOfIndex:indexPath];
-                NSString *userId = [contactItem userId];
-                __weak typeof(self) wself = self;
-                [[NIMSDK sharedSDK].userManager deleteFriend:userId completion:^(NSError *error) {
-                    [SVProgressHUD dismiss];
-                    if (!error) {
-                        [_contacts removeGroupMember:contactItem];
-                    }else{
-                        [wself.view makeToast:@"删除失败"duration:2.0f position:CSToastPositionCenter];
-                    }
-                }];
+        __weak typeof(self) wself = self;
+        [SVProgressHUD show];
+        id<NTESContactItem,NTESGroupMemberProtocol> contactItem = (id<NTESContactItem,NTESGroupMemberProtocol>)[_contacts memberOfIndex:indexPath];
+        NSString *userId = [contactItem userId];
+        SAMCContactListType listType;
+        if (wself.currentUserMode == SAMCUserModeTypeCustom) {
+            listType = SAMCContactListTypeServicer;
+        } else {
+            listType = SAMCContactListTypeCustomer;
+        }
+        SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
+        [[SAMCUserManager sharedManager] addOrRemove:NO contact:user type:listType completion:^(NSError * _Nullable error) {
+            [SVProgressHUD dismiss];
+            if (!error) {
+                // use SAMCUserManagerDelegate to delete
+                // [_contacts removeGroupMember:contactItem];
+            } else {
+                [wself.view makeToast:@"delete failed" duration:2.0f position:CSToastPositionCenter];
             }
         }];
     }
@@ -462,6 +468,41 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+}
+
+#pragma mark - SAMCUserManagerDelegate
+- (void)didAddContact:(SAMCUser *)user type:(SAMCContactListType)type
+{
+    if ((self.currentUserMode == SAMCUserModeTypeCustom) && (type == SAMCContactListTypeCustomer)) {
+        return;
+    }
+    if ((self.currentUserMode == SAMCUserModeTypeSP) && (type == SAMCContactListTypeServicer)) {
+        return;
+    }
+    NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:user.userId];
+    NTESContactDataMember *contact = [[NTESContactDataMember alloc] init];
+    contact.info = info;
+    [_contacts addGroupMember:contact];
+    [self.tableView reloadData];
+}
+
+- (void)didRemoveContact:(SAMCUser *)user type:(SAMCContactListType)type
+{
+    if ((self.currentUserMode == SAMCUserModeTypeCustom) && (type == SAMCContactListTypeCustomer)) {
+        return;
+    }
+    if ((self.currentUserMode == SAMCUserModeTypeSP) && (type == SAMCContactListTypeServicer)) {
+        return;
+    }
+    NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:user.userId];
+    NTESContactDataMember *contact = [[NTESContactDataMember alloc] init];
+    contact.info = info;
+    
+    NSIndexPath *indexPath = [_contacts indexPathOfMember:contact];
+    if (indexPath) {
+        [_contacts removeGroupMember:contact];
+        [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 @end
