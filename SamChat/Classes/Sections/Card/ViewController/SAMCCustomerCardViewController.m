@@ -144,9 +144,11 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.textLabel.text = _user.userInfo.username;
-                    cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
+                    SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    tipCell.textLabel.text = _user.userInfo.username;
+                    tipCell.tipRightLabel.text = @"QR code";
+                    tipCell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
+                    cell = tipCell;
                 }
                     break;
 
