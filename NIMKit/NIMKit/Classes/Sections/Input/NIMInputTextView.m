@@ -7,6 +7,7 @@
 //
 
 #import "NIMInputTextView.h"
+#import "NIMGlobalMacro.h"
 
 @implementation NIMInputTextView
 
@@ -59,6 +60,12 @@
 
 - (void)customUI
 {
+    //SAMC_BEGIN
+    self.layer.borderColor = NIMKit_UIColorFromRGBA(0xD8D8D8,0.5).CGColor;
+    self.layer.borderWidth = 1.0f;
+    self.layer.cornerRadius = 5.0f;
+    //SAMC_END
+    self.layer.masksToBounds = YES;
     self.scrollIndicatorInsets = UIEdgeInsetsMake(10.0f, 0.0f, 10.0f, 8.0f);
     self.contentInset = UIEdgeInsetsZero;
     self.scrollEnabled = YES;

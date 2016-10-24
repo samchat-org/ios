@@ -139,7 +139,9 @@
     _toolBar.inputTextView.delegate = self;
     
     [_toolBar.inputTextView setCustomUI];
-    [_toolBar.inputTextView setPlaceHolder:@"请输入消息"];
+    //SAMC_BEGIN
+    [_toolBar.inputTextView setPlaceHolder:@"Your message here"];
+    //SAMC_END
     _inputType = InputTypeText;
     _inputBottomViewHeight = 0;
     _inputTextViewOlderHeight = [NIMUIConfig topInputViewHeight];

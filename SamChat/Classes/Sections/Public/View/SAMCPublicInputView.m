@@ -79,7 +79,7 @@
     _toolBar.inputTextView.delegate = self;
     
     [_toolBar.inputTextView setCustomUI];
-    [_toolBar.inputTextView setPlaceHolder:@"请输入消息"];
+    [_toolBar.inputTextView setPlaceHolder:@"Your message here"];
     _inputBottomViewHeight = 0;
     _inputTextViewOlderHeight = [NIMUIConfig topInputViewHeight];
     [_toolBar.recordButton setHidden:YES];

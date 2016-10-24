@@ -41,8 +41,11 @@
         [_emoticonBtn sizeToFit];
         
         _moreMediaBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_moreMediaBtn setImage:[UIImage nim_imageInKit:@"icon_toolview_add_normal"] forState:UIControlStateNormal];
-        [_moreMediaBtn setImage:[UIImage nim_imageInKit:@"icon_toolview_add_pressed"] forState:UIControlStateHighlighted];
+        //SAMC_BEGIN
+        [_moreMediaBtn setImage:[UIImage imageNamed:@"ico_chat_option_add"] forState:UIControlStateNormal];
+//        [_moreMediaBtn setImage:[UIImage nim_imageInKit:@"icon_toolview_add_normal"] forState:UIControlStateNormal];
+//        [_moreMediaBtn setImage:[UIImage nim_imageInKit:@"icon_toolview_add_pressed"] forState:UIControlStateHighlighted];
+        //SACM_END
         [_moreMediaBtn sizeToFit];
         
         _recordButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -52,7 +55,9 @@
         [_recordButton sizeToFit];
         
         _inputTextBkgImage = [[UIImageView alloc] initWithFrame:CGRectZero];
-        [_inputTextBkgImage setImage:[[UIImage nim_imageInKit:@"icon_input_text_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(15,80,15,80) resizingMode:UIImageResizingModeStretch]];
+        //SAMC_BEGIN
+//        [_inputTextBkgImage setImage:[[UIImage nim_imageInKit:@"icon_input_text_bg"] resizableImageWithCapInsets:UIEdgeInsetsMake(15,80,15,80) resizingMode:UIImageResizingModeStretch]];
+        //SAMC_END
         
         _inputTextView = [[NIMInputTextView alloc] initWithFrame:CGRectZero];
         
