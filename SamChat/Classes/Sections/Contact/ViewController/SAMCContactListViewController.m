@@ -31,6 +31,9 @@
 #import "SAMCAddContactViewController.h"
 #import "NTESContactDataMember.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
 NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate>
@@ -369,7 +372,15 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 #pragma mark - Private
 - (void)enterPersonalCard:(NSString *)userId{
-    SAMCPersonalCardViewController *vc = [[SAMCPersonalCardViewController alloc] initWithUserId:userId];
+    SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
+    UIViewController *vc;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        BOOL isFollow = NO;
+        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow];
+    } else {
+        BOOL isMyCustomer = YES;
+        vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
