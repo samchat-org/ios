@@ -16,6 +16,7 @@
 #import "SVProgressHUD.h"
 #import "SAMCUserManager.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCServicerCardViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -88,6 +89,10 @@
             SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
             [self.navigationController pushViewController:vc animated:YES];
         }
+        // add or delete provider
+        if (indexPath.row == 3) {
+            [self addOrDeleteProvider];
+        }
     }
 }
 
@@ -145,6 +150,7 @@
                     cell = infoCell;
                 }
                     break;
+                    
                 case 1:
                 {
                     cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
@@ -160,14 +166,10 @@
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
                 }
                     break;
+                    
                 case 3:
                 {
-                    cell = [self followCell:tableView];
-                }
-                    break;
-                case 4:
-                {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     if (_isMyProvider) {
                         cell.textLabel.text = @"Delete Provider";
                     } else {
@@ -176,6 +178,13 @@
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_add"];
                 }
                     break;
+                    
+                case 4:
+                {
+                    cell = [self followCell:tableView];
+                }
+                    break;
+
                 default:
                     break;
             }
@@ -260,6 +269,36 @@
     }];
 }
 
-#pragma mark - lazy load
+- (void)addOrDeleteProvider
+{
+    BOOL isAdd;
+    NSString *showMsg;
+    if (self.isMyProvider) {
+        isAdd = NO;
+        showMsg = @"Deleting...";
+    } else {
+        isAdd = YES;
+        showMsg = @"Adding...";
+    }
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:showMsg maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCUserManager sharedManager] addOrRemove:isAdd contact:_user type:SAMCContactListTypeServicer completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        NSString *toast;
+        if (error) {
+            toast = error.userInfo[NSLocalizedDescriptionKey];
+        } else {
+            if (isAdd) {
+                toast = @"add success";
+                wself.isMyProvider = YES;
+            } else {
+                toast = @"delete success";
+                wself.isMyProvider = NO;
+            }
+            [wself.tableView reloadData];
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+    }];
+}
 
 @end
