@@ -12,7 +12,7 @@
 
 - (BOOL)shouldShowAvatar:(NIMMessageModel *)model
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)shouldShowNickName:(NIMMessageModel *)model{
@@ -26,7 +26,7 @@
 
 - (CGFloat)avatarMargin:(NIMMessageModel *)model
 {
-    return 0.f;
+    return 8.0f;
 }
 
 - (CGFloat)nickNameMargin:(NIMMessageModel *)model
