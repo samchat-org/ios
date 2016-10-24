@@ -12,10 +12,13 @@
 #import "UIAlertView+NTESBlock.h"
 #import "SAMCMyQRCodeViewController.h"
 #import "SAMCUserManager.h"
+#import "SAMCPublicManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCCardPortraitView.h"
 #import "SAMCAccountManager.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
 
 @interface SAMCQRCodeScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
@@ -428,49 +431,60 @@
 
 - (void)handleScanResult:(NSString *)strResult
 {
-    SAMCContactListType type = SAMCContactListTypeServicer;
-    if ([self currentUserMode] == SAMCUserModeTypeSP) {
-        type = SAMCContactListTypeCustomer;
-    }
-    
     if ([strResult hasPrefix:SAMC_QR_ADDCONTACT_PREFIX]) {
-        [SVProgressHUD showWithStatus:@"adding ..." maskType:SVProgressHUDMaskTypeBlack];
         strResult = [strResult substringFromIndex:[SAMC_QR_ADDCONTACT_PREFIX length]];
         NSNumber *uniqueId = @([strResult integerValue]);
-        __weak typeof(self) wself = self;
-        
-        [[SAMCUserManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
-            if (error) {
-                [SVProgressHUD dismiss];
-                NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
-                [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
-                [wself reStartDevice];
-                return;
-            }
-            SAMCUser *user = [SAMCUser userFromDict:userDict];
-            [[SAMCUserManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
-                [SVProgressHUD dismiss];
-                NSString *toast;
-                if (error) {
-                    toast = error.userInfo[NSLocalizedDescriptionKey];
-                } else {
-                    toast = @"adding success";
-                }
-                [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
-                [wself reStartDevice];
-            }];
-        }];
+        [self findUser:uniqueId];
     } else {
         [self popAlertMsgWithScanResult:strResult];
     }
 }
 
-- (void)addContact:(NSNumber *)uniqueId
+- (void)findUser:(NSNumber *)uniqueId
 {
-    if (uniqueId == nil) {
-        return;
+    SAMCContactListType type = SAMCContactListTypeServicer;
+    if ([self currentUserMode] == SAMCUserModeTypeSP) {
+        type = SAMCContactListTypeCustomer;
     }
-    
+    [SVProgressHUD showWithStatus:@"finding user..." maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            [wself reStartDevice];
+            return;
+        }
+        SAMCUser *user = [SAMCUser userFromDict:userDict];
+        UIViewController *vc;
+        if (wself.currentUserMode == SAMCUserModeTypeSP) {
+            BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:user.userId];
+            vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+        } else {
+            if (![user.userInfo.usertype isEqual:@(SAMCuserTypeSamPros)]) {
+                NSString *toast = @"the user is not a Samchat provider";
+                [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+                [wself reStartDevice];
+                return;
+            }
+            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:user.userId];
+            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:user.userId];
+            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+        }
+        [self.navigationController pushViewController:vc animated:YES];
+//        [[SAMCUserManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {
+//            [SVProgressHUD dismiss];
+//            NSString *toast;
+//            if (error) {
+//                toast = error.userInfo[NSLocalizedDescriptionKey];
+//            } else {
+//                toast = @"adding success";
+//            }
+//            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+//            [wself reStartDevice];
+//        }];
+    }];
 }
 
 - (void)popAlertMsgWithScanResult:(NSString*)strResult
