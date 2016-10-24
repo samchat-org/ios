@@ -72,13 +72,22 @@
 
 - (void)setUpNavItem
 {
-    UIButton *scanBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [scanBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
-    [scanBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
-    [scanBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
-    [scanBtn sizeToFit];
-    UIBarButtonItem *teamItem = [[UIBarButtonItem alloc] initWithCustomView:scanBtn];
-    self.navigationItem.rightBarButtonItem = teamItem;
+    UIButton *rightBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
+    [rightBtn setTitle:@"QR Code" forState:UIControlStateNormal];
+    rightBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+    rightBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    [rightBtn sizeToFit];
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
+        [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    } else {
+        [rightBtn setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
+    }
+    UIBarButtonItem *navRightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
+    
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -5;
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer, navRightItem];
 }
 
 - (void)prepareData
