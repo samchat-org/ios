@@ -113,6 +113,8 @@ UITableViewDelegate>
         [_publicInputView setInputConfig:[[SAMCPublicSessionConfig alloc] init]];
         [_publicInputView setInputActionDelegate:self];
         [self.view addSubview:_publicInputView];
+    } else {
+        self.navigationItem.title = self.publicSession.spBasicInfo.username;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(menuDidHide:) name:UIMenuControllerDidHideMenuNotification object:nil];
