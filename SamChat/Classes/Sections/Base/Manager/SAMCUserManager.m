@@ -191,8 +191,12 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
+                if (isAdd) {
+                    [[SAMCDataBaseManager sharedManager].userInfoDB insertToContactList:user type:type];
+                } else {
+                    [[SAMCDataBaseManager sharedManager].userInfoDB deleteFromContactList:user type:type];
+                }
                 completion(nil);
-                [[SAMCDataBaseManager sharedManager].userInfoDB insertToContactList:user type:type];
             }
         } else {
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);

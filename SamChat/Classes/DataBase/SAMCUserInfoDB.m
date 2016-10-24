@@ -209,6 +209,26 @@
     }];
 }
 
+- (void)deleteFromContactList:(SAMCUser *)user type:(SAMCContactListType)listType
+{
+    if (user == nil) {
+        return;
+    }
+    NSString *tableName;
+    if (listType == SAMCContactListTypeCustomer) {
+        tableName = @"contact_list_customer";
+    } else {
+        tableName = @"contact_list_servicer";
+    }
+    if (![self isTableExists:tableName]) {
+        return;
+    }
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE unique_id=?", tableName];
+        [db executeUpdate:sql, @([user.userId integerValue])];
+    }];
+}
+
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {
     NSString *tableName;
