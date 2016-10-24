@@ -249,9 +249,11 @@
         } else {
             if (follow) {
                 toast = @"follow success";
+                wself.isFollow = true;
                 [[SAMCUserManager sharedManager] updateUser:_user];
             } else {
                 toast = @"unfollow success";
+                wself.isFollow = false;
             }
         }
         [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
