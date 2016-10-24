@@ -201,10 +201,11 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.textLabel.text = @"Notification";
-                    cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
-                    cell.imageView.frame = CGRectMake(0, 0, 44, 44);
+                    SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    tipCell.textLabel.text = @"Notification";
+                    tipCell.tipRightLabel.text = @"On";
+                    tipCell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
+                    cell = tipCell;
                 }
                     break;
                 default:

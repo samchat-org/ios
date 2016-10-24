@@ -27,13 +27,10 @@
                                                                      attribute:NSLayoutAttributeRight
                                                                     multiplier:1.0f
                                                                       constant:0.0f]];
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
-                                                                     attribute:NSLayoutAttributeCenterY
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeCenterY
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tipRightLabel(>=44)]|"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:NSDictionaryOfVariableBindings(_tipRightLabel)]];
     }
     return self;
 }

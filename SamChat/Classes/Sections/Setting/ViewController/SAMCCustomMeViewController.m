@@ -175,9 +175,11 @@
                     break;
                 case 3:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.textLabel.text = @"Notification";
-                    cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
+                    SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    tipCell.textLabel.text = @"Notification";
+                    tipCell.tipRightLabel.text = @"On";
+                    tipCell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
+                    cell = tipCell;
                 }
                     break;
                 case 4:
