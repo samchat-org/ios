@@ -148,6 +148,18 @@
     return nil;
 }
 
+- (NSIndexPath *)indexPathOfMember:(id<NTESGroupMemberProtocol>)member
+{
+    NSString *groupTitle = [member groupTitle];
+    NSInteger groupIndex = [_groupTtiles indexOfObject:groupTitle];
+    Pair *pair = [_groups objectAtIndex:groupIndex];
+    if (![pair.second containsObject:member]) {
+        return nil;
+    }
+    NSInteger row = [pair.second indexOfObject:member];
+    return [NSIndexPath indexPathForRow:row inSection:groupIndex];
+}
+
 - (id<NTESGroupMemberProtocol>)memberOfIndex:(NSIndexPath *)indexPath
 {
     NSArray *members = nil;

@@ -33,6 +33,8 @@
 
 - (NSArray *)membersOfGroup:(NSInteger)groupIndex;
 
+- (NSIndexPath *)indexPathOfMember:(id<NTESGroupMemberProtocol>)member;
+
 - (id<NTESGroupMemberProtocol>)memberOfIndex:(NSIndexPath *)indexPath;
 
 - (id<NTESGroupMemberProtocol>)memberOfId:(NSString *)uid;
