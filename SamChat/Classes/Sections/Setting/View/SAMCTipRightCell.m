@@ -18,19 +18,22 @@
         _tipRightLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
         _tipRightLabel.textAlignment = NSTextAlignmentRight;
         _tipRightLabel.font = [UIFont systemFontOfSize:15.0f];
-        [self.contentView addSubview:_tipRightLabel];
+        [self addSubview:_tipRightLabel];
         
-        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
-                                                                     attribute:NSLayoutAttributeRight
-                                                                     relatedBy:NSLayoutRelationEqual
-                                                                        toItem:self.contentView
-                                                                     attribute:NSLayoutAttributeRight
-                                                                    multiplier:1.0f
-                                                                      constant:0.0f]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_tipRightLabel(>=44)]|"
-                                                                                 options:0
-                                                                                 metrics:nil
-                                                                                   views:NSDictionaryOfVariableBindings(_tipRightLabel)]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
+                                                         attribute:NSLayoutAttributeRight
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeRight
+                                                        multiplier:1.0f
+                                                          constant:-35.0f]];
+        [self addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
+                                                         attribute:NSLayoutAttributeCenterY
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self
+                                                         attribute:NSLayoutAttributeCenterY
+                                                        multiplier:1.0f
+                                                          constant:0.0f]];
     }
     return self;
 }
