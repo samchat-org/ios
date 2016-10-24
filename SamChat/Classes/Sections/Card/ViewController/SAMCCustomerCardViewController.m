@@ -85,6 +85,10 @@
             UIViewController *root = nav.viewControllers[0];
             nav.viewControllers = @[root,vc];
         }
+        // add or delete customer
+        if (indexPath.row == 1) {
+            [self addOrDeleteCustomer];
+        }
     }
 }
 
@@ -164,7 +168,7 @@
                     
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     if (_isMyCustomer) {
                         cell.textLabel.text = @"Delete Customer";
                     } else {
@@ -220,6 +224,37 @@
     return cell;
 }
 
-#pragma mark -
+#pragma mark - Action
+- (void)addOrDeleteCustomer
+{
+    BOOL isAdd;
+    NSString *showMsg;
+    if (self.isMyCustomer) {
+        isAdd = NO;
+        showMsg = @"Deleting...";
+    } else {
+        isAdd = YES;
+        showMsg = @"Adding...";
+    }
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:showMsg maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCUserManager sharedManager] addOrRemove:isAdd contact:_user type:SAMCContactListTypeCustomer completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        NSString *toast;
+        if (error) {
+            toast = error.userInfo[NSLocalizedDescriptionKey];
+        } else {
+            if (isAdd) {
+                toast = @"add success";
+                wself.isMyCustomer = YES;
+            } else {
+                toast = @"delete success";
+                wself.isMyCustomer = NO;
+            }
+            [wself.tableView reloadData];
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+    }];
+}
 
 @end
