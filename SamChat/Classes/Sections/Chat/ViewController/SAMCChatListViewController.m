@@ -295,8 +295,6 @@
     self.tableView.top = self.header.height;
     self.tableView.height = self.view.height - self.tableView.top;
     self.header.bottom    = self.tableView.top + self.tableView.contentInset.top;
-    self.emptyTipLabel.centerX = self.view.width * .5f;
-    self.emptyTipLabel.centerY = self.tableView.height * .5f;
 }
 
 #pragma mark - Misc
