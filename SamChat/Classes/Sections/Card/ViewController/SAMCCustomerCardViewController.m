@@ -9,7 +9,7 @@
 #import "SAMCCustomerCardViewController.h"
 #import "SAMCCardPortraitView.h"
 #import "SAMCSessionViewController.h"
-#import "SAMCServicerQRViewController.h"
+#import "SAMCUserQRViewController.h"
 #import "SAMCPublicManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
@@ -72,7 +72,7 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
-            SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
+            SAMCUserQRViewController *vc = [[SAMCUserQRViewController alloc] initWithUser:self.user userType:SAMCUserTypeCustom];
             [self.navigationController pushViewController:vc animated:YES];
         }
     } else if (indexPath.section == 1) {

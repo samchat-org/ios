@@ -1,16 +1,16 @@
 //
-//  SAMCServicerQRViewController.m
+//  SAMCUserQRViewController.m
 //  SamChat
 //
-//  Created by HJ on 10/13/16.
+//  Created by HJ on 10/24/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCServicerQRViewController.h"
+#import "SAMCUserQRViewController.h"
 #import "SAMCQRScanner.h"
 #import "SAMCAvatarImageView.h"
 
-@interface SAMCServicerQRViewController ()
+@interface SAMCUserQRViewController ()
 
 @property (nonatomic, strong) SAMCAvatarImageView *avatarView;
 @property (nonatomic, strong) UIView *shadowView;
@@ -18,16 +18,18 @@
 @property (nonatomic, strong) UILabel *categoryLabel;
 @property (nonatomic, strong) UIImageView *qrImageView;
 @property (nonatomic, strong) SAMCUser *user;
+@property (nonatomic, assign) SAMCUserType userType;
 
 @end
 
-@implementation SAMCServicerQRViewController
+@implementation SAMCUserQRViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user
+- (instancetype)initWithUser:(SAMCUser *)user userType:(SAMCUserType)userType
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _user = user;
+        _userType = userType;
     }
     return self;
 }
@@ -46,7 +48,11 @@
 - (void)setupSubviews
 {
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
-    self.navigationItem.title = @"Service Provider QR Code";
+    if (_userType == SAMCuserTypeSamPros) {
+        self.navigationItem.title = @"Service Provider QR Code";
+    } else {
+        self.navigationItem.title = @"Customer QR Code";
+    }
     
     [self.view addSubview:self.shadowView];
     [self.view addSubview:self.avatarView];
@@ -126,6 +132,10 @@
     _nameLabel.text = self.user.userInfo.username;
     _categoryLabel.text = self.user.userInfo.spInfo.serviceCategory;
     _qrImageView.image = [self myQRCodeImage];
+    
+    if (_userType == SAMCUserTypeCustom) {
+        _categoryLabel.hidden = YES;
+    }
 }
 
 - (void)viewDidLayoutSubviews

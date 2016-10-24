@@ -9,7 +9,7 @@
 #import "SAMCServicerCardViewController.h"
 #import "SAMCCardPortraitView.h"
 #import "SAMCSessionViewController.h"
-#import "SAMCServicerQRViewController.h"
+#import "SAMCUserQRViewController.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
@@ -86,7 +86,7 @@
         }
         // qr code
         if (indexPath.row == 2) {
-            SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
+            SAMCUserQRViewController *vc = [[SAMCUserQRViewController alloc] initWithUser:self.user userType:SAMCuserTypeSamPros];
             [self.navigationController pushViewController:vc animated:YES];
         }
         // add or delete provider

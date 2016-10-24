@@ -9,7 +9,6 @@
 #import "SAMCMyProfileViewController.h"
 #import "SAMCCardPortraitView.h"
 #import "SAMCSessionViewController.h"
-#import "SAMCServicerQRViewController.h"
 #import "SAMCPublicManager.h"
 #import "SAMCAccountManager.h"
 #import "UIView+Toast.h"
