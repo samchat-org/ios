@@ -304,6 +304,7 @@
 		31DB30C21DBCAEB40072BE34 /* SAMCCustomContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30C11DBCAEB40072BE34 /* SAMCCustomContactCell.m */; };
 		31DB30C51DBCB6A80072BE34 /* SAMCSPContactCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30C41DBCB6A80072BE34 /* SAMCSPContactCell.m */; };
 		31DB30C81DBDA2E20072BE34 /* SAMCCustomerCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30C71DBDA2E20072BE34 /* SAMCCustomerCardViewController.m */; };
+		31DB30CB1DBDBCD90072BE34 /* SAMCPhone.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30CA1DBDBCD90072BE34 /* SAMCPhone.m */; };
 		31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B761D6589E900832CC8 /* SAMCPushManager.m */; };
 		31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B7A1D65923A00832CC8 /* SAMCSettingManager.m */; };
 		31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31E37B801D65B17000832CC8 /* SAMCTextView.m */; };
@@ -917,6 +918,8 @@
 		31DB30C41DBCB6A80072BE34 /* SAMCSPContactCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSPContactCell.m; sourceTree = "<group>"; };
 		31DB30C61DBDA2E20072BE34 /* SAMCCustomerCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCustomerCardViewController.h; sourceTree = "<group>"; };
 		31DB30C71DBDA2E20072BE34 /* SAMCCustomerCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCustomerCardViewController.m; sourceTree = "<group>"; };
+		31DB30C91DBDBCD90072BE34 /* SAMCPhone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPhone.h; path = DataBase/Model/SAMCPhone.h; sourceTree = "<group>"; };
+		31DB30CA1DBDBCD90072BE34 /* SAMCPhone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPhone.m; path = DataBase/Model/SAMCPhone.m; sourceTree = "<group>"; };
 		31E37B751D6589E900832CC8 /* SAMCPushManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPushManager.h; path = Base/Manager/SAMCPushManager.h; sourceTree = "<group>"; };
 		31E37B761D6589E900832CC8 /* SAMCPushManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPushManager.m; path = Base/Manager/SAMCPushManager.m; sourceTree = "<group>"; };
 		31E37B791D65923A00832CC8 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -2300,6 +2303,8 @@
 				3154F9521D797A0400C540EB /* SAMCPublicMessage.m */,
 				316A67291D7E66CD00B56A5D /* SAMCUser.h */,
 				316A672A1D7E66CD00B56A5D /* SAMCUser.m */,
+				31DB30C91DBDBCD90072BE34 /* SAMCPhone.h */,
+				31DB30CA1DBDBCD90072BE34 /* SAMCPhone.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -2790,6 +2795,7 @@
 				312C1C6A1D35D85B00242906 /* NTESContactDataMember.m in Sources */,
 				316A678D1D8BCA3700B56A5D /* SAMCUnreadCountManager.m in Sources */,
 				31F8FCA71D74337100734068 /* SAMCPublicManager.m in Sources */,
+				31DB30CB1DBDBCD90072BE34 /* SAMCPhone.m in Sources */,
 				316A672B1D7E66CD00B56A5D /* SAMCUser.m in Sources */,
 				312C1C5C1D35D85B00242906 /* NTESChatroomMaker.m in Sources */,
 				312C1CCA1D35D85B00242906 /* NTESBirthPickerView.m in Sources */,

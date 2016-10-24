@@ -232,6 +232,34 @@
     }];
 }
 
+- (void)sendInviteMsg:(NSArray<SAMCPhone *> *)phones
+           completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSMutableArray *phonesDictArray = [[NSMutableArray alloc] init];
+    for (SAMCPhone *phone in phones) {
+        [phonesDictArray addObject:[phone toServerDictionary]];
+    }
+    NSDictionary *parameters = [SAMCServerAPI sendInviteMsg:phonesDictArray];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    [manager POST:SAMC_URL_COMMON_SEND_INVITE_MSG parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];

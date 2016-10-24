@@ -32,6 +32,9 @@
 
 + (NSString*)showTime:(NSTimeInterval) msglastTime showDetail:(BOOL)showDetail
 {
+    if (msglastTime == 0) {
+        return @"";
+    }
     //今天的时间
     NSDate * nowDate = [NSDate date];
     NSDate * msgDate = [NSDate dateWithTimeIntervalSince1970:msglastTime];

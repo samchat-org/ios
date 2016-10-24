@@ -14,6 +14,11 @@
 #import "SAMCGroupedPeoples.h"
 #import "SAMCPeopleDataMember.h"
 #import "SAMCPeopleDataCell.h"
+#import "UIAlertView+NTESBlock.h"
+#import "SAMCUserManager.h"
+#import "SAMCPhone.h"
+#import "SVProgressHUD.h"
+#import "UIView+Toast.h"
 
 @interface SAMCAddContactViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -144,6 +149,18 @@
     SAMCPeopleDataMember *peopleMember = [_peoples memberOfIndex:indexPath];
     SAMCPeopleInfo *peopleInfo = peopleMember.info;
     DDLogDebug(@"select people: %@, phone: %@", [peopleMember memberId], peopleInfo.phone);
+    NSString *inviteMsg = @"This contact is not on Samchat yet. Would you like to invite them to Samchat?";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Invite Contact" message:inviteMsg delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Invite", nil];
+    __weak typeof(self) wself = self;
+    [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
+        switch (alertIndex) {
+            case 1:
+                [wself sendInviteMessage:peopleInfo];
+                break;
+            default:
+                break;
+        }
+    }];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -213,6 +230,23 @@
     SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] init];
     vc.currentUserMode = self.currentUserMode;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)sendInviteMessage:(SAMCPeopleInfo *)peopleInfo
+{
+    SAMCPhone *phone = [SAMCPhone phoneWithCountryCode:nil cellphone:peopleInfo.phone];
+    [SVProgressHUD showWithStatus:@"sending invite message..." maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] sendInviteMsg:@[phone] completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        NSString *toast;
+        if (error) {
+            toast = error.userInfo[NSLocalizedDescriptionKey];
+        } else {
+            toast = @"Invite success";
+        }
+        [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+    }];
 }
 
 //- (void)onTouchSearch:(id)sender

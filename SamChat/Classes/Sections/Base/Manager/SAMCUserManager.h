@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SAMCUserManagerDelegate.h"
 #import "SAMCUser.h"
+#import "SAMCPhone.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateAvatar:(NSString *)url
           completion:(void (^)(SAMCUser * __nullable user, NSError * __nullable error))completion;
+
+- (void)sendInviteMsg:(NSArray<SAMCPhone *> *)phones
+           completion:(void (^)(NSError * __nullable error))completion;
 
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
 
