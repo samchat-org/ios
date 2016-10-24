@@ -52,7 +52,7 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:60.0f]];
+                                                             constant:50.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
@@ -88,14 +88,14 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0f
-                                                      constant:12.0f]];
+                                                      constant:8.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_nameLabel
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
-                                                      constant:8.0f]];
+                                                      constant:0.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
