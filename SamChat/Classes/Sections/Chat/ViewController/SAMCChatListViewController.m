@@ -31,7 +31,6 @@
 
 @interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) UILabel *emptyTipLabel;
 @property (nonatomic,strong) NTESListHeader *header;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchDisplayController *searchResultController;
@@ -77,13 +76,6 @@
     self.header.delegate = self;
     [self.view addSubview:self.header];
     
-    self.emptyTipLabel = [[UILabel alloc] init];
-    self.emptyTipLabel.text = @"还没有会话，在通讯录中找个人聊聊吧";
-    [self.emptyTipLabel sizeToFit];
-    self.emptyTipLabel.hidden = self.recentSessions.count;
-    [self.view addSubview:self.emptyTipLabel];
-    
-    
 //    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
     [[SAMCAccountManager sharedManager] addDelegate:self];
@@ -115,10 +107,8 @@
 {
     if (!self.recentSessions.count) {
         self.tableView.hidden = YES;
-        self.emptyTipLabel.hidden = NO;
     }else{
         self.tableView.hidden = NO;
-        self.emptyTipLabel.hidden = YES;
         [self.tableView reloadData];
     }
 }
@@ -150,8 +140,6 @@
         
         [self.recentSessions removeObjectAtIndex:indexPath.row];
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        
-        self.emptyTipLabel.hidden = self.recentSessions.count;
     }
 }
 #pragma mark - UITableViewDataSource
