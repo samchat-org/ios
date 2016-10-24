@@ -36,8 +36,6 @@
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UIImageView *qrImageView;
 
-@property (nonatomic, strong) UIBarButtonItem *uploadItem;
-
 @end
 
 @implementation SAMCQRCodeScanViewController
@@ -72,11 +70,15 @@
 {
     self.navigationItem.titleView = self.segmentedControl;
     [self setupQRScanView];
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
+        _segmentedControl.backgroundColor = SAMC_COLOR_INK;
+        _segmentedControl.tintColor = [UIColor whiteColor];
+    }
 }
 
 - (void)setupQRScanView
 {
-    self.navigationItem.rightBarButtonItem = self.uploadItem;
+    [self setupNavItem];
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.qrScanView];
     [self.view addSubview:self.topTitle];
@@ -101,7 +103,7 @@
 
 - (void)setupMyQRCodeView
 {
-    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItems = nil;
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self.view addSubview:self.portraitView];
     [self.view addSubview:self.nameLabel];
@@ -147,6 +149,25 @@
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+}
+
+- (void)setupNavItem
+{
+    UIButton *uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [uploadBtn addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
+    [uploadBtn setTitle:@"Upload" forState:UIControlStateNormal];
+    [uploadBtn setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
+    uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
+    uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
+    [uploadBtn sizeToFit];
+    UIBarButtonItem *navRightItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -5;
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer, navRightItem];
+    
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
+        [uploadBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }
 }
 
 //- (void)setupBottomItems
@@ -548,23 +569,6 @@
         _topTitle.backgroundColor = [UIColor clearColor];
     }
     return _topTitle;
-}
-
-- (UIBarButtonItem *)uploadItem
-{
-    if (_uploadItem == nil) {
-        UIButton *uploadBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [uploadBtn addTarget:self action:@selector(openPhoto) forControlEvents:UIControlEventTouchUpInside];
-        //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_normal"] forState:UIControlStateNormal];
-        //    [uploadBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
-        [uploadBtn setTitle:@"Upload" forState:UIControlStateNormal];
-        [uploadBtn setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
-        uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
-        uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
-        [uploadBtn sizeToFit];
-        _uploadItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
-    }
-    return _uploadItem;
 }
 
 @end
