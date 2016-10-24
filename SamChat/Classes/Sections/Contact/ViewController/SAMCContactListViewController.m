@@ -377,7 +377,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     UIViewController *vc;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:userId];
-        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow];
+        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:YES];
     } else {
         BOOL isMyCustomer = YES;
         vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];

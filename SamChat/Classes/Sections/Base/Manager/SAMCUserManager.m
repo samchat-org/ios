@@ -265,6 +265,16 @@
     return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];
 }
 
+- (BOOL)isMyProvider:(NSString *)userId
+{
+    return [[SAMCDataBaseManager sharedManager].userInfoDB isUser:userId inMyContactListOfType:SAMCContactListTypeServicer];
+}
+
+- (BOOL)isMyCustomer:(NSString *)userId
+{
+    return [[SAMCDataBaseManager sharedManager].userInfoDB isUser:userId inMyContactListOfType:SAMCContactListTypeCustomer];
+}
+
 - (SAMCUser *)userInfo:(NSString *)userId
 {
     return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];

@@ -21,18 +21,20 @@
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, assign) BOOL isFollow;
+@property (nonatomic, assign) BOOL isMyProvider;
 @property (nonatomic, strong) UITableView *tableView;
 
 @end
 
 @implementation SAMCServicerCardViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user isFollow:(BOOL)isFollow
+- (instancetype)initWithUser:(SAMCUser *)user isFollow:(BOOL)isFollow isMyProvider:(BOOL)isMyProvider
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _user = user;
         _isFollow = isFollow;
+        _isMyProvider = isMyProvider;
     }
     return self;
 }
@@ -81,6 +83,7 @@
             UIViewController *root = nav.viewControllers[0];
             nav.viewControllers = @[root,vc];
         }
+        // qr code
         if (indexPath.row == 2) {
             SAMCServicerQRViewController *vc = [[SAMCServicerQRViewController alloc] initWithUser:self.user];
             [self.navigationController pushViewController:vc animated:YES];
@@ -104,7 +107,7 @@
     NSInteger rows = 0;
     switch (section) {
         case 0:
-            rows = 4;
+            rows = 5;
             break;
         case 1:
             rows = 3;
@@ -160,6 +163,17 @@
                 case 3:
                 {
                     cell = [self followCell:tableView];
+                }
+                    break;
+                case 4:
+                {
+                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    if (_isMyProvider) {
+                        cell.textLabel.text = @"Delete Provider";
+                    } else {
+                        cell.textLabel.text = @"Add to Provider";
+                    }
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_add"];
                 }
                     break;
                 default:

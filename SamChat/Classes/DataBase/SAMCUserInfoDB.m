@@ -233,6 +233,29 @@
     return contactList;
 }
 
+- (BOOL)isUser:(NSString *)userId inMyContactListOfType:(SAMCContactListType)listType
+{
+    NSString *tableName;
+    if (listType == SAMCContactListTypeCustomer) {
+        tableName = @"contact_list_customer";
+    } else {
+        tableName = @"contact_list_servicer";
+    }
+    if (![self isTableExists:tableName]) {
+        return NO;
+    }
+    __block BOOL result;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSNumber *uniqueId = @([userId integerValue]);
+        NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE unique_id = ?", tableName];
+        FMResultSet *s = [db executeQuery:sql,uniqueId];
+        [s next];
+        result = ([s intForColumnIndex:0] > 0);
+        [s close];
+    }];
+    return result;
+}
+
 #pragma mark - Private
 - (BOOL)resetContactListTable:(SAMCContactListType)listType
 {

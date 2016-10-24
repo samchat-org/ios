@@ -44,6 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
            completion:(void (^)(NSError * __nullable error))completion;
 
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
+- (BOOL)isMyProvider:(NSString *)userId;
+- (BOOL)isMyCustomer:(NSString *)userId;
 
 - (SAMCUser *)userInfo:(NSString *)userId;
 

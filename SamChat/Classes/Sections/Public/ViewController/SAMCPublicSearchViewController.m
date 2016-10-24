@@ -168,7 +168,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     SAMCUser *user = self.data[indexPath.row];
     BOOL isFollow = [self.myFollowIdList containsObject:user.userId];
-    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow];
+    BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:user.userId];
+    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:isMyProvider];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
