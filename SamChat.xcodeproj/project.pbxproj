@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
+		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
 		312C1C351D35D85B00242906 /* NSData+NTES.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1A9D1D35D85B00242906 /* NSData+NTES.m */; };
 		312C1C361D35D85B00242906 /* NSDictionary+NTESJson.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1A9F1D35D85B00242906 /* NSDictionary+NTESJson.m */; };
 		312C1C371D35D85B00242906 /* NSString+NTES.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1AA11D35D85B00242906 /* NSString+NTES.m */; };
@@ -357,6 +358,7 @@
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
 		3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCAppDelegate.m; sourceTree = "<group>"; };
 		312411711D45A4A7008B2A35 /* SAMCGlobalMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCGlobalMacro.h; path = SamChat/SAMCGlobalMacro.h; sourceTree = SOURCE_ROOT; };
+		312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = samchat_adhoc.xcconfig; sourceTree = "<group>"; };
 		312C1A9C1D35D85B00242906 /* NSData+NTES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+NTES.h"; sourceTree = "<group>"; };
 		312C1A9D1D35D85B00242906 /* NSData+NTES.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+NTES.m"; sourceTree = "<group>"; };
 		312C1A9E1D35D85B00242906 /* NSDictionary+NTESJson.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NTESJson.h"; sourceTree = "<group>"; };
@@ -2000,6 +2002,7 @@
 				312C1C281D35D85B00242906 /* main.m */,
 				312FD4301D37193D00CC0ACF /* samchat_debug.xcconfig */,
 				312FD4311D37193D00CC0ACF /* samchat_release.xcconfig */,
+				312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */,
 				312C1C2B1D35D85B00242906 /* NIMKitResouce.bundle */,
 				312C1C2C1D35D85B00242906 /* pinyin.bin */,
 				312C1C2D1D35D85B00242906 /* Sounds */,
@@ -2599,6 +2602,7 @@
 				312C1C561D35D85B00242906 /* NTESTeamListViewController.xib in Resources */,
 				312C1CB81D35D85B00242906 /* NTESLogViewController.xib in Resources */,
 				312C1C741D35D85B00242906 /* NTESContactViewController.xib in Resources */,
+				312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */,
 				312C1C9B1D35D85B00242906 /* NTESGalleryViewController.xib in Resources */,
 				312C1CE31D35D85B00242906 /* d3.icns in Resources */,
 				312C1CA51D35D85B00242906 /* NTESVideoViewController.xib in Resources */,
@@ -2959,6 +2963,91 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		312A05791DBF251D0045A8C6 /* ad hoc distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 312FD4311D37193D00CC0ACF /* samchat_release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Cooperation Communication Operating and Support Center China Telecom";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "iPhone Distribution: Cooperation Communication Operating and Support Center China Telecom";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = "";
+				PROVISIONING_PROFILE = "1a895aab-42c9-4e6f-89ed-a5e1a4685d5a";
+				SDKROOT = iphoneos;
+				USER_HEADER_SEARCH_PATHS = "$(SRCROOT)/../NIMLib/NIMLib/**";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "ad hoc distribution";
+		};
+		312A057A1DBF251D0045A8C6 /* ad hoc distribution */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=*]" = "$(XCCONFIG_CODE_SIGNING)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = YES;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_PREFIX_HEADER = "$(PROJECT_DIR)/SamChat/SamChat-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					NDEBUG,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../NIMLib/NIMLib/ExportHeaders/**",
+					"$(SRCROOT)/NIMKit/NIMKit/**",
+				);
+				INFOPLIST_FILE = "SamChat/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.github.gknows.samchat;
+				PRODUCT_NAME = SamChat;
+				PROVISIONING_PROFILE = "cf330ef2-06d5-425c-9c48-bea88c1e7f04";
+				TARGETED_DEVICE_FAMILY = 1;
+				USER_HEADER_SEARCH_PATHS = "";
+			};
+			name = "ad hoc distribution";
+		};
 		AE5883061A6F47E10070536A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 312FD4301D37193D00CC0ACF /* samchat_debug.xcconfig */;
@@ -3139,6 +3228,7 @@
 			buildConfigurations = (
 				AE5883061A6F47E10070536A /* Debug */,
 				AE5883071A6F47E10070536A /* Release */,
+				312A05791DBF251D0045A8C6 /* ad hoc distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3148,6 +3238,7 @@
 			buildConfigurations = (
 				AE5883091A6F47E10070536A /* Debug */,
 				AE58830A1A6F47E10070536A /* Release */,
+				312A057A1DBF251D0045A8C6 /* ad hoc distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

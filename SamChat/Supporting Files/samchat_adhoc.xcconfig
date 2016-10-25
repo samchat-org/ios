@@ -1,12 +1,12 @@
 //
-//  nim_adhoc.xcconfig
-//  NIM
+//  samchat_adhoc.xcconfig
+//  SamChat
 //
-//  Created by amao on 9/22/15.
-//  Copyright © 2015 Netease. All rights reserved.
+//  Created by HJ on 10/25/16.
+//  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#include "../../Pods/Target Support Files/Pods/Pods.release.xcconfig"
+#include "../../Pods/Target Support Files/Pods/Pods.ad hoc distribution.xcconfig"
 
 XCCONFIG_BUNDLE_ID                  = com.netease.NIM.demo
 XCCONFIG_BUNDLE_NAME                = SamChat
