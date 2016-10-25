@@ -35,9 +35,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>云信想使用您的地理位置信息</string>
+	<string>Samchat uses your location to make a better match. It&apos;s completely private and secure.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>云信想使用您的地理位置信息</string>
+	<string>Samchat uses your location to make a better match. It&apos;s completely private and secure.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
