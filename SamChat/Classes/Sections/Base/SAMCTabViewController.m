@@ -9,6 +9,8 @@
 #import "SAMCTabViewController.h"
 #import "UIBarButtonItem+Badge.h"
 #import "SVProgressHUD.h"
+#import "UIView+Toast.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCTabViewController ()
 
@@ -49,6 +51,10 @@
     self.navigationItem.leftBarButtonItem.enabled = false;
 //    [SVProgressHUD showWithStatus:@"Switching" maskType:SVProgressHUDMaskTypeBlack];
     
+    if (![[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
+        [self.view makeToast:@"not a sevice provider yet" duration:2.0f position:CSToastPositionCenter];
+        return;
+    };
     extern NSString *SAMCUserModeSwitchNotification;
     [[NSNotificationCenter defaultCenter] postNotificationName:SAMCUserModeSwitchNotification
                                                         object:nil
