@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		311B76A51DC089570056D4C5 /* SAMCMemberGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -353,6 +354,8 @@
 
 /* Begin PBXFileReference section */
 		16AF9898D58E36D61F8B0727 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		311B76A31DC089570056D4C5 /* SAMCMemberGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCMemberGroupCell.h; sourceTree = "<group>"; };
+		311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCMemberGroupCell.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -1235,6 +1238,8 @@
 				31DB30511DAF67440072BE34 /* SAMCCommonSwitcherCell.m */,
 				31DB30B91DBC4EF40072BE34 /* SAMCOptionPortraitCell.h */,
 				31DB30BA1DBC4EF40072BE34 /* SAMCOptionPortraitCell.m */,
+				311B76A31DC089570056D4C5 /* SAMCMemberGroupCell.h */,
+				311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2743,6 +2748,7 @@
 				312C1C9E1D35D85B00242906 /* NTESSessionLocalHistoryViewController.m in Sources */,
 				3195DDCD1D5038DD001BD2B4 /* SAMCCustomRequestListDelegate.m in Sources */,
 				312C1CD31D35D85B00242906 /* NTESClientUtil.m in Sources */,
+				311B76A51DC089570056D4C5 /* SAMCMemberGroupCell.m in Sources */,
 				31DB30BB1DBC4EF40072BE34 /* SAMCOptionPortraitCell.m in Sources */,
 				312C1C601D35D85B00242906 /* NTESLiveInfoViewController.m in Sources */,
 				31F8FCB71D7532D100734068 /* SAMCCustomPublicListDelegate.m in Sources */,

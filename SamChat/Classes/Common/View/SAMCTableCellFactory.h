@@ -13,6 +13,7 @@
 #import "SAMCCustomContactCell.h"
 #import "SAMCSPContactCell.h"
 #import "SAMCTipRightCell.h"
+#import "SAMCMemberGroupCell.h"
 
 @interface SAMCTableCellFactory : NSObject
 
@@ -27,5 +28,6 @@
 + (SAMCSPContactCell *)spContactCell:(UITableView *)tableView;
 + (SAMCTipRightCell *)tipRightCell:(UITableView *)tabeleView
                      accessoryType:(UITableViewCellAccessoryType)accessoryType;
++ (SAMCMemberGroupCell *)memberGroupCell:(UITableView *)tableView;
 
 @end

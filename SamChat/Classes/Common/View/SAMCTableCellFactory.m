@@ -89,14 +89,24 @@
     return cell;
 }
 
-+ (SAMCTipRightCell *)tipRightCell:(UITableView *)tabeleView
++ (SAMCTipRightCell *)tipRightCell:(UITableView *)tableView
                      accessoryType:(UITableViewCellAccessoryType)accessoryType;
 {
     static NSString *cellId = @"SAMCTipRightCellId";
-    SAMCTipRightCell *cell = [tabeleView dequeueReusableCellWithIdentifier:cellId];
+    SAMCTipRightCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[SAMCTipRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         cell.accessoryType = accessoryType;
+    }
+    return cell;
+}
+
++ (SAMCMemberGroupCell *)memberGroupCell:(UITableView *)tableView
+{
+    static NSString *cellId = @"SAMCMemberGroupCellId";
+    SAMCMemberGroupCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCMemberGroupCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     return cell;
 }
