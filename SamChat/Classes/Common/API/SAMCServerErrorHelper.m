@@ -7,6 +7,7 @@
 //
 
 #import "SAMCServerErrorHelper.h"
+#import "SAMCAccountManager.h"
 
 @implementation SAMCServerErrorHelper
 
@@ -118,6 +119,13 @@
     }
     DDLogError(@"SAMC_SERVER_ERROR: %ld, %@", code,localizedDescription);
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:localizedDescription};
+    if ((code == SAMCServerErrorTokenFormatWrong) || (code == SAMCServerErrorTokenInvalid)) {
+        // token error, logout
+        [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
+            extern NSString *NTESNotificationLogout;
+            [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
+        }];
+    }
     return [NSError errorWithDomain:SAMC_SERVER_ERROR_DOMAIN code:code userInfo:userInfo];
 }
 
