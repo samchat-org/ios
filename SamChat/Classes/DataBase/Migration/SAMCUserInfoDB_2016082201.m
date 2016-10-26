@@ -23,7 +23,7 @@
                       unique_id INTEGER UNIQUE, username TEXT NOT NULL, usertype INTEGER, lastupdate INTEGER, \
                       avatar TEXT, avatar_original TEXT, countrycode TEXT, cellphone TEXT, \
                       email TEXT, address TEXT, sp_company_name TEXT, sp_service_category TEXT, \
-                      sp_service_description TEXT, sp_countrycode TEXT, sp_phone TEXT, sp_address TEXT)",
+                      sp_service_description TEXT, sp_countrycode TEXT, sp_phone TEXT, sp_address TEXT, sp_email TEXT)",
                       @"CREATE INDEX IF NOT EXISTS unique_id_index ON userinfo(unique_id)",
                       @"CREATE index IF NOT EXISTS username_index ON userinfo(username)",
                       SAMC_CREATE_CONTACT_LIST_CUSTOMER_TABLE_SQL_2016082201,

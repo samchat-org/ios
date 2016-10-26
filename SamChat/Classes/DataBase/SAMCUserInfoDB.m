@@ -58,8 +58,8 @@
                 spInfo.serviceDescription = [s stringForColumn:@"sp_service_description"];
                 spInfo.countryCode = [s stringForColumn:@"sp_countrycode"];
                 spInfo.phone = [s stringForColumn:@"sp_phone"];
-//                spInfo.email; // TODO: sp email?
                 spInfo.address = [s stringForColumn:@"sp_address"];
+                spInfo.email = [s stringForColumn:@"sp_email"];
                 userInfo.spInfo = spInfo;
             }
             user.userInfo = userInfo;
@@ -96,6 +96,7 @@
         NSString *sp_countrycode = userInfo.spInfo.countryCode;
         NSString *sp_phone = userInfo.spInfo.phone;
         NSString *sp_address = userInfo.spInfo.address;
+        NSString *sp_email = userInfo.spInfo.email;
         
         if ([s next]) {
             username = username ?:[s stringForColumn:@"username"];
@@ -113,16 +114,17 @@
             sp_countrycode = sp_countrycode ?:[s stringForColumn:@"sp_countrycode"];
             sp_phone = sp_phone ?:[s stringForColumn:@"sp_phone"];
             sp_address = sp_address ?:[s stringForColumn:@"sp_address"];
+            sp_email = sp_email ?:[s stringForColumn:@"sp_email"];
             [db executeUpdate:@"UPDATE userinfo SET username=?, usertype=?, lastupdate=?, avatar=?, avatar_original=?, countrycode=?, \
              cellphone=?, email=?, address=?, sp_company_name=?, sp_service_category=?, sp_service_description=?, \
-             sp_countrycode=?, sp_phone=?, sp_address=? WHERE unique_id = ?", username, usertype, lastupdate, avatar, avatar_original,
+             sp_countrycode=?, sp_phone=?, sp_address=?, sp_email=? WHERE unique_id = ?", username, usertype, lastupdate, avatar, avatar_original,
              countrycode, cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode,
-             sp_phone, sp_address, unique_id];
+             sp_phone, sp_address, sp_email, unique_id];
         } else {
             [db executeUpdate:@"INSERT INTO userinfo(unique_id, username, usertype, lastupdate, avatar, avatar_original, countrycode, \
-             cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address) \
-             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, usertype, lastupdate, avatar, avatar_original, countrycode,
-             cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address];
+             cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email) \
+             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, usertype, lastupdate, avatar, avatar_original, countrycode,
+             cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email];
         }
         [s close];
     }];
