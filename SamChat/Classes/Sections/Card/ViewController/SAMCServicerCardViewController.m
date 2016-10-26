@@ -68,6 +68,20 @@
     headerView.avatarUrl = _user.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self updateUser];
+}
+
+- (void)updateUser
+{
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] queryAccurateUser:@([_user.userId integerValue]) completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+        if ((error == nil) && (userDict != nil)) {
+            SAMCUser *user = [SAMCUser userFromDict:userDict];
+            [[SAMCUserManager sharedManager] updateUser:user];
+            wself.user = user;
+            [wself.tableView reloadData];
+        }
+    }];
 }
 
 #pragma mark - UITableViewDelegate
