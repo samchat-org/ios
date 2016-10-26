@@ -15,9 +15,10 @@
 #import "SAMCTableCellFactory.h"
 #import "SAMCOptionPortraitCell.h"
 #import "SAMCMemberGroupCell.h"
-#import "NIMContactSelectViewController.h"
+#import "SAMCContactSelectViewController.h"
+#import "SAMCAccountManager.h"
 
-@interface SAMCSessionCardViewController ()<UITableViewDelegate,UITableViewDataSource,NIMMemberGroupViewDelegate,NIMContactSelectDelegate>
+@interface SAMCSessionCardViewController ()<UITableViewDelegate,UITableViewDataSource,NIMMemberGroupViewDelegate,SAMCContactSelectDelegate>
 
 @property (nonatomic, strong) SAMCSession *session;
 @property (nonatomic, strong) NIMMemberGroupView *memberGroupView;
@@ -210,17 +211,50 @@
 {
     if (opera == CardHeaderOpeatorAdd) {
         NSMutableArray *users = [[NSMutableArray alloc] init];
-        NSString *currentUserID = [[[NIMSDK sharedSDK] loginManager] currentAccount];
+        NSString *currentUserID = [[SAMCAccountManager sharedManager] currentAccount];
         [users addObject:currentUserID];
         NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
         config.filterIds = users;
         config.needMutiSelected = YES;
         config.alreadySelectedMemberId = @[self.session.sessionId];
-        NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
+        SAMCContactSelectViewController *vc = [[SAMCContactSelectViewController alloc] initWithConfig:config];
         vc.delegate = self;
         [vc show];
         
     }
+}
+
+#pragma mark - SAMCContactSelectDelegate
+- (void)didFinishedSelect:(NSArray *)selectedContacts
+{
+    if (!selectedContacts.count) {
+        return;
+    }
+    DDLogDebug(@"didFinishedSelect: %@", selectedContacts);
+    NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
+    NSArray *users = [@[uid] arrayByAddingObjectsFromArray:selectedContacts];
+    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
+    option.name = @"讨论组";
+    option.type = NIMTeamTypeNormal;
+    __weak typeof(self) wself = self;
+    [SVProgressHUD show];
+    [[NIMSDK sharedSDK].teamManager createTeam:option
+                                         users:users
+                                    completion:^(NSError *error, NSString *teamId) {
+                                        [SVProgressHUD dismiss];
+                                        if (!error) {
+                                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
+                                            UINavigationController *nav = wself.navigationController;
+                                            [nav popToRootViewControllerAnimated:NO];
+                                            SAMCSession *samcsession = [SAMCSession session:session.sessionId
+                                                                                       type:session.sessionType
+                                                                                       mode:SAMCUserModeTypeSP];
+                                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:samcsession];
+                                            [nav pushViewController:vc animated:YES];
+                                        }else{
+                                            [wself.view makeToast:@"创建讨论组失败" duration:2.0 position:CSToastPositionCenter];
+                                        }
+                                    }];
 }
 
 @end

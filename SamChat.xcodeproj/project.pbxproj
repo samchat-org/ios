@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		311B76A51DC089570056D4C5 /* SAMCMemberGroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */; };
+		311B76AB1DC0C9AD0056D4C5 /* SAMCContactSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76AA1DC0C9AD0056D4C5 /* SAMCContactSelectViewController.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -356,6 +357,8 @@
 		16AF9898D58E36D61F8B0727 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		311B76A31DC089570056D4C5 /* SAMCMemberGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCMemberGroupCell.h; sourceTree = "<group>"; };
 		311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCMemberGroupCell.m; sourceTree = "<group>"; };
+		311B76A91DC0C9AD0056D4C5 /* SAMCContactSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCContactSelectViewController.h; sourceTree = "<group>"; };
+		311B76AA1DC0C9AD0056D4C5 /* SAMCContactSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCContactSelectViewController.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -1437,6 +1440,8 @@
 				314D5D3E1D6BDD3F004B3DE4 /* SAMCQRCodeScanViewController.m */,
 				314D5D4F1D6C7AAE004B3DE4 /* SAMCMyQRCodeViewController.h */,
 				314D5D501D6C7AAE004B3DE4 /* SAMCMyQRCodeViewController.m */,
+				311B76A91DC0C9AD0056D4C5 /* SAMCContactSelectViewController.h */,
+				311B76AA1DC0C9AD0056D4C5 /* SAMCContactSelectViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2679,6 +2684,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				311B76AB1DC0C9AD0056D4C5 /* SAMCContactSelectViewController.m in Sources */,
 				312C1CDF1D35D85B00242906 /* NTESSpellingCenter.m in Sources */,
 				312C1CD41D35D85B00242906 /* NTESDataManager.m in Sources */,
 				316A673B1D85045300B56A5D /* SAMCImageUtil.m in Sources */,

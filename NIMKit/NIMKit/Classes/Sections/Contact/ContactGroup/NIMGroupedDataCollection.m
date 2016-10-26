@@ -47,9 +47,20 @@
         _specialGroups = [[NSMutableOrderedSet alloc] init];
         _groupTtiles = [[NSMutableOrderedSet alloc] init];
         _groups = [[NSMutableOrderedSet alloc] init];
+        //SAMC_BEGIN
+//        _groupTitleComparator = ^NSComparisonResult(NSString *title1, NSString *title2) {
+//            return [title1 localizedCompare:title2];
+//        };
         _groupTitleComparator = ^NSComparisonResult(NSString *title1, NSString *title2) {
-            return [title1 localizedCompare:title2];
+            if ([title1 isEqualToString:@"#"]) {
+                return NSOrderedDescending;
+            }
+            if ([title2 isEqualToString:@"#"]) {
+                return NSOrderedAscending;
+            }
+            return [title1 compare:title2];
         };
+        //SAMC_END
         _groupMemberComparator = ^NSComparisonResult(NSString *key1, NSString *key2) {
             return [key1 localizedCompare:key2];
         };
