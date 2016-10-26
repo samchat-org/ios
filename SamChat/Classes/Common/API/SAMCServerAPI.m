@@ -567,6 +567,8 @@
 //    {
 //        "type":[0/1] 0: text  1:picture   2:vedio
 //        "content": text or url
+//        "content_thumb":  //option  url,
+//        ”message_id”: “DASDADNAB12123”
 //    }
 //}
 + (NSDictionary *)writeAdvertisementType:(SAMCAdvertisementType)type
