@@ -15,7 +15,6 @@
 #import "NTESCustomNotificationDB.h"
 #import "NTESNotificationCenter.h"
 #import "NTESBundleSetting.h"
-#import "SAMCServiceViewController.h"
 #import "SAMCChatListViewController.h"
 #import "SAMCContactListViewController.h"
 #import "SAMCPublicContainerViewController.h"
@@ -283,7 +282,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         }
         _configs = @{
                      @(SAMCMainTabTypeService) : @{
-//                             TabbarVC           : @"SAMCServiceViewController",
                              TabbarVC           : @"SAMCServiceContainerViewController",
                              TabbarTitle        : @"Service",
                              TabbarImage        : @"ico_tab_request_line",
