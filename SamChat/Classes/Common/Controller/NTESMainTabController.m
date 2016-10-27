@@ -31,9 +31,9 @@
 #define TabBarCount 5
 
 typedef NS_ENUM(NSInteger,SAMCMainTabType) {
-    SAMCMainTabTypeService,
-    SAMCMainTabTypePublic,
     SAMCMainTabTypeChat,
+    SAMCMainTabTypePublic,
+    SAMCMainTabTypeService,
     SAMCMainTabTypeContact,
     SAMCMainTabTypeSetting,
 };
@@ -281,12 +281,12 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
             iconTabAccountFillImageName = @"ico_tab_account_sp_fill";
         }
         _configs = @{
-                     @(SAMCMainTabTypeService) : @{
-                             TabbarVC           : @"SAMCServiceContainerViewController",
-                             TabbarTitle        : @"Service",
-                             TabbarImage        : @"ico_tab_request_line",
-                             TabbarSelectedImage: @"ico_tab_request_fill",
-                             TabbarItemBadgeValue: @(serviceUnreadCount)
+                     @(SAMCMainTabTypeChat) : @{
+                             TabbarVC           : @"SAMCChatListViewController",
+                             TabbarTitle        : @"Chat",
+                             TabbarImage        : @"ico_tab_chat_line",
+                             TabbarSelectedImage: @"ico_tab_chat_fill",
+                             TabbarItemBadgeValue: @(chatUnreadCount)
                              },
                      @(SAMCMainTabTypePublic) : @{
                              TabbarVC           : @"SAMCPublicContainerViewController",
@@ -295,12 +295,12 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              TabbarSelectedImage: @"ico_tab_public_fill",
                              TabbarItemBadgeValue: @(publicUnreadCount)
                              },
-                     @(SAMCMainTabTypeChat) : @{
-                             TabbarVC           : @"SAMCChatListViewController",
-                             TabbarTitle        : @"Chat",
-                             TabbarImage        : @"ico_tab_chat_line",
-                             TabbarSelectedImage: @"ico_tab_chat_fill",
-                             TabbarItemBadgeValue: @(chatUnreadCount)
+                     @(SAMCMainTabTypeService) : @{
+                             TabbarVC           : @"SAMCServiceContainerViewController",
+                             TabbarTitle        : @"Service",
+                             TabbarImage        : @"ico_tab_request_line",
+                             TabbarSelectedImage: @"ico_tab_request_fill",
+                             TabbarItemBadgeValue: @(serviceUnreadCount)
                              },
                      @(SAMCMainTabTypeContact) : @{
                              TabbarVC           : @"SAMCContactListViewController",
