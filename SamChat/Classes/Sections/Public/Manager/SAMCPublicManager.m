@@ -158,16 +158,14 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
             if (session.isOutgoing && [messages count]) {
                 // as outgoing message init to failed in db, should check if it's sending after query from db
                 // and set the deliveryState to NIMMessageDeliveryStateDelivering if it's sending
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    for (SAMCPublicMessage *obj in messages) {
-                        if ([wself.sendingMessages count] <= 0) {
-                            break;
-                        }
-                        if ([wself.sendingMessages containsObject:obj.messageId]) {
-                            obj.deliveryState = NIMMessageDeliveryStateDelivering;
-                        }
+                for (SAMCPublicMessage *obj in messages) {
+                    if ([wself.sendingMessages count] <= 0) {
+                        break;
                     }
-                });
+                    if ([wself.sendingMessages containsObject:obj.messageId]) {
+                        obj.deliveryState = NIMMessageDeliveryStateDelivering;
+                    }
+                }
             }
             if (handler) {
                 handler(nil, messages);
