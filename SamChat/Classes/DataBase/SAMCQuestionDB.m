@@ -201,7 +201,6 @@
 {
     [self.queue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:@"UPDATE received_question SET status = ? WHERE question_id = ?", @(status), @(questionId)];
-        [self notifyUpdateReceivedQuestionSession:db questionId:@(questionId)];
     }];
     [self.questionDelegate questionUnreadCountDidChanged:[self allUnreadCountOfReceivedQuestion] userMode:SAMCUserModeTypeSP];
 }
@@ -337,31 +336,6 @@
         [s close];
     }];
     return unreadCount;
-}
-
-#pragma mark -
-- (void)notifyUpdateReceivedQuestionSession:(FMDatabase *)db questionId:(NSNumber *)questionId
-{
-    FMResultSet *s = [db executeQuery:@"SELECT * FROM received_question"];
-    while ([s next]) {
-        NSInteger question_id = [s longForColumn:@"question_id"];
-        NSString *question = [s stringForColumn:@"question"];
-        NSInteger sender_unique_id = [s longForColumn:@"sender_unique_id"];
-        NSInteger status = [s longForColumn:@"status"];
-        NSInteger datetime = [s longForColumn:@"datetime"];
-        NSString *address = [s stringForColumn:@"address"];
-        NSString *sender_username = [s stringForColumn:@"sender_username"];
-        
-        SAMCQuestionSession *session = [SAMCQuestionSession receivedSession:question_id
-                                                                   question:question
-                                                                    address:address
-                                                                   datetime:datetime
-                                                                   senderId:sender_unique_id
-                                                             senderUsername:sender_username
-                                                                     status:status];
-        [self.questionDelegate didUpdateQuestionSession:session];
-    }
-    [s close];
 }
 
 @end

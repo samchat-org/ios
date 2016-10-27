@@ -283,7 +283,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         }
         _configs = @{
                      @(SAMCMainTabTypeService) : @{
-                             TabbarVC           : @"SAMCServiceViewController",
+//                             TabbarVC           : @"SAMCServiceViewController",
+                             TabbarVC           : @"SAMCServiceContainerViewController",
                              TabbarTitle        : @"Service",
                              TabbarImage        : @"ico_tab_request_line",
                              TabbarSelectedImage: @"ico_tab_request_fill",
