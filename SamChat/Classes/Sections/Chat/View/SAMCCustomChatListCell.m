@@ -130,9 +130,16 @@
     self.messageLabel.text = recentSession.lastMessageContent;
     self.timeLabel.text = [self timestampDescriptionForRecentSession:recentSession];
     
-    
-    NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:recentSession.session.sessionId
-                                            inSession:recentSession.session.nimSession];
+    NIMKitInfo *info = nil;
+    if (recentSession.session.sessionType == NIMSessionTypeTeam)
+    {
+        info = [[NIMKit sharedKit] infoByTeam:recentSession.session.sessionId];
+    }
+    else
+    {
+        info = [[NIMKit sharedKit] infoByUser:recentSession.session.sessionId
+                                    inSession:recentSession.session.nimSession];
+    }
     
     NSURL *url = info.avatarUrlString ? [NSURL URLWithString:info.avatarUrlString] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
