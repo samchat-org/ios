@@ -44,6 +44,7 @@
 #import "NTESFPSLabel.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESDataManager.h"
+#import "SAMCNormalTeamCardViewController.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
@@ -603,9 +604,9 @@ NIMContactSelectDelegate>
     NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.samcSession.sessionId];
     UIViewController *vc;
     if (team.type == NIMTeamTypeNormal) {
-        vc = [[NIMNormalTeamCardViewController alloc] initWithTeam:team];
+        vc = [[SAMCNormalTeamCardViewController alloc] initWithTeam:team];
     }else if(team.type == NIMTeamTypeAdvanced){
-        vc = [[NIMAdvancedTeamCardViewController alloc] initWithTeam:team];
+//        vc = [[NIMAdvancedTeamCardViewController alloc] initWithTeam:team];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

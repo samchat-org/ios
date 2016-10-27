@@ -12,6 +12,7 @@
 		311B76AE1DC1AC580056D4C5 /* SAMCServiceContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76AD1DC1AC580056D4C5 /* SAMCServiceContainerViewController.m */; };
 		311B76B11DC1ACEF0056D4C5 /* SAMCCustomServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B01DC1ACEF0056D4C5 /* SAMCCustomServiceViewController.m */; };
 		311B76B41DC1AD040056D4C5 /* SAMCSPServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B31DC1AD040056D4C5 /* SAMCSPServiceViewController.m */; };
+		311B76B71DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B61DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -365,6 +366,8 @@
 		311B76B01DC1ACEF0056D4C5 /* SAMCCustomServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomServiceViewController.m; path = Service/ViewController/SAMCCustomServiceViewController.m; sourceTree = "<group>"; };
 		311B76B21DC1AD040056D4C5 /* SAMCSPServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPServiceViewController.h; path = Service/ViewController/SAMCSPServiceViewController.h; sourceTree = "<group>"; };
 		311B76B31DC1AD040056D4C5 /* SAMCSPServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPServiceViewController.m; path = Service/ViewController/SAMCSPServiceViewController.m; sourceTree = "<group>"; };
+		311B76B51DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCNormalTeamCardViewController.h; sourceTree = "<group>"; };
+		311B76B61DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCNormalTeamCardViewController.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -1267,6 +1270,8 @@
 				3195DE201D585FE2001BD2B4 /* SAMCPersonalCardViewController.m */,
 				3195DE2C1D5AC152001BD2B4 /* SAMCSessionCardViewController.h */,
 				3195DE2D1D5AC152001BD2B4 /* SAMCSessionCardViewController.m */,
+				311B76B51DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.h */,
+				311B76B61DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m */,
 				31DB30471DAF26020072BE34 /* SAMCServicerCardViewController.h */,
 				31DB30481DAF26020072BE34 /* SAMCServicerCardViewController.m */,
 				31DB30C61DBDA2E20072BE34 /* SAMCCustomerCardViewController.h */,
@@ -2708,6 +2713,7 @@
 				312C1C491D35D85B00242906 /* NTESBadgeView.m in Sources */,
 				31F8FC9E1D6D98FD00734068 /* SAMCQuestionSession.m in Sources */,
 				3195DE381D5C0747001BD2B4 /* NIMMessageWrapper.m in Sources */,
+				311B76B71DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m in Sources */,
 				312C1CB71D35D85B00242906 /* NTESLogViewController.m in Sources */,
 				312C1C8C1D35D85B00242906 /* NTESSessionCustomLayoutConfig.m in Sources */,
 				31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */,

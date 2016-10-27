@@ -28,12 +28,12 @@
     _opera = opera;
     switch (opera) {
         case CardHeaderOpeatorAdd:
-            _title          = @"加入";
+            _title          = @"Add";
             _imageNormal    = [UIImage imageNamed:@"icon_add_normal"];
             _imageHighLight = [UIImage imageNamed:@"icon_add_pressed"];
             break;
         case CardHeaderOpeatorRemove:
-            _title          = @"移除";
+            _title          = @"Remove";
             _imageNormal    = [UIImage imageNamed:@"icon_remove_normal"];
             _imageHighLight = [UIImage imageNamed:@"icon_remove_pressed"];
             break;
