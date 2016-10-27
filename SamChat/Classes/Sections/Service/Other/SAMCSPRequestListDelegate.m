@@ -105,6 +105,24 @@
 
 - (void)didUpdateQuestionSession:(SAMCQuestionSession *)questionSession
 {
+    if (questionSession.type != SAMCQuestionSessionTypeReceived) {
+        return;
+    }
+    for (SAMCQuestionSession *session in self.data) {
+        if (questionSession.questionId == session.questionId) {
+            [self.data removeObject:session];
+            break;
+        }
+    }
+    NSInteger insert = [self findInsertPlace:questionSession];
+    [self.data insertObject:questionSession atIndex:insert];
+    [self.viewController sortAndReload];
+}
+
+- (NSInteger)findInsertPlace:(SAMCQuestionSession *)questionSession
+{
+    // todo: find insert place
+    return 0;
 }
 
 #pragma mark - Insert Message
