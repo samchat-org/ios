@@ -42,7 +42,7 @@
     [self addSubview:self.timeLabel];
     [self addSubview:self.messageLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[_avatarView(30)]-10-[_nameLabel]-10-[_timeLabel]-16-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[_avatarView(25)]-10-[_nameLabel]-10-[_timeLabel]-16-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_timeLabel)]];
@@ -50,20 +50,20 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_messageLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-10-[_locationLabel]-16-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_avatarView(25)]-12-[_messageLabel]-16-[_locationLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_locationLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-10-[_avatarView(30)]-12-[_messageLabel]-16-|"
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_locationLabel)]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-16-[_locationLabel]-16-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_locationLabel)]];
     
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
-                                                     attribute:NSLayoutAttributeTop
+                                                     attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_nameLabel
-                                                     attribute:NSLayoutAttributeTop
+                                                     attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
@@ -71,13 +71,6 @@
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_timeLabel
                                                      attribute:NSLayoutAttributeTop
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
-                                                     attribute:NSLayoutAttributeBottom
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_locationLabel
-                                                     attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
                                                       constant:0.0f]];
 }
@@ -113,8 +106,8 @@
     if (_nameLabel == nil) {
         _nameLabel = [[UILabel alloc] init];
         _nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _nameLabel.font = [UIFont systemFontOfSize:13.0f];
-        _nameLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
+        _nameLabel.font = [UIFont systemFontOfSize:15.0f];
+        _nameLabel.textColor = SAMC_COLOR_INGRABLUE;
         _nameLabel.textAlignment = NSTextAlignmentLeft;
     }
     return _nameLabel;
