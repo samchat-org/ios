@@ -7,7 +7,6 @@
 //
 
 #import "SAMCSPServiceViewController.h"
-#import "UIBarButtonItem+Badge.h"
 #import "SAMCNewRequestViewController.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCServiceProfileViewController.h"
@@ -19,7 +18,6 @@
 
 @property (nonatomic, strong) UITableView *tableView;
 
-//@property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, strong) NSMutableArray *theNewQuestions;
 @property (nonatomic, strong) NSMutableArray *theSeenQuestions;
 
@@ -50,7 +48,22 @@
 - (void)setupSubviews
 {
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
-    [self setupSPModeViews];
+    self.parentViewController.navigationItem.title = @"Service Requests";
+    
+    [self.theNewQuestions removeAllObjects];
+    [self.theSeenQuestions removeAllObjects];
+    NSArray *allReceivedQuestion = [[SAMCQuestionManager sharedManager] allReceivedQuestion];
+    [allReceivedQuestion enumerateObjectsUsingBlock:^(SAMCQuestionSession *questionSession, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (questionSession.status == SAMCReceivedQuestionStatusNew) {
+            [self.theNewQuestions addObject:questionSession];
+        } else {
+            [self.theSeenQuestions addObject:questionSession];
+        }
+    }];
+    [self sort];
+    
+    [self setupSPModeNotEmptyRequestViews];
+    [self setupSPModeEmptyRequestViews];
 }
 
 - (void)setupSPModeEmptyRequestViews
@@ -106,26 +119,6 @@
     if (([self.theNewQuestions count] == 0) && ([self.theSeenQuestions count] == 0)) {
         [self hideSPNotEmptyRequestView:YES];
     }
-}
-
-- (void)setupSPModeViews
-{
-    [self setupSPModeNotEmptyRequestViews];
-    [self setupSPModeEmptyRequestViews];
-    
-    [self.theNewQuestions removeAllObjects];
-    [self.theSeenQuestions removeAllObjects];
-    NSArray *allReceivedQuestion = [[SAMCQuestionManager sharedManager] allReceivedQuestion];
-    [allReceivedQuestion enumerateObjectsUsingBlock:^(SAMCQuestionSession *questionSession, NSUInteger idx, BOOL * _Nonnull stop) {
-        if (questionSession.status == SAMCReceivedQuestionStatusNew) {
-            [self.theNewQuestions addObject:questionSession];
-        } else {
-            [self.theSeenQuestions addObject:questionSession];
-        }
-    }];
-    [self refreshData];
-    self.parentViewController.navigationItem.title = @"Service Requests";
-    
 }
 
 - (void)hideSPEmptyRequestView:(BOOL)hidden
@@ -225,7 +218,8 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [[SAMCQuestionManager sharedManager] deleteReceivedQuestion:session];
         if ([self needRefreshAfterRemoveQuestionSessionAtIndexPath:indexPath]) {
-            [self refreshData];
+            [self sort];
+            [self reload];
         } else {
             [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
@@ -239,7 +233,8 @@
         return;
     }
     [self.theNewQuestions addObject:questionSession];
-    [self refreshData];
+    [self sort];
+    [self reload];
 }
 
 - (SAMCQuestionSession *)questionSessionAtIndexPath:(NSIndexPath *)indexPath
@@ -290,23 +285,23 @@
             [[SAMCQuestionManager sharedManager] updateReceivedQuestion:questionSession.questionId status:SAMCReceivedQuestionStatusInserted];
             [wself.theNewQuestions removeObject:questionSession];
             [wself.theSeenQuestions addObject:questionSession];
-            [wself refreshData];
+            [wself sort];
+            [wself reload];
         }
     }];
 }
 
 #pragma mark - 
-- (void)refreshData
+- (void)reload
 {
     if (([self.theNewQuestions count] > 0) || ([self.theSeenQuestions count] > 0)) {
         [self hideSPNotEmptyRequestView:NO];
         [self hideSPEmptyRequestView:YES];
+        [self.tableView reloadData];
     } else {
         [self hideSPNotEmptyRequestView:YES];
         [self hideSPEmptyRequestView:NO];
     }
-    [self sort];
-    [self.tableView reloadData];
 }
 
 - (void)sort
