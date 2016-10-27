@@ -9,7 +9,6 @@
 #import "SAMCSPServiceViewController.h"
 #import "UIBarButtonItem+Badge.h"
 #import "SAMCNewRequestViewController.h"
-#import "SAMCSPRequestListDelegate.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCAddContactViewController.h"
@@ -225,10 +224,10 @@
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [[SAMCQuestionManager sharedManager] deleteReceivedQuestion:session];
-        [self removeQuestionSessionAtIndexPath:indexPath];
-        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        if (([self.theNewQuestions count] == 0) && ([self.theSeenQuestions count] == 0)) {
+        if ([self needRefreshAfterRemoveQuestionSessionAtIndexPath:indexPath]) {
             [self refreshData];
+        } else {
+            [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
     }
 }
@@ -252,12 +251,14 @@
     }
 }
 
-- (void)removeQuestionSessionAtIndexPath:(NSIndexPath *)indexPath
+- (BOOL)needRefreshAfterRemoveQuestionSessionAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0) {
         [self.theNewQuestions removeObjectAtIndex:indexPath.row];
+        return ([self.theNewQuestions count] == 0);
     } else {
         [self.theSeenQuestions removeObjectAtIndex:indexPath.row];
+        return ([self.theSeenQuestions count] == 0);
     }
 }
 
@@ -326,12 +327,6 @@
 }
 
 #pragma mark - Action
-- (void)touchMakeNewRequest:(id)sender
-{
-    SAMCNewRequestViewController *vc = [[SAMCNewRequestViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)touchUpdateServiceProfile:(id)sender
 {
     SAMCServiceProfileViewController *vc = [[SAMCServiceProfileViewController alloc] init];
