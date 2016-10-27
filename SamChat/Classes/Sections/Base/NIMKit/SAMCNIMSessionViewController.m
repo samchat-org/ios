@@ -264,6 +264,10 @@ NIMUserManagerDelegate>
 #pragma mark - 消息收发接口
 - (void)sendMessage:(NIMMessage *)message
 {
+    if (_samcSession.sessionType != NIMSessionTypeP2P) {
+        [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:[_samcSession nimSession] error:nil];
+        return;
+    }
     id usermodeValue = nil;
     if (_samcSession.sessionMode == SAMCUserModeTypeSP) {
         usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
