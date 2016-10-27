@@ -9,7 +9,7 @@
 #ifndef SAMCServerAPIMacro_h
 #define SAMCServerAPIMacro_h
 
-#define SAMC_API_PREFIX                 @"http://service-test.samchat.com:8081/sam_svr/"
+#define SAMC_API_PREFIX                 @"http://service-test.samchat.com/"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@"api_1.0_user_registerCodeRequest.do"
 #define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@"api_1.0_user_signupCodeVerify.do"
