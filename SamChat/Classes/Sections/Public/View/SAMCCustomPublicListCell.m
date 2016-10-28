@@ -52,7 +52,7 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:50.0f]];
+                                                             constant:40.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
@@ -88,14 +88,14 @@
                                                         toItem:self
                                                      attribute:NSLayoutAttributeTop
                                                     multiplier:1.0f
-                                                      constant:8.0f]];
+                                                      constant:15.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_messageLabel
-                                                     attribute:NSLayoutAttributeTop
+                                                     attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:_nameLabel
+                                                        toItem:self
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
-                                                      constant:0.0f]];
+                                                      constant:-15.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
@@ -169,7 +169,6 @@
         _messageLabel = [[UILabel alloc] init];
         _messageLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _messageLabel.font = [UIFont systemFontOfSize:15.0f];
-        _messageLabel.numberOfLines = 2;
         _messageLabel.textColor = SAMC_COLOR_INK;
     }
     return _messageLabel;
