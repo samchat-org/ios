@@ -25,6 +25,7 @@
 @property (nonatomic, strong, readonly) SAMCSession *samcSession;
 
 @property (nonatomic, strong) NSNumber *questionId;
+@property (nonatomic, strong) NSNumber *publicMessageId;
 
 @property (nonatomic, strong, readonly) NIMSessionViewLayoutManager *layoutManager;
 

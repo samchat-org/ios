@@ -116,6 +116,7 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 #define MESSAGE_EXT_UNREAD_FLAG_NO          @(NO)
 
 #define MESSAGE_EXT_QUESTION_ID_KEY         @"quest_id"
+#define MESSAGE_EXT_PUBLIC_ID_KEY           @"adv_id"
 
 #define MESSAGE_EXT_SAVE_FLAG_KEY           @"save_flag"
 #define MESSAGE_EXT_SAVE_FLAG_YES           @(YES)

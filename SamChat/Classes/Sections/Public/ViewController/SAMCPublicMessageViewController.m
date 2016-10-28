@@ -47,6 +47,7 @@
 #import "SAMCPublicInputView.h"
 #import "NIMInputToolBar.h"
 #import "SAMCPublicSessionViewLayoutManager.h"
+#import "SAMCSessionViewController.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -245,10 +246,11 @@ UITableViewDelegate>
 {
     NSMutableArray *items = [NSMutableArray array];
     if (message.messageType == NIMMessageTypeText) {
-        [items addObject:[[UIMenuItem alloc] initWithTitle:@"复制" action:@selector(copyText:)]];
+        [items addObject:[[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(copyText:)]];
     }
-    [items addObject:[[UIMenuItem alloc] initWithTitle:@"删除" action:@selector(deleteMsg:)]];
-    [items addObject:[[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(forwardMessage:)]];
+    [items addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteMsg:)]];
+    [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
+//    [items addObject:[[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(forwardMessage:)]];
     return items;
 }
 
@@ -555,9 +557,44 @@ UITableViewDelegate>
     [[SAMCPublicManager sharedManager] deleteMessage:message];
 }
 
+- (void)chatNow:(id)sender
+{
+    SAMCPublicMessage *message = (SAMCPublicMessage *)[self messageForMenu];
+    [self savePublicMessage:message];
+}
+
 - (void)menuDidHide:(NSNotification *)notification
 {
     [UIMenuController sharedMenuController].menuItems = nil;
+}
+
+#pragma mark - Insert Message
+- (void)savePublicMessage:(SAMCPublicMessage *)publicMessage
+{
+    NIMMessage *message = [[NIMMessage alloc] init];
+    message.from = publicMessage.from;
+    NIMMessageSetting *setting = [[NIMMessageSetting alloc] init];
+    setting.apnsEnabled        = NO;
+    message.setting            = setting;
+    
+    if (publicMessage.messageType == NIMMessageTypeCustom) {
+        message.messageObject = publicMessage.messageObject;
+    } else {
+        message.text = publicMessage.text;
+    }
+    
+    // set unread flag extention
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+    [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP,
+                                    MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO}];
+    message.remoteExt = ext;
+    NIMSession *session = [NIMSession session:message.from type:NIMSessionTypeP2P];
+    [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:^(NSError * _Nullable error) {
+        SAMCSession *samcsession = [SAMCSession session:self.publicSession.userId type:NIMSessionTypeP2P mode:SAMCUserModeTypeCustom];
+        SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:samcsession];
+        vc.publicMessageId = @(publicMessage.serverId);
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
 }
 
 #pragma mark - 操作接口

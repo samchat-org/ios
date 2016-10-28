@@ -277,7 +277,10 @@ NIMUserManagerDelegate>
     NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
     [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:usermodeValue}];
     if (self.questionId) {
-        [ext setObject:[NSString stringWithFormat:@"%@",self.questionId] forKey:MESSAGE_EXT_QUESTION_ID_KEY];
+        [ext setObject:[self.questionId stringValue] forKey:MESSAGE_EXT_QUESTION_ID_KEY];
+    }
+    if (self.publicMessageId) {
+        [ext setObject:[self.publicMessageId stringValue] forKey:MESSAGE_EXT_PUBLIC_ID_KEY];
     }
     message.remoteExt = ext;
     
@@ -322,6 +325,11 @@ NIMUserManagerDelegate>
             NSString *questionIdStr = [ext valueForKey:MESSAGE_EXT_QUESTION_ID_KEY];
             if ((questionIdStr != nil) && [self.questionId isEqual:@([questionIdStr intValue])]) {
                 self.questionId = nil;
+            }
+            // 如果发送的消息带有publicMessageId，则发送成功的时候更新这个消息的status
+            NSString *publicMessageIdStr = [ext valueForKey:MESSAGE_EXT_PUBLIC_ID_KEY];
+            if ((publicMessageIdStr != nil) && [self.publicMessageId isEqual:@([publicMessageIdStr intValue])]) {
+                self.publicMessageId = nil;
             }
         }
     }
