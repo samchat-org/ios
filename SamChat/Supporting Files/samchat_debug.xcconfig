@@ -8,8 +8,8 @@
 
 #include "../../Pods/Target Support Files/Pods/Pods.debug.xcconfig"
 
-XCCONFIG_BUNDLE_ID                  = com.netease.NIM.demo
+XCCONFIG_BUNDLE_ID                  = com.github.gknows.samchat
 XCCONFIG_BUNDLE_NAME                = SamChat Dev
-XCCONFIG_CODE_SIGNING               = iPhone Developer
-XCCONFIG_PROVISIONING_PROFILE       = 
+//XCCONFIG_CODE_SIGNING               = iPhone Developer
+//XCCONFIG_PROVISIONING_PROFILE       =
 
