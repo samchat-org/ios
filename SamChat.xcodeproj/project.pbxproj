@@ -333,7 +333,6 @@
 		31F8FCA71D74337100734068 /* SAMCPublicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCA61D74337100734068 /* SAMCPublicManager.m */; };
 		31F8FCAA1D7529FC00734068 /* SAMCSPBasicInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCA91D7529FC00734068 /* SAMCSPBasicInfo.m */; };
 		31F8FCB41D75329100734068 /* SAMCCustomPublicListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCB31D75329100734068 /* SAMCCustomPublicListCell.m */; };
-		31F8FCB71D7532D100734068 /* SAMCCustomPublicListDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCB61D7532D100734068 /* SAMCCustomPublicListDelegate.m */; };
 		31F8FCBA1D755CA900734068 /* SAMCPublicSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCB91D755CA900734068 /* SAMCPublicSession.m */; };
 		31F8FCCA1D76A68100734068 /* SAMCPublicDB.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCC91D76A68100734068 /* SAMCPublicDB.m */; };
 		31F8FCCF1D76A9A800734068 /* SAMCPublicDB_2016082201.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCCE1D76A9A800734068 /* SAMCPublicDB_2016082201.m */; };
@@ -974,8 +973,6 @@
 		31F8FCA91D7529FC00734068 /* SAMCSPBasicInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPBasicInfo.m; path = DataBase/Model/SAMCSPBasicInfo.m; sourceTree = "<group>"; };
 		31F8FCB21D75329100734068 /* SAMCCustomPublicListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCustomPublicListCell.h; path = Public/View/SAMCCustomPublicListCell.h; sourceTree = "<group>"; };
 		31F8FCB31D75329100734068 /* SAMCCustomPublicListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomPublicListCell.m; path = Public/View/SAMCCustomPublicListCell.m; sourceTree = "<group>"; };
-		31F8FCB51D7532D100734068 /* SAMCCustomPublicListDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCustomPublicListDelegate.h; path = Public/Other/SAMCCustomPublicListDelegate.h; sourceTree = "<group>"; };
-		31F8FCB61D7532D100734068 /* SAMCCustomPublicListDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCustomPublicListDelegate.m; path = Public/Other/SAMCCustomPublicListDelegate.m; sourceTree = "<group>"; };
 		31F8FCB81D755CA900734068 /* SAMCPublicSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicSession.h; path = DataBase/Model/SAMCPublicSession.h; sourceTree = "<group>"; };
 		31F8FCB91D755CA900734068 /* SAMCPublicSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicSession.m; path = DataBase/Model/SAMCPublicSession.m; sourceTree = "<group>"; };
 		31F8FCC71D7698B400734068 /* SAMCDataBaseMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SAMCDataBaseMacro.h; path = DataBase/SAMCDataBaseMacro.h; sourceTree = "<group>"; };
@@ -2227,8 +2224,6 @@
 		3195DDB41D4F3A75001BD2B4 /* Other */ = {
 			isa = PBXGroup;
 			children = (
-				31F8FCB51D7532D100734068 /* SAMCCustomPublicListDelegate.h */,
-				31F8FCB61D7532D100734068 /* SAMCCustomPublicListDelegate.m */,
 				31F8FCD01D77C25600734068 /* SAMCSPPublicMessageDelegate.h */,
 				31F8FCD11D77C25600734068 /* SAMCSPPublicMessageDelegate.m */,
 				3154F94E1D79691B00C540EB /* SAMCPublicMessageMaker.h */,
@@ -2761,7 +2756,6 @@
 				311B76A51DC089570056D4C5 /* SAMCMemberGroupCell.m in Sources */,
 				31DB30BB1DBC4EF40072BE34 /* SAMCOptionPortraitCell.m in Sources */,
 				312C1C601D35D85B00242906 /* NTESLiveInfoViewController.m in Sources */,
-				31F8FCB71D7532D100734068 /* SAMCCustomPublicListDelegate.m in Sources */,
 				312C1CE61D35D85B00242906 /* main.m in Sources */,
 				312C1CC81D35D85B00242906 /* NTESUserInfoSettingViewController.m in Sources */,
 				3195DDDB1D51C116001BD2B4 /* SAMCDataBaseManager.m in Sources */,

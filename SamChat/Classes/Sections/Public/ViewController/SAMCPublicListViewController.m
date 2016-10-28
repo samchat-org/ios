@@ -7,15 +7,14 @@
 //
 
 #import "SAMCPublicListViewController.h"
-#import "SAMCCustomPublicListDelegate.h"
 #import "SAMCPublicManager.h"
 #import "SAMCPublicSearchViewController.h"
+#import "SAMCCustomPublicListCell.h"
+#import "SAMCPublicMessageViewController.h"
 
-@interface SAMCPublicListViewController ()<SAMCTableReloadDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
+@interface SAMCPublicListViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCPublicManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-
-@property (nonatomic, strong) SAMCTableViewDelegate *delegator;
 @property (nonatomic, strong) NSMutableArray *data;
 
 @end
@@ -25,14 +24,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _data = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self setupSubviews];
     [self setUpNavItem];
+    [[SAMCPublicManager sharedManager] addDelegate:self];
 }
 
-- (void)didReceiveMemoryWarning
+- (void)dealloc
 {
-    [super didReceiveMemoryWarning];
+    [[SAMCPublicManager sharedManager] removeDelegate:self];
 }
 
 - (void)setupSubviews
@@ -41,18 +42,15 @@
     self.parentViewController.navigationItem.title = @"Public";
     [self.data removeAllObjects];
     [self.data addObjectsFromArray:[[SAMCPublicManager sharedManager] myFollowList]];
-    __weak typeof(self) weakSelf = self;
-    self.delegator = [[SAMCCustomPublicListDelegate alloc] initWithTableData:^NSMutableArray *{
-        return weakSelf.data;
-    } viewController:self];
+    [self sort];
     
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     self.tableView = [[UITableView alloc] init];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     self.tableView.backgroundColor = [UIColor clearColor];
-    self.tableView.dataSource = self.delegator;
-    self.tableView.delegate = self.delegator;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     self.tableView.sectionIndexBackgroundColor = [UIColor clearColor];
     [self.view addSubview:self.tableView];
@@ -90,19 +88,124 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark - SAMCTableReloadDelegate
-- (void)sortAndReload
+#pragma mark - UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // TODO: add sorting
+    return [[self data] count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * cellId = @"SAMCCustomPublicListCellId";
+    SAMCCustomPublicListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCCustomPublicListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    
+    SAMCPublicSession *session = [self data][indexPath.row];
+    cell.publicSession = session;
+    return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    SAMCPublicMessageViewController *vc = [[SAMCPublicMessageViewController alloc] init];
+    SAMCPublicSession *session = [self data][indexPath.row];
+    vc.publicSession = session;
+    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:session];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 70.f;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Unfollow";
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SAMCPublicSession *session = [self data][indexPath.row];
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [[SAMCPublicManager sharedManager] follow:NO officialAccount:session.spBasicInfo completion:^(NSError * _Nullable error) {
+            if (error == nil) {
+                [[self data] removeObjectAtIndex:indexPath.row];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            }
+        }];
+    }
+}
+
+#pragma mark - SAMCPublicManagerDelegate
+- (void)didAddPublicSession:(SAMCPublicSession *)publicSession
+{
+    [[self data] addObject:publicSession];
+    [self sort];
+    [self reload];
+}
+
+- (void)didUpdatePublicSession:(SAMCPublicSession *)publicSession
+{
+    NSMutableArray *sessions= [self data];
+    for (SAMCPublicSession *session in sessions) {
+        if ([session isEqual:publicSession]) {
+            [sessions removeObject:session];
+            break;
+        }
+    }
+    NSInteger insert = [self findInsertPlace:publicSession];
+    [sessions insertObject:publicSession atIndex:insert];
+    [self reload];
+}
+
+#pragma mark - 
+- (void)sort
+{
+    [self.data sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        SAMCPublicSession *item1 = obj1;
+        SAMCPublicSession *item2 = obj2;
+        if (item1.lastMessageTime < item2.lastMessageTime) {
+            return NSOrderedDescending;
+        }
+        if (item1.lastMessageTime > item2.lastMessageTime) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedSame;
+    }];
+}
+
+- (void)reload
+{
     [self.tableView reloadData];
 }
 
-#pragma mark - lazy load
-- (NSMutableArray *)data
+- (NSInteger)findInsertPlace:(SAMCPublicSession *)session
 {
-    if (_data == nil) {
-        _data = [[NSMutableArray alloc] init];
+    __block NSUInteger matchIdx = 0;
+    __block BOOL find = NO;
+    [self.data enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        SAMCPublicSession *item = obj;
+        if (item.lastMessageTime <= session.lastMessageTime) {
+            *stop = YES;
+            find  = YES;
+            matchIdx = idx;
+        }
+    }];
+    if (find) {
+        return matchIdx;
+    }else{
+        return self.data.count;
     }
-    return _data;
 }
+
 @end
