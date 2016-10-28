@@ -122,6 +122,19 @@
             SAMCMessage *samcmessage = [SAMCMessage message:message.messageId session:samcsession];
             if (samcmessage) {
                 samcmessage.nimMessage = message;
+                // 如果消息扩展中含有adv_id,则是用户询问广告的消息,此时需要先插入广告,再插入这条消息
+                NSString *publicMessageIdStr = [ext valueForKey:MESSAGE_EXT_PUBLIC_ID_KEY];
+                if (publicMessageIdStr) {
+                    SAMCMessage *publicMessage = [self publicMessageOfAdvId:@([publicMessageIdStr integerValue])
+                                                                         to:message.from
+                                                                       time:message.timestamp*1000];
+                    if (publicMessage) {
+                        [spMessages addObject:publicMessage];
+                        NSInteger index = [normalMessages indexOfObject:message];
+                        [normalMessages insertObject:publicMessage.nimMessage atIndex:index];
+                    }
+                }
+                
                 [spMessages addObject:samcmessage];
                 if (![[ext valueForKey:MESSAGE_EXT_UNREAD_FLAG_KEY] isEqual:MESSAGE_EXT_UNREAD_FLAG_NO]) {
                     spUnread ++;
@@ -203,6 +216,37 @@
         quesitonMessage.nimMessage = message;
     }
     return quesitonMessage;
+}
+
+#pragma mark - 
+- (SAMCMessage *)publicMessageOfAdvId:(NSNumber *)advId to:(NSString *)userId time:(NSTimeInterval)time
+{
+    SAMCMessage *samcmessage = nil;
+    SAMCPublicMessage *publicMessage = [[SAMCDataBaseManager sharedManager].publicDB myPublicMessageOfServerId:advId];
+    if (publicMessage) {
+        NIMMessage *message = [[NIMMessage alloc] init];
+        message.from = [SAMCAccountManager sharedManager].currentAccount;
+        if (publicMessage.messageType == NIMMessageTypeCustom) {
+            message.messageObject = publicMessage.messageObject;
+        } else {
+            message.text = publicMessage.text;
+        }
+        // set unread_flag & save_flag extention
+        NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+        // 这个问题消息为了保证插入顺序，在下面直接插入数据库，在onRecvMessages:中丢弃
+        [ext addEntriesFromDictionary:@{MESSAGE_EXT_FROM_USER_MODE_KEY:MESSAGE_EXT_FROM_USER_MODE_VALUE_SP,
+                                        MESSAGE_EXT_UNREAD_FLAG_KEY:MESSAGE_EXT_UNREAD_FLAG_NO,
+                                        MESSAGE_EXT_SAVE_FLAG_KEY:MESSAGE_EXT_SAVE_FLAG_NO}];
+        message.remoteExt = ext;
+        NIMSession *session = [NIMSession session:userId type:NIMSessionTypeP2P];
+        [[NIMSDK sharedSDK].conversationManager saveMessage:message forSession:session completion:nil];
+        SAMCSession *samcsession = [SAMCSession session:message.session.sessionId
+                                                   type:message.session.sessionType
+                                                   mode:SAMCUserModeTypeSP];
+        samcmessage = [SAMCMessage message:message.messageId session:samcsession];
+        samcmessage.nimMessage = message;
+    }
+    return samcmessage;
 }
 
 @end
