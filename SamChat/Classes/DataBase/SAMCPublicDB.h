@@ -28,6 +28,7 @@
 - (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit;
+- (SAMCPublicMessage *)myPublicMessageOfServerId:(NSNumber *)serverId;
 
 - (void)insertMessage:(SAMCPublicMessage *)message initDeliveryState:(NIMMessageDeliveryState)deliveryState;
 - (void)updateMessage:(SAMCPublicMessage *)message;

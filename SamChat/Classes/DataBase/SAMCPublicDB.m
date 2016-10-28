@@ -225,6 +225,41 @@
     return messages;
 }
 
+- (SAMCPublicMessage *)myPublicMessageOfServerId:(NSNumber *)serverId
+{
+    SAMCPublicSession *session = [SAMCPublicSession sessionOfMyself];
+    NSString *tableName = [session tableName];
+    if (![self isTableExists:tableName]) {
+        return nil;
+    }
+    __block SAMCPublicMessage *message;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s;
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE server_id = ?", tableName];
+        s = [db executeQuery:sql, serverId];
+        if ([s next]) {
+            message = [[SAMCPublicMessage alloc] init];
+            message.publicSession = session;
+            message.messageType = [s intForColumn:@"msg_type"];
+            message.from = [s stringForColumn:@"msg_from"];
+            message.messageId = [s stringForColumn:@"msg_id"];
+            message.serverId = [s intForColumn:@"server_id"];
+            message.text = [s stringForColumn:@"msg_text"];
+            message.deliveryState = [s intForColumn:@"msg_status"];
+            message.timestamp = [s longForColumn:@"msg_time"];
+            NSString *msgContent = [s stringForColumn:@"msg_content"];
+            if (message.messageType == NIMMessageTypeCustom) {
+                NIMCustomObject *customObject = [[NIMCustomObject alloc] init];
+                customObject.attachment = [[[NTESCustomAttachmentDecoder alloc] init] decodeAttachment:msgContent];
+                message.messageObject = customObject;
+            }
+            message.isOutgoingMsg = session.isOutgoing;
+        }
+        [s close];
+    }];
+    return message;
+}
+
 - (void)insertMessage:(SAMCPublicMessage *)message initDeliveryState:(NIMMessageDeliveryState)deliveryState
 {
     if (message == nil) {
