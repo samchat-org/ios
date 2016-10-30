@@ -13,6 +13,8 @@
 		311B76B11DC1ACEF0056D4C5 /* SAMCCustomServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B01DC1ACEF0056D4C5 /* SAMCCustomServiceViewController.m */; };
 		311B76B41DC1AD040056D4C5 /* SAMCSPServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B31DC1AD040056D4C5 /* SAMCSPServiceViewController.m */; };
 		311B76B71DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B61DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m */; };
+		311B76BA1DC5CD400056D4C5 /* SAMCUserAgreementViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76B91DC5CD400056D4C5 /* SAMCUserAgreementViewController.m */; };
+		311B76BC1DC5D9660056D4C5 /* terms.html in Resources */ = {isa = PBXBuildFile; fileRef = 311B76BB1DC5D9660056D4C5 /* terms.html */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -367,6 +369,9 @@
 		311B76B31DC1AD040056D4C5 /* SAMCSPServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPServiceViewController.m; path = Service/ViewController/SAMCSPServiceViewController.m; sourceTree = "<group>"; };
 		311B76B51DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCNormalTeamCardViewController.h; sourceTree = "<group>"; };
 		311B76B61DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCNormalTeamCardViewController.m; sourceTree = "<group>"; };
+		311B76B81DC5CD400056D4C5 /* SAMCUserAgreementViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCUserAgreementViewController.h; sourceTree = "<group>"; };
+		311B76B91DC5CD400056D4C5 /* SAMCUserAgreementViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCUserAgreementViewController.m; sourceTree = "<group>"; };
+		311B76BB1DC5D9660056D4C5 /* terms.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = terms.html; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -1537,6 +1542,8 @@
 				314444F21D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m */,
 				314444F81D4A41A50062B797 /* SAMCSetPasswordViewController.h */,
 				314444F91D4A41A50062B797 /* SAMCSetPasswordViewController.m */,
+				311B76B81DC5CD400056D4C5 /* SAMCUserAgreementViewController.h */,
+				311B76B91DC5CD400056D4C5 /* SAMCUserAgreementViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2025,6 +2032,7 @@
 		312C1C231D35D85B00242906 /* Files */ = {
 			isa = PBXGroup;
 			children = (
+				311B76BB1DC5D9660056D4C5 /* terms.html */,
 				312C1C241D35D85B00242906 /* BlizzardReg.ttf */,
 				312C1C251D35D85B00242906 /* d3.icns */,
 				312C1C261D35D85B00242906 /* SetupOSX.mpq */,
@@ -2623,6 +2631,7 @@
 				312C1CF01D35D85B00242906 /* video_chat_tip_sender.aac in Resources */,
 				31799EBB1D4064EA00878058 /* CountryCodeListEn.plist in Resources */,
 				312C1CEA1D35D85B00242906 /* pinyin.bin in Resources */,
+				311B76BC1DC5D9660056D4C5 /* terms.html in Resources */,
 				312C1CE91D35D85B00242906 /* NIMKitResouce.bundle in Resources */,
 				312C1CEE1D35D85B00242906 /* video_chat_tip_onTimer.aac in Resources */,
 				312C1CE21D35D85B00242906 /* BlizzardReg.ttf in Resources */,
@@ -2894,6 +2903,7 @@
 				31F8FCB41D75329100734068 /* SAMCCustomPublicListCell.m in Sources */,
 				31DB30A91DB9EBD40072BE34 /* SAMCGroupedPeoples.m in Sources */,
 				312C1C4B1D35D85B00242906 /* NTESMarginButton.m in Sources */,
+				311B76BA1DC5CD400056D4C5 /* SAMCUserAgreementViewController.m in Sources */,
 				312C1C391D35D85B00242906 /* UIAlertView+NTESBlock.m in Sources */,
 				312C1CC21D35D85B00242906 /* NTESBirthSettingViewController.m in Sources */,
 				312C1CDB1D35D85B00242906 /* NTESSessionUtil.m in Sources */,

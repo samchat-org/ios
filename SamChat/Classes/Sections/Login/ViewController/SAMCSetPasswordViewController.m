@@ -18,6 +18,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCPadImageView.h"
 #import "SAMCStepperView.h"
+#import "SAMCUserAgreementViewController.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -27,6 +28,7 @@
 @property (nonatomic, strong) UITextField *usernameTextField;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UILabel *agreeLabel;
+@property (nonatomic, strong) UIButton *termsButton;
 @property (nonatomic, strong) UIButton *doneButton;
 
 @property (nonatomic, strong) NSLayoutConstraint *doneButtonBottomContraint;
@@ -92,6 +94,7 @@
     [self.view addSubview:self.usernameTextField];
     [self.view addSubview:self.passwordTextField];
     [self.view addSubview:self.agreeLabel];
+    [self.view addSubview:self.termsButton];
     
     self.tipLabel.text = @"Enter your login details";
     
@@ -133,10 +136,14 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_agreeLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(40)]-30-[_passwordTextField(40)]-20-[_agreeLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_termsButton]-20-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_usernameCheckLabel,_usernameTextField,_passwordTextField,_agreeLabel)]];
+                                                                        views:NSDictionaryOfVariableBindings(_termsButton)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(40)]-30-[_passwordTextField(40)]-20-[_agreeLabel]-0-[_termsButton(20)]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_usernameCheckLabel,_usernameTextField,_passwordTextField,_agreeLabel,_termsButton)]];
 }
 
 - (void)setupResetPasswordViews
@@ -212,6 +219,15 @@
     [self.view addConstraint:self.doneButtonBottomContraint];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    UIView *view = (UIView *)[touch view];
+    if (view == self.view) {
+        [self.view endEditing:YES];
+    }
+}
+
 #pragma mark - Action
 - (void)usernameTextFieldEditingDidEndOnExit
 {
@@ -225,6 +241,12 @@
     } else {
         [self resetPassword];
     }
+}
+
+- (void)touchTerms:(id)sender
+{
+    SAMCUserAgreementViewController *vc = [[SAMCUserAgreementViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)signUp
@@ -454,9 +476,24 @@
         _agreeLabel.numberOfLines = 0;
         _agreeLabel.textAlignment = NSTextAlignmentCenter;
         _agreeLabel.textColor = SAMC_COLOR_BODY_MID;
-        _agreeLabel.text = @"By clicking Confirm, I accept to the SamChat Terms of Use and User Agreement";
+        _agreeLabel.text = @"By clicking Confirm, I accept to the SamChat";
     }
     return _agreeLabel;
+}
+
+- (UIButton *)termsButton
+{
+    if (_termsButton == nil) {
+        _termsButton = [[UIButton alloc] init];
+        _termsButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _termsButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+        _termsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+        [_termsButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+        _termsButton.backgroundColor = [UIColor clearColor];
+        [_termsButton setTitle:@"Terms of Use and User Agreement" forState:UIControlStateNormal];
+        [_termsButton addTarget:self action:@selector(touchTerms:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _termsButton;
 }
 
 - (void)setIsUsernameExists:(BOOL)isUsernameExists
