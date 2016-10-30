@@ -224,6 +224,12 @@
     return NO;
 }
 
+#pragma mark - UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
+}
+
 #pragma mark - Action
 - (void)onOpera:(id)sender
 {
