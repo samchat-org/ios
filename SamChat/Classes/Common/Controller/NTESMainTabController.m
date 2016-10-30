@@ -134,8 +134,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         nav.tabBarItem = [[UITabBarItem alloc] initWithTitle:title
                                                        image:normalImage
                                                selectedImage:pressedImage];
-        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_MAIN_LIGHTCOLOR} forState:UIControlStateNormal];
-        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_MAIN_DARKCOLOR} forState:UIControlStateSelected];
+        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_COLOR_INGRABLUE} forState:UIControlStateNormal];
+//        [nav.tabBarItem setTitleTextAttributes:@{NSForegroundColorAttributeName:SAMC_MAIN_DARKCOLOR} forState:UIControlStateSelected];
         
         nav.tabBarItem.tag = idx;
         NSInteger badge = [item[TabbarItemBadgeValue] integerValue];
