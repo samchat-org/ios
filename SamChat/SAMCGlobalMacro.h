@@ -71,6 +71,7 @@ alpha:alphaValue]
 #define SAMC_COLOR_RGB_INK          0x13243F
 #define SAMC_COLOR_RGB_LEMMON       0xD1F43B
 #define SAMC_COLOR_RGB_LAKE         0x2676B6
+#define SAMC_COLOR_RGB_INGRABLUE    0x1D4D73
 
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\

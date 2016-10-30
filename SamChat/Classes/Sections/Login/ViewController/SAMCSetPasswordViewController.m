@@ -132,7 +132,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-48-[_agreeLabel]-48-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_agreeLabel]-20-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_agreeLabel)]];
@@ -489,6 +489,7 @@
         _termsButton.titleLabel.textAlignment = NSTextAlignmentCenter;
         _termsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
         [_termsButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+        [_termsButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5) forState:UIControlStateHighlighted];
         _termsButton.backgroundColor = [UIColor clearColor];
         [_termsButton setTitle:@"Terms of Use and User Agreement" forState:UIControlStateNormal];
         [_termsButton addTarget:self action:@selector(touchTerms:) forControlEvents:UIControlEventTouchUpInside];
