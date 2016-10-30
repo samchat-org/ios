@@ -32,9 +32,9 @@
 
 typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     SAMCMainTabTypeChat,
+    SAMCMainTabTypeContact,
     SAMCMainTabTypePublic,
     SAMCMainTabTypeService,
-    SAMCMainTabTypeContact,
     SAMCMainTabTypeSetting,
 };
 
@@ -288,6 +288,13 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              TabbarSelectedImage: @"ico_tab_chat_fill",
                              TabbarItemBadgeValue: @(chatUnreadCount)
                              },
+                     @(SAMCMainTabTypeContact) : @{
+                             TabbarVC           : @"SAMCContactListViewController",
+                             TabbarTitle        : @"Contact",
+                             TabbarImage        : @"ico_tab_contacts_line",
+                             TabbarSelectedImage: @"ico_tab_contacts_fill",
+                             TabbarItemBadgeValue: @(self.systemUnreadCount)
+                             },
                      @(SAMCMainTabTypePublic) : @{
                              TabbarVC           : @"SAMCPublicContainerViewController",
                              TabbarTitle        : @"Public",
@@ -301,13 +308,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              TabbarImage        : @"ico_tab_request_line",
                              TabbarSelectedImage: @"ico_tab_request_fill",
                              TabbarItemBadgeValue: @(serviceUnreadCount)
-                             },
-                     @(SAMCMainTabTypeContact) : @{
-                             TabbarVC           : @"SAMCContactListViewController",
-                             TabbarTitle        : @"Contact",
-                             TabbarImage        : @"ico_tab_contacts_line",
-                             TabbarSelectedImage: @"ico_tab_contacts_fill",
-                             TabbarItemBadgeValue: @(self.systemUnreadCount)
                              },
                      @(SAMCMainTabTypeSetting) : @{
                              TabbarVC           : @"SAMCMeContainerViewController",
