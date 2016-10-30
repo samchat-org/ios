@@ -68,13 +68,14 @@
 - (BOOL)updateFollowList:(NSArray *)users
 {
     DDLogDebug(@"updateFollowList: %@", users);
-    if (![self resetFollowListTable]) {
-        return NO;
-    }
+//    if (![self resetFollowListTable]) {
+//        return NO;
+//    }
+    NSArray *increasedFollowList = [self increasedFollowList:users];
     __block BOOL result = YES;
     // TODO: separate transaction?
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        for (NSDictionary *user in users) {
+        for (NSDictionary *user in increasedFollowList) {
             NSNumber *unique_id = user[SAMC_ID];
             NSString *username = user[SAMC_USERNAME];
             NSString *avatar = [user valueForKeyPath:SAMC_AVATAR_THUMB];
@@ -477,20 +478,51 @@
 }
 
 #pragma mark - Private
-- (BOOL)resetFollowListTable
+- (NSArray<NSDictionary *> *)increasedFollowList:(NSArray<NSDictionary *> *)users
 {
-    __block BOOL result = YES;
-    [self.queue inDatabase:^(FMDatabase *db) {
-        NSArray *sqls = @[@"DROP TABLE IF EXISTS follow_list",
-                          SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201];
-        for (NSString *sql in sqls) {
-            if (![db executeUpdate:sql]) {
-                DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);
-                result = NO;
+    __block NSMutableArray *followUserIds = [[NSMutableArray alloc] init];
+    for (NSDictionary *user in users) {
+        [followUserIds addObject:user[SAMC_ID]];
+    }
+    [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        FMResultSet *s = [db executeQuery:@"SELECT unique_id FROM follow_list"];
+        NSMutableArray *unfollowUserIds = [[NSMutableArray alloc] init];
+        while ([s next]) {
+            NSNumber *uniqueId = @([s longForColumn:@"unique_id"]);
+            if (![followUserIds containsObject:uniqueId]) {
+                [unfollowUserIds addObject:uniqueId];
+            } else {
+                [followUserIds removeObject:uniqueId];
             }
         }
+        [s close];
+        for (NSNumber *uniqueId in unfollowUserIds) {
+            [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", uniqueId];
+        }
     }];
-    return result;
+    NSMutableArray *increasedFollows = [[NSMutableArray alloc] init];
+    for (NSDictionary *user in users) {
+        if ([followUserIds containsObject:user[SAMC_ID]]) {
+            [increasedFollows addObject:user];
+        }
+    }
+    return increasedFollows;
 }
+
+//- (BOOL)resetFollowListTable
+//{
+//    __block BOOL result = YES;
+//    [self.queue inDatabase:^(FMDatabase *db) {
+//        NSArray *sqls = @[@"DROP TABLE IF EXISTS follow_list",
+//                          SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201];
+//        for (NSString *sql in sqls) {
+//            if (![db executeUpdate:sql]) {
+//                DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);
+//                result = NO;
+//            }
+//        }
+//    }];
+//    return result;
+//}
 
 @end
