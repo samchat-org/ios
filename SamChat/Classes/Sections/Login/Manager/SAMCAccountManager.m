@@ -228,7 +228,7 @@
             [[SAMCUserManager sharedManager] updateUser:user];
             [[SAMCPushManager sharedManager] open];
             [[SAMCSyncManager sharedManager] start];
-            [[SAMCUnreadCountManager sharedManager] refresh];
+            [[SAMCUnreadCountManager sharedManager] start];
             completion(nil);
         }else{
             completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorNetEaseLoginFailed]);
@@ -267,7 +267,7 @@
     [SAMCChatManager sharedManager];
     [[SAMCPushManager sharedManager] open];
     [[SAMCSyncManager sharedManager] start];
-    [[SAMCUnreadCountManager sharedManager] refresh];
+    [[SAMCUnreadCountManager sharedManager] start];
     [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];
 }
 

@@ -20,8 +20,8 @@
 @property (nonatomic, assign) NSInteger spServiceUnreadCount;
 
 + (instancetype)sharedManager;
-- (void)refresh;
-- (void)clear;
+- (void)start;
+- (void)close;
 
 - (void)addDelegate:(id<SAMCUnreadCountManagerDelegate>)delegate;
 - (void)removeDelegate:(id<SAMCUnreadCountManagerDelegate>)delegate;

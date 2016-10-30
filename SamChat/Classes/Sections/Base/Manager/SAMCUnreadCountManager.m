@@ -35,19 +35,30 @@
 {
     self = [super init];
     if (self) {
-        _multicastDelegate = (GCDMulticastDelegate <SAMCUnreadCountManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
-        [[SAMCConversationManager sharedManager] addDelegate:self];
-        [[SAMCQuestionManager sharedManager] addDelegate:self];
-        [[SAMCPublicManager sharedManager] addDelegate:self];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [self close];
+}
+
+- (void)start
+{
+    _multicastDelegate = (GCDMulticastDelegate <SAMCUnreadCountManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    [self refresh];
+    [[SAMCConversationManager sharedManager] addDelegate:self];
+    [[SAMCQuestionManager sharedManager] addDelegate:self];
+    [[SAMCPublicManager sharedManager] addDelegate:self];
+}
+
+- (void)close
+{
     [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[SAMCQuestionManager sharedManager] removeDelegate:self];
     [[SAMCPublicManager sharedManager] removeDelegate:self];
+    [self clear];
 }
 
 - (void)refresh
@@ -63,13 +74,12 @@
 
 - (void)clear
 {
-    // edit property to delegate the change
-    self.customChatUnreadCount = 0;
-    self.customPublicUnreadCount = 0;
-    self.customServiceUnreadCount = 0;
-    self.spChatUnreadCount = 0;
-    self.spServiceUnreadCount = 0;
-    self.spPublicUnreadCount = 0;
+    _customChatUnreadCount = 0;
+    _customPublicUnreadCount = 0;
+    _customServiceUnreadCount = 0;
+    _spChatUnreadCount = 0;
+    _spServiceUnreadCount = 0;
+    _spPublicUnreadCount = 0;
 }
 
 - (void)addDelegate:(id<SAMCUnreadCountManagerDelegate>)delegate
