@@ -19,6 +19,10 @@
 #import "SAMCPhone.h"
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
+#import "SAMCServerErrorHelper.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
+#import "SAMCPublicManager.h"
 
 @interface SAMCAddContactViewController ()<UITableViewDataSource,UITableViewDelegate>
 
@@ -149,16 +153,21 @@
     SAMCPeopleDataMember *peopleMember = [_peoples memberOfIndex:indexPath];
     SAMCPeopleInfo *peopleInfo = peopleMember.info;
     DDLogDebug(@"select people: %@, phone: %@", [peopleMember memberId], peopleInfo.phone);
-    NSString *inviteMsg = @"This contact is not on Samchat yet. Would you like to invite them to Samchat?";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Invite Contact" message:inviteMsg delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Invite", nil];
     __weak typeof(self) wself = self;
-    [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
-        switch (alertIndex) {
-            case 1:
-                [wself sendInviteMessage:peopleInfo];
-                break;
-            default:
-                break;
+    [[SAMCUserManager sharedManager] queryAccurateUser:peopleInfo.phone type:SAMCQueryAccurateUserTypeCellPhone completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+        if (error) {
+            if (error.code == SAMCServerErrorUserNotExists) {
+                [wself alertToInvite:peopleInfo];
+            } else {
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+            }
+        } else {
+            SAMCUser *user = [SAMCUser userFromDict:userDict];
+            if ((self.currentUserMode == SAMCUserModeTypeCustom) && ([user.userInfo.usertype isEqual:@(SAMCUserTypeCustom)])) {
+                [wself alertToInvite:peopleInfo];
+            } else {
+                [wself enterPersonalCard:[SAMCUser userFromDict:userDict]];
+            }
         }
     }];
 }
@@ -238,6 +247,22 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)alertToInvite:(SAMCPeopleInfo *)peopleInfo
+{
+    NSString *inviteMsg = @"This contact is not on Samchat yet. Would you like to invite them to Samchat?";
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle: @"Invite Contact" message:inviteMsg delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:@"Invite", nil];
+    __weak typeof(self) wself = self;
+    [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
+        switch (alertIndex) {
+            case 1:
+                [wself sendInviteMessage:peopleInfo];
+                break;
+            default:
+                break;
+        }
+    }];
+}
+
 - (void)sendInviteMessage:(SAMCPeopleInfo *)peopleInfo
 {
     SAMCPhone *phone = [SAMCPhone phoneWithCountryCode:nil cellphone:peopleInfo.phone];
@@ -253,6 +278,20 @@
         }
         [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
     }];
+}
+
+- (void)enterPersonalCard:(SAMCUser *)user
+{
+    UIViewController *vc;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:user.userId];
+        BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:user.userId];
+        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:isMyProvider];
+    } else {
+        BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:user.userId];
+        vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+    }
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 //- (void)onTouchSearch:(id)sender
