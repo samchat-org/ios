@@ -448,7 +448,7 @@
     }
     [SVProgressHUD showWithStatus:@"finding user..." maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCUserManager sharedManager] queryAccurateUser:uniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+    [[SAMCUserManager sharedManager] queryAccurateUser:uniqueId type:SAMCQueryAccurateUserTypeUniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];

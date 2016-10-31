@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "SAMCUserManagerDelegate.h"
+#import "SAMCServerAPI.h"
 #import "SAMCUser.h"
 #import "SAMCPhone.h"
 
@@ -26,7 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)queryFuzzyUserWithKey:(NSString * __nullable)key
                    completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 
-- (void)queryAccurateUser:(NSNumber *)uniqueId
+- (void)queryAccurateUser:(id)key
+                     type:(SAMCQueryAccurateUserType)type
                completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion;
 
 - (void)fetchUserInfos:(NSArray<NSString *> *)userIds

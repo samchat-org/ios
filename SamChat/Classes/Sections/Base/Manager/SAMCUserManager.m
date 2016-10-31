@@ -9,7 +9,6 @@
 #import "SAMCUserManager.h"
 #import "AFNetworking.h"
 #import "SAMCDataPostSerializer.h"
-#import "SAMCServerAPI.h"
 #import "SAMCServerErrorHelper.h"
 #import "SAMCPreferenceManager.h"
 #import "SAMCDataBaseManager.h"
@@ -115,11 +114,12 @@
     }];
 }
 
-- (void)queryAccurateUser:(NSNumber *)uniqueId
+- (void)queryAccurateUser:(id)key
+                     type:(SAMCQueryAccurateUserType)type
                completion:(void (^)(NSDictionary * __nullable userDict, NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI queryAccurateUser:uniqueId];
+    NSDictionary *parameters = [SAMCServerAPI queryAccurateUser:key type:type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_USER_QUERYACCURATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

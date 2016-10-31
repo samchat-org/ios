@@ -380,16 +380,24 @@
 //            "cellphone": //option
 //            "unique_id ": //option
 //            " username": //option
-//            
+//
 //        }
 //    }
 //}
-+ (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId
++ (NSDictionary *)queryAccurateUser:(id)key type:(SAMCQueryAccurateUserType)type
 {
-    uniqueId = uniqueId ?:@(0);
+    key = key ? :@"";
+    NSString *typeKey;
+    if (type == SAMCQueryAccurateUserTypeCellPhone) {
+        typeKey = SAMC_CELLPHONE;
+    } else if (type == SAMCQueryAccurateUserTypeUniqueId) {
+        typeKey = SAMC_UNIQUE_ID;
+    } else {
+        typeKey = SAMC_USERNAME;
+    }
     NSDictionary *header = @{SAMC_ACTION:SAMC_QUERY_ACCURATE,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_OPT:@(2),
-                           SAMC_PARAM:@{SAMC_TYPE:@(1),SAMC_UNIQUE_ID:uniqueId}};
+                           SAMC_PARAM:@{SAMC_TYPE:@(type),typeKey:key}};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

@@ -14,6 +14,12 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
     SAMCAdvertisementTypeImage
 };
 
+typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
+    SAMCQueryAccurateUserTypeCellPhone,
+    SAMCQueryAccurateUserTypeUniqueId,
+    SAMCQueryAccurateUserTypeUsername
+};
+
 @interface SAMCServerAPI : NSObject
 
 #pragma mark - Register
@@ -57,7 +63,7 @@ typedef NS_ENUM(NSInteger,SAMCAdvertisementType) {
 
 
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
-+ (NSDictionary *)queryAccurateUser:(NSNumber *)uniqueId;
++ (NSDictionary *)queryAccurateUser:(id)key type:(SAMCQueryAccurateUserType)type;
 + (NSDictionary *)queryUsers:(NSArray<NSString *> *)userIds;
 + (NSDictionary *)queryWithoutToken:(NSString *)username;
 

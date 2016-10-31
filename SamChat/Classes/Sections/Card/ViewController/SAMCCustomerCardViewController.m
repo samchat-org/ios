@@ -70,7 +70,7 @@
 - (void)updateUser
 {
     __weak typeof(self) wself = self;
-    [[SAMCUserManager sharedManager] queryAccurateUser:@([_user.userId integerValue]) completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
+    [[SAMCUserManager sharedManager] queryAccurateUser:@([_user.userId integerValue]) type:SAMCQueryAccurateUserTypeUniqueId completion:^(NSDictionary * _Nullable userDict, NSError * _Nullable error) {
         if ((error == nil) && (userDict != nil)) {
             SAMCUser *user = [SAMCUser userFromDict:userDict];
             [[SAMCUserManager sharedManager] updateUser:user];
