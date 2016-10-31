@@ -283,7 +283,24 @@
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
         [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgid_index' ON '%@'(msg_id)",tableName,tableName]];
         [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgtime_index' ON '%@'(msg_time)",tableName,tableName]];
-        NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_content, msg_status, msg_time) VALUES(?,?,?,?,?,?,?,?)", tableName];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_serverid_index' ON '%@'(server_id)",tableName,tableName]];
+        
+        NSString *sql;
+        FMResultSet *s;
+        if (!message.publicSession.isOutgoing) {
+            // for received message, check if is already inserted
+            NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE server_id = ?", tableName];
+            FMResultSet *s = [db executeQuery:sql, @(message.serverId)];
+            [s next];
+            int count = [s intForColumnIndex:0];
+            [s close];
+            if (count > 0) {
+                DDLogWarn(@"public message %@ already inserted", message);
+                return;
+            }
+        }
+        
+        sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_content, msg_status, msg_time) VALUES(?,?,?,?,?,?,?,?)", tableName];
         NSString *msgContent;
         if (message.messageType == NIMMessageTypeCustom) {
             NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
@@ -299,7 +316,7 @@
         NSInteger sessionUnreadCount = 0;
         NSNumber *uniqueId = @([message.from integerValue]);
         // 2. get pre unread count
-        FMResultSet *s = [db executeQuery:@"SELECT unread_count FROM follow_list WHERE unique_id = ?", uniqueId];
+        s = [db executeQuery:@"SELECT unread_count FROM follow_list WHERE unique_id = ?", uniqueId];
         if ([s next]) {
             sessionUnreadCount = [s intForColumnIndex:0] + 1;
         } else {
@@ -367,7 +384,7 @@
             return;
         }
         NSNumber *uniqueId = @([message.from integerValue]);
-        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id from follow_list where unique_id = ?", uniqueId];
+        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id FROM follow_list WHERE unique_id = ?", uniqueId];
         NSString *lastMsgId = nil;
         if ([s next]) {
             lastMsgId = [s stringForColumnIndex:0];
