@@ -84,6 +84,17 @@ alpha:alphaValue]
 #define SAMC_FONT_Ingra_Thin            @"Ingra-Regular3"
 #define SAMC_FONT_Ingra_Bold            @"Ingra-Bold"
 
+#define SAMCFontIngraBookOfSize(sizeValue)       [UIFont fontWithName:SAMC_FONT_Ingra_Book size:sizeValue]
+#define SAMCFontIngraDemoBoldOfSize(sizeValue)   [UIFont fontWithName:SAMC_FONT_Ingra_Demo_Bold size:sizeValue]
+#define SAMCFontIngraExtraBoldOfSize(sizeValue)  [UIFont fontWithName:SAMC_FONT_Ingra_Extra_Bold size:sizeValue]
+#define SAMCFontIngraHairOfSize(sizeValue)       [UIFont fontWithName:SAMC_FONT_Ingra_Hair size:sizeValue]
+#define SAMCFontIngraLightOfSize(sizeValue)      [UIFont fontWithName:SAMC_FONT_Ingra_Light size:sizeValue]
+#define SAMCFontIngraMediumOfSize(sizeValue)     [UIFont fontWithName:SAMC_FONT_Ingra_Medium size:sizeValue]
+#define SAMCFontIngraRegularOfSize(sizeValue)    [UIFont fontWithName:SAMC_FONT_Ingra_Regular size:sizeValue]
+#define SAMCFontIngraSemiBoldOfSize(sizeValue)   [UIFont fontWithName:SAMC_FONT_Ingra_SemiBold size:sizeValue]
+#define SAMCFontIngraThinOfSize(sizeValue)       [UIFont fontWithName:SAMC_FONT_Ingra_Thin size:sizeValue]
+#define SAMCFontIngraBoldOfSize(sizeValue)       [UIFont fontWithName:SAMC_FONT_Ingra_Bold size:sizeValue]
+
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
 block();\
