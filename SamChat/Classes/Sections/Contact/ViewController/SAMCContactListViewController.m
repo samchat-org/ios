@@ -47,6 +47,8 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSArray *contactUtils;
 
+@property (nonatomic, strong) NSArray *searchResultData;
+
 @end
 
 @implementation SAMCContactListViewController
@@ -216,27 +218,26 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 }
 
 #pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
-    if ([contactItem respondsToSelector:@selector(selName)] && [contactItem selName].length) {
-        SEL sel = NSSelectorFromString([contactItem selName]);
-        SuppressPerformSelectorLeakWarning([self performSelector:sel withObject:nil]);
+    NTESContactDataMember *member;
+    if ([tableView isEqual:self.tableView]) {
+        member = [_contacts memberOfIndex:indexPath];
+    } else {
+        member = self.searchResultData[indexPath.row];
     }
-    else if (contactItem.vcName.length) {
-        Class clazz = NSClassFromString(contactItem.vcName);
-        UIViewController * vc = [[clazz alloc] initWithNibName:nil bundle:nil];
-        [self.navigationController pushViewController:vc animated:YES];
-    }else if([contactItem respondsToSelector:@selector(userId)]){
-        NSString * friendId   = contactItem.userId;
-        [self enterPersonalCard:friendId];
-    }
-    
+    NSString *userId = member.info.infoId;
+    [self enterPersonalCard:userId];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 30.0f;
+    if ([tableView isEqual:self.tableView]) {
+        return 30.0f;
+    } else {
+        return CGFLOAT_MIN;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -253,36 +254,32 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return [_contacts memberCountOfGroup:section];
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if ([tableView isEqual:self.tableView]) {
+        return [_contacts memberCountOfGroup:section];
+    } else {
+        return [self.searchResultData count];
+    }
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return [_contacts groupCount];
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if ([tableView isEqual:self.tableView]) {
+        return [_contacts groupCount];
+    } else {
+        return 1;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    id contactItem = [_contacts memberOfIndex:indexPath];
-//    NSString * cellId = [contactItem reuseId];
-//    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-//    if (!cell) {
-//        Class cellClazz = NSClassFromString([contactItem cellName]);
-//        cell = [[cellClazz alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-//    }
-//    if ([contactItem showAccessoryView]) {
-//        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    }else{
-//        cell.accessoryType = UITableViewCellAccessoryNone;
-//    }
-//    if ([cell isKindOfClass:[NTESContactUtilCell class]]) {
-//        [(NTESContactUtilCell *)cell refreshWithContactItem:contactItem];
-//        [(NTESContactUtilCell *)cell setDelegate:self];
-//    }else{
-//        [(NIMContactDataCell *)cell refreshUser:contactItem];
-//        [(NIMContactDataCell *)cell setDelegate:self];
-//    }
-    NTESContactDataMember *member = [_contacts memberOfIndex:indexPath];
+    NTESContactDataMember *member;
+    if ([tableView isEqual:self.tableView]) {
+        member = [_contacts memberOfIndex:indexPath];
+    } else {
+        member = self.searchResultData[indexPath.row];
+    }
     UITableViewCell *cell;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         cell = [SAMCTableCellFactory customContactCell:tableView];
@@ -294,19 +291,33 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     return cell;
 }
 
-- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section{
-    return [_contacts titleOfGroup:section];
+- (NSString*)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    if ([tableView isEqual:self.tableView]) {
+        return [_contacts titleOfGroup:section];
+    } else {
+        return nil;
+    }
 }
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
-    return _contacts.sortedGroupTitles;
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+{
+    if ([tableView isEqual:self.tableView]) {
+        return _contacts.sortedGroupTitles;
+    } else {
+        return nil;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
     return index;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (![tableView isEqual:self.tableView]) {
+        return NO;
+    }
     id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
     return [contactItem userId].length;
 }
@@ -468,6 +479,22 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    NSMutableArray *members = [[NSMutableArray alloc] init];
+    for (int i=0; i<[_contacts groupCount]; i++) {
+        [members addObjectsFromArray:[_contacts membersOfGroup:i]];
+    }
+    
+    __block NSMutableArray *tempResultArray = [[NSMutableArray alloc] init];
+    [members enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NTESContactDataMember *member = obj;
+        NSRange range = [member.info.showName rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        if (range.location != NSNotFound) {
+            [tempResultArray addObject:member];
+        }
+    }];
+   
+    self.searchResultData = tempResultArray;
+    [self.searchResultController.searchResultsTableView reloadData];
 }
 
 #pragma mark - SAMCUserManagerDelegate
