@@ -157,13 +157,13 @@
                                        limit:(NSInteger)limit
 {
     NSString *tableName = [session tableName];
-    if (![self isTableExists:tableName]) {
-        // table not found, first time enter the session, e.g. enter a new session from contact list
-        return nil;
-    }
     __block NSArray *messages = nil;
     __block NSArray *sortedMessageIds = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            // table not found, first time enter the session, e.g. enter a new session from contact list
+            return;
+        }
         FMResultSet *s;
         if (message == nil) {
             NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];

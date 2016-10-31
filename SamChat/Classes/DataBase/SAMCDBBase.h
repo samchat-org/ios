@@ -22,6 +22,4 @@
 
 - (BOOL)doMigration;
 
-- (BOOL)isTableExists:(NSString *)tableName;
-
 @end

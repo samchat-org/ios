@@ -202,10 +202,11 @@
     } else {
         tableName = @"contact_list_servicer";
     }
-    if (![self isTableExists:tableName]) {
-        return;
-    }
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            DDLogError(@"insertToContactList table %@ not exists", tableName);
+            return;
+        }
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(unique_id) VALUES(?)", tableName];
         [db executeUpdate:sql, @([user.userId integerValue])];
     }];
@@ -222,10 +223,11 @@
     } else {
         tableName = @"contact_list_servicer";
     }
-    if (![self isTableExists:tableName]) {
-        return;
-    }
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            DDLogError(@"deleteFromContactList table %@ not exists", tableName);
+            return;
+        }
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE unique_id=?", tableName];
         [db executeUpdate:sql, @([user.userId integerValue])];
     }];
@@ -239,11 +241,12 @@
     } else {
         tableName = @"contact_list_servicer";
     }
-    if (![self isTableExists:tableName]) {
-        return nil;
-    }
     __block NSMutableArray *contactList = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            DDLogError(@"myContactListOfType table %@ not exists", tableName);
+            return;
+        }
         NSString *sql = [NSString stringWithFormat:@"select * from %@", tableName];
         FMResultSet *s = [db executeQuery:sql];
         while ([s next]) {
@@ -263,11 +266,12 @@
     } else {
         tableName = @"contact_list_servicer";
     }
-    if (![self isTableExists:tableName]) {
-        return NO;
-    }
     __block BOOL result;
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            DDLogError(@"isUser:inMyContactListOfType: table %@ not exists", tableName);
+            return;
+        }
         NSNumber *uniqueId = @([userId integerValue]);
         NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE unique_id = ?", tableName];
         FMResultSet *s = [db executeQuery:sql,uniqueId];

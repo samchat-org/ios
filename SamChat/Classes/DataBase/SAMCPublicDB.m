@@ -95,11 +95,11 @@
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
     __block NSMutableArray *follows = [[NSMutableArray alloc] init];
-    if (![self isTableExists:@"follow_list"]) {
-        // table not found, may sync not finished
-        return follows;
-    }
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:@"follow_list"]) {
+            // table not found, may sync not finished
+            return;
+        }
         FMResultSet *s = [db executeQuery:@"SELECT * FROM follow_list"];
         while ([s next]) {
             NSInteger uniqueId = [s longForColumn:@"unique_id"];
@@ -189,11 +189,12 @@
                                               limit:(NSInteger)limit
 {
     NSString *tableName = [session tableName];
-    if (![self isTableExists:tableName]) {
-        return nil;
-    }
-    __block NSMutableArray *messages = [[NSMutableArray alloc] init];
+    __block NSMutableArray *messages = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            return;
+        }
+        messages = [[NSMutableArray alloc] init];
         FMResultSet *s;
         if (message == nil) {
             NSString *sql;
@@ -240,11 +241,11 @@
 {
     SAMCPublicSession *session = [SAMCPublicSession sessionOfMyself];
     NSString *tableName = [session tableName];
-    if (![self isTableExists:tableName]) {
-        return nil;
-    }
     __block SAMCPublicMessage *message;
     [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:tableName]) {
+            return;
+        }
         FMResultSet *s;
         NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE server_id = ?", tableName];
         s = [db executeQuery:sql, serverId];

@@ -52,20 +52,4 @@
     return result;
 }
 
-- (BOOL)isTableExists:(NSString *)tableName
-{
-    __block BOOL result = NO;
-    [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"SELECT count(*) FROM sqlite_master WHERE type='table' AND name=?",tableName];
-        if ([s next]) {
-            int count = [s intForColumnIndex:0];
-            if (count > 0) {
-                result = YES;
-            }
-        }
-        [s close];
-    }];
-    return result;
-}
-
 @end
