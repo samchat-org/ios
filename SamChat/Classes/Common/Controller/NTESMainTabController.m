@@ -79,16 +79,10 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                                                object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
-    [super viewWillAppear:animated];
-    [self setUpStatusBar];
-}
-
 -(void)viewWillLayoutSubviews
 {
     self.view.frame = [UIScreen mainScreen].bounds;
 }
-
 
 - (void)dealloc{
     [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
@@ -148,17 +142,16 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     self.viewControllers = [NSArray arrayWithArray:vcArray];
 }
 
-
-- (void)setUpStatusBar{
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
     UIStatusBarStyle style;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         style = UIStatusBarStyleDefault;
     } else {
         style = UIStatusBarStyleLightContent;
     }
-    [[UIApplication sharedApplication] setStatusBarStyle:style animated:NO];
+    return style;
 }
-
 
 #pragma mark - SAMCUnreadCountManagerDelegate
 - (void)chatUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
