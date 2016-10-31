@@ -327,15 +327,17 @@
 
 - (NSInteger)allUnreadCountOfSendQuestion
 {
-    __block NSInteger unreadCount = 0;
-    [self.queue inDatabase:^(FMDatabase *db) {
-        FMResultSet *s = [db executeQuery:@"SELECT SUM(new_response_count) FROM send_question"];
-        if ([s next]) {
-            unreadCount = [s intForColumnIndex:0];
-        }
-        [s close];
-    }];
-    return unreadCount;
+    // do not remind the unread count of sendquestion, directlry remind at chat tab
+    return 0;
+//    __block NSInteger unreadCount = 0;
+//    [self.queue inDatabase:^(FMDatabase *db) {
+//        FMResultSet *s = [db executeQuery:@"SELECT SUM(new_response_count) FROM send_question"];
+//        if ([s next]) {
+//            unreadCount = [s intForColumnIndex:0];
+//        }
+//        [s close];
+//    }];
+//    return unreadCount;
 }
 
 @end
