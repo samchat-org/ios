@@ -86,8 +86,10 @@
     __weak typeof(self) wself = self;
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         // 1. insert messages
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_id TEXT NOT NULL UNIQUE)",sessionName]];
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_index' ON '%@'(msg_id)",sessionName,sessionName]];
+        if (![db tableExists:sessionName]) {
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_id TEXT NOT NULL UNIQUE)",sessionName]];
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_index' ON '%@'(msg_id)",sessionName,sessionName]];
+        }
         
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_id) VALUES(?)", sessionName];
         for (SAMCMessage *message in messages) {
