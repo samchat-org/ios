@@ -73,6 +73,17 @@ alpha:alphaValue]
 #define SAMC_COLOR_RGB_LAKE         0x2676B6
 #define SAMC_COLOR_RGB_INGRABLUE    0x1D4D73
 
+#define SAMC_FONT_Ingra_Book            @"Ingra-Regular7"
+#define SAMC_FONT_Ingra_Demo_Bold       @"IngraDemo-Bold"
+#define SAMC_FONT_Ingra_Extra_Bold      @"Ingra-Regular8"
+#define SAMC_FONT_Ingra_Hair            @"Ingra-Hair"
+#define SAMC_FONT_Ingra_Light           @"Ingra-Regular2"
+#define SAMC_FONT_Ingra_Medium          @"Ingra-Regular4"
+#define SAMC_FONT_Ingra_Regular         @"Ingra-Regular"
+#define SAMC_FONT_Ingra_SemiBold        @"Ingra-Regular5"
+#define SAMC_FONT_Ingra_Thin            @"Ingra-Regular3"
+#define SAMC_FONT_Ingra_Bold            @"Ingra-Bold"
+
 #define dispatch_sync_main_safe(block)\
 if ([NSThread isMainThread]) {\
 block();\

@@ -17,6 +17,16 @@
 		311B76BC1DC5D9660056D4C5 /* terms.html in Resources */ = {isa = PBXBuildFile; fileRef = 311B76BB1DC5D9660056D4C5 /* terms.html */; };
 		311B76BF1DC6F8CF0056D4C5 /* SAMCCustomTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76BE1DC6F8CF0056D4C5 /* SAMCCustomTeamCardViewController.m */; };
 		311B76C21DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76C11DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.m */; };
+		311B76CE1DC75EC50056D4C5 /* Ingra Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C41DC75D650056D4C5 /* Ingra Bold.otf */; };
+		311B76CF1DC75EC50056D4C5 /* Ingra Book.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C51DC75D650056D4C5 /* Ingra Book.otf */; };
+		311B76D01DC75EC50056D4C5 /* Ingra Demo Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C61DC75D650056D4C5 /* Ingra Demo Bold.otf */; };
+		311B76D11DC75EC50056D4C5 /* Ingra Extra Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C71DC75D650056D4C5 /* Ingra Extra Bold.otf */; };
+		311B76D21DC75EC50056D4C5 /* Ingra Hair.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C81DC75D650056D4C5 /* Ingra Hair.otf */; };
+		311B76D31DC75EC50056D4C5 /* Ingra Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76C91DC75D650056D4C5 /* Ingra Light.otf */; };
+		311B76D41DC75EC50056D4C5 /* Ingra Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CA1DC75D650056D4C5 /* Ingra Medium.otf */; };
+		311B76D51DC75EC50056D4C5 /* Ingra Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CB1DC75D650056D4C5 /* Ingra Regular.otf */; };
+		311B76D61DC75EC50056D4C5 /* Ingra SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CC1DC75D650056D4C5 /* Ingra SemiBold.otf */; };
+		311B76D71DC75EC50056D4C5 /* Ingra Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CD1DC75D650056D4C5 /* Ingra Thin.otf */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -192,7 +202,6 @@
 		312C1CDE1D35D85B00242906 /* NTESPinyinConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1C1A1D35D85B00242906 /* NTESPinyinConverter.m */; };
 		312C1CDF1D35D85B00242906 /* NTESSpellingCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1C1C1D35D85B00242906 /* NTESSpellingCenter.m */; };
 		312C1CE01D35D85B00242906 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 312C1C1D1D35D85B00242906 /* Images.xcassets */; };
-		312C1CE21D35D85B00242906 /* BlizzardReg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 312C1C241D35D85B00242906 /* BlizzardReg.ttf */; };
 		312C1CE31D35D85B00242906 /* d3.icns in Resources */ = {isa = PBXBuildFile; fileRef = 312C1C251D35D85B00242906 /* d3.icns */; };
 		312C1CE41D35D85B00242906 /* SetupOSX.mpq in Resources */ = {isa = PBXBuildFile; fileRef = 312C1C261D35D85B00242906 /* SetupOSX.mpq */; };
 		312C1CE61D35D85B00242906 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1C281D35D85B00242906 /* main.m */; };
@@ -378,6 +387,16 @@
 		311B76BE1DC6F8CF0056D4C5 /* SAMCCustomTeamCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCustomTeamCardViewController.m; sourceTree = "<group>"; };
 		311B76C01DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCSPTeamCardViewController.h; sourceTree = "<group>"; };
 		311B76C11DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCSPTeamCardViewController.m; sourceTree = "<group>"; };
+		311B76C41DC75D650056D4C5 /* Ingra Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Bold.otf"; path = "Fonts/Ingra Bold.otf"; sourceTree = "<group>"; };
+		311B76C51DC75D650056D4C5 /* Ingra Book.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Book.otf"; path = "Fonts/Ingra Book.otf"; sourceTree = "<group>"; };
+		311B76C61DC75D650056D4C5 /* Ingra Demo Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Demo Bold.otf"; path = "Fonts/Ingra Demo Bold.otf"; sourceTree = "<group>"; };
+		311B76C71DC75D650056D4C5 /* Ingra Extra Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Extra Bold.otf"; path = "Fonts/Ingra Extra Bold.otf"; sourceTree = "<group>"; };
+		311B76C81DC75D650056D4C5 /* Ingra Hair.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Hair.otf"; path = "Fonts/Ingra Hair.otf"; sourceTree = "<group>"; };
+		311B76C91DC75D650056D4C5 /* Ingra Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Light.otf"; path = "Fonts/Ingra Light.otf"; sourceTree = "<group>"; };
+		311B76CA1DC75D650056D4C5 /* Ingra Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Medium.otf"; path = "Fonts/Ingra Medium.otf"; sourceTree = "<group>"; };
+		311B76CB1DC75D650056D4C5 /* Ingra Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Regular.otf"; path = "Fonts/Ingra Regular.otf"; sourceTree = "<group>"; };
+		311B76CC1DC75D650056D4C5 /* Ingra SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra SemiBold.otf"; path = "Fonts/Ingra SemiBold.otf"; sourceTree = "<group>"; };
+		311B76CD1DC75D650056D4C5 /* Ingra Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Thin.otf"; path = "Fonts/Ingra Thin.otf"; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -709,7 +728,6 @@
 		312C1C1B1D35D85B00242906 /* NTESSpellingCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESSpellingCenter.h; sourceTree = "<group>"; };
 		312C1C1C1D35D85B00242906 /* NTESSpellingCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESSpellingCenter.m; sourceTree = "<group>"; };
 		312C1C1D1D35D85B00242906 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		312C1C241D35D85B00242906 /* BlizzardReg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlizzardReg.ttf; sourceTree = "<group>"; };
 		312C1C251D35D85B00242906 /* d3.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = d3.icns; sourceTree = "<group>"; };
 		312C1C261D35D85B00242906 /* SetupOSX.mpq */ = {isa = PBXFileReference; lastKnownFileType = file; path = SetupOSX.mpq; sourceTree = "<group>"; };
 		312C1C271D35D85B00242906 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1053,6 +1071,23 @@
 				3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		311B76C31DC75D350056D4C5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				311B76C41DC75D650056D4C5 /* Ingra Bold.otf */,
+				311B76C51DC75D650056D4C5 /* Ingra Book.otf */,
+				311B76C61DC75D650056D4C5 /* Ingra Demo Bold.otf */,
+				311B76C71DC75D650056D4C5 /* Ingra Extra Bold.otf */,
+				311B76C81DC75D650056D4C5 /* Ingra Hair.otf */,
+				311B76C91DC75D650056D4C5 /* Ingra Light.otf */,
+				311B76CA1DC75D650056D4C5 /* Ingra Medium.otf */,
+				311B76CB1DC75D650056D4C5 /* Ingra Regular.otf */,
+				311B76CC1DC75D650056D4C5 /* Ingra SemiBold.otf */,
+				311B76CD1DC75D650056D4C5 /* Ingra Thin.otf */,
+			);
+			name = Fonts;
 			sourceTree = "<group>";
 		};
 		3124116D1D45A2AA008B2A35 /* Service */ = {
@@ -2026,6 +2061,7 @@
 		312C1C221D35D85B00242906 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				311B76C31DC75D350056D4C5 /* Fonts */,
 				312C1C231D35D85B00242906 /* Files */,
 				312C1C271D35D85B00242906 /* Info.plist */,
 				312C1C281D35D85B00242906 /* main.m */,
@@ -2043,7 +2079,6 @@
 			isa = PBXGroup;
 			children = (
 				311B76BB1DC5D9660056D4C5 /* terms.html */,
-				312C1C241D35D85B00242906 /* BlizzardReg.ttf */,
 				312C1C251D35D85B00242906 /* d3.icns */,
 				312C1C261D35D85B00242906 /* SetupOSX.mpq */,
 			);
@@ -2603,6 +2638,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				311B76CE1DC75EC50056D4C5 /* Ingra Bold.otf in Resources */,
+				311B76CF1DC75EC50056D4C5 /* Ingra Book.otf in Resources */,
+				311B76D01DC75EC50056D4C5 /* Ingra Demo Bold.otf in Resources */,
+				311B76D11DC75EC50056D4C5 /* Ingra Extra Bold.otf in Resources */,
+				311B76D21DC75EC50056D4C5 /* Ingra Hair.otf in Resources */,
+				311B76D31DC75EC50056D4C5 /* Ingra Light.otf in Resources */,
+				311B76D41DC75EC50056D4C5 /* Ingra Medium.otf in Resources */,
+				311B76D51DC75EC50056D4C5 /* Ingra Regular.otf in Resources */,
+				311B76D61DC75EC50056D4C5 /* Ingra SemiBold.otf in Resources */,
+				311B76D71DC75EC50056D4C5 /* Ingra Thin.otf in Resources */,
 				312C1C971D35D85B00242906 /* NTESFilePreViewController.xib in Resources */,
 				312C1CEC1D35D85B00242906 /* video_chat_tip_HangUp.aac in Resources */,
 				312C1CE01D35D85B00242906 /* Images.xcassets in Resources */,
@@ -2644,7 +2689,6 @@
 				311B76BC1DC5D9660056D4C5 /* terms.html in Resources */,
 				312C1CE91D35D85B00242906 /* NIMKitResouce.bundle in Resources */,
 				312C1CEE1D35D85B00242906 /* video_chat_tip_onTimer.aac in Resources */,
-				312C1CE21D35D85B00242906 /* BlizzardReg.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

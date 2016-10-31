@@ -35,9 +35,9 @@
 		<true/>
 	</dict>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Samchat uses your location to make a better match. It's completely private and secure.</string>
+	<string>Samchat uses your location to make a better match. It&apos;s completely private and secure.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Samchat uses your location to make a better match. It's completely private and secure.</string>
+	<string>Samchat uses your location to make a better match. It&apos;s completely private and secure.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -58,5 +58,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Ingra Bold.otf</string>
+		<string>Ingra Book.otf</string>
+		<string>Ingra Demo Bold.otf</string>
+		<string>Ingra Extra Bold.otf</string>
+		<string>Ingra Hair.otf</string>
+		<string>Ingra Light.otf</string>
+		<string>Ingra Medium.otf</string>
+		<string>Ingra Regular.otf</string>
+		<string>Ingra SemiBold.otf</string>
+		<string>Ingra Thin.otf</string>
+	</array>
 </dict>
 </plist>
