@@ -196,10 +196,20 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         FMResultSet *s;
         if (message == nil) {
-            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
+            NSString *sql;
+            if (session.isOutgoing) {
+                sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY serial DESC LIMIT ?", tableName];
+            } else {
+                sql = [NSString stringWithFormat:@"SELECT * FROM '%@' ORDER BY msg_time DESC LIMIT ?", tableName];
+            }
             s = [db executeQuery:sql, @(limit)];
         } else {
-            NSString *sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE serial<(SELECT serial FROM '%@' WHERE msg_id = ?) ORDER BY serial DESC LIMIT ?", tableName, tableName];
+            NSString *sql;
+            if (session.isOutgoing) {
+                sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE serial<(SELECT serial FROM '%@' WHERE msg_id = ?) ORDER BY serial DESC LIMIT ?", tableName, tableName];
+            } else {
+                sql = [NSString stringWithFormat:@"SELECT * FROM '%@' WHERE msg_time<(SELECT msg_time FROM '%@' WHERE msg_id = ?) ORDER BY msg_time DESC LIMIT ?", tableName, tableName];
+            }
             s = [db executeQuery:sql,message.messageId,@(limit)];
         }
         while ([s next]) {
@@ -272,6 +282,7 @@
         // 1. insert message
         [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
         [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgid_index' ON '%@'(msg_id)",tableName,tableName]];
+        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgtime_index' ON '%@'(msg_time)",tableName,tableName]];
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(msg_type, msg_from, msg_id, server_id, msg_text, msg_content, msg_status, msg_time) VALUES(?,?,?,?,?,?,?,?)", tableName];
         NSString *msgContent;
         if (message.messageType == NIMMessageTypeCustom) {
