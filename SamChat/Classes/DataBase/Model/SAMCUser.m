@@ -42,6 +42,11 @@
                               category: _userInfo.spInfo.serviceCategory];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%@\ruserId:%@\rusername:%@",[super description],_userId,_userInfo.username];
+}
+
 @end
 
 @implementation SAMCUserInfo
