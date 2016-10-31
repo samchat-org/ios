@@ -264,6 +264,9 @@ NIMUserManagerDelegate>
 #pragma mark - 消息收发接口
 - (void)sendMessage:(NIMMessage *)message
 {
+    NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];
+    setting.roamingEnabled = false;
+    message.setting = setting;
     if (_samcSession.sessionType != NIMSessionTypeP2P) {
         [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:[_samcSession nimSession] error:nil];
         return;
@@ -291,9 +294,6 @@ NIMUserManagerDelegate>
         // TODO: need check here, should insert message after sendMessage ok?
         [[SAMCConversationManager sharedManager] insertMessages:@[samcmessage] unreadCount:0];
         dispatch_async(dispatch_get_main_queue(), ^{
-            NIMMessageSetting *setting = message.setting ?:[[NIMMessageSetting alloc] init];
-            setting.roamingEnabled = false;
-            message.setting = setting;
             [[[NIMSDK sharedSDK] chatManager] sendMessage:message toSession:[_samcSession nimSession] error:nil];
         });
     });
