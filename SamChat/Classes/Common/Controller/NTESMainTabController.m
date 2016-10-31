@@ -79,6 +79,11 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                                                object:nil];
 }
 
+- (void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    [self setUpStatusBar];
+}
+
 -(void)viewWillLayoutSubviews
 {
     self.view.frame = [UIScreen mainScreen].bounds;
@@ -142,15 +147,15 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     self.viewControllers = [NSArray arrayWithArray:vcArray];
 }
 
-- (UIStatusBarStyle)preferredStatusBarStyle
-{
+
+- (void)setUpStatusBar{
     UIStatusBarStyle style;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         style = UIStatusBarStyleDefault;
     } else {
         style = UIStatusBarStyleLightContent;
     }
-    return style;
+    [[UIApplication sharedApplication] setStatusBarStyle:style animated:NO];
 }
 
 #pragma mark - SAMCUnreadCountManagerDelegate
@@ -231,17 +236,11 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     nav.tabBarItem.badgeValue = badge ? @(badge).stringValue : nil;
 }
 
-
-- (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleDefault;
-}
-
 #pragma mark - NTESNavigationGestureHandlerDataSource
 - (UINavigationController *)navigationController
 {
     return self.selectedViewController;
 }
-
 
 #pragma mark - Rotate
 
