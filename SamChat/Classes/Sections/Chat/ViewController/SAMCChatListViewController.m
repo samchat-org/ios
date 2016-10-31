@@ -57,6 +57,7 @@
     _recentSessions = [self allCurrentUserModeRecentSessions];
     if (!self.recentSessions.count) {
         _recentSessions = [NSMutableArray array];
+        self.tableView.hidden = YES;
     }
     [self sort];
     
