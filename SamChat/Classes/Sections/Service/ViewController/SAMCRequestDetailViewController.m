@@ -19,7 +19,7 @@
 #import "SAMCQuestionManager.h"
 #import "SAMCRequestEmptyView.h"
 
-@interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCQuestionManagerDelegate>
+@interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCQuestionManagerDelegate,SAMCConversationManagerDelegate>
 
 @property (nonatomic, strong) SAMCRequestDetailInfoView *requestView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -43,11 +43,13 @@
     [self sort];
     
     [[SAMCQuestionManager sharedManager] addDelegate:self];
+    [[SAMCConversationManager sharedManager] addDelegate:self];
 }
 
 - (void)dealloc
 {
     [[SAMCQuestionManager sharedManager] removeDelegate:self];
+    [[SAMCConversationManager sharedManager] removeDelegate:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -243,6 +245,28 @@
     [self.answerSessions addObjectsFromArray:[self allCurrentQuestionAnswerSessions]];
     [self sort];
     [self.tableView reloadData];
+}
+
+#pragma mark - SAMCConversationManagerDelegate
+- (void)didUpdateRecentSession:(SAMCRecentSession *)recentSession
+{
+    if (recentSession.session.sessionMode != SAMCUserModeTypeCustom) {
+        return;
+    }
+    
+    BOOL find = NO;
+    for (int i=0; i<[self.answerSessions count]; i++) {
+        SAMCRecentSession *recent = self.answerSessions[i];
+        if ([recentSession.session.sessionId isEqualToString:recent.session.sessionId]) {
+            [self.answerSessions replaceObjectAtIndex:i withObject:recentSession];
+            find = YES;
+            break;
+        }
+    }
+    if (find) {
+        [self sort];
+        [self.tableView reloadData];
+    }
 }
 
 @end
