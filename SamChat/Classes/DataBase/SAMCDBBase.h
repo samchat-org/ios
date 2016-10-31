@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FMDB.h"
+#import "FMDatabaseAdditions.h"
 #import "SAMCMigrationManager.h"
 
 @interface SAMCDBBase : NSObject

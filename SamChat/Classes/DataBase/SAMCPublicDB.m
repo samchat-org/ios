@@ -280,10 +280,12 @@
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         NSString *tableName = message.publicSession.tableName;
         // 1. insert message
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgid_index' ON '%@'(msg_id)",tableName,tableName]];
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgtime_index' ON '%@'(msg_time)",tableName,tableName]];
-        [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_serverid_index' ON '%@'(server_id)",tableName,tableName]];
+        if (![db tableExists:tableName]) {
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS '%@' (serial INTEGER PRIMARY KEY AUTOINCREMENT, msg_type INTEGER, msg_from TEXT, msg_id TEXT, server_id INTEGER, msg_text TEXT, msg_content TEXT, msg_status INTEGER, msg_time INTEGER)", tableName]];
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgid_index' ON '%@'(msg_id)",tableName,tableName]];
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_msgtime_index' ON '%@'(msg_time)",tableName,tableName]];
+            [db executeUpdate:[NSString stringWithFormat:@"CREATE INDEX IF NOT EXISTS '%@_serverid_index' ON '%@'(server_id)",tableName,tableName]];
+        }
         
         NSString *sql;
         FMResultSet *s;
