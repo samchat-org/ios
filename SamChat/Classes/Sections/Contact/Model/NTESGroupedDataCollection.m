@@ -107,16 +107,12 @@
             [_groups addObject:[[Pair alloc] initWithFirst:groupTitle second:groupedMembers]];
         }
         return;
+    } else {
+        Pair *pair = [_groups objectAtIndex:groupIndex];
+        NSMutableArray *members = pair.second;
+        [members addObject:member];
+        [_groups addObject:pair];
     }
-    Pair *pair = [_groups objectAtIndex:groupIndex];
-    if(!pair) {
-        NSMutableArray *members = [NSMutableArray array];
-        pair = [[Pair alloc] initWithFirst:groupTitle second:members];
-    }
-    NSMutableArray *members = pair.second;
-    [members addObject:member];
-    [_groupTtiles addObject:groupTitle];
-    [_groups addObject:pair];
     [self sort];
 }
 
