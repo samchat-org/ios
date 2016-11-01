@@ -42,14 +42,21 @@
                                                             attribute:NSLayoutAttributeHeight
                                                            multiplier:1.0f
                                                              constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_avatarView]-20-[_nameLabel]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-10-[_avatarView]-20-[_nameLabel]-10-[_followButton]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_followButton)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeLeft
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_categoryLabel
+                                                     attribute:NSLayoutAttributeLeft
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_categoryLabel
+                                                     attribute:NSLayoutAttributeRight
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_followButton
                                                      attribute:NSLayoutAttributeLeft
                                                     multiplier:1.0f
                                                       constant:0.0f]];
@@ -64,13 +71,6 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_followButton
-                                                     attribute:NSLayoutAttributeRight
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeRight
-                                                    multiplier:1.0f
-                                                      constant:-10.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
@@ -85,6 +85,8 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
+    [_followButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_followButton setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)setUser:(SAMCUser *)user
