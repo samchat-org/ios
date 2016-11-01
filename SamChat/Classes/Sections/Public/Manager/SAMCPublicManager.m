@@ -64,11 +64,12 @@
 }
 
 - (void)searchPublicWithKey:(NSString * __nullable)key
+               currentCount:(NSInteger)count
                    location:(NSDictionary * __nullable)location
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI queryPublicWithKey:key location:location];
+    NSDictionary *parameters = [SAMCServerAPI queryPublicWithKey:key currentCount:count location:location];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     [manager POST:SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {

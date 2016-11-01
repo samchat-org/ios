@@ -458,6 +458,7 @@
 //    },
 //    "body":
 //    {
+//    count:
 //    key: //option
 //    location:{
 //        "location_info":{
@@ -470,14 +471,16 @@
 //    }
 //}
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
+                        currentCount:(NSInteger)count
                             location:(NSDictionary *)location
 {
     location = location ?:@{};
     NSDictionary *header = @{SAMC_ACTION:SAMC_PUBLIC_QUERY,SAMC_TOKEN:[SAMCServerAPI token]};
     NSMutableDictionary *body = [[NSMutableDictionary alloc] init];
-    if ((key != nil) && [key length] > 0) {
+    if ([key length] > 0) {
         [body setValue:key forKey:SAMC_KEY];
     }
+    [body setValue:@(count) forKey:SAMC_COUNT];
     [body setValue:location forKey:SAMC_LOCATION];
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }

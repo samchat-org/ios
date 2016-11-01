@@ -15,6 +15,7 @@
 #import "SAMCAccountManager.h"
 #import "SAMCUserManager.h"
 #import "SAMCServicerCardViewController.h"
+#import "SAMCRefreshView.h"
 
 @interface SAMCPublicSearchViewController ()<UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate,SAMCPublicSearchResultDelegate>
 
@@ -22,6 +23,10 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, assign) BOOL isSearchBarFirstResponder;
+@property (nonatomic, strong) SAMCRefreshView *refreshView;
+@property (nonatomic, assign) BOOL noMoreResult;
+@property (nonatomic, assign) NSInteger currentCount;
+@property (nonatomic, copy) NSString *searchText;
 
 @end
 
@@ -30,6 +35,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _data = [[NSMutableArray alloc] init];
+    _currentCount = 0;
     [self setupSubviews];
     self.isSearchBarFirstResponder = YES;
 }
@@ -68,7 +75,12 @@
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+//    _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    _refreshView = [[SAMCRefreshView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _tableView.tableFooterView = _refreshView;
+    _tableView.tableFooterView.hidden = YES;
+    
     [self.view addSubview:_tableView];
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_tableView]-0-|"
@@ -90,23 +102,13 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSString *key = self.searchBar.text;
+    self.searchText = self.searchBar.text;
+    self.tableView.tableFooterView.hidden = NO;
+    self.currentCount = 0;
+    self.noMoreResult = NO;
     [self.data removeAllObjects];
     [self.tableView reloadData];
-    __weak typeof(self) wself = self;
-    [[SAMCPublicManager sharedManager] searchPublicWithKey:key location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
-        if (error) {
-            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
-            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
-            return;
-        }
-        DDLogDebug(@"public: %@", users);
-        for (NSDictionary *userDict in users) {
-            SAMCUser *user = [SAMCUser userFromDict:userDict];
-            [wself.data addObject:user];
-            [wself.tableView reloadData];
-        }
-    }];
+    [self loadMoreData];
 }
 
 #pragma mark -
@@ -161,6 +163,15 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger lastSectionIndex = [tableView numberOfSections] - 1;
+    NSInteger lastRowIndex = [tableView numberOfRowsInSection:lastSectionIndex] - 1;
+    if ((indexPath.section == lastSectionIndex) && (indexPath.row == lastRowIndex) && (!self.noMoreResult)) {
+        [self loadMoreData];
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.isSearchBarFirstResponder = [self.searchBar isFirstResponder];
@@ -184,12 +195,36 @@
 }
 
 #pragma mark - Private
-- (NSMutableArray *)data
+- (void)loadMoreData
 {
-    if (_data == nil) {
-        _data = [[NSMutableArray alloc] init];
-    }
-    return _data;
+    __weak typeof(self) wself = self;
+    [[SAMCPublicManager sharedManager] searchPublicWithKey:self.searchText currentCount:_currentCount location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        if (error) {
+            wself.tableView.tableFooterView.hidden = YES;
+            NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
+            [wself.view makeToast:toast duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        NSInteger count = [users count];
+        wself.currentCount += count;
+        wself.noMoreResult = (count == 0);
+        for (NSDictionary *userDict in users) {
+            SAMCUser *user = [SAMCUser userFromDict:userDict];
+            [wself.data addObject:user];
+            [wself.tableView reloadData];
+        }
+    }];
 }
+
+- (void)setNoMoreResult:(BOOL)noMoreResult
+{
+    _noMoreResult = noMoreResult;
+    if (noMoreResult) {
+        [_refreshView stopAnimating];
+    } else {
+        [_refreshView startAnimating];
+    }
+}
+
 
 @end

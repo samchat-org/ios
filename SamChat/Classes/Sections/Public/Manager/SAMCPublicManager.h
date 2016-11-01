@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeDelegate:(id<SAMCPublicManagerDelegate>)delegate;
 
 - (void)searchPublicWithKey:(NSString * __nullable)key
+               currentCount:(NSInteger)count
                    location:(NSDictionary * __nullable)location
                  completion:(void (^)(NSArray * __nullable users, NSError * __nullable error))completion;
 

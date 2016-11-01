@@ -68,6 +68,7 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 + (NSDictionary *)queryWithoutToken:(NSString *)username;
 
 + (NSDictionary *)queryPublicWithKey:(NSString *)key
+                        currentCount:(NSInteger)count
                             location:(NSDictionary *)location;
 
 + (NSDictionary *)queryFollowList;

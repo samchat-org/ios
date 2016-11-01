@@ -27,6 +27,7 @@
 		311B76D51DC75EC50056D4C5 /* Ingra Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CB1DC75D650056D4C5 /* Ingra Regular.otf */; };
 		311B76D61DC75EC50056D4C5 /* Ingra SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CC1DC75D650056D4C5 /* Ingra SemiBold.otf */; };
 		311B76D71DC75EC50056D4C5 /* Ingra Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = 311B76CD1DC75D650056D4C5 /* Ingra Thin.otf */; };
+		311B76DA1DC770BD0056D4C5 /* SAMCRefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76D91DC770BD0056D4C5 /* SAMCRefreshView.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -397,6 +398,8 @@
 		311B76CB1DC75D650056D4C5 /* Ingra Regular.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Regular.otf"; path = "Fonts/Ingra Regular.otf"; sourceTree = "<group>"; };
 		311B76CC1DC75D650056D4C5 /* Ingra SemiBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra SemiBold.otf"; path = "Fonts/Ingra SemiBold.otf"; sourceTree = "<group>"; };
 		311B76CD1DC75D650056D4C5 /* Ingra Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Ingra Thin.otf"; path = "Fonts/Ingra Thin.otf"; sourceTree = "<group>"; };
+		311B76D81DC770BD0056D4C5 /* SAMCRefreshView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCRefreshView.h; sourceTree = "<group>"; };
+		311B76D91DC770BD0056D4C5 /* SAMCRefreshView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCRefreshView.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -1241,6 +1244,8 @@
 				31DB309E1DB8E57A0072BE34 /* SAMCAvatarImageView.m */,
 				31DB30BC1DBC616C0072BE34 /* SAMCTableCellFactory.h */,
 				31DB30BD1DBC616C0072BE34 /* SAMCTableCellFactory.m */,
+				311B76D81DC770BD0056D4C5 /* SAMCRefreshView.h */,
+				311B76D91DC770BD0056D4C5 /* SAMCRefreshView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2982,6 +2987,7 @@
 				31DB30C51DBCB6A80072BE34 /* SAMCSPContactCell.m in Sources */,
 				3195DE241D5877F6001BD2B4 /* SAMCSessionConfig.m in Sources */,
 				314444FA1D4A41A50062B797 /* SAMCSetPasswordViewController.m in Sources */,
+				311B76DA1DC770BD0056D4C5 /* SAMCRefreshView.m in Sources */,
 				312C1C8A1D35D85B00242906 /* NTESWhiteboardAttachment.m in Sources */,
 				31DB30C81DBDA2E20072BE34 /* SAMCCustomerCardViewController.m in Sources */,
 				314D5D3C1D6BDCE3004B3DE4 /* SAMCAddContactViewController.m in Sources */,
@@ -3120,7 +3126,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.gknows.samchat;
 				PRODUCT_NAME = SamChat;
-				PROVISIONING_PROFILE = "cf330ef2-06d5-425c-9c48-bea88c1e7f04";
+				PROVISIONING_PROFILE = "0b2944f8-0623-4ad0-9cb8-043a59d26a32";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "";
 			};

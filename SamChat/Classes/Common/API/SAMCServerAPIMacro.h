@@ -95,6 +95,7 @@
 #define SAMC_SEARCH_KEY                 @"search_key"
 #define SAMC_KEY                        @"key"
 #define SAMC_CLIENT_ID                  @"client_id"
+#define SAMC_COUNT                      @"count"
 
 #define SAMC_COMPANY_NAME               @"company_name"
 #define SAMC_SERVICE_CATEGORY           @"service_category"
