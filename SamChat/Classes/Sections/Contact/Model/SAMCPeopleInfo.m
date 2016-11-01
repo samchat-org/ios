@@ -39,7 +39,11 @@
 
 - (void)setPhone:(NSString *)phone
 {
-    _phone = phone ?:@"";
+    phone = phone ?:@"";
+    _phone = [phone stringByReplacingOccurrencesOfString:@"[^0-9]"
+                                              withString:@""
+                                                 options:NSRegularExpressionSearch
+                                                   range:NSMakeRange(0, [phone length])];
 }
 
 @end
