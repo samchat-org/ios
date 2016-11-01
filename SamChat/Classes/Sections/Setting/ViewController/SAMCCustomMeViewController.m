@@ -225,14 +225,14 @@
                 {
                     cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"About Samchat";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_about_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_info"];
                 }
                     break;
                 case 1:
                 {
                     cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"F.A.Q";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_faq_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_help"];
                 }
                     break;
                     

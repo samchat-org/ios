@@ -37,13 +37,13 @@
 {
     return @[[NIMMediaItem item:NTESMediaButtonPicture
                     normalImage:[UIImage imageNamed:@"bk_media_picture_normal"]
-                  selectedImage:[UIImage imageNamed:@"bk_media_picture_nomal_pressed"]
-                          title:@"相册"],
+                  selectedImage:[UIImage imageNamed:@"bk_media_picture_pressed"]
+                          title:@"Photos"],
              
              [NIMMediaItem item:NTESMediaButtonShoot
                     normalImage:[UIImage imageNamed:@"bk_media_shoot_normal"]
                   selectedImage:[UIImage imageNamed:@"bk_media_shoot_pressed"]
-                          title:@"拍摄"],
+                          title:@"Camera"],
              
 //             [NIMMediaItem item:NTESMediaButtonLocation
 //                    normalImage:[UIImage imageNamed:@"bk_media_position_normal"]
@@ -53,17 +53,17 @@
              [NIMMediaItem item:NTESMediaButtonAudioChat
                     normalImage:[UIImage imageNamed:@"btn_media_telphone_message_normal"]
                   selectedImage:[UIImage imageNamed:@"btn_media_telphone_message_pressed"]
-                          title:@"实时语音"],
+                          title:@"Audio Call"],
              
              [NIMMediaItem item:NTESMediaButtonVideoChat
                     normalImage:[UIImage imageNamed:@"btn_bk_media_video_chat_normal"]
                   selectedImage:[UIImage imageNamed:@"btn_bk_media_video_chat_pressed"]
-                          title:@"视频聊天"],
+                          title:@"Video Call"],
              
              [NIMMediaItem item:NTESMediaButtonFileTrans
                     normalImage:[UIImage imageNamed:@"icon_file_trans_normal"]
                   selectedImage:[UIImage imageNamed:@"icon_file_trans_pressed"]
-                          title:@"文件传输"],
+                          title:@"Transfer"],
             ];
 }
 

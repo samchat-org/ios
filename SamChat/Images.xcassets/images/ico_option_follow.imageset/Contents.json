@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ico-option-follow.png",
+      "filename" : "ico-option-follow copy.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-option-follow@2x.png",
+      "filename" : "ico-option-follow copy@2x.png.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "ico-option-follow@3x.png",
+      "filename" : "ico-option-follow copy@3x.png.png",
       "scale" : "3x"
     }
   ],

@@ -2,17 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "bk_media_shoot_normal.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "bk_media_shoot_normal@2x.png"
+      "filename" : "bk_media_shoot_normal@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x",
-      "filename" : "bk_media_shoot_normal@3x.png"
+      "filename" : "bk_media_shoot_normal@3x.png",
+      "scale" : "3x"
     }
   ],
   "info" : {
