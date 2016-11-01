@@ -526,9 +526,15 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     contact.info = info;
     
     NSIndexPath *indexPath = [_contacts indexPathOfMember:contact];
+    NSInteger count = [_contacts memberCountOfGroup:indexPath.section];
     if (indexPath) {
         [_contacts removeGroupMember:contact];
-        [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        if (count == 1) {
+            // directly delete last cell of the section will cause a crash
+            [_tableView deleteSections:[NSIndexSet indexSetWithIndex:indexPath.section] withRowAnimation:UITableViewRowAnimationFade];
+        } else {
+            [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
     }
 }
 

@@ -93,6 +93,21 @@
 {
     NSString *groupTitle = [member groupTitle];
     NSInteger groupIndex = [_groupTtiles indexOfObject:groupTitle];
+    if (groupIndex == NSNotFound) {
+        // if not found, should create one
+        if (groupTitle.length) {
+            unichar character = [groupTitle characterAtIndex:0];
+            if (character >= 'A' && character <= 'Z') {
+                [_groupTtiles addObject:groupTitle];
+            }else{
+                [_groupTtiles addObject:@"#"];
+            }
+            NSMutableArray *groupedMembers = [[NSMutableArray alloc] init];
+            [groupedMembers addObject:member];
+            [_groups addObject:[[Pair alloc] initWithFirst:groupTitle second:groupedMembers]];
+        }
+        return;
+    }
     Pair *pair = [_groups objectAtIndex:groupIndex];
     if(!pair) {
         NSMutableArray *members = [NSMutableArray array];
@@ -111,6 +126,8 @@
     Pair *pair = [_groups objectAtIndex:groupIndex];
     [pair.second removeObject:member];
     if (![pair.second count]) {
+        // remove both groupTitle and pair
+        [_groupTtiles removeObject:groupTitle];
         [_groups removeObject:pair];
     }
     [self sort];
