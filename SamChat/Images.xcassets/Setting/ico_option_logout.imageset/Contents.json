@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "ico-option-logout.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "icon_logout_normal.png",
+      "filename" : "ico-option-logout@2x.png.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "ico-option-logout@3x.png.png",
       "scale" : "3x"
     }
   ],

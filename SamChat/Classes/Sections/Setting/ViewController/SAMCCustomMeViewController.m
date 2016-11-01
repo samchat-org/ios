@@ -187,7 +187,7 @@
                     cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.textLabel.text = @"Log out";
-                    cell.imageView.image = [UIImage imageNamed:@"icon_logout_normal"];
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_logout"];
                 }
                     break;
                 default:
