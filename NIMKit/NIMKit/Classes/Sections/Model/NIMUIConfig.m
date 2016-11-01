@@ -16,10 +16,7 @@
 
 + (CGFloat)bottomInputViewHeight
 {
-    //SAMC_BEGIN
-//    return 216.0;
-    return 106.0;
-    //SAMC_END
+    return 216.0;
 }
 
 + (NSInteger)messageLimit
