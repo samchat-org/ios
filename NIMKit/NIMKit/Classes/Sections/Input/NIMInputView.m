@@ -514,9 +514,14 @@
     {
         [self.actionDelegate onTextChanged:self];
     }
-    [self inputTextViewToHeight:[self getTextViewContentH:textView]];
+//SAMC_BEGIN
+    [self inputTextViewToHeight:[self getTextViewContentH:textView]+self.spacing*2];
 }
 
+- (CGFloat)spacing{
+    return 6.f;
+}
+//SAMC_END
 
 #pragma mark - InputEmoticonProtocol
 - (void)selectedEmoticon:(NSString*)emoticonID catalog:(NSString*)emotCatalogID description:(NSString *)description{

@@ -272,9 +272,12 @@
     {
         [self.actionDelegate onTextChanged:self];
     }
-    [self inputTextViewToHeight:[self getTextViewContentH:textView]];
+    [self inputTextViewToHeight:[self getTextViewContentH:textView]+self.spacing*2];
 }
 
+- (CGFloat)spacing{
+    return 6.f;
+}
 
 #pragma mark - InputEmoticonProtocol
 - (void)didPressSend:(id)sender{
