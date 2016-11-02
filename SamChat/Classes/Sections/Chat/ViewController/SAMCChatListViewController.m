@@ -128,21 +128,11 @@
     return 70.f;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    return @[[self deleteAction], [self muteAction], [self moreAction]];
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SAMCRecentSession *recentSession = self.recentSessions[indexPath.row];
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [[SAMCConversationManager sharedManager] deleteRecentSession:recentSession];
-        
-        [self.recentSessions removeObjectAtIndex:indexPath.row];
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }
-}
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -151,26 +141,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"cellId";
-//    NIMSessionListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    static NSString * cellId = @"SAMCCustomChatListCellId";
     SAMCCustomChatListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-//        [cell.avatarImageView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
     }
     cell.recentSession = self.recentSessions[indexPath.row];
-//    SAMCRecentSession *recent = self.recentSessions[indexPath.row];
-//    NIMSession *nimsession = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
-//    cell.nameLabel.text = [self nameForRecentSession:recent];
-//    [cell.avatarImageView setAvatarBySession:nimsession];
-//    [cell.nameLabel sizeToFit];
-//    cell.messageLabel.text = recent.lastMessageContent;
-//    [cell.messageLabel sizeToFit];
-//    cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
-//    [cell.timeLabel sizeToFit];
-//    
-////    [cell refresh:recent];
-//    [cell refreshBadge:recent.unreadCount];
     return cell;
 }
 
@@ -368,6 +344,37 @@
 - (BOOL)isCurrentModeSession:(SAMCSession *)session
 {
     return (session.sessionMode == self.currentUserMode);
+}
+
+- (UITableViewRowAction *)moreAction
+{
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        DDLogDebug(@"touch more");
+    }];
+    action.backgroundColor = SAMC_COLOR_LIMEGREY;
+    return action;
+}
+
+- (UITableViewRowAction *)muteAction
+{
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Mute" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        DDLogDebug(@"touch mute");
+    }];
+    action.backgroundColor = SAMC_COLOR_GREY;
+    return action;
+}
+
+- (UITableViewRowAction *)deleteAction
+{
+    __weak typeof(self) wself = self;
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Delete" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        SAMCRecentSession *recentSession = wself.recentSessions[indexPath.row];
+        [[SAMCConversationManager sharedManager] deleteRecentSession:recentSession];
+        [wself.recentSessions removeObjectAtIndex:indexPath.row];
+        [wself.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+    action.backgroundColor = SAMC_COLOR_RED;
+    return action;
 }
 
 @end
