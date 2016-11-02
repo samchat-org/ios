@@ -139,8 +139,9 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [[SAMCPublicManager sharedManager] follow:NO officialAccount:session.spBasicInfo completion:^(NSError * _Nullable error) {
             if (error == nil) {
-                [[self data] removeObjectAtIndex:indexPath.row];
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+                // use SAMCPublicManagerDelegate to delete
+//                [[self data] removeObjectAtIndex:indexPath.row];
+//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             }
         }];
     }
@@ -166,6 +167,18 @@
     NSInteger insert = [self findInsertPlace:publicSession];
     [sessions insertObject:publicSession atIndex:insert];
     [self reload];
+}
+
+- (void)didRemovePublicSession:(SAMCPublicSession *)publicSession
+{
+    NSInteger index = [[self data] indexOfObject:publicSession];
+    if (index == NSNotFound) {
+        [self.tableView reloadData];
+        return;
+    }
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
+    [[self data] removeObjectAtIndex:index];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 #pragma mark - 

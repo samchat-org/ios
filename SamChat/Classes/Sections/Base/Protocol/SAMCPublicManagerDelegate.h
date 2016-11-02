@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)didAddPublicSession:(SAMCPublicSession *)publicSession;
 - (void)didUpdatePublicSession:(SAMCPublicSession *)publicSession;
+- (void)didRemovePublicSession:(SAMCPublicSession *)publicSession;
 - (void)publicUnreadCountDidChanged:(NSInteger)unreadCount userMode:(SAMCUserModeType)mode;
 
 - (void)willSendMessage:(SAMCPublicMessage *)message;

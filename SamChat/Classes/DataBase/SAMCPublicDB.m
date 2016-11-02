@@ -164,6 +164,12 @@
     [self.queue inDatabase:^(FMDatabase *db) {
         NSNumber *unique_id = @([userInfo.userId integerValue]);
         [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", unique_id];
+        SAMCPublicSession *session = [SAMCPublicSession session:userInfo
+                                                  lastMessageId:@""
+                                             lastMessageContent:@""
+                                                lastMessageTime:0
+                                                    unreadCount:0];
+        [wself.publicDelegate didRemovePublicSession:session];
         [wself delegateUnreadCountChanged:db];
     }];
 }
