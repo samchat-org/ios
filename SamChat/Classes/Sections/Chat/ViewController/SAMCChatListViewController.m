@@ -26,6 +26,7 @@
 #import "NIMMessage+SAMC.h"
 #import "SAMCAccountManager.h"
 #import "SAMCCustomChatListCell.h"
+#import "UIActionSheet+NTESBlock.h"
 
 #define SessionListTitle @"Chat"
 
@@ -348,8 +349,21 @@
 
 - (UITableViewRowAction *)moreAction
 {
+    __weak typeof(self) wself = self;
     UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        DDLogDebug(@"touch more");
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        UIAlertAction *viewProfileAction = [UIAlertAction actionWithTitle:@"View Profle" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            DDLogDebug(@"touch view profile");
+        }];
+        UIAlertAction *blockAction = [UIAlertAction actionWithTitle:@"Block User" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+            DDLogDebug(@"touch block user");
+        }];
+        [alertController addAction:cancelAction];
+        [alertController addAction:viewProfileAction];
+        [alertController addAction:blockAction];
+        
+        [wself presentViewController:alertController animated:YES completion:nil];
     }];
     action.backgroundColor = SAMC_COLOR_LIMEGREY;
     return action;
