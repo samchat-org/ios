@@ -20,6 +20,7 @@
 #import "SAMCServerAPIMacro.h"
 #import "SAMCUserManager.h"
 #import "SDWebImageManager.h"
+#import "SAMCEditProfileViewController.h"
 
 @interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -67,6 +68,32 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 1:
+                {
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypePhoneNo];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 2:
+                {
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeEmail];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -117,7 +144,7 @@
                     break;
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Phone no.";
                     NSString *countryCode = self.user.userInfo.countryCode;
                     countryCode = [countryCode length] ? [NSString stringWithFormat:@"+%@ ",countryCode] : @"";
@@ -129,7 +156,7 @@
                     break;
                 case 2:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Email";
                     NSString *email = self.user.userInfo.email;
                     email = [email length] ? email : @" ";
@@ -139,7 +166,7 @@
                     break;
                 case 3:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Location";
                     NSString *address = self.user.userInfo.address;
                     cell.detailTextLabel.text = [address length] ? address :@" ";
