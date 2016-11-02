@@ -27,6 +27,10 @@
 #import "SAMCAccountManager.h"
 #import "SAMCCustomChatListCell.h"
 #import "UIActionSheet+NTESBlock.h"
+#import "SAMCUserManager.h"
+#import "SAMCPublicManager.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
 
 #define SessionListTitle @"Chat"
 
@@ -131,7 +135,11 @@
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return @[[self deleteAction], [self muteAction], [self moreAction]];
+    if (self.recentSessions[indexPath.row].session.sessionType == NIMSessionTypeP2P) {
+        return @[[self deleteAction], [self muteAction], [self moreAction]];
+    } else {
+        return @[[self deleteAction], [self muteAction]];
+    }
 }
 
 #pragma mark - UITableViewDataSource
@@ -347,6 +355,23 @@
     return (session.sessionMode == self.currentUserMode);
 }
 
+- (void)enterPersonalCard:(NSString *)userId
+{
+    SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
+    UIViewController *vc;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:userId];
+        BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
+        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:isMyProvider];
+    } else {
+        BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
+        vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+#pragma mark - UITableViewRowAction
 - (UITableViewRowAction *)moreAction
 {
     __weak typeof(self) wself = self;
@@ -354,7 +379,8 @@
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *viewProfileAction = [UIAlertAction actionWithTitle:@"View Profle" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            DDLogDebug(@"touch view profile");
+            SAMCRecentSession *recentSession = wself.recentSessions[indexPath.row];
+            [wself enterPersonalCard:recentSession.session.sessionId];
         }];
         UIAlertAction *blockAction = [UIAlertAction actionWithTitle:@"Block User" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
             DDLogDebug(@"touch block user");
