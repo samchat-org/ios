@@ -37,6 +37,7 @@
 #define SAMC_URL_PROFILE_GET_PLACESINFO             SAMC_API_PREFIX@"api_1.0_profile_getPlacesInfoRequest.do"
 #define SAMC_URL_PROFILE_SEND_CLIENTID              SAMC_API_PREFIX@"api_1.0_profile_sendClientId.do"
 #define SAMC_URL_PROFILE_QUERY_STATE_DATE           SAMC_API_PREFIX@"api_1.0_profile_queryStateDate.do"
+#define SAMC_URL_PROFILE_PROFILE_UPDATE             SAMC_API_PREFIX@"api_1.0_profile_profileUpdate.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
 #define SAMC_AWSS3_BUCKETNAME           @"storage-test.samchat.com"
@@ -81,6 +82,7 @@
 #define SAMC_SEND_CLIENTID              @"send-clientId"
 #define SAMC_QUERY_STATE_DATE           @"query-state-date"
 #define SAMC_QUERY_POPULAR_REQUEST      @"query-popular-request"
+#define SAMC_PROFILE_UPDATE             @"profile-update"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"

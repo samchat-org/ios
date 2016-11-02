@@ -674,6 +674,39 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "profile-update",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "user":{
+//            “countrycode”://option
+//            “cellphone”: //option
+//            “email”: //option
+//            “address”:// option
+//            “sam_pros_info”:{
+//                “company_name”:”KFC”
+//                “service_category”:“fast food”
+//                “service_description”:”deliver all kinds of fast food”
+//                “countrycode”: // option
+//                “phone”: // option
+//                “email”: // option
+//                “address”: // option
+//            }
+//        }
+//    }
+//}
++ (NSDictionary *)updateProfile:(NSDictionary *)profile
+{
+    profile = profile ?:@{};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_PROFILE_UPDATE,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_USER:profile};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

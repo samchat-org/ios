@@ -92,4 +92,6 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 
 + (NSDictionary *)queryStateDate;
 
++ (NSDictionary *)updateProfile:(NSDictionary *)profile;
+
 @end
