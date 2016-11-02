@@ -210,7 +210,7 @@
 }
 
 - (void)updateAvatar:(NSString *)url
-          completion:(void (^)(SAMCUser * __nullable userDict, NSError * __nullable error))completion
+          completion:(void (^)(SAMCUser * __nullable user, NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     NSDictionary *parameters = [SAMCServerAPI updateAvatar:url];
@@ -236,6 +236,48 @@
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
+- (void)updateProfile:(NSDictionary *)profileDict
+           completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI updateProfile:profileDict];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
+    [manager POST:SAMC_URL_PROFILE_PROFILE_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
+                user.userInfo.countryCode = profileDict[SAMC_COUNTRYCODE] ?:user.userInfo.countryCode;
+                user.userInfo.cellPhone = profileDict[SAMC_CELLPHONE] ?:user.userInfo.cellPhone;
+                user.userInfo.email = profileDict[SAMC_EMAIL] ?:user.userInfo.email;
+                user.userInfo.address = [profileDict valueForKeyPath:SAMC_LOCATION_ADDRESS] ?:user.userInfo.address;
+                if (profileDict[SAMC_SAM_PROS_INFO]) {
+                    NSDictionary *prosProfileDict = profileDict[SAMC_SAM_PROS_INFO];
+                    user.userInfo.spInfo.companyName = prosProfileDict[SAMC_COMPANY_NAME] ?:user.userInfo.spInfo.companyName;
+                    user.userInfo.spInfo.serviceCategory = prosProfileDict[SAMC_SERVICE_CATEGORY] ?:user.userInfo.spInfo.serviceCategory;
+                    user.userInfo.spInfo.serviceDescription = prosProfileDict[SAMC_SERVICE_DESCRIPTION] ?:user.userInfo.spInfo.serviceDescription;
+                    user.userInfo.spInfo.countryCode = prosProfileDict[SAMC_COUNTRYCODE] ?:user.userInfo.spInfo.countryCode;
+                    user.userInfo.spInfo.phone = prosProfileDict[SAMC_PHONE] ?:user.userInfo.spInfo.phone;
+                    user.userInfo.spInfo.email = prosProfileDict[SAMC_EMAIL] ?:user.userInfo.spInfo.email;
+                    user.userInfo.spInfo.address = [prosProfileDict valueForKeyPath:SAMC_LOCATION_ADDRESS] ? :user.userInfo.spInfo.address;
+                }
+                [wself updateUser:user];
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
 }
 

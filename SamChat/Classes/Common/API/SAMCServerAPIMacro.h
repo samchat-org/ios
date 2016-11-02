@@ -145,6 +145,7 @@
 #define SAMC_LOCATION_ADDRESS           @"location.address"
 #define SAMC_BODY_DEST_ID               @"body.dest_id"
 #define SAMC_USER_THUMB                 @"user.thumb"
+#define SAMC_USER_LASTUPDATE            @"user.lastupdate"
 
 #define SAMC_PUSHCATEGORY_NEWQUESTION       @"1"
 #define SAMC_PUSHCATEGORY_NEWPUBLICMESSAGE  @"2"
