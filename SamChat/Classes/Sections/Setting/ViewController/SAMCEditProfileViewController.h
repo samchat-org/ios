@@ -16,6 +16,6 @@ typedef NS_ENUM(NSInteger,SAMCEditProfileType) {
 
 @interface SAMCEditProfileViewController : UIViewController
 
-- (instancetype)initWithProfileType:(SAMCEditProfileType)profileType;
+- (instancetype)initWithProfileType:(SAMCEditProfileType)profileType profileDict:(NSDictionary *)profileDict;
 
 @end

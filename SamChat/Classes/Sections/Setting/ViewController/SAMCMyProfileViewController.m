@@ -74,13 +74,17 @@
             switch (indexPath.row) {
                 case 1:
                 {
-                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypePhoneNo];
+                    NSDictionary *phoneDict = nil;
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypePhoneNo
+                                                                                                       profileDict:phoneDict];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 2:
                 {
-                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeEmail];
+                    NSDictionary *emailDict = @{SAMC_EMAIL:self.user.userInfo.email?:@""};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeEmail
+                                                                                                       profileDict:emailDict];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;

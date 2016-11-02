@@ -14,6 +14,7 @@
 @interface SAMCEditProfileViewController ()
 
 @property (nonatomic, assign) SAMCEditProfileType profileType;
+@property (nonatomic, strong) NSDictionary *profileDict;
 
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, strong) UILabel *tipLabel;
@@ -25,11 +26,12 @@
 
 @implementation SAMCEditProfileViewController
 
-- (instancetype)initWithProfileType:(SAMCEditProfileType)profileType
+- (instancetype)initWithProfileType:(SAMCEditProfileType)profileType profileDict:(NSDictionary *)profileDict
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _profileType = profileType;
+        _profileDict = profileDict;
     }
     return self;
 }
@@ -98,6 +100,7 @@
     [self.view addSubview:self.tipLabel];
     _tipLabel.text = @"Enter your Email.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
+    _emailTextField.text = _profileDict[SAMC_EMAIL] ?:@"";
     _currentEditView = _emailTextField;
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_emailTextField]|"
                                                                       options:0
