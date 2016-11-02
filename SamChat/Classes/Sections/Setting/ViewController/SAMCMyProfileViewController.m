@@ -22,7 +22,7 @@
 #import "SDWebImageManager.h"
 #import "SAMCEditProfileViewController.h"
 
-@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate, SAMCUserManagerDelegate>
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, strong) UITableView *tableView;
@@ -62,6 +62,12 @@
     [headerView.avatarView addTarget:self action:@selector(onTouchPortraitAvatar:) forControlEvents:UIControlEventTouchUpInside];
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [[SAMCUserManager sharedManager] addDelegate:self];
+}
+
+- (void)dealloc
+{
+    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 #pragma mark - UITableViewDelegate
@@ -208,6 +214,17 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - SAMCUserManagerDelegate
+- (void)onUserInfoChanged:(SAMCUser *)user
+{
+    if ([user.userId isEqualToString:self.user.userId]) {
+        self.user = user;
+//        SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)self.tableView.tableHeaderView;
+//        headerView.avatarUrl = user.userInfo.avatar;
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - Private
