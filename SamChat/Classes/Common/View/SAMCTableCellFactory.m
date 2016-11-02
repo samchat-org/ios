@@ -34,6 +34,7 @@
         cell.detailTextLabel.textColor = SAMC_COLOR_INK;
         cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
     }
+    cell.accessoryType = accessoryType;
     return cell;
 }
 
@@ -96,8 +97,8 @@
     SAMCTipRightCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[SAMCTipRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        cell.accessoryType = accessoryType;
     }
+    cell.accessoryType = accessoryType;
     return cell;
 }
 
