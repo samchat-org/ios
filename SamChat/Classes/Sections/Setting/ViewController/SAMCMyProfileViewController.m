@@ -85,7 +85,7 @@
     NSInteger rows = 0;
     switch (section) {
         case 0:
-            rows = 3;
+            rows = 4;
             break;
         default:
             break;
@@ -119,12 +119,25 @@
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Phone no.";
+                    NSString *countryCode = self.user.userInfo.countryCode;
+                    countryCode = [countryCode length] ? [NSString stringWithFormat:@"+%@ ",countryCode] : @"";
                     NSString *phone = self.user.userInfo.cellPhone;
-                    cell.detailTextLabel.text = [phone length] ? phone :@" ";
+                    phone = [phone length] ? phone : @" ";
+                    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@%@", countryCode, phone];
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_phone"];
                 }
                     break;
                 case 2:
+                {
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell.textLabel.text = @"Email";
+                    NSString *email = self.user.userInfo.email;
+                    email = [email length] ? email : @" ";
+                    cell.detailTextLabel.text = email;
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_email"];
+                }
+                    break;
+                case 3:
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
                     cell.textLabel.text = @"Location";
