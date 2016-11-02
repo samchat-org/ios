@@ -146,7 +146,7 @@
     }
     cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
     cell.textLabel.textColor = UIColorFromRGB(0x13243F);
-    if (indexPath.row == 0) {
+    if (self.fixCellCount && indexPath.row == 0) {
         cell.textLabel.text = self.searchBar.text;
     } else {
         SAMCPlaceInfo *placeInfo = self.data[indexPath.row-self.fixCellCount];
