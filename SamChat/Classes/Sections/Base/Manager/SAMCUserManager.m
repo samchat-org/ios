@@ -317,7 +317,7 @@
     NSDictionary *parameters = [SAMCServerAPI editCellPhoneCodeRequestWithCountryCode:countryCode cellPhone:cellPhone];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_USER_EDITCELLPHONE_CODER_EQUEST parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:SAMC_URL_PROFILE_EDITCELLPHONE_CODER_EQUEST parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
@@ -344,7 +344,7 @@
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
     __weak typeof(self) wself = self;
-    [manager POST:SAMC_URL_USER_EDITCELLPHONE_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+    [manager POST:SAMC_URL_PROFILE_EDITCELLPHONE_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
             NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];

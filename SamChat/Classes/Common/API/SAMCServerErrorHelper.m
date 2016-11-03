@@ -99,6 +99,9 @@
         case SAMCServerErrorCustomerCannotDoThis: // 普通用户无法添加商户联系人列表
             localizedDescription = @"普通用户无法添加商户联系人列表";
             break;
+        case SAMCServerErrorNotNewCellPhone: // 更新的手机号码与当前使用的手机号相同
+            localizedDescription = @"更新的手机号码与当前使用的手机号相同";
+            break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
             break;

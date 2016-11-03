@@ -38,8 +38,8 @@
 #define SAMC_URL_PROFILE_SEND_CLIENTID              SAMC_API_PREFIX@"api_1.0_profile_sendClientId.do"
 #define SAMC_URL_PROFILE_QUERY_STATE_DATE           SAMC_API_PREFIX@"api_1.0_profile_queryStateDate.do"
 #define SAMC_URL_PROFILE_PROFILE_UPDATE             SAMC_API_PREFIX@"api_1.0_profile_profileUpdate.do"
-#define SAMC_URL_USER_EDITCELLPHONE_CODER_EQUEST    SAMC_API_PREFIX@"api_1.0_user_editCellPhoneCodeRequest.do"
-#define SAMC_URL_USER_EDITCELLPHONE_UPDATE          SAMC_API_PREFIX@"api_1.0_user_editCellPhoneUpdate.do"
+#define SAMC_URL_PROFILE_EDITCELLPHONE_CODER_EQUEST SAMC_API_PREFIX@"api_1.0_profile_editCellPhoneCodeRequest.do"
+#define SAMC_URL_PROFILE_EDITCELLPHONE_UPDATE       SAMC_API_PREFIX@"api_1.0_profile_editCellPhoneUpdate.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
 #define SAMC_AWSS3_BUCKETNAME           @"storage-test.samchat.com"
