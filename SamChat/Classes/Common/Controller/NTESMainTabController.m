@@ -42,8 +42,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 
 @property (nonatomic, assign) NSInteger systemUnreadCount;
 
-@property (nonatomic, assign) NSInteger customSystemUnreadCount;
-
 @property (nonatomic, copy) NSDictionary *configs;
 
 @property (nonatomic, assign) SAMCUserModeType currentUserMode;
@@ -97,7 +95,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 
 - (NSArray*)tabbars{
     self.systemUnreadCount   = [NIMSDK sharedSDK].systemNotificationManager.allUnreadCount;
-    self.customSystemUnreadCount = [[NTESCustomNotificationDB sharedInstance] unreadCount];
     NSMutableArray *items = [[NSMutableArray alloc] init];
     for (NSInteger tabbar = 0; tabbar < TabBarCount; tabbar++) {
         [items addObject:@(tabbar)];
@@ -163,6 +160,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 {
     if (mode == self.currentUserMode) {
         [self refreshSessionBadge:count];
+    } else {
+        [self refreshOtherModeBadge];
     }
 }
 
@@ -170,6 +169,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 {
     if (mode == self.currentUserMode) {
         [self refreshServiceBadge:count];
+    } else {
+        [self refreshOtherModeBadge];
     }
 }
 
@@ -177,6 +178,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 {
     if (mode == self.currentUserMode) {
         [self refreshPublicBadge:count];
+    } else {
+        [self refreshOtherModeBadge];
     }
 }
 
@@ -190,9 +193,6 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
 #pragma mark - Notification
 - (void)onCustomNotifyChanged:(NSNotification *)notification
 {
-    NTESCustomNotificationDB *db = [NTESCustomNotificationDB sharedInstance];
-    self.customSystemUnreadCount = db.unreadCount;
-    [self refreshSettingBadge];
 }
 
 - (void)onSwitchUserMode:(NSNotification *)notification
@@ -230,9 +230,15 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
     nav.tabBarItem.badgeValue = badge ? @(badge).stringValue : nil;
 }
 
-- (void)refreshSettingBadge{
+- (void)refreshOtherModeBadge{
+    SAMCUserModeType otherMode;
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        otherMode = SAMCUserModeTypeSP;
+    } else {
+        otherMode = SAMCUserModeTypeCustom;
+    }
+    NSInteger badge = [[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:otherMode];
     UINavigationController *nav = self.viewControllers[SAMCMainTabTypeSetting];
-    NSInteger badge = self.customSystemUnreadCount;
     nav.tabBarItem.badgeValue = badge ? @(badge).stringValue : nil;
 }
 
@@ -263,6 +269,8 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         NSInteger chatUnreadCount = [unreadCountManager chatUnreadCountOfUserMode:self.currentUserMode];
         NSInteger serviceUnreadCount = [unreadCountManager serviceUnreadCountOfUserMode:self.currentUserMode];
         NSInteger publicUnreadCount = [unreadCountManager publicUnreadCountOfUserMode:self.currentUserMode];
+        SAMCUserModeType otherMode = self.currentUserMode == SAMCUserModeTypeCustom ? SAMCUserModeTypeSP : SAMCUserModeTypeCustom;
+        NSInteger otherModeUnreadCount = [unreadCountManager allUnreadCountOfUserMode:otherMode];
         NSString *iconTabAccountLineImageName;
         NSString *iconTabAccountFillImageName;
         if (self.currentUserMode == SAMCUserModeTypeCustom) {
@@ -306,7 +314,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
                              TabbarTitle        : @"Me",
                              TabbarImage        : iconTabAccountLineImageName,
                              TabbarSelectedImage: iconTabAccountFillImageName,
-                             TabbarItemBadgeValue: @(self.customSystemUnreadCount)
+                             TabbarItemBadgeValue: @(otherModeUnreadCount)
                              }
                      };
     }

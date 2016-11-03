@@ -119,6 +119,15 @@
     }
 }
 
+- (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)mode
+{
+    if (mode == SAMCUserModeTypeCustom) {
+        return self.customChatUnreadCount+self.customPublicUnreadCount+self.customServiceUnreadCount;
+    } else {
+        return self.spChatUnreadCount+self.spPublicUnreadCount+self.spServiceUnreadCount;
+    }
+}
+
 #pragma mark - Property
 - (void)setCustomChatUnreadCount:(NSInteger)customChatUnreadCount
 {
