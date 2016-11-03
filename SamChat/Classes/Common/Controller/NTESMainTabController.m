@@ -203,6 +203,7 @@ typedef NS_ENUM(NSInteger,SAMCMainTabType) {
         self.currentUserMode = SAMCUserModeTypeCustom;
     }
     [self setUpSubNav];
+    self.selectedIndex = 0;
 //    [SVProgressHUD dismiss];
 }
 
