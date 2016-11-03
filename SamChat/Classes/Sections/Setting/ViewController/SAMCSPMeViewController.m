@@ -14,10 +14,12 @@
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 
-@interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
+@interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) SAMCUser *currentUser;
+
+@property (nonatomic, strong) SAMCBadgeRightCell *switchUserModeCell;
 
 @end
 
@@ -53,11 +55,13 @@
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [[SAMCUserManager sharedManager] addDelegate:self];
+    [[SAMCUnreadCountManager sharedManager] addDelegate:self];
 }
 
 - (void)dealloc
 {
     [[SAMCUserManager sharedManager] removeDelegate:self];
+    [[SAMCUnreadCountManager sharedManager] removeDelegate:self];
 }
 
 #pragma mark - SAMCUserManagerDelegate
@@ -186,9 +190,9 @@
                     break;
                 case 1:
                 {
-                    SAMCBadgeRightCell *badgeRightCell = [SAMCTableCellFactory badgeRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    [badgeRightCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeCustom]];
-                    cell = badgeRightCell;
+                    self.switchUserModeCell = [SAMCTableCellFactory badgeRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    [self.switchUserModeCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeCustom]];
+                    cell = self.switchUserModeCell;
                     cell.textLabel.text = @"Switch to personal account";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
                 }
@@ -221,6 +225,34 @@
             break;
     }
     return cell;
+}
+
+#pragma mark - SAMCUnreadCountManagerDelegate
+- (void)chatUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
+{
+    if (mode != SAMCUserModeTypeSP) {
+        [self refreshOtherModeBadge];
+    }
+}
+
+- (void)serviceUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
+{
+    if (mode != SAMCUserModeTypeSP) {
+        [self refreshOtherModeBadge];
+    }
+}
+
+- (void)publicUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
+{
+    if (mode != SAMCUserModeTypeSP) {
+        [self refreshOtherModeBadge];
+    }
+}
+
+#pragma mark - 
+- (void)refreshOtherModeBadge
+{
+    [self.switchUserModeCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeCustom]];
 }
 
 @end
