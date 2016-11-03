@@ -15,6 +15,7 @@
 #import "SVProgressHUD.h"
 #import "UIButton+SAMC.h"
 #import "SAMCStepperView.h"
+#import "SAMCUtils.h"
 
 #define SAMC_SEND_CONFIRMATION_CODE @"Send Confirmation Code"
 
@@ -204,7 +205,7 @@
 
 - (void)phoneNumberEditingChanged:(id)sender
 {
-    if ([self isValidCellphone:self.phoneTextField.rightTextField.text]) {
+    if ([SAMCUtils isValidCellphone:self.phoneTextField.rightTextField.text]) {
         self.sendButton.enabled = YES;
         self.sendButton.backgroundColor = SAMC_COLOR_GREEN;
     } else {
@@ -217,7 +218,7 @@
 {
     if ([sender.currentTitle isEqualToString:SAMC_SEND_CONFIRMATION_CODE]) {
         self.phoneNumber = self.phoneTextField.rightTextField.text;
-        if (![self isValidCellphone:self.phoneNumber]) {
+        if (![SAMCUtils isValidCellphone:self.phoneNumber]) {
             [self.view makeToast:@"Invalid Phone Number" duration:2.0f position:CSToastPositionCenter];
             return;
         }
@@ -257,18 +258,6 @@
     vc.countryCode = self.countryCode;
     vc.phoneNumber = self.phoneNumber;
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (BOOL)isValidCellphone:(NSString *)cellphone
-{
-    if ((cellphone.length<5) || (cellphone.length>11)) {
-        return false;
-    }
-    cellphone = [cellphone stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
-    if (cellphone.length > 0) {
-        return false;
-    }
-    return true;
 }
 
 #pragma mark - UIKeyBoard Notification
