@@ -8,6 +8,7 @@
 
 #import "SAMCEditCellPhoneViewController.h"
 #import "SAMCCountryCodeViewController.h"
+#import "SAMCSubmitCellPhoneViewController.h"
 #import "SAMCUserManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
@@ -17,6 +18,8 @@
 @interface SAMCEditCellPhoneViewController ()
 
 @property (nonatomic, strong) NSString *countryCode;
+@property (nonatomic, strong) NSString *cellPhone;
+
 @property (nonatomic, strong) SAMCTextField *phoneTextField;
 @property (nonatomic, strong) UIButton *rightNavButton;
 
@@ -71,10 +74,10 @@
     [_rightNavButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
     [_rightNavButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateHighlighted];
     [_rightNavButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateDisabled];
-    _rightNavButton.enabled = NO;
     [_rightNavButton sizeToFit];
     UIBarButtonItem *rightNavItem = [[UIBarButtonItem alloc] initWithCustomView:_rightNavButton];
     self.navigationItem.rightBarButtonItems = @[negativeSpacer, rightNavItem];
+    _rightNavButton.enabled = NO;
 }
 
 - (void)setupPhoneNoViews
@@ -137,9 +140,31 @@
 
 - (void)sendConfirmationCode
 {
-    DDLogDebug(@"sendConfirmationCode");
+    self.cellPhone = self.phoneTextField.rightTextField.text;
+    if (![SAMCUtils isValidCellphone:self.cellPhone]) {
+        [self.view makeToast:@"Invalid Phone Number" duration:2.0f position:CSToastPositionCenter];
+        return;
+    }
+    NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
+    self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] editCellPhoneCodeRequestWithCountryCode:self.countryCode cellPhone:self.cellPhone completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        [wself pushToSubmitCellPhoneVC];
+    }];
 }
 
+- (void)pushToSubmitCellPhoneVC
+{
+    SAMCSubmitCellPhoneViewController *vc = [[SAMCSubmitCellPhoneViewController alloc] initWithCountryCode:self.countryCode
+                                                                                                 cellPhone:self.cellPhone];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 #pragma mark - lazy load
 - (UILabel *)tipLabel

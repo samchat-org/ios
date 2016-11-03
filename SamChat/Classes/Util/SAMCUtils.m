@@ -22,4 +22,16 @@
     return true;
 }
 
++ (BOOL)isValidVerificationCode:(NSString *)code
+{
+    if ([code length] != 4) {
+        return false;
+    }
+    code = [code stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
+    if ([code length] > 0) {
+        return false;
+    }
+    return true;
+}
+
 @end

@@ -94,4 +94,7 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 
 + (NSDictionary *)updateProfile:(NSDictionary *)profile;
 
++ (NSDictionary *)editCellPhoneCodeRequestWithCountryCode:(NSString *)countryCode
+                                                cellPhone:(NSString *)cellPhone;
+
 @end

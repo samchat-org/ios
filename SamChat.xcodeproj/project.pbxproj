@@ -31,6 +31,7 @@
 		311B76E31DC9AF410056D4C5 /* SAMCEditProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76E21DC9AF410056D4C5 /* SAMCEditProfileViewController.m */; };
 		311B76E61DCA1A050056D4C5 /* SAMCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76E51DCA1A050056D4C5 /* SAMCUtils.m */; };
 		311B76E91DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76E81DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m */; };
+		311B76EC1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76EB1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -409,6 +410,8 @@
 		311B76E51DCA1A050056D4C5 /* SAMCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCUtils.m; sourceTree = "<group>"; };
 		311B76E71DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCEditCellPhoneViewController.h; path = ViewController/SAMCEditCellPhoneViewController.h; sourceTree = "<group>"; };
 		311B76E81DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCEditCellPhoneViewController.m; path = ViewController/SAMCEditCellPhoneViewController.m; sourceTree = "<group>"; };
+		311B76EA1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSubmitCellPhoneViewController.h; path = ViewController/SAMCSubmitCellPhoneViewController.h; sourceTree = "<group>"; };
+		311B76EB1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSubmitCellPhoneViewController.m; path = ViewController/SAMCSubmitCellPhoneViewController.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -2219,6 +2222,8 @@
 				311B76E21DC9AF410056D4C5 /* SAMCEditProfileViewController.m */,
 				311B76E71DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.h */,
 				311B76E81DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m */,
+				311B76EA1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.h */,
+				311B76EB1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -3046,6 +3051,7 @@
 				312C1C921D35D85B00242906 /* NTESSessionSnapchatContentView.m in Sources */,
 				312C1C9C1D35D85B00242906 /* NTESLocationViewController.m in Sources */,
 				312C1CC71D35D85B00242906 /* NTESSignSettingViewController.m in Sources */,
+				311B76EC1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m in Sources */,
 				31F8FC941D6D39FB00734068 /* SAMCQuestionDB.m in Sources */,
 				31DB30731DB30AE90072BE34 /* SAMCTextField.m in Sources */,
 				312C1CB51D35D85B00242906 /* NTESLogManager.m in Sources */,

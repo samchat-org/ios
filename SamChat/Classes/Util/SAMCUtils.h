@@ -11,5 +11,6 @@
 @interface SAMCUtils : NSObject
 
 + (BOOL)isValidCellphone:(NSString *)cellphone;
++ (BOOL)isValidVerificationCode:(NSString *)code;
 
 @end

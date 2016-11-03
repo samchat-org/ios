@@ -707,6 +707,28 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "editCellPhone-code-request",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "countrycode" : “”
+//        "cellphone"	: “”
+//    }
+//}
++ (NSDictionary *)editCellPhoneCodeRequestWithCountryCode:(NSString *)countryCode
+                                                cellPhone:(NSString *)cellPhone
+{
+    countryCode = countryCode ?:@"";
+    cellPhone = cellPhone ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_EDITCELLPHONE_CODE_REQUEST,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,SAMC_CELLPHONE:cellPhone};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {
