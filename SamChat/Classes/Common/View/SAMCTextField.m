@@ -84,4 +84,9 @@
 //    [textField layoutIfNeeded];
 //}
 
+- (BOOL)becomeFirstResponder
+{
+    return [_rightTextField becomeFirstResponder];
+}
+
 @end

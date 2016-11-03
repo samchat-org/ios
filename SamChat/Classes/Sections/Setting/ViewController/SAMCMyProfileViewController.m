@@ -22,6 +22,7 @@
 #import "SDWebImageManager.h"
 #import "SAMCEditProfileViewController.h"
 #import "SAMCSelectLocationViewController.h"
+#import "SAMCEditCellPhoneViewController.h"
 
 @import CoreLocation;
 @interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate, SAMCUserManagerDelegate,CLLocationManagerDelegate>
@@ -85,9 +86,7 @@
             switch (indexPath.row) {
                 case 1:
                 {
-                    NSDictionary *phoneDict = nil;
-                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypePhoneNo
-                                                                                                       profileDict:phoneDict];
+                    SAMCEditCellPhoneViewController *vc = [[SAMCEditCellPhoneViewController alloc] initWithCountryCode:self.user.userInfo.countryCode];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
