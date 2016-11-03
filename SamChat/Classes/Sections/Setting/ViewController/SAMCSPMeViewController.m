@@ -12,6 +12,7 @@
 #import "SAMCTableCellFactory.h"
 #import "SAMCAccountManager.h"
 #import "SAMCUserManager.h"
+#import "SAMCUnreadCountManager.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
 
@@ -185,7 +186,9 @@
                     break;
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    SAMCBadgeRightCell *badgeRightCell = [SAMCTableCellFactory badgeRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    [badgeRightCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeCustom]];
+                    cell = badgeRightCell;
                     cell.textLabel.text = @"Switch to personal account";
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
                 }

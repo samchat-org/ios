@@ -112,4 +112,16 @@
     return cell;
 }
 
++ (SAMCBadgeRightCell *)badgeRightCell:(UITableView *)tableView
+                         accessoryType:(UITableViewCellAccessoryType)accessoryType
+{
+    static NSString *cellId = @"SAMCBadgeRightCellId";
+    SAMCBadgeRightCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (!cell) {
+        cell = [[SAMCBadgeRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    }
+    cell.accessoryType = accessoryType;
+    return cell;
+}
+
 @end

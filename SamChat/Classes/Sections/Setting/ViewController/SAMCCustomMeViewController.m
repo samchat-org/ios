@@ -16,6 +16,7 @@
 #import "SAMCMyProfileViewController.h"
 #import "SAMCTableCellFactory.h"
 #import "SAMCUserManager.h"
+#import "SAMCUnreadCountManager.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
 
@@ -201,7 +202,9 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    SAMCBadgeRightCell *badgeRightCell = [SAMCTableCellFactory badgeRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    [badgeRightCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeSP]];
+                    cell = badgeRightCell;
                     if ([[SAMCAccountManager sharedManager] isCurrentUserServicer]) {
                         cell.textLabel.text = @"Switch to Service Account";
                         cell.imageView.image = [UIImage imageNamed:@"ico_option_switch"];
