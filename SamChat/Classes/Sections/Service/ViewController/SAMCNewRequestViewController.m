@@ -105,7 +105,11 @@
     [sendButton setTitleColor:SAMC_MAIN_DARKCOLOR forState:UIControlStateNormal];
     [sendButton sizeToFit];
     UIBarButtonItem *sendItem = [[UIBarButtonItem alloc] initWithCustomView:sendButton];
-    self.navigationItem.rightBarButtonItem = sendItem;
+    
+    UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    negativeSpacer.width = -5;
+    
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer,sendItem];
 }
 
 - (void)sendRequest:(UIButton *)sender
