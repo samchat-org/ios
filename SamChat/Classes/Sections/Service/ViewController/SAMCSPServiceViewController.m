@@ -335,7 +335,7 @@
 
 - (void)touchSendPublicUpdate:(id)sender
 {
-    self.tabBarController.selectedIndex = 1;
+    self.tabBarController.selectedIndex = 2;
 }
 
 - (void)touchAddCustomer:(id)sender
