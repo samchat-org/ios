@@ -1,28 +1,27 @@
 //
-//  SAMCCustomChatListCell.m
+//  SAMCSPChatListCell.m
 //  SamChat
 //
-//  Created by HJ on 10/12/16.
+//  Created by HJ on 11/3/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCCustomChatListCell.h"
+#import "SAMCSPChatListCell.h"
 #import "SAMCAvatarImageView.h"
 #import "SAMCSession.h"
 #import "NIMKitUtil.h"
 
-@interface SAMCCustomChatListCell ()
+@interface SAMCSPChatListCell ()
 
 @property (nonatomic, strong) SAMCAvatarImageView *avatarView;
 @property (nonatomic, strong) UILabel *nameLabel;
-@property (nonatomic, strong) UILabel *categoryLabel;
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *dotLabel;
 
 @end
 
-@implementation SAMCCustomChatListCell
+@implementation SAMCSPChatListCell
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -36,7 +35,6 @@
 {
     [self addSubview:self.avatarView];
     [self addSubview:self.nameLabel];
-    [self addSubview:self.categoryLabel];
     [self addSubview:self.dotLabel];
     [self addSubview:self.timeLabel];
     [self addSubview:self.messageLabel];
@@ -69,17 +67,10 @@
                                                           attribute:NSLayoutAttributeHeight
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-5-[_nameLabel]-5-[_categoryLabel]-5-[_dotLabel(8)][_timeLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-5-[_dotLabel(8)]-5-[_nameLabel][_timeLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_categoryLabel,_dotLabel,_timeLabel)]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
-                                                     attribute:NSLayoutAttributeBottom
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_categoryLabel
-                                                     attribute:NSLayoutAttributeBottom
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_dotLabel,_timeLabel)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
@@ -113,8 +104,6 @@
                                                     multiplier:1.0f
                                                       constant:-15.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
@@ -138,7 +127,7 @@
 
 - (void)setRecentSession:(SAMCRecentSession *)recentSession
 {
-//    self.nameLabel.text = [self nameForRecentSession:recentSession];
+    //    self.nameLabel.text = [self nameForRecentSession:recentSession];
     self.messageLabel.text = recentSession.lastMessageContent;
     self.timeLabel.text = [self timestampDescriptionForRecentSession:recentSession];
     
@@ -156,7 +145,6 @@
     NSURL *url = info.avatarUrlString ? [NSURL URLWithString:info.avatarUrlString] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     
-    self.categoryLabel.text = info.serviceCategory;
     if (recentSession.unreadCount) {
         self.avatarView.circleColor = SAMC_COLOR_LIME;
     } else {
@@ -215,17 +203,6 @@
         _nameLabel.textColor = SAMC_COLOR_INK;
     }
     return _nameLabel;
-}
-
-- (UILabel *)categoryLabel
-{
-    if (_categoryLabel == nil) {
-        _categoryLabel = [[UILabel alloc] init];
-        _categoryLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _categoryLabel.font = [UIFont systemFontOfSize:13.0f];
-        _categoryLabel.textColor = SAMC_COLOR_INK;
-    }
-    return _categoryLabel;
 }
 
 - (UILabel *)dotLabel

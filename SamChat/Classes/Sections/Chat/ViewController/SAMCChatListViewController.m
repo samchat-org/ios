@@ -31,6 +31,7 @@
 #import "SAMCPublicManager.h"
 #import "SAMCServicerCardViewController.h"
 #import "SAMCCustomerCardViewController.h"
+#import "SAMCSPChatListCell.h"
 
 #define SessionListTitle @"Chat"
 
@@ -150,13 +151,23 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"SAMCCustomChatListCellId";
-    SAMCCustomChatListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        static NSString * cellId = @"SAMCCustomChatListCellId";
+        SAMCCustomChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        if (!cell) {
+            cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        }
+        cell.recentSession = self.recentSessions[indexPath.row];
+        return cell;
+    } else {
+        static NSString * cellId = @"SAMCSPChatListCellId";
+        SAMCSPChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+        if (!cell) {
+            cell = [[SAMCSPChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
+        }
+        cell.recentSession = self.recentSessions[indexPath.row];
+        return cell;
     }
-    cell.recentSession = self.recentSessions[indexPath.row];
-    return cell;
 }
 
 
