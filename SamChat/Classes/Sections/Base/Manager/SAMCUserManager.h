@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
                                       cellPhone:(NSString *)cellPhone
                                      completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)editCellPhoneUpdateWithCountryCode:(NSString *)countryCode
+                                 cellPhone:(NSString *)cellPhone
+                                verifyCode:(NSString *)verifyCode
+                                completion:(void (^)(NSError * __nullable error))completion;
+
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
 - (BOOL)isMyProvider:(NSString *)userId;
 - (BOOL)isMyCustomer:(NSString *)userId;

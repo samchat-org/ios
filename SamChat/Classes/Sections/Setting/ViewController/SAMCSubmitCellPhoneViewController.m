@@ -7,13 +7,16 @@
 //
 
 #import "SAMCSubmitCellPhoneViewController.h"
+#import "SAMCMyProfileViewController.h"
+#import "SAMCUserManager.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 #import "SAMCUtils.h"
 
 @interface SAMCSubmitCellPhoneViewController ()
 
 @property (nonatomic, copy) NSString *countryCode;
 @property (nonatomic, copy) NSString *cellPhone;
-@property (nonatomic, copy) NSString *verifyCode;
 
 @property (nonatomic, strong) UITextField *codeTextField;
 @property (nonatomic, strong) UILabel *tipLabel;
@@ -89,6 +92,29 @@
 #pragma mark - Action
 - (void)onTouchSubmit:(id)sender
 {
+    NSString *verifyCode = _codeTextField.text;
+    [SVProgressHUD showWithStatus:@"Updating" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCUserManager sharedManager] editCellPhoneUpdateWithCountryCode:self.countryCode cellPhone:self.cellPhone verifyCode:verifyCode completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+            return;
+        }
+        UIViewController *myProfileVC;
+        for (UIViewController *vc in self.navigationController.viewControllers) {
+            if ([vc isKindOfClass:[SAMCMyProfileViewController class]]) {
+                myProfileVC = vc;
+                break;
+            }
+        }
+        if (myProfileVC) {
+            [wself.navigationController popToViewController:myProfileVC animated:YES];
+        } else {
+            DDLogError(@"SAMCMyProfileViewController not found");
+            [wself.navigationController popToRootViewControllerAnimated:YES];
+        }
+    }];
 }
 
 - (void)codeTextFieldEditingChanged:(id)sender

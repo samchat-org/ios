@@ -334,6 +334,37 @@
     }];
 }
 
+- (void)editCellPhoneUpdateWithCountryCode:(NSString *)countryCode
+                                 cellPhone:(NSString *)cellPhone
+                                verifyCode:(NSString *)verifyCode
+                                completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI editCellPhoneUpdateWithCountryCode:countryCode cellPhone:cellPhone verifyCode:verifyCode];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
+    [manager POST:SAMC_URL_USER_EDITCELLPHONE_UPDATE parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                user.userInfo.countryCode = countryCode;
+                user.userInfo.cellPhone = cellPhone;
+                [wself updateUser:user];
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 #pragma mark -
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {

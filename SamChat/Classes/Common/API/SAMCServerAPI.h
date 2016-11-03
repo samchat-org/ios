@@ -97,4 +97,8 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 + (NSDictionary *)editCellPhoneCodeRequestWithCountryCode:(NSString *)countryCode
                                                 cellPhone:(NSString *)cellPhone;
 
++ (NSDictionary *)editCellPhoneUpdateWithCountryCode:(NSString *)countryCode
+                                           cellPhone:(NSString *)cellPhone
+                                          verifyCode:(NSString *)verifyCode;
+
 @end
