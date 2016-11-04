@@ -36,6 +36,7 @@
 		311B76F81DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76F71DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m */; };
 		311B76FB1DCC61C40056D4C5 /* SAMCWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76FA1DCC61C40056D4C5 /* SAMCWebViewController.m */; };
 		311B76FD1DCC65AC0056D4C5 /* about.html in Resources */ = {isa = PBXBuildFile; fileRef = 311B76FC1DCC65AC0056D4C5 /* about.html */; };
+		311B76FF1DCC685D0056D4C5 /* faq.html in Resources */ = {isa = PBXBuildFile; fileRef = 311B76FE1DCC685D0056D4C5 /* faq.html */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -423,6 +424,7 @@
 		311B76F91DCC61C40056D4C5 /* SAMCWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCWebViewController.h; sourceTree = "<group>"; };
 		311B76FA1DCC61C40056D4C5 /* SAMCWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCWebViewController.m; sourceTree = "<group>"; };
 		311B76FC1DCC65AC0056D4C5 /* about.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = about.html; sourceTree = "<group>"; };
+		311B76FE1DCC685D0056D4C5 /* faq.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = faq.html; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -2112,6 +2114,7 @@
 			children = (
 				311B76BB1DC5D9660056D4C5 /* terms.html */,
 				311B76FC1DCC65AC0056D4C5 /* about.html */,
+				311B76FE1DCC685D0056D4C5 /* faq.html */,
 				312C1C251D35D85B00242906 /* d3.icns */,
 				312C1C261D35D85B00242906 /* SetupOSX.mpq */,
 			);
@@ -2714,6 +2717,7 @@
 				312C1CBE1D35D85B00242906 /* NTESAboutViewController.xib in Resources */,
 				312C1CAB1D35D85B00242906 /* NTESVideoChatViewController.xib in Resources */,
 				311B76FD1DCC65AC0056D4C5 /* about.html in Resources */,
+				311B76FF1DCC685D0056D4C5 /* faq.html in Resources */,
 				312C1C9D1D35D85B00242906 /* NTESLocationViewController.xib in Resources */,
 				312C1C991D35D85B00242906 /* NTESFileTransSelectViewController.xib in Resources */,
 				312C1C561D35D85B00242906 /* NTESTeamListViewController.xib in Resources */,

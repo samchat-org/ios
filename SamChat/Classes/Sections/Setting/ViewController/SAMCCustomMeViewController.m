@@ -131,6 +131,12 @@
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
+                case 1:
+                {
+                    SAMCWebViewController *vc = [[SAMCWebViewController alloc] initWithTitle:@"F.A.Q" htmlName:@"faq"];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
                     
                 default:
                     break;
