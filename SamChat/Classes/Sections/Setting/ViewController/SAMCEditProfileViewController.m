@@ -20,7 +20,7 @@
 @property (nonatomic, strong) UIButton *rightNavButton;
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, strong) UILabel *tipLabel;
-@property (nonatomic, strong) UITextField *emailTextField;
+@property (nonatomic, strong) UITextField *normalTextField;
 
 @property (nonatomic, weak) id currentEditView;
 
@@ -55,20 +55,33 @@
 - (void)setupSubviews
 {
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
-    [self setupNavItem];
     if (_profileType == SAMCEditProfileTypeEmail) {
         [self setupEmailViews];
-    } 
+    } else if (_profileType == SAMCEditProfileTypeSPCompanyName) {
+        [self setupCompanyNameViews];
+    }
 }
 
-- (void)setupNavItem
+- (void)setupNavItemOfUserMode:(SAMCUserModeType)userMode
 {
     [self.navigationItem setHidesBackButton:YES];
+    UIColor *activeColor;
+    UIColor *inactiveColor;
+    UIColor *pressedColor;
+    if (userMode == SAMCUserModeTypeCustom) {
+        activeColor = SAMC_COLOR_INGRABLUE;
+        inactiveColor = UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f);
+        pressedColor = UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f);
+    } else {
+        activeColor = [UIColor whiteColor];
+        inactiveColor = UIColorFromRGBA(0xFFFFFF, 0.5);
+        pressedColor = UIColorFromRGBA(0xFFFFFF, 0.5);
+    }
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton addTarget:self action:@selector(onCancel:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
-    [cancelButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateHighlighted];
+    [cancelButton setTitleColor:activeColor forState:UIControlStateNormal];
+    [cancelButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
     [cancelButton sizeToFit];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     
@@ -79,34 +92,67 @@
     
     _rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_rightNavButton addTarget:self action:@selector(onTouchRightNavButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightNavButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
-    [_rightNavButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateHighlighted];
-    [_rightNavButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateDisabled];
+    [_rightNavButton setTitleColor:activeColor forState:UIControlStateNormal];
+    [_rightNavButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
+    [_rightNavButton setTitleColor:inactiveColor forState:UIControlStateDisabled];
     _rightNavButton.enabled = NO;
+    
     UIBarButtonItem *rightNavItem = [[UIBarButtonItem alloc] initWithCustomView:_rightNavButton];
     self.navigationItem.rightBarButtonItems = @[negativeSpacer, rightNavItem];
 }
 
 - (void)setupEmailViews
 {
+    [self setupNavItemOfUserMode:SAMCUserModeTypeCustom];
     self.navigationItem.title = @"Change Email";
     _action = @selector(updateEmail);
     [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
     [_rightNavButton sizeToFit];
-    [self.view addSubview:self.emailTextField];
+    [self.view addSubview:self.normalTextField];
     [self.view addSubview:self.tipLabel];
     _tipLabel.text = @"Enter your Email.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
-    _emailTextField.text = _profileDict[SAMC_EMAIL] ?:@"";
-    _currentEditView = _emailTextField;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_emailTextField]|"
+    _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email Address"
+                                                                             attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
+    _normalTextField.text = _profileDict[SAMC_EMAIL] ?:@"";
+    _currentEditView = _normalTextField;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_emailTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_emailTextField(40)]-10-[_tipLabel]"
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_emailTextField, _tipLabel)]];
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
+}
+
+- (void)setupCompanyNameViews
+{
+    [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
+    self.navigationItem.title = @"Change Company Name";
+    _action = @selector(updateSPCompanyName);
+    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [_rightNavButton sizeToFit];
+    [self.view addSubview:self.normalTextField];
+    [self.view addSubview:self.tipLabel];
+    _tipLabel.text = @"Enter your company name.";
+    _tipLabel.textAlignment = NSTextAlignmentLeft;
+    _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Business or service name"
+                                                                             attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
+    _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_COMPANY_NAME] ?:@"";
+    _currentEditView = _normalTextField;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
                                                                       options:0
                                                                       metrics:nil
@@ -129,9 +175,20 @@
 
 - (void)updateEmail
 {
-    DDLogDebug(@"updateEmail");
-    NSString *email = self.emailTextField.text;
+    NSString *email = self.normalTextField.text;
     NSDictionary *profileDict = @{SAMC_EMAIL:email};
+    [self updateProfile:profileDict];
+}
+
+- (void)updateSPCompanyName
+{
+    NSString *companyName = self.normalTextField.text;
+    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_COMPANY_NAME:companyName}};
+    [self updateProfile:profileDict];
+}
+
+- (void)updateProfile:(NSDictionary *)profileDict
+{
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];
     [[SAMCSettingManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
@@ -158,21 +215,21 @@
     return _tipLabel;
 }
 
-- (UITextField *)emailTextField
+- (UITextField *)normalTextField
 {
-    if (_emailTextField == nil) {
-        _emailTextField = [[UITextField alloc] init];
-        _emailTextField.translatesAutoresizingMaskIntoConstraints = NO;
-        _emailTextField.backgroundColor = [UIColor whiteColor];
-        _emailTextField.borderStyle = UITextBorderStyleNone;
-        _emailTextField.font = [UIFont systemFontOfSize:17.0f];
-        _emailTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _emailTextField.textColor = SAMC_COLOR_INK;
-        _emailTextField.placeholder = @"Email Address";
-        _emailTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
-        _emailTextField.leftViewMode = UITextFieldViewModeAlways;
+    if (_normalTextField == nil) {
+        _normalTextField = [[UITextField alloc] init];
+        _normalTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        _normalTextField.backgroundColor = [UIColor whiteColor];
+        _normalTextField.borderStyle = UITextBorderStyleNone;
+        _normalTextField.font = [UIFont systemFontOfSize:17.0f];
+        _normalTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _normalTextField.textColor = SAMC_COLOR_INK;
+        _normalTextField.placeholder = @"Email Address";
+        _normalTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
+        _normalTextField.leftViewMode = UITextFieldViewModeAlways;
     }
-    return _emailTextField;
+    return _normalTextField;
 }
 
 @end

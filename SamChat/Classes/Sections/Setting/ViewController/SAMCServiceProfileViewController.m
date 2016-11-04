@@ -15,8 +15,10 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCEditProfileViewController.h"
+#import "SAMCUserManager.h"
 
-@interface SAMCServiceProfileViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface SAMCServiceProfileViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, strong) UITableView *tableView;
@@ -55,6 +57,12 @@
     headerView.avatarUrl = _user.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [[SAMCUserManager sharedManager] addDelegate:self];
+}
+
+- (void)dealloc
+{
+    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 #pragma mark - UITableViewDelegate
@@ -67,6 +75,11 @@
             switch (indexPath.row) {
                 case 0: // company name
                 {
+                    NSString *companyName = self.user.userInfo.spInfo.companyName ?:@"";
+                    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_COMPANY_NAME:companyName}};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeSPCompanyName
+                                                                                                       profileDict:profileDict];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 1: // service category
@@ -228,6 +241,15 @@
             break;
     }
     return cell;
+}
+
+#pragma mark - SAMCUserManagerDelegate
+- (void)onUserInfoChanged:(SAMCUser *)user
+{
+    if ([user.userId isEqualToString:self.user.userId]) {
+        self.user = user;
+        [self.tableView reloadData];
+    }
 }
 
 @end
