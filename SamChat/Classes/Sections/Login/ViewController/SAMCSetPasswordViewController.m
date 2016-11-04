@@ -18,7 +18,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCPadImageView.h"
 #import "SAMCStepperView.h"
-#import "SAMCUserAgreementViewController.h"
+#import "SAMCWebViewController.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -245,7 +245,7 @@
 
 - (void)touchTerms:(id)sender
 {
-    SAMCUserAgreementViewController *vc = [[SAMCUserAgreementViewController alloc] init];
+    SAMCWebViewController *vc = [[SAMCWebViewController alloc] initWithTitle:@"User Agreement" htmlName:@"terms"];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
