@@ -73,6 +73,14 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ((indexPath.section == 0) && (indexPath.row == 0)) {
+        return NO;
+    }
+    return YES;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
