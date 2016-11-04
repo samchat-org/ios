@@ -20,6 +20,8 @@
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCWebViewController.h"
 #import "SAMCQRCodeScanViewController.h"
+#import "SAMCSPIntroViewController.h"
+#import "SAMCButton.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -82,6 +84,11 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0f;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
@@ -250,6 +257,7 @@
                     } else {
                         cell.textLabel.text = @"List my service";
                         cell.imageView.image = [UIImage imageNamed:@"ico_option_sp"];
+                        [self addLearnMoreButton:cell];
                     }
                 }
                     break;
@@ -314,6 +322,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)learnMore:(id)sender
+{
+    SAMCSPIntroViewController *vc = [[SAMCSPIntroViewController alloc] initWithTitle:@"Become a Service Provider" htmlName:@"becomesp"];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark - SAMCUnreadCountManagerDelegate
 - (void)chatUnreadCountDidChanged:(NSInteger)count mode:(SAMCUserModeType)mode
 {
@@ -340,6 +354,42 @@
 - (void)refreshOtherModeBadge
 {
     [self.switchUserModeCell refreshBadge:[[SAMCUnreadCountManager sharedManager] allUnreadCountOfUserMode:SAMCUserModeTypeSP]];
+}
+
+- (void)addLearnMoreButton:(UITableViewCell *)cell
+{
+    SAMCButton *learnMoreButton = [[SAMCButton alloc] init];
+    learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
+    learnMoreButton.layer.cornerRadius = 14.0f;
+    learnMoreButton.layer.masksToBounds = YES;
+    learnMoreButton.contentEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 10);
+    [learnMoreButton setTitle:@"Learn more" forState:UIControlStateNormal];
+    [learnMoreButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_active"] forState:UIControlStateNormal];
+    [learnMoreButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_pressed"] forState:UIControlStateHighlighted];
+    [learnMoreButton addTarget:self action:@selector(learnMore:) forControlEvents:UIControlEventTouchUpInside];
+    [cell.contentView addSubview:learnMoreButton];
+    [learnMoreButton addConstraint:[NSLayoutConstraint constraintWithItem:learnMoreButton
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:0.0f
+                                                                 constant:28.0f]];
+    [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:learnMoreButton
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:cell.contentView
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0f
+                                                                  constant:0.0f]];
+    [cell.contentView addConstraint:[NSLayoutConstraint constraintWithItem:learnMoreButton
+                                                                 attribute:NSLayoutAttributeRight
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:cell.contentView
+                                                                 attribute:NSLayoutAttributeRight
+                                                                multiplier:1.0f
+                                                                  constant:0.0f]];
+    
 }
 
 @end
