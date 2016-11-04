@@ -19,6 +19,7 @@
 #import "SAMCUnreadCountManager.h"
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCWebViewController.h"
+#import "SAMCQRCodeScanViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -91,6 +92,12 @@
                 case 0: // My profile
                 {
                     SAMCMyProfileViewController *vc = [[SAMCMyProfileViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 1:
+                {
+                    SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] initWithUserMode:SAMCUserModeTypeCustom segmentIndex:1];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
