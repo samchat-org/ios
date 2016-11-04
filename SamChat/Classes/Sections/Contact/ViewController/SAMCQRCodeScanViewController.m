@@ -85,7 +85,11 @@
 - (void)setupSubviews
 {
     self.navigationItem.titleView = self.segmentedControl;
-    [self setupQRScanView];
+    if (self.segmentedControl.selectedSegmentIndex == 0) {
+        [self setupQRScanView];
+    } else {
+        [self setupMyQRCodeView];
+    }
 }
 
 - (void)setupQRScanView
