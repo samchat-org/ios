@@ -18,6 +18,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCChangePasswordViewController.h"
+#import "SAMCWebViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -118,6 +119,21 @@
                                                                   userInfo:nil];
             } else {
                 [self createSamPros];
+            }
+        }
+            break;
+        case 2:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    SAMCWebViewController *vc = [[SAMCWebViewController alloc] initWithTitle:@"About Samchat" htmlName:@"about"];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                    
+                default:
+                    break;
             }
         }
             break;
