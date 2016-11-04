@@ -9,7 +9,7 @@
 #import "SAMCEditCellPhoneViewController.h"
 #import "SAMCCountryCodeViewController.h"
 #import "SAMCSubmitCellPhoneViewController.h"
-#import "SAMCUserManager.h"
+#import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCTextField.h"
@@ -149,7 +149,7 @@
     self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCUserManager sharedManager] editCellPhoneCodeRequestWithCountryCode:self.countryCode cellPhone:self.cellPhone completion:^(NSError * _Nullable error) {
+    [[SAMCSettingManager sharedManager] editCellPhoneCodeRequestWithCountryCode:self.countryCode cellPhone:self.cellPhone completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];

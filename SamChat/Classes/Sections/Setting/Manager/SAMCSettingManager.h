@@ -24,6 +24,15 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateProfile:(NSDictionary *)profileDict
            completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)editCellPhoneCodeRequestWithCountryCode:(NSString *)countryCode
+                                      cellPhone:(NSString *)cellPhone
+                                     completion:(void (^)(NSError * __nullable error))completion;
+
+- (void)editCellPhoneUpdateWithCountryCode:(NSString *)countryCode
+                                 cellPhone:(NSString *)cellPhone
+                                verifyCode:(NSString *)verifyCode
+                                completion:(void (^)(NSError * __nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END

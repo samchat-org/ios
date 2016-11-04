@@ -8,7 +8,7 @@
 
 #import "SAMCSubmitCellPhoneViewController.h"
 #import "SAMCMyProfileViewController.h"
-#import "SAMCUserManager.h"
+#import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCUtils.h"
@@ -95,7 +95,7 @@
     NSString *verifyCode = _codeTextField.text;
     [SVProgressHUD showWithStatus:@"Updating" maskType:SVProgressHUDMaskTypeBlack];
     __weak typeof(self) wself = self;
-    [[SAMCUserManager sharedManager] editCellPhoneUpdateWithCountryCode:self.countryCode cellPhone:self.cellPhone verifyCode:verifyCode completion:^(NSError * _Nullable error) {
+    [[SAMCSettingManager sharedManager] editCellPhoneUpdateWithCountryCode:self.countryCode cellPhone:self.cellPhone verifyCode:verifyCode completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
