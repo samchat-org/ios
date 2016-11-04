@@ -59,6 +59,8 @@
         [self setupEmailViews];
     } else if (_profileType == SAMCEditProfileTypeSPCompanyName) {
         [self setupCompanyNameViews];
+    } else if (_profileType == SAMCEditProfileTypeSPServiceCategory) {
+        [self setupServiceCategoryViews];
     }
 }
 
@@ -159,6 +161,35 @@
                                                                         views:NSDictionaryOfVariableBindings(_tipLabel)]];
 }
 
+- (void)setupServiceCategoryViews
+{
+    [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
+    self.navigationItem.title = @"Change Service Category";
+    _action = @selector(updateSPServiceCategory);
+    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [_rightNavButton sizeToFit];
+    [self.view addSubview:self.normalTextField];
+    [self.view addSubview:self.tipLabel];
+    _tipLabel.text = @"Enter your service category.";
+    _tipLabel.textAlignment = NSTextAlignmentLeft;
+    _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Business or service category"
+                                                                             attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
+    _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_CATEGORY] ?:@"";
+    _currentEditView = _normalTextField;
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
+}
+
 #pragma mark - Action
 - (void)onCancel:(id)sender
 {
@@ -184,6 +215,13 @@
 {
     NSString *companyName = self.normalTextField.text;
     NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_COMPANY_NAME:companyName}};
+    [self updateProfile:profileDict];
+}
+
+- (void)updateSPServiceCategory
+{
+    NSString *serviceCategory = self.normalTextField.text;
+    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_SERVICE_CATEGORY:serviceCategory}};
     [self updateProfile:profileDict];
 }
 

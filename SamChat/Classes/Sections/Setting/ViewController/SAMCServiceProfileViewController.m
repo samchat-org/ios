@@ -84,6 +84,11 @@
                     break;
                 case 1: // service category
                 {
+                    NSString *category = self.user.userInfo.spInfo.serviceCategory ?:@"";
+                    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_SERVICE_CATEGORY:category}};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeSPServiceCategory
+                                                                                                       profileDict:profileDict];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 2: // service desc
