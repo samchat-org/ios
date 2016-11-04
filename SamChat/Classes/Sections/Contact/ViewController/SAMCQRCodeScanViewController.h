@@ -10,6 +10,6 @@
 
 @interface SAMCQRCodeScanViewController : UIViewController
 
-@property (nonatomic, assign) SAMCUserModeType currentUserMode;
+- (instancetype)initWithUserMode:(SAMCUserModeType)userMode segmentIndex:(NSInteger)index;
 
 @end

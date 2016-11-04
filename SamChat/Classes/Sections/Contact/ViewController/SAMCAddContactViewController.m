@@ -89,8 +89,10 @@
     [rightBtn sizeToFit];
     if (self.currentUserMode == SAMCUserModeTypeSP) {
         [rightBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [rightBtn setTitleColor:UIColorFromRGBA(0xFFFFFF, 0.5) forState:UIControlStateHighlighted];
     } else {
-        [rightBtn setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
+        [rightBtn setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+        [rightBtn setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5) forState:UIControlStateHighlighted];
     }
     UIBarButtonItem *navRightItem = [[UIBarButtonItem alloc] initWithCustomView:rightBtn];
     
@@ -242,8 +244,7 @@
 #pragma mark - Action
 - (void)onOpera:(id)sender
 {
-    SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] init];
-    vc.currentUserMode = self.currentUserMode;
+    SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] initWithUserMode:self.currentUserMode segmentIndex:0];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

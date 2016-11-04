@@ -22,6 +22,9 @@
 
 @interface SAMCQRCodeScanViewController ()<UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
+@property (nonatomic, assign) SAMCUserModeType currentUserMode;
+@property (nonatomic, assign) NSInteger segmentDefaultIndex;
+
 @property (nonatomic, strong) UISegmentedControl *segmentedControl;
 
 @property (nonatomic, strong) SAMCQRScanner *qrScanner;
@@ -42,6 +45,16 @@
 @end
 
 @implementation SAMCQRCodeScanViewController
+
+- (instancetype)initWithUserMode:(SAMCUserModeType)userMode segmentIndex:(NSInteger)index
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _currentUserMode = userMode;
+        _segmentDefaultIndex = index;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -73,10 +86,6 @@
 {
     self.navigationItem.titleView = self.segmentedControl;
     [self setupQRScanView];
-    if (self.currentUserMode == SAMCUserModeTypeSP) {
-        _segmentedControl.backgroundColor = SAMC_COLOR_INK;
-        _segmentedControl.tintColor = [UIColor whiteColor];
-    }
 }
 
 - (void)setupQRScanView
@@ -163,14 +172,17 @@
     uploadBtn.titleLabel.font = [UIFont systemFontOfSize:15.0f];
     uploadBtn.titleLabel.textAlignment = NSTextAlignmentRight;
     [uploadBtn sizeToFit];
+    if (self.currentUserMode == SAMCUserModeTypeSP) {
+        [uploadBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [uploadBtn setTitleColor:UIColorFromRGBA(0xFFFFFF, 0.5) forState:UIControlStateHighlighted];
+    } else {
+        [uploadBtn setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+        [uploadBtn setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5) forState:UIControlStateHighlighted];
+    }
     UIBarButtonItem *navRightItem = [[UIBarButtonItem alloc] initWithCustomView:uploadBtn];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = -5;
     self.navigationItem.rightBarButtonItems = @[negativeSpacer, navRightItem];
-    
-    if (self.currentUserMode == SAMCUserModeTypeSP) {
-        [uploadBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
 }
 
 //- (void)setupBottomItems
@@ -525,8 +537,14 @@
 {
     if (_segmentedControl == nil) {
         _segmentedControl = [[UISegmentedControl alloc] initWithItems:@[@"Scan",@"My QR Code"]];
-        _segmentedControl.selectedSegmentIndex = 0;
-        _segmentedControl.tintColor = SAMC_MAIN_DARKCOLOR;
+        _segmentedControl.selectedSegmentIndex = _segmentDefaultIndex;
+        if (_currentUserMode == SAMCUserModeTypeSP) {
+            _segmentedControl.backgroundColor = SAMC_COLOR_INK;
+            _segmentedControl.tintColor = [UIColor whiteColor];
+        } else {
+            _segmentedControl.backgroundColor = [UIColor whiteColor];
+            _segmentedControl.tintColor = SAMC_COLOR_DARKBLUE;
+        }
         [_segmentedControl addTarget:self action:@selector(segmentedControlChanged:)forControlEvents:UIControlEventValueChanged];
     }
     return _segmentedControl;
