@@ -126,7 +126,6 @@
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
         } else {
-            [wself.view makeToast:@"success" duration:2.0f position:CSToastPositionCenter];
             [wself.navigationController popViewControllerAnimated:YES];
         }
     }];
