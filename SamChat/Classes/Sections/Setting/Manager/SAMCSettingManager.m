@@ -177,6 +177,7 @@
                 SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
                 user.userInfo.countryCode = countryCode;
                 user.userInfo.cellPhone = cellPhone;
+                user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
                 [[SAMCUserManager sharedManager] updateUser:user];
                 completion(nil);
             }
