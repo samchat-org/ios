@@ -283,6 +283,7 @@
         _normalTextField.borderStyle = UITextBorderStyleNone;
         _normalTextField.font = [UIFont systemFontOfSize:17.0f];
         _normalTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _normalTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _normalTextField.textColor = SAMC_COLOR_INK;
         _normalTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
         _normalTextField.leftViewMode = UITextFieldViewModeAlways;
