@@ -34,6 +34,7 @@
 		311B76EC1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76EB1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m */; };
 		311B76EF1DCB22E80056D4C5 /* SAMCBadgeRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76EE1DCB22E80056D4C5 /* SAMCBadgeRightCell.m */; };
 		311B76F21DCB5E3F0056D4C5 /* SAMCSPChatListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76F11DCB5E3F0056D4C5 /* SAMCSPChatListCell.m */; };
+		311B76F81DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B76F71DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -418,6 +419,8 @@
 		311B76EE1DCB22E80056D4C5 /* SAMCBadgeRightCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCBadgeRightCell.m; sourceTree = "<group>"; };
 		311B76F01DCB5E3F0056D4C5 /* SAMCSPChatListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPChatListCell.h; path = Chat/View/SAMCSPChatListCell.h; sourceTree = "<group>"; };
 		311B76F11DCB5E3F0056D4C5 /* SAMCSPChatListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPChatListCell.m; path = Chat/View/SAMCSPChatListCell.m; sourceTree = "<group>"; };
+		311B76F61DCC2CD20056D4C5 /* SAMCChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCChangePasswordViewController.h; path = ViewController/SAMCChangePasswordViewController.h; sourceTree = "<group>"; };
+		311B76F71DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCChangePasswordViewController.m; path = ViewController/SAMCChangePasswordViewController.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -2232,6 +2235,8 @@
 				311B76E81DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m */,
 				311B76EA1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.h */,
 				311B76EB1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.m */,
+				311B76F61DCC2CD20056D4C5 /* SAMCChangePasswordViewController.h */,
+				311B76F71DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -2979,6 +2984,7 @@
 				316A674E1D86BF7000B56A5D /* SAMCPublicCustomMsgCellLayoutConfig.m in Sources */,
 				312C1C941D35D85B00242906 /* NTESAudio2TextViewController.m in Sources */,
 				312C1CD11D35D85B00242906 /* NTESBundleSetting.m in Sources */,
+				311B76F81DCC2CD20056D4C5 /* SAMCChangePasswordViewController.m in Sources */,
 				311B76C21DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.m in Sources */,
 				314D5D451D6C17DD004B3DE4 /* SAMCQRScanner.m in Sources */,
 				31E37B841D65B83F00832CC8 /* SAMCCSAStepOneViewController.m in Sources */,

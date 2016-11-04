@@ -12,5 +12,6 @@
 
 + (BOOL)isValidCellphone:(NSString *)cellphone;
 + (BOOL)isValidVerificationCode:(NSString *)code;
++ (BOOL)isValidPassword:(NSString *)password;
 
 @end

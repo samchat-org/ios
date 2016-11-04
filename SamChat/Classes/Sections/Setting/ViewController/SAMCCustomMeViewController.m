@@ -17,6 +17,7 @@
 #import "SAMCTableCellFactory.h"
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
+#import "SAMCChangePasswordViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -86,13 +87,18 @@
         case 0:
         {
             switch (indexPath.row) {
-                case 0:
+                case 0: // My profile
                 {
                     SAMCMyProfileViewController *vc = [[SAMCMyProfileViewController alloc] init];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
-                    
+                case 2: // Change password
+                {
+                    SAMCChangePasswordViewController *vc = [[SAMCChangePasswordViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
                 case 4:
                 {
                     [self logoutCurrentAccount];

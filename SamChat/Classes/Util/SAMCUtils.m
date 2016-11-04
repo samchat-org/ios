@@ -34,4 +34,10 @@
     return true;
 }
 
++ (BOOL)isValidPassword:(NSString *)password
+{
+    // TODO: add password checking
+    return true;
+}
+
 @end
