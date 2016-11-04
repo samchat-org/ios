@@ -7,7 +7,8 @@
 //
 
 #import "SAMCEditProfileViewController.h"
-#import "SAMCUserManager.h"
+#import "SAMCServerAPIMacro.h"
+#import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 
@@ -133,7 +134,7 @@
     NSDictionary *profileDict = @{SAMC_EMAIL:email};
     __weak typeof(self) wself = self;
     [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];
-    [[SAMCUserManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
+    [[SAMCSettingManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
         if (error) {
             [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2 position:CSToastPositionCenter];

@@ -17,8 +17,8 @@
 #import "SAMCResourceManager.h"
 #import "UIImage+NTES.h"
 #import "NTESFileLocationHelper.h"
-#import "SAMCServerAPIMacro.h"
 #import "SAMCUserManager.h"
+#import "SAMCSettingManager.h"
 #import "SDWebImageManager.h"
 #import "SAMCEditProfileViewController.h"
 #import "SAMCSelectLocationViewController.h"
@@ -252,7 +252,7 @@
             [SVProgressHUD dismiss];
             if (!error && wself) {
                 DDLogDebug(@"url: %@", urlString);
-                [[SAMCUserManager sharedManager] updateAvatar:urlString completion:^(SAMCUser * _Nullable user, NSError * _Nullable error) {
+                [[SAMCSettingManager sharedManager] updateAvatar:urlString completion:^(SAMCUser * _Nullable user, NSError * _Nullable error) {
                     if (!error) {
                         [[SDWebImageManager sharedManager] saveImageToCache:imageForAvatarUpload forURL:[NSURL URLWithString:user.userInfo.avatar]];
                         SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)wself.tableView.tableHeaderView;
@@ -283,7 +283,7 @@
         
         NSDictionary *profileDict = @{SAMC_LOCATION:locationDict};
         [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];
-        [[SAMCUserManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
+        [[SAMCSettingManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
             [SVProgressHUD dismiss];
             if (error) {
                 [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2 position:CSToastPositionCenter];

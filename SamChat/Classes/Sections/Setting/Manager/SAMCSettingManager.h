@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SAMCUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -15,6 +16,12 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)sharedManager;
 
 - (void)createSamPros:(NSDictionary *)info
+           completion:(void (^)(NSError * __nullable error))completion;
+
+- (void)updateAvatar:(NSString *)url
+          completion:(void (^)(SAMCUser * __nullable user, NSError * __nullable error))completion;
+
+- (void)updateProfile:(NSDictionary *)profileDict
            completion:(void (^)(NSError * __nullable error))completion;
 
 @end

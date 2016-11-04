@@ -39,12 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
                type:(SAMCContactListType)type
          completion:(void (^)(NSError * __nullable error))completion;
 
-- (void)updateAvatar:(NSString *)url
-          completion:(void (^)(SAMCUser * __nullable user, NSError * __nullable error))completion;
-
-- (void)updateProfile:(NSDictionary *)profileDict
-           completion:(void (^)(NSError * __nullable error))completion;
-
 - (void)sendInviteMsg:(NSArray<SAMCPhone *> *)phones
            completion:(void (^)(NSError * __nullable error))completion;
 
