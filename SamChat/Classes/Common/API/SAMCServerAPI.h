@@ -54,6 +54,9 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
                                     verifyCode:(NSString *)verifyCode
                                       password:(NSString *)password;
 
++ (NSDictionary *)updatePWDFrom:(NSString *)currentPWD
+                             to:(NSString *)changePWD;
+
 + (NSDictionary *)sendQuestion:(NSString *)question
                       location:(NSDictionary *)location;
 + (NSDictionary *)queryPopularRequest:(NSInteger)count;

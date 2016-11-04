@@ -9,6 +9,9 @@
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCPadImageView.h"
 #import "SAMCUtils.h"
+#import "SAMCSettingManager.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCChangePasswordViewController ()
 
@@ -113,6 +116,20 @@
 
 - (void)onDone:(id)sender
 {
+    NSString *currentPWD = _currentPasswordTextField.text;
+    NSString *changePWD = _changePasswordTextField.text;
+   
+    [SVProgressHUD showWithStatus:@"Updating" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCSettingManager sharedManager] updatePWDFrom:currentPWD to:changePWD completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2.0f position:CSToastPositionCenter];
+        } else {
+            [wself.view makeToast:@"success" duration:2.0f position:CSToastPositionCenter];
+            [wself.navigationController popViewControllerAnimated:YES];
+        }
+    }];
 }
 
 - (void)textFieldEditingDidEndOnExit:(UITextField *)textField

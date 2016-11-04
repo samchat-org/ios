@@ -271,6 +271,28 @@
 //{
 //    "header":
 //    {
+//        "action" : " pwd-update",
+//        "token"	: “”
+//    },
+//    "body":
+//    {
+//        "old_pwd"	: “”
+//        "new_pwd"	: “”
+//    }
+//}
++ (NSDictionary *)updatePWDFrom:(NSString *)currentPWD
+                             to:(NSString *)changePWD
+{
+    currentPWD = currentPWD ?:@"";
+    changePWD = changePWD ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_PWD_UPDATE, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OLD_PWD:currentPWD, SAMC_NEW_PWD:changePWD};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action": "question",
 //        "token":"95189486473904140"
 //    },

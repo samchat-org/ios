@@ -33,6 +33,10 @@ NS_ASSUME_NONNULL_BEGIN
                                 verifyCode:(NSString *)verifyCode
                                 completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)updatePWDFrom:(NSString *)currentPWD
+                   to:(NSString *)changePWD
+           completion:(void (^)(NSError * __nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
