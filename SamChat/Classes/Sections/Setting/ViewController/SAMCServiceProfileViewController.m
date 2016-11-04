@@ -106,10 +106,20 @@
             switch (indexPath.row) {
                 case 0: // work phone
                 {
+                    NSString *phone = self.user.userInfo.spInfo.phone ?:@"";
+                    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_PHONE:phone}};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeSPPhone
+                                                                                                       profileDict:profileDict];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 1: // work email
                 {
+                    NSString *email = self.user.userInfo.spInfo.email ?:@"";
+                    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_EMAIL:email}};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeSPEmail
+                                                                                                       profileDict:profileDict];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 2: // work location

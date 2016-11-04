@@ -64,6 +64,12 @@
     } else if (_profileType == SAMCEditProfileTypeSPServiceCategory) {
         [self setupCommonViews];
         [self setupServiceCategoryViews];
+    } else if (_profileType == SAMCEditProfileTypeSPPhone) {
+        [self setupCommonViews];
+        [self setupSPPhoneViews];
+    } else if (_profileType == SAMCEditProfileTypeSPEmail) {
+        [self setupCommonViews];
+        [self setupSPEmailViews];
     }
 }
 
@@ -165,6 +171,32 @@
     _currentEditView = _normalTextField;
 }
 
+- (void)setupSPPhoneViews
+{
+    [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
+    self.navigationItem.title = @"Change Work Phone";
+    _action = @selector(updateSPPhone);
+    _tipLabel.text = @"Enter your service work phone no.";
+    _tipLabel.textAlignment = NSTextAlignmentLeft;
+    _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Service work phone no."
+                                                                             attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
+    _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_PHONE] ?:@"";
+    _currentEditView = _normalTextField;
+}
+
+- (void)setupSPEmailViews
+{
+    [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
+    self.navigationItem.title = @"Change Service Email";
+    _action = @selector(updateSPEmail);
+    _tipLabel.text = @"Enter your service email.";
+    _tipLabel.textAlignment = NSTextAlignmentLeft;
+    _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Service email"
+                                                                             attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
+    _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_EMAIL] ?:@"";
+    _currentEditView = _normalTextField;
+}
+
 #pragma mark - Action
 - (void)onCancel:(id)sender
 {
@@ -197,6 +229,20 @@
 {
     NSString *serviceCategory = self.normalTextField.text;
     NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_SERVICE_CATEGORY:serviceCategory}};
+    [self updateProfile:profileDict];
+}
+
+- (void)updateSPPhone
+{
+    NSString *spphone = self.normalTextField.text;
+    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_PHONE:spphone}};
+    [self updateProfile:profileDict];
+}
+
+- (void)updateSPEmail
+{
+    NSString *spemail = self.normalTextField.text;
+    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_EMAIL:spemail}};
     [self updateProfile:profileDict];
 }
 
@@ -238,7 +284,6 @@
         _normalTextField.font = [UIFont systemFontOfSize:17.0f];
         _normalTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _normalTextField.textColor = SAMC_COLOR_INK;
-        _normalTextField.placeholder = @"Email Address";
         _normalTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
         _normalTextField.leftViewMode = UITextFieldViewModeAlways;
     }

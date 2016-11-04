@@ -11,7 +11,9 @@
 typedef NS_ENUM(NSInteger,SAMCEditProfileType) {
     SAMCEditProfileTypeEmail,
     SAMCEditProfileTypeSPCompanyName,
-    SAMCEditProfileTypeSPServiceCategory
+    SAMCEditProfileTypeSPServiceCategory,
+    SAMCEditProfileTypeSPPhone,
+    SAMCEditProfileTypeSPEmail
 };
 
 @interface SAMCEditProfileViewController : UIViewController
