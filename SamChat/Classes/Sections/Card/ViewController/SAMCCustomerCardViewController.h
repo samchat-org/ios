@@ -11,6 +11,8 @@
 
 @interface SAMCCustomerCardViewController : UIViewController
 
+@property (nonatomic, assign) BOOL showInfoOnly;
+
 - (instancetype)initWithUser:(SAMCUser *)user isMyCustomer:(BOOL)isMyCustomer;
 
 @end

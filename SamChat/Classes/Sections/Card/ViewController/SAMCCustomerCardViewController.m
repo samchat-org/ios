@@ -30,6 +30,7 @@
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
+        _showInfoOnly = false;
         _user = user;
         _isMyCustomer = isMyCustomer;
     }
@@ -89,7 +90,7 @@
             SAMCUserQRViewController *vc = [[SAMCUserQRViewController alloc] initWithUser:self.user userType:SAMCUserTypeCustom];
             [self.navigationController pushViewController:vc animated:YES];
         }
-    } else if (indexPath.section == 1) {
+    } else if ((!_showInfoOnly) && (indexPath.section == 1)) {
         // chat
         if (indexPath.row == 0) {
             UINavigationController *nav = self.navigationController;
@@ -114,7 +115,7 @@
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return _showInfoOnly ? 2 : 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -125,7 +126,7 @@
             rows = 1;
             break;
         case 1:
-            rows = 2;
+            rows = _showInfoOnly ? 3 : 2;
             break;
         case 2:
             rows = 3;
@@ -140,6 +141,9 @@
 {
     NSString *title = @"";
     switch (section) {
+        case 1:
+            title = _showInfoOnly ? @"contact details" : @"";
+            break;
         case 2:
             title = @"contact details";
             break;
@@ -152,7 +156,11 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell;
-    switch (indexPath.section) {
+    NSInteger section = indexPath.section;
+    if (_showInfoOnly && (section==1)) {
+        section = 2;
+    }
+    switch (section) {
         case 0:
         {
             switch (indexPath.row) {

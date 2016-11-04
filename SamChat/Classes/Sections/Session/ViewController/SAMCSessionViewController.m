@@ -48,6 +48,12 @@
 #import "SAMCCustomTeamCardViewController.h"
 #import "SAMCSPTeamCardViewController.h"
 #import "SAMCAccountManager.h"
+#import "SAMCUserManager.h"
+#import "SAMCPublicManager.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
+#import "SAMCMyProfileViewController.h"
+#import "SAMCServiceProfileViewController.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
@@ -500,12 +506,47 @@ NIMContactSelectDelegate>
                     inView:view];
 }
 
-
 - (void)onTapAvatar:(NSString *)userId{
-    UIViewController *vc = [[NTESPersonalCardViewController alloc] initWithUserId:userId];
+    UIViewController *vc;
+    if ([userId isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
+        if (self.samcSession.sessionMode == SAMCUserModeTypeCustom) {
+            vc = [[SAMCMyProfileViewController alloc] init];
+        } else {
+            vc= [[SAMCServiceProfileViewController alloc] init];
+        }
+        [self.navigationController pushViewController:vc animated:YES];
+        return;
+    }
+    
+    SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
+    if (self.samcSession.sessionType == NIMSessionTypeP2P) {
+        if (self.samcSession.sessionMode == SAMCUserModeTypeCustom) {
+            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
+            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
+            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+        } else {
+            BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
+            vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+        }
+    } else {
+        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.samcSession.sessionId];
+        if([team.owner isEqualToString:userId]) {
+            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
+            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
+            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+        } else {
+            if ([team.owner isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
+                BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
+                vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+            } else {
+                BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
+                vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+                ((SAMCCustomerCardViewController *)vc).showInfoOnly = YES;
+            }
+        }
+    }
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 #pragma mark - Cell Actions
 - (void)showImage:(NIMMessage *)message
