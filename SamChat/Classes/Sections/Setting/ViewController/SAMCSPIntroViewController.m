@@ -7,6 +7,7 @@
 //
 
 #import "SAMCSPIntroViewController.h"
+#import "SAMCCSAStepOneViewController.h"
 
 @interface SAMCSPIntroViewController ()
 
@@ -32,6 +33,8 @@
 
 - (void)onDone:(id)sender
 {
+    SAMCCSAStepOneViewController *vc = [[SAMCCSAStepOneViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (UIButton *)doneButton
