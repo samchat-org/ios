@@ -13,6 +13,7 @@
 #import "SAMCAccountManager.h"
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
+#import "SAMCQRCodeScanViewController.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -78,7 +79,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     switch (indexPath.section) {
         case 0:
         {
@@ -92,7 +92,10 @@
                     
                 case 1:
                 {
+                    SAMCQRCodeScanViewController *vc = [[SAMCQRCodeScanViewController alloc] initWithUserMode:SAMCUserModeTypeSP segmentIndex:1];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
+                    break;
                 default:
                     break;
             }
