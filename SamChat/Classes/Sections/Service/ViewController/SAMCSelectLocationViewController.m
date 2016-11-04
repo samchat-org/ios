@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, assign) NSInteger fixCellCount;
 @property (nonatomic, assign) BOOL hideCurrentLocation;
+@property (nonatomic, assign) SAMCUserModeType userMode;
 
 @end
 
@@ -28,6 +29,16 @@
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _hideCurrentLocation = hidden;
+    }
+    return self;
+}
+
+- (instancetype)initWithHideCurrentLocation:(BOOL)hidden userMode:(SAMCUserModeType)userMode
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _hideCurrentLocation = hidden;
+        _userMode = userMode;
     }
     return self;
 }
@@ -94,11 +105,21 @@
         self.navigationItem.leftBarButtonItems = @[negativeSpacer,locationItem];
     }
     
+    UIColor *activeColor;
+    UIColor *pressedColor;
+    if (_userMode == SAMCUserModeTypeCustom) {
+        activeColor = SAMC_COLOR_INGRABLUE;
+        pressedColor = UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f);
+    } else {
+        activeColor = [UIColor whiteColor];
+        pressedColor = UIColorFromRGBA(0xFFFFFF, 0.5);
+    }
+    
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton addTarget:self action:@selector(onCancel:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
-    [cancelButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateHighlighted];
+    [cancelButton setTitleColor:activeColor forState:UIControlStateNormal];
+    [cancelButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
     [cancelButton sizeToFit];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     self.navigationItem.rightBarButtonItem = cancelItem;

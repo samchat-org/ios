@@ -17,6 +17,8 @@
 #import "SAMCTableCellFactory.h"
 #import "SAMCEditProfileViewController.h"
 #import "SAMCUserManager.h"
+#import "SAMCSelectLocationViewController.h"
+#import "SAMCSettingManager.h"
 
 @interface SAMCServiceProfileViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate>
 
@@ -124,6 +126,7 @@
                     break;
                 case 2: // work location
                 {
+                    [self updateLocation];
                 }
                     break;
                     
@@ -265,6 +268,28 @@
         self.user = user;
         [self.tableView reloadData];
     }
+}
+
+- (void)updateLocation
+{
+    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] initWithHideCurrentLocation:YES userMode:SAMCUserModeTypeSP];
+    __weak typeof(self) wself = self;
+    vc.selectBlock = ^(NSDictionary *location, BOOL isCurrentLocation){
+        if (isCurrentLocation) {
+            return;
+        }
+        NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_LOCATION:location}};
+        [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];
+        [[SAMCSettingManager sharedManager] updateProfile:profileDict completion:^(NSError * _Nullable error) {
+            [SVProgressHUD dismiss];
+            if (error) {
+                [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2 position:CSToastPositionCenter];
+            } else {
+                [wself.view makeToast:@"success" duration:2 position:CSToastPositionCenter];
+            }
+        }];
+    };
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
