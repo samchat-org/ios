@@ -56,10 +56,13 @@
 {
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     if (_profileType == SAMCEditProfileTypeEmail) {
+        [self setupCommonViews];
         [self setupEmailViews];
     } else if (_profileType == SAMCEditProfileTypeSPCompanyName) {
+        [self setupCommonViews];
         [self setupCompanyNameViews];
     } else if (_profileType == SAMCEditProfileTypeSPServiceCategory) {
+        [self setupCommonViews];
         [self setupServiceCategoryViews];
     }
 }
@@ -94,13 +97,33 @@
     
     _rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_rightNavButton addTarget:self action:@selector(onTouchRightNavButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
     [_rightNavButton setTitleColor:activeColor forState:UIControlStateNormal];
     [_rightNavButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
     [_rightNavButton setTitleColor:inactiveColor forState:UIControlStateDisabled];
     _rightNavButton.enabled = NO;
+    [_rightNavButton sizeToFit];
     
     UIBarButtonItem *rightNavItem = [[UIBarButtonItem alloc] initWithCustomView:_rightNavButton];
     self.navigationItem.rightBarButtonItems = @[negativeSpacer, rightNavItem];
+}
+
+- (void)setupCommonViews
+{
+    [self.view addSubview:self.normalTextField];
+    [self.view addSubview:self.tipLabel];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
 }
 
 - (void)setupEmailViews
@@ -108,28 +131,12 @@
     [self setupNavItemOfUserMode:SAMCUserModeTypeCustom];
     self.navigationItem.title = @"Change Email";
     _action = @selector(updateEmail);
-    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
-    [_rightNavButton sizeToFit];
-    [self.view addSubview:self.normalTextField];
-    [self.view addSubview:self.tipLabel];
     _tipLabel.text = @"Enter your Email.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
     _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Email Address"
                                                                              attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
     _normalTextField.text = _profileDict[SAMC_EMAIL] ?:@"";
     _currentEditView = _normalTextField;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
 }
 
 - (void)setupCompanyNameViews
@@ -137,28 +144,12 @@
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
     self.navigationItem.title = @"Change Company Name";
     _action = @selector(updateSPCompanyName);
-    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
-    [_rightNavButton sizeToFit];
-    [self.view addSubview:self.normalTextField];
-    [self.view addSubview:self.tipLabel];
     _tipLabel.text = @"Enter your company name.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
     _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Business or service name"
                                                                              attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
     _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_COMPANY_NAME] ?:@"";
     _currentEditView = _normalTextField;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
 }
 
 - (void)setupServiceCategoryViews
@@ -166,28 +157,12 @@
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
     self.navigationItem.title = @"Change Service Category";
     _action = @selector(updateSPServiceCategory);
-    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
-    [_rightNavButton sizeToFit];
-    [self.view addSubview:self.normalTextField];
-    [self.view addSubview:self.tipLabel];
     _tipLabel.text = @"Enter your service category.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
     _normalTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Business or service category"
                                                                              attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
     _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_CATEGORY] ?:@"";
     _currentEditView = _normalTextField;
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_normalTextField]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_normalTextField(40)]-10-[_tipLabel]"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_normalTextField, _tipLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-15-[_tipLabel]-15-|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_tipLabel)]];
 }
 
 #pragma mark - Action
