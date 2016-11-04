@@ -137,7 +137,7 @@
 
 - (void)locationTextFieldEditingDidBegin:(id)sender
 {
-    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] initWithHideCurrentLocation:NO];
+    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] initWithHideCurrentLocation:NO userMode:SAMCUserModeTypeCustom];
     __weak typeof(self) wself = self;
     vc.selectBlock = ^(NSDictionary *location, BOOL isCurrentLocation){
         if (isCurrentLocation) {

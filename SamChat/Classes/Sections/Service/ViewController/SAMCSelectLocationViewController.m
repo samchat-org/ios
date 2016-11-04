@@ -24,15 +24,6 @@
 
 @implementation SAMCSelectLocationViewController
 
-- (instancetype)initWithHideCurrentLocation:(BOOL)hidden
-{
-    self = [super initWithNibName:nil bundle:nil];
-    if (self) {
-        _hideCurrentLocation = hidden;
-    }
-    return self;
-}
-
 - (instancetype)initWithHideCurrentLocation:(BOOL)hidden userMode:(SAMCUserModeType)userMode
 {
     self = [super initWithNibName:nil bundle:nil];
