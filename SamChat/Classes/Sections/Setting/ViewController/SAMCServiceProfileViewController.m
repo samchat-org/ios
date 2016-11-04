@@ -61,11 +61,52 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (indexPath.section == 0) {
-        if (indexPath.row == 1) {
-            SAMCUserQRViewController *vc = [[SAMCUserQRViewController alloc] initWithUser:self.user userType:SAMCuserTypeSamPros];
-            [self.navigationController pushViewController:vc animated:YES];
+    switch (indexPath.section) {
+        case 0:
+        {
+            switch (indexPath.row) {
+                case 0: // company name
+                {
+                }
+                    break;
+                case 1: // service category
+                {
+                }
+                    break;
+                case 2: // service desc
+                {
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
         }
+            break;
+        case 1:
+        {
+            switch (indexPath.row) {
+                case 0: // work phone
+                {
+                }
+                    break;
+                case 1: // work email
+                {
+                }
+                    break;
+                case 2: // work location
+                {
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+        }
+            break;
+            
+        default:
+            break;
     }
 }
 
@@ -85,7 +126,7 @@
     NSInteger rows = 0;
     switch (section) {
         case 0:
-            rows = 2;
+            rows = 3;
             break;
         case 1:
             rows = 3;
@@ -118,16 +159,29 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    SAMCServicerInfoCell *infoCell = [SAMCTableCellFactory servicerInfoCell:tableView];
-                    [infoCell refreshData:self.user];
-                    cell = infoCell;
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell.textLabel.text = @"Company name";
+                    NSString *companyName = self.user.userInfo.spInfo.companyName;
+                    cell.detailTextLabel.text = [companyName length] ? companyName :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_sp"];
                 }
                     break;
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    cell.textLabel.text = @"QR code";
-                    cell.imageView.image = [UIImage imageNamed:@"ico_option_qr"];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell.textLabel.text = @"Service category";
+                    NSString *category = self.user.userInfo.spInfo.serviceCategory;
+                    cell.detailTextLabel.text = [category length] ? category :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_category"];
+                }
+                    break;
+                case 2:
+                {
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell.textLabel.text = @"Service description";
+                    NSString *desc = self.user.userInfo.spInfo.serviceDescription;
+                    cell.detailTextLabel.text = [desc length] ? desc :@" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_description"];
                 }
                     break;
                 default:
@@ -140,7 +194,7 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Work phone";
                     NSString *phone = self.user.userInfo.spInfo.phone;
                     cell.detailTextLabel.text = [phone length] ? phone :@" ";
@@ -149,7 +203,7 @@
                     break;
                 case 1:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Email";
                     NSString *email = self.user.userInfo.spInfo.email;
                     cell.detailTextLabel.text = [email length] ? email :@" ";
@@ -158,7 +212,7 @@
                     break;
                 case 2:
                 {
-                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryNone];
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Location";
                     NSString *address = self.user.userInfo.spInfo.address;
                     cell.detailTextLabel.text = [address length] ? address :@" ";
