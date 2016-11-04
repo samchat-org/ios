@@ -17,10 +17,20 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, assign) NSInteger fixCellCount;
+@property (nonatomic, assign) BOOL hideCurrentLocation;
 
 @end
 
 @implementation SAMCSelectLocationViewController
+
+- (instancetype)initWithHideCurrentLocation:(BOOL)hidden
+{
+    self = [super initWithNibName:nil bundle:nil];
+    if (self) {
+        _hideCurrentLocation = hidden;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -72,20 +82,23 @@
 {
     self.navigationItem.title = @"Select Location";
     [self.navigationItem setHidesBackButton:YES];
-    UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [locationButton addTarget:self action:@selector(onSelectCurrentLocation:) forControlEvents:UIControlEventTouchUpInside];
-    [locationButton setImage:[UIImage imageNamed:@"btn_location_normal"] forState:UIControlStateNormal];
-    [locationButton sizeToFit];
-    UIBarButtonItem *locationItem = [[UIBarButtonItem alloc] initWithCustomView:locationButton];
-    
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = -5;
-    self.navigationItem.leftBarButtonItems = @[negativeSpacer,locationItem];
+    
+    if (!_hideCurrentLocation) {
+        UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [locationButton addTarget:self action:@selector(onSelectCurrentLocation:) forControlEvents:UIControlEventTouchUpInside];
+        [locationButton setImage:[UIImage imageNamed:@"btn_location_normal"] forState:UIControlStateNormal];
+        [locationButton sizeToFit];
+        UIBarButtonItem *locationItem = [[UIBarButtonItem alloc] initWithCustomView:locationButton];
+        self.navigationItem.leftBarButtonItems = @[negativeSpacer,locationItem];
+    }
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton addTarget:self action:@selector(onCancel:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:UIColorFromRGB(0x63839D) forState:UIControlStateNormal];
+    [cancelButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+    [cancelButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5f) forState:UIControlStateHighlighted];
     [cancelButton sizeToFit];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     self.navigationItem.rightBarButtonItem = cancelItem;

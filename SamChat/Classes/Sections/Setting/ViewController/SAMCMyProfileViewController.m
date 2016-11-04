@@ -24,14 +24,10 @@
 #import "SAMCSelectLocationViewController.h"
 #import "SAMCEditCellPhoneViewController.h"
 
-@import CoreLocation;
-@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate, SAMCUserManagerDelegate,CLLocationManagerDelegate>
+@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate, SAMCUserManagerDelegate>
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, strong) UITableView *tableView;
-
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) CLLocation *currentLocation;
 
 @end
 
@@ -236,14 +232,6 @@
     }
 }
 
-#pragma mark - CLLocationManagerDelegate
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
-{
-    _currentLocation = [locations lastObject];
-    DDLogDebug(@"location: %@", _currentLocation);
-    [_locationManager stopUpdatingLocation];
-}
-
 #pragma mark - Private
 - (void)uploadImage:(UIImage *)image
 {
@@ -284,42 +272,14 @@
 
 - (void)updateLocation
 {
-    if (_locationManager == nil) {
-        _locationManager = [[CLLocationManager alloc] init];
-        _locationManager.delegate = self;
-        [_locationManager requestWhenInUseAuthorization];
-        
-        if ([CLLocationManager locationServicesEnabled]) {
-            CLAuthorizationStatus status = CLLocationManager.authorizationStatus;
-            if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
-                [self.view makeToast:@"请在设置-隐私里允许程序使用地理位置服务"
-                            duration:2
-                            position:CSToastPositionCenter];
-            }else{
-                [_locationManager startUpdatingLocation];
-            }
-        }else{
-            [self.view makeToast:@"请打开地理位置服务"
-                        duration:2
-                        position:CSToastPositionCenter];
-        }
-    }
-    
-    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] init];
+    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] initWithHideCurrentLocation:YES];
     __weak typeof(self) wself = self;
     vc.selectBlock = ^(NSDictionary *location, BOOL isCurrentLocation){
         NSDictionary *locationDict;
         if (isCurrentLocation) {
-//            wself.locationTextField.text = @"Current Location";
-            if (wself.currentLocation) {
-                locationDict = @{SAMC_LOCATION_INFO: @{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),
-                                                       SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)},
-                                 SAMC_ADDRESS: @""};
-            }
-        } else {
-//            wself.locationTextField.text = location[SAMC_ADDRESS];
-            locationDict = location;
+            return;
         }
+        locationDict = location;
         
         NSDictionary *profileDict = @{SAMC_LOCATION:locationDict};
         [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];

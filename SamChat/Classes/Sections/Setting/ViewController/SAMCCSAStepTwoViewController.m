@@ -13,8 +13,7 @@
 #import "UIView+Toast.h"
 #import "SAMCSelectLocationViewController.h"
 
-@import CoreLocation;
-@interface SAMCCSAStepTwoViewController ()<CLLocationManagerDelegate>
+@interface SAMCCSAStepTwoViewController ()
 
 @property (nonatomic, strong) UIImageView *stepImageView;
 @property (nonatomic, strong) UILabel *tipLabel;
@@ -28,9 +27,7 @@
 
 @property (nonatomic, strong) NSMutableDictionary *samProsInformation;
 
-@property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) CLLocation *currentLocation;
-@property (nonatomic, strong) NSMutableDictionary *location;
+@property (nonatomic, strong) NSDictionary *location;
 
 @end
 
@@ -57,25 +54,6 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    [_locationManager requestWhenInUseAuthorization];
-    
-    if ([CLLocationManager locationServicesEnabled]) {
-        CLAuthorizationStatus status = CLLocationManager.authorizationStatus;
-        if (status == kCLAuthorizationStatusRestricted || status == kCLAuthorizationStatusDenied) {
-            [self.view makeToast:@"请在设置-隐私里允许程序使用地理位置服务"
-                        duration:2
-                        position:CSToastPositionCenter];
-        }else{
-            [_locationManager startUpdatingLocation];
-        }
-    }else{
-        [self.view makeToast:@"请打开地理位置服务"
-                    duration:2
-                    position:CSToastPositionCenter];
-    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -177,15 +155,11 @@
     NSString *phone= _workphoneTextField.text;
     NSString *email= _serviceEmailTextField.text;
     
-    if ((self.location == nil) && (self.currentLocation)) {
-        self.location = [[NSMutableDictionary alloc] init];
-        [self.location setObject:@{SAMC_LONGITUDE:@(self.currentLocation.coordinate.longitude),
-                                   SAMC_LATITUDE:@(self.currentLocation.coordinate.latitude)} forKey:SAMC_LOCATION_INFO];
-    }
-    
     [self.samProsInformation setObject:phone forKey:SAMC_PHONE];
     [self.samProsInformation setObject:email forKey:SAMC_EMAIL];
-    [self.samProsInformation setObject:self.location forKey:SAMC_LOCATION];
+    if (self.location) {
+        [self.samProsInformation setObject:self.location forKey:SAMC_LOCATION];
+    }
     DDLogDebug(@"SAMCCSAStepTwoViewController: %@", self.samProsInformation);
     [self pushToNextStepVC];
 }
@@ -227,14 +201,11 @@
 
 - (void)locationTextFieldEditingDidBegin:(id)sender
 {
-    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] init];
+    SAMCSelectLocationViewController *vc = [[SAMCSelectLocationViewController alloc] initWithHideCurrentLocation:YES];
     __weak typeof(self) wself = self;
     vc.selectBlock = ^(NSDictionary *location, BOOL isCurrentLocation){
-        if (isCurrentLocation) {
-            wself.location = nil;
-            wself.serviceLocationTextField.text = @"Current Location";
-        } else {
-            wself.location = [location mutableCopy];
+        if (!isCurrentLocation) {
+            wself.location = location;
             wself.serviceLocationTextField.text = location[SAMC_ADDRESS];
         }
         [wself textFieldEditingChanged:wself.serviceLocationTextField];
@@ -262,14 +233,6 @@
                          [self.nextButtonBottomContraint setConstant:-20];
                          [self.view layoutIfNeeded];
                      }];
-}
-
-#pragma mark - CLLocationManagerDelegate
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
-{
-    _currentLocation = [locations lastObject];
-    DDLogDebug(@"location: %@", _currentLocation);
-    [_locationManager stopUpdatingLocation];
 }
 
 #pragma mark - lazy load

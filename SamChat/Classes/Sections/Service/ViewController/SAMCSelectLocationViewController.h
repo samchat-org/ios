@@ -10,6 +10,8 @@
 
 @interface SAMCSelectLocationViewController : UIViewController
 
+- (instancetype)initWithHideCurrentLocation:(BOOL)hidden;
+
 @property (nonatomic, copy) void(^selectBlock)(NSDictionary *location, BOOL isCurrentLocation);
 
 @end
