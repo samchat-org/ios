@@ -18,19 +18,19 @@
         _tipRightLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
         _tipRightLabel.textAlignment = NSTextAlignmentRight;
         _tipRightLabel.font = [UIFont systemFontOfSize:15.0f];
-        [self addSubview:_tipRightLabel];
+        [self.contentView addSubview:_tipRightLabel];
         
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
                                                          attribute:NSLayoutAttributeRight
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
+                                                            toItem:self.contentView
                                                          attribute:NSLayoutAttributeRight
                                                         multiplier:1.0f
-                                                          constant:-35.0f]];
-        [self addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
+                                                          constant:-5.0f]];
+        [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_tipRightLabel
                                                          attribute:NSLayoutAttributeCenterY
                                                          relatedBy:NSLayoutRelationEqual
-                                                            toItem:self
+                                                            toItem:self.contentView
                                                          attribute:NSLayoutAttributeCenterY
                                                         multiplier:1.0f
                                                           constant:0.0f]];
