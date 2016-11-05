@@ -48,6 +48,9 @@
 #import "NIMInputToolBar.h"
 #import "SAMCPublicSessionViewLayoutManager.h"
 #import "SAMCSessionViewController.h"
+#import "SAMCServiceProfileViewController.h"
+#import "SAMCServicerCardViewController.h"
+#import "SAMCUserManager.h"
 
 @interface SAMCPublicMessageViewController ()
 <UIImagePickerControllerDelegate,
@@ -214,8 +217,20 @@ UITableViewDelegate>
 #pragma mark - Cell事件
 - (void)onTapAvatar:(NSString *)userId
 {
-    UIViewController *vc = [[NTESPersonalCardViewController alloc] initWithUserId:userId];
-    [self.navigationController pushViewController:vc animated:YES];
+    UIViewController *vc;
+    if (self.publicSession.isOutgoing) {
+        if ([userId isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
+            vc = [[SAMCServiceProfileViewController alloc] init];
+        }
+    } else {
+        SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
+        BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
+        BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
+        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+    }
+    if (vc) {
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Cell Actions
