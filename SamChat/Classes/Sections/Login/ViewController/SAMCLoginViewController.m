@@ -10,7 +10,7 @@
 #import "SAMCCountryCodeViewController.h"
 #import "SAMCTextField.h"
 #import "SAMCConfirmPhoneNumViewController.h"
-#import "SAMCNewRequestViewController.h"
+//#import "SAMCNewRequestViewController.h"
 #import "NIMSDK.h"
 #import "NTESLoginManager.h"
 #import "SVProgressHUD.h"
@@ -90,23 +90,23 @@ NTES_USE_CLEAR_BAR
     [self.view addSubview:self.signupButton];
     [self.view addSubview:self.forgotPasswordButton];
     
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_usernameTextField]-33-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_usernameTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_passwordTextField]-33-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_passwordTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_signinButton]-33-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_signinButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_signinButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-33-[_signupButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_signupButton]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_signupButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_forgotPasswordButton]-33-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_forgotPasswordButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_forgotPasswordButton)]];
@@ -117,7 +117,7 @@ NTES_USE_CLEAR_BAR
                                                           attribute:NSLayoutAttributeCenterY
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(40)]-20-[_passwordTextField(40)]-20-[_signinButton(40)]-20-[_signupButton]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_usernameTextField(40)]-20-[_passwordTextField(40)]-20-[_signinButton(40)]-10-[_signupButton(40)]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField,_passwordTextField,_signinButton,_signupButton)]];
@@ -128,20 +128,6 @@ NTES_USE_CLEAR_BAR
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
-                                                                   attribute:NSLayoutAttributeWidth
-                                                                   relatedBy:NSLayoutRelationEqual
-                                                                      toItem:nil
-                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                  multiplier:0.0f
-                                                                    constant:170.0f]];
-//    [self.logoImageView addConstraint:[NSLayoutConstraint constraintWithItem:self.logoImageView
-//                                                                   attribute:NSLayoutAttributeHeight
-//                                                                   relatedBy:NSLayoutRelationEqual
-//                                                                      toItem:nil
-//                                                                   attribute:NSLayoutAttributeNotAnAttribute
-//                                                                  multiplier:0.0f
-//                                                                    constant:150.0f]];
     self.bottomSpaceConstraint = [NSLayoutConstraint constraintWithItem:self.signupButton
                                                               attribute:NSLayoutAttributeBottom
                                                               relatedBy:NSLayoutRelationEqual
@@ -153,10 +139,10 @@ NTES_USE_CLEAR_BAR
     self.logoBottonSpaceContraint = [NSLayoutConstraint constraintWithItem:self.logoImageView
                                                                  attribute:NSLayoutAttributeBottom
                                                                  relatedBy:NSLayoutRelationEqual
-                                                                    toItem:self.usernameTextField
-                                                                 attribute:NSLayoutAttributeTop
+                                                                    toItem:self.view
+                                                                 attribute:NSLayoutAttributeCenterY
                                                                 multiplier:1.0f
-                                                                  constant:-100.0f];
+                                                                  constant:-20.0f];
     [self.view addConstraint:self.logoBottonSpaceContraint];
 }
 
@@ -215,7 +201,7 @@ NTES_USE_CLEAR_BAR
 {
     self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
     UIButton *showPWDButton = (UIButton *)self.passwordTextField.rightView;
-    NSString *showImageName = self.passwordTextField.secureTextEntry ? @"icon_show_light" : @"icon_show_dark";
+    NSString *showImageName = self.passwordTextField.secureTextEntry ? @"ico_showpw_dark_dim" : @"ico_showpw_dark_full";
     [showPWDButton setImage:[UIImage imageNamed:showImageName] forState:UIControlStateNormal];
     // fix cursor location unchanged issue
     NSString *tempString = self.passwordTextField.text;
@@ -284,7 +270,9 @@ NTES_USE_CLEAR_BAR
     [UIView animateWithDuration:0.3f
                      animations:^{
                          [self.bottomSpaceConstraint setConstant:-keyboardHeight-5];
-                         [self.logoBottonSpaceContraint setConstant:-10.0f];
+                         CGFloat h = 220+keyboardHeight - self.view.frame.size.height/2;
+                         h = MAX(h, 150);
+                         [self.logoBottonSpaceContraint setConstant:-h];
                          [self.view layoutIfNeeded];
                      }];
 }
@@ -294,7 +282,7 @@ NTES_USE_CLEAR_BAR
     [UIView animateWithDuration:0.3f
                      animations:^{
                          [self.bottomSpaceConstraint setConstant:-20];
-                         [self.logoBottonSpaceContraint setConstant:-100.f];
+                         [self.logoBottonSpaceContraint setConstant:-20.f];
                          [self.view layoutIfNeeded];
                      }];
 }
@@ -305,13 +293,14 @@ NTES_USE_CLEAR_BAR
     if (_usernameTextField == nil) {
         _usernameTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
         _usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
-        _usernameTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
+        _usernameTextField.backgroundColor = UIColorFromRGBA(0xFFFFFF, 0.2);
         [_usernameTextField.leftButton setTitle:@"USA" forState:UIControlStateNormal];
-        _usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
-        _usernameTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username or moible no." attributes:@{NSForegroundColorAttributeName:UIColorFromRGBA(0xFFFFFF, 0.5),NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
         [_usernameTextField.leftButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _usernameTextField.rightTextField.textColor = [UIColor whiteColor];
+        [_usernameTextField.leftButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
         [_usernameTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
+        _usernameTextField.rightTextField.returnKeyType = UIReturnKeyNext;
+        _usernameTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username or moible no." attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_DARK, NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        _usernameTextField.rightTextField.textColor = [UIColor whiteColor];
         [_usernameTextField.rightTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
         [_usernameTextField.rightTextField addTarget:self action:@selector(textFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
         [_usernameTextField.rightTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
@@ -324,17 +313,16 @@ NTES_USE_CLEAR_BAR
     if (_passwordTextField == nil) {
         _passwordTextField = [[UITextField alloc] initWithFrame:CGRectZero];
         _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
-        _passwordTextField.backgroundColor = SAMC_COLOR_INGRABLUE;
-//        _passwordTextField.backgroundColor = UIColorFromRGBA(0x13243F, 0.3);
+        _passwordTextField.backgroundColor = UIColorFromRGBA(0xFFFFFF, 0.2);
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         _passwordTextField.secureTextEntry = YES;
-        _passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName:UIColorFromRGBA(0xFFFFFF, 0.5),NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        _passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_DARK, NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
         _passwordTextField.textColor = [UIColor whiteColor];
-        _passwordTextField.layer.cornerRadius = 5.0f;
+        _passwordTextField.layer.cornerRadius = 6.0f;
         _passwordTextField.leftView = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 15, 0)];
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
         UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
-        [showPWDButton setImage:[UIImage imageNamed:@"icon_show_light"] forState:UIControlStateNormal];
+        [showPWDButton setImage:[UIImage imageNamed:@"ico_showpw_dark_dim"] forState:UIControlStateNormal];
         showPWDButton.imageView.contentMode = UIViewContentModeCenter;
         [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
         _passwordTextField.rightView = showPWDButton;
@@ -353,11 +341,12 @@ NTES_USE_CLEAR_BAR
         _signinButton.translatesAutoresizingMaskIntoConstraints = NO;
         _signinButton.exclusiveTouch = YES;
         _signinButton.layer.cornerRadius = 20.0f;
+        _signinButton.layer.masksToBounds = YES;
         _signinButton.backgroundColor = SAMC_COLOR_GREY;
         _signinButton.gradientLayer.cornerRadius = 20.0f;
         _signinButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_signinButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_signinButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_signinButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
         [_signinButton setTitle:@"Sign In" forState:UIControlStateNormal];
         [_signinButton addTarget:self action:@selector(signin:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -374,7 +363,7 @@ NTES_USE_CLEAR_BAR
         _signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
         [_signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
         [_signupButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_signupButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_signupButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
         [_signupButton addTarget:self action:@selector(signup:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _signupButton;
@@ -391,7 +380,7 @@ NTES_USE_CLEAR_BAR
         _forgotPasswordButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
         [_forgotPasswordButton setTitle:@"Forgot password?" forState:UIControlStateNormal];
         [_forgotPasswordButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_forgotPasswordButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
+        [_forgotPasswordButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
         [_forgotPasswordButton addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _forgotPasswordButton;

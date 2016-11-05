@@ -76,6 +76,9 @@ alpha:alphaValue]
 #define SAMC_COLOR_GREEN_BUTTON_ACTIVE      SAMC_COLOR_GREEN
 #define SAMC_COLOR_GREEN_BUTTON_INACTIVE    UIColorFromRGBA(0x67D45F, 0.5);
 
+#define SAMC_COLOR_TEXT_HINT_DARK       UIColorFromRGBA(0xFFFFFF, 0.5)
+#define SAMC_COLOR_TEXT_HINT_LIGHT      UIColorFromRGBA(0x13243F, 0.5)
+
 #define SAMC_FONT_Ingra_Book            @"Ingra-Regular7"
 #define SAMC_FONT_Ingra_Demo_Bold       @"IngraDemo-Bold"
 #define SAMC_FONT_Ingra_Extra_Bold      @"Ingra-Regular8"

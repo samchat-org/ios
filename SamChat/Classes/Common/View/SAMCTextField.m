@@ -27,7 +27,7 @@
 - (void)setupSubviews
 {
     self.backgroundColor = [UIColor whiteColor];
-    self.layer.cornerRadius = 5.0f;
+    self.layer.cornerRadius = 6.0f;
     
     _leftButton = [[UIButton alloc] init];
     _leftButton.translatesAutoresizingMaskIntoConstraints = NO;
@@ -40,7 +40,7 @@
     
     _splitLabel = [[UILabel alloc] init];
     _splitLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    _splitLabel.backgroundColor = UIColorFromRGBA(0xFFFFFF, 0.3);
+    _splitLabel.backgroundColor = UIColorFromRGBA(0xFFFFFF, 0.2);
     [self addSubview:_splitLabel];
     
     _rightTextField = [[UITextField alloc] init];
