@@ -297,6 +297,7 @@
 		3195DE461D60702E001BD2B4 /* SAMCDeviceUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE451D60702E001BD2B4 /* SAMCDeviceUtil.m */; };
 		3195DE4E1D63137E001BD2B4 /* SAMCDataPostSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE4D1D63137E001BD2B4 /* SAMCDataPostSerializer.m */; };
 		3195DE511D642E80001BD2B4 /* UIButton+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */; };
+		319B1EDB1DCD802400C423C5 /* NSString+SAMCValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */; };
 		31DB30281DA8F3740072BE34 /* SAMCOneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */; };
 		31DB302E1DAB671C0072BE34 /* SAMCRequestEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB302D1DAB671C0072BE34 /* SAMCRequestEmptyView.m */; };
 		31DB30311DABB25E0072BE34 /* SAMCResponseAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30301DABB25E0072BE34 /* SAMCResponseAvatarsView.m */; };
@@ -921,6 +922,8 @@
 		3195DE4D1D63137E001BD2B4 /* SAMCDataPostSerializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCDataPostSerializer.m; path = AFNetworking/SAMCDataPostSerializer.m; sourceTree = "<group>"; };
 		3195DE4F1D642E80001BD2B4 /* UIButton+SAMC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+SAMC.h"; sourceTree = "<group>"; };
 		3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SAMC.m"; sourceTree = "<group>"; };
+		319B1ED91DCD802400C423C5 /* NSString+SAMCValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SAMCValidation.h"; sourceTree = "<group>"; };
+		319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SAMCValidation.m"; sourceTree = "<group>"; };
 		31DB30261DA8F3740072BE34 /* SAMCOneCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCOneCodeView.h; path = View/SAMCOneCodeView.h; sourceTree = "<group>"; };
 		31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCOneCodeView.m; path = View/SAMCOneCodeView.m; sourceTree = "<group>"; };
 		31DB302C1DAB671C0072BE34 /* SAMCRequestEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestEmptyView.h; path = Service/View/SAMCRequestEmptyView.h; sourceTree = "<group>"; };
@@ -1197,6 +1200,8 @@
 				312C1AB11D35D85B00242906 /* UIView+NTES.m */,
 				3195DE4F1D642E80001BD2B4 /* UIButton+SAMC.h */,
 				3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */,
+				319B1ED91DCD802400C423C5 /* NSString+SAMCValidation.h */,
+				319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -2904,6 +2909,7 @@
 				31E37B7B1D65923A00832CC8 /* SAMCSettingManager.m in Sources */,
 				31E37B8D1D670B0300832CC8 /* SAMCUserInfoDB.m in Sources */,
 				311B76F21DCB5E3F0056D4C5 /* SAMCSPChatListCell.m in Sources */,
+				319B1EDB1DCD802400C423C5 /* NSString+SAMCValidation.m in Sources */,
 				312C1CCB1D35D85B00242906 /* NTESSettingCheckCell.m in Sources */,
 				312C1C7B1D35D85B00242906 /* NTESSystemNotificationViewController.m in Sources */,
 				311B77051DCC7E5E0056D4C5 /* SAMCSPIntroViewController.m in Sources */,

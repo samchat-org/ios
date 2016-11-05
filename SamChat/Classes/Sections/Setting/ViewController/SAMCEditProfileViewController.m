@@ -11,13 +11,14 @@
 #import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
+#import "NSString+SAMCValidation.h"
 
 @interface SAMCEditProfileViewController ()
 
 @property (nonatomic, assign) SAMCEditProfileType profileType;
 @property (nonatomic, strong) NSDictionary *profileDict;
 
-@property (nonatomic, strong) UIButton *rightNavButton;
+@property (nonatomic, strong) UIBarButtonItem *rightNavItem;
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UITextField *normalTextField;
@@ -101,17 +102,17 @@
     
     self.navigationItem.leftBarButtonItems = @[negativeSpacer,cancelItem];
     
-    _rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [_rightNavButton addTarget:self action:@selector(onTouchRightNavButton:) forControlEvents:UIControlEventTouchUpInside];
-    [_rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
-    [_rightNavButton setTitleColor:activeColor forState:UIControlStateNormal];
-    [_rightNavButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
-    [_rightNavButton setTitleColor:inactiveColor forState:UIControlStateDisabled];
-    _rightNavButton.enabled = NO;
-    [_rightNavButton sizeToFit];
+    UIButton *rightNavButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [rightNavButton addTarget:self action:@selector(onTouchRightNavButton:) forControlEvents:UIControlEventTouchUpInside];
+    [rightNavButton setTitle:@"Save" forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:activeColor forState:UIControlStateNormal];
+    [rightNavButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
+    [rightNavButton setTitleColor:inactiveColor forState:UIControlStateDisabled];
+    [rightNavButton sizeToFit];
     
-    UIBarButtonItem *rightNavItem = [[UIBarButtonItem alloc] initWithCustomView:_rightNavButton];
-    self.navigationItem.rightBarButtonItems = @[negativeSpacer, rightNavItem];
+    _rightNavItem = [[UIBarButtonItem alloc] initWithCustomView:rightNavButton];
+    _rightNavItem.enabled = false;
+    self.navigationItem.rightBarButtonItems = @[negativeSpacer, _rightNavItem];
 }
 
 - (void)setupCommonViews
@@ -260,6 +261,30 @@
     }];
 }
 
+- (BOOL)isInputValid:(NSString *)text
+{
+    BOOL isValid = YES;
+    if (_profileType == SAMCEditProfileTypeEmail) {
+        isValid = [text samc_isValidEmail];
+    } else if (_profileType == SAMCEditProfileTypeSPCompanyName) {
+    } else if (_profileType == SAMCEditProfileTypeSPServiceCategory) {
+    } else if (_profileType == SAMCEditProfileTypeSPPhone) {
+    } else if (_profileType == SAMCEditProfileTypeSPEmail) {
+        isValid = [text samc_isValidEmail];
+    }
+    return isValid;
+}
+
+#pragma mark - 
+- (void)normalTextFieldEditingChanged:(UITextField *)textField
+{
+    self.rightNavItem.enabled = [self isInputValid:textField.text];
+}
+
+- (void)normalTextFieldEditingDidEndOnExit:(id)sender
+{
+}
+
 #pragma mark - lazy load
 - (UILabel *)tipLabel
 {
@@ -287,7 +312,11 @@
         _normalTextField.textColor = SAMC_COLOR_INK;
         _normalTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 0)];
         _normalTextField.leftViewMode = UITextFieldViewModeAlways;
+        _normalTextField.returnKeyType = UIReturnKeyDone;
+        [_normalTextField addTarget:self action:@selector(normalTextFieldEditingDidEndOnExit:) forControlEvents:UIControlEventEditingDidEndOnExit];
+        [_normalTextField addTarget:self action:@selector(normalTextFieldEditingChanged:) forControlEvents:UIControlEventEditingChanged];
     }
+    
     return _normalTextField;
 }
 
