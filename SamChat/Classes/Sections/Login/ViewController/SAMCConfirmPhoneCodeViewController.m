@@ -50,40 +50,10 @@
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     
     [self.view addSubview:self.stepperView];
-    
-    self.tipLabel = [[UILabel alloc] init];
-    self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
-    self.tipLabel.textAlignment = NSTextAlignmentCenter;
-    self.tipLabel.textColor = SAMC_COLOR_INK;
-    self.tipLabel.text = @"Enter the confirmation code";
     [self.view addSubview:self.tipLabel];
-    
-    self.phoneCodeView = [[SAMCPhoneCodeView alloc] initWithFrame:CGRectZero];
-    self.phoneCodeView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.phoneCodeView.delegate = self;
     [self.view addSubview:self.phoneCodeView];
-    
-    self.splitLabel = [[UILabel alloc] init];
-    self.splitLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.splitLabel.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.1);
     [self.view addSubview:self.splitLabel];
-    
-    self.phoneLabel = [[UILabel alloc] init];
-    self.phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.phoneLabel.font = [UIFont boldSystemFontOfSize:19.0f];
-    self.phoneLabel.textColor = SAMC_COLOR_INK;
-    self.phoneLabel.textAlignment = NSTextAlignmentCenter;
-    self.phoneLabel.text = [NSString stringWithFormat:@"+%@-%@",self.countryCode,self.phoneNumber];
     [self.view addSubview:self.phoneLabel];
-    
-    self.detailLabel = [[UILabel alloc] init];
-    self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.detailLabel.numberOfLines = 0;
-    self.detailLabel.font = [UIFont systemFontOfSize:15.0f];
-    self.detailLabel.textColor = SAMC_COLOR_BODY_MID;
-    self.detailLabel.textAlignment = NSTextAlignmentCenter;
-    self.detailLabel.text = @"A confirmation code has been sent to your phone, enter the code to continue";
     [self.view addSubview:self.detailLabel];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
@@ -100,7 +70,6 @@
                                                              attribute:NSLayoutAttributeNotAnAttribute
                                                             multiplier:0.0f
                                                               constant:72.0f]];
-    
     
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_tipLabel]-32-|"
                                                                       options:0
@@ -125,7 +94,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_detailLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-25-[_phoneCodeView(50)]-25-[_splitLabel(1)]-30-[_phoneLabel]-15-[_detailLabel]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-25-[_phoneCodeView(50)]-20-[_splitLabel(1)]-20-[_phoneLabel]-10-[_detailLabel]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_phoneCodeView,_splitLabel,_phoneLabel,_detailLabel)]];
@@ -172,6 +141,66 @@
         _stepperView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _stepperView;
+}
+
+- (UILabel *)tipLabel
+{
+    if (_tipLabel == nil) {
+        _tipLabel = [[UILabel alloc] init];
+        _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
+        _tipLabel.textAlignment = NSTextAlignmentCenter;
+        _tipLabel.textColor = SAMC_COLOR_INK;
+        _tipLabel.text = @"Enter the confirmation code";
+    }
+    return _tipLabel;
+}
+
+- (SAMCPhoneCodeView *)phoneCodeView
+{
+    if (_phoneCodeView == nil) {
+        _phoneCodeView = [[SAMCPhoneCodeView alloc] initWithFrame:CGRectZero];
+        _phoneCodeView.translatesAutoresizingMaskIntoConstraints = NO;
+        _phoneCodeView.delegate = self;
+    }
+    return _phoneCodeView;
+}
+
+- (UILabel *)splitLabel
+{
+    if (_splitLabel == nil) {
+        _splitLabel = [[UILabel alloc] init];
+        _splitLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _splitLabel.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.1);
+    }
+    return _splitLabel;
+}
+
+- (UILabel *)phoneLabel
+{
+    if (_phoneLabel == nil) {
+        _phoneLabel = [[UILabel alloc] init];
+        _phoneLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _phoneLabel.font = [UIFont boldSystemFontOfSize:21.0f];
+        _phoneLabel.textColor = SAMC_COLOR_INK;
+        _phoneLabel.textAlignment = NSTextAlignmentCenter;
+        _phoneLabel.text = [NSString stringWithFormat:@"+%@-%@",self.countryCode,self.phoneNumber];
+    }
+    return _phoneLabel;
+}
+
+- (UILabel *)detailLabel
+{
+    if (_detailLabel == nil) {
+        _detailLabel = [[UILabel alloc] init];
+        _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailLabel.numberOfLines = 0;
+        _detailLabel.font = [UIFont systemFontOfSize:15.0f];
+        _detailLabel.textColor = SAMC_COLOR_BODY_MID;
+        _detailLabel.textAlignment = NSTextAlignmentCenter;
+        _detailLabel.text = @"A confirmation code has been sent to your phone, enter the code to continue";
+    }
+    return _detailLabel;
 }
 
 @end
