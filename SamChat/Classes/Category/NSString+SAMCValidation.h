@@ -14,5 +14,6 @@
 - (BOOL)samc_isValidCellphone;
 - (BOOL)samc_isValidVerificationCode;
 - (BOOL)samc_isValidPassword;
+- (BOOL)samc_isValidUsername;
 
 @end

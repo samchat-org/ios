@@ -46,7 +46,7 @@
 
 - (BOOL)samc_isValidPassword
 {
-    NSString *password = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *password = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ((password.length<6) || (password.length>32)) {
         return false;
     }
@@ -55,7 +55,7 @@
 
 - (BOOL)samc_isValidUsername
 {
-    NSString *username = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *username = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ((username.length<3) || (username.length>15)) {
         return false;
     }

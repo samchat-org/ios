@@ -10,15 +10,11 @@
 #import "SAMCCountryCodeViewController.h"
 #import "SAMCTextField.h"
 #import "SAMCConfirmPhoneNumViewController.h"
-//#import "SAMCNewRequestViewController.h"
-#import "NIMSDK.h"
-#import "NTESLoginManager.h"
 #import "SVProgressHUD.h"
-#import "NSString+NTES.h"
 #import "UIView+Toast.h"
-#import "NTESService.h"
 #import "SAMCAccountManager.h"
 #import "SAMCGradientButton.h"
+#import "NSString+SAMCValidation.h"
 
 @interface SAMCLoginViewController ()
 
@@ -166,10 +162,12 @@ NTES_USE_CLEAR_BAR
 #pragma mark - Action
 - (void)textFieldEditingChanged:(UITextField *)textField
 {
-    if ([self.usernameTextField.rightTextField.text length] &&
-        [self.passwordTextField.text length]) {
+    NSString *username = self.usernameTextField.rightTextField.text;
+    NSString *password = self.passwordTextField.text;
+    if ([username samc_isValidUsername] && [password samc_isValidPassword]) {
         self.signinButton.enabled = YES;
-        self.signinButton.gradientLayer.colors = @[(__bridge id)UIColorFromRGB(0x20CB9D).CGColor,(__bridge id)UIColorFromRGB(0x80E22F).CGColor];
+        self.signinButton.gradientLayer.colors = @[(__bridge id)SAMC_COLOR_GRASSFIELD_GRADIENT_DARK.CGColor,
+                                                   (__bridge id)SAMC_COLOR_GRASSFIELD_GRADIENT_LIGHT.CGColor];
     } else {
         self.signinButton.enabled = NO;
         self.signinButton.gradientLayer.colors = nil;
@@ -226,7 +224,7 @@ NTES_USE_CLEAR_BAR
         countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     }
     NSString *account = [_usernameTextField.rightTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    NSString *password = _passwordTextField.text;
+    NSString *password = [_passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     __weak typeof(self) wself = self;
     [[SAMCAccountManager sharedManager] loginWithCountryCode:countryCode account:account password:password completion:^(NSError * _Nullable error) {
         [SVProgressHUD dismiss];
