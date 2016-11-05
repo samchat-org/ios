@@ -54,6 +54,7 @@
 #import "SAMCCustomerCardViewController.h"
 #import "SAMCMyProfileViewController.h"
 #import "SAMCServiceProfileViewController.h"
+#import "SAMCImageAttachment.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
@@ -602,7 +603,27 @@ NIMContactSelectDelegate>
 
 - (void)showCustom:(NIMMessage *)message
 {
-    //普通的自定义消息点击事件可以在这里做哦~
+    NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+    if (![customObject.attachment isKindOfClass:[SAMCImageAttachment class]]) {
+        return;
+    }
+    SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+    
+    NTESGalleryItem *item = [[NTESGalleryItem alloc] init];
+    item.thumbPath      = attachment.thumbPath;
+    item.imageURL       = attachment.url;
+    item.name           = attachment.displayName;
+    NTESGalleryViewController *vc = [[NTESGalleryViewController alloc] initWithItem:item];
+    [self.navigationController pushViewController:vc animated:YES];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:attachment.thumbPath]){
+        //如果缩略图下跪了，点进看大图的时候再去下一把缩略图
+        __weak typeof(self) wself = self;
+        [[NIMSDK sharedSDK].resourceManager download:attachment.thumbUrl filepath:attachment.thumbPath progress:nil completion:^(NSError *error) {
+            if (!error) {
+                [wself uiUpdateMessage:message];
+            }
+        }];
+    }
 }
 
 
