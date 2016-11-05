@@ -264,11 +264,7 @@
     [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
         switch (alertIndex) {
             case 1:
-                [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error)
-                 {
-                     extern NSString *NTESNotificationLogout;
-                     [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-                 }];
+                [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) { }];
                 break;
             default:
                 break;

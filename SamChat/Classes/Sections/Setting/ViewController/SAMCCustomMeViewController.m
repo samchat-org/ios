@@ -303,10 +303,7 @@
     [alert showAlertWithCompletionHandler:^(NSInteger alertIndex) {
         switch (alertIndex) {
             case 1:
-                [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
-                    extern NSString *NTESNotificationLogout;
-                    [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-                }];
+                [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) { }];
                 break;
             default:
                 break;

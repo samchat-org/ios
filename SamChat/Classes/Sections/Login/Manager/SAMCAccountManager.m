@@ -244,6 +244,10 @@
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [SAMCDataPostSerializer serializer];
+        
+        extern NSString *NTESNotificationLogout;
+        [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
+        
         [manager POST:SAMC_URL_USER_LOGOUT parameters:paramers progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             if([responseObject isKindOfClass:[NSDictionary class]]) {
                 DDLogDebug(@"Logout: %@", responseObject);

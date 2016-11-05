@@ -252,11 +252,9 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
         default:
             break;
     }
-    [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下线通知" message:reason delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-        [alert show];
-    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"下线通知" message:reason delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
 }
 
 - (void)onAutoLoginFailed:(NSError *)error
@@ -265,9 +263,7 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     DDLogInfo(@"onAutoLoginFailed %zd",error.code);
     NSString *toast = [NSString stringWithFormat:@"登录失败: %zd",error.code];
     [self.window makeToast:toast duration:2.0 position:CSToastPositionCenter];
-    [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-    }];
+    [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
 }
 
 

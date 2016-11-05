@@ -124,10 +124,7 @@
     NSDictionary *userInfo = @{NSLocalizedDescriptionKey:localizedDescription};
     if ((code == SAMCServerErrorTokenFormatWrong) || (code == SAMCServerErrorTokenInvalid)) {
         // token error, logout
-        [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) {
-            extern NSString *NTESNotificationLogout;
-            [[NSNotificationCenter defaultCenter] postNotificationName:NTESNotificationLogout object:nil];
-        }];
+        [[SAMCAccountManager sharedManager] logout:^(NSError * _Nullable error) { }];
     }
     return [NSError errorWithDomain:SAMC_SERVER_ERROR_DOMAIN code:code userInfo:userInfo];
 }
