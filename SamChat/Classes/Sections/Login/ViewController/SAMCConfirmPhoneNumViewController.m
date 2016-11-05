@@ -70,46 +70,9 @@
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     
     [self.view addSubview:self.stepperView];
-
-    self.tipLabel = [[UILabel alloc] init];
-    self.tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
-    self.tipLabel.textColor = SAMC_COLOR_INK;
-    self.tipLabel.textAlignment = NSTextAlignmentCenter;
-    self.tipLabel.text = @"Enter your phone number";
     [self.view addSubview:self.tipLabel];
-
-    self.phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
-    self.phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.phoneTextField.leftButton setTitle:self.countryCode?:@"+1" forState:UIControlStateNormal];
-    [self.phoneTextField.leftButton setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
-    [self.phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
-    [self.phoneTextField.rightTextField addTarget:self action:@selector(phoneNumberEditingChanged:) forControlEvents:UIControlEventEditingChanged];
-    self.phoneTextField.splitLabel.backgroundColor = SAMC_COLOR_INPUTTEXT_HINT;
-    self.phoneTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your phone number" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_INPUTTEXT_HINT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
-    self.phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
     [self.view addSubview:self.phoneTextField];
-    
-    self.detailLabel = [[UILabel alloc] init];
-    self.detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
-    self.detailLabel.numberOfLines = 0;
-    self.detailLabel.font = [UIFont systemFontOfSize:15.0f];
-    self.detailLabel.textColor = SAMC_COLOR_BODY_MID;
-    self.detailLabel.textAlignment = NSTextAlignmentCenter;
-    self.detailLabel.text = @"A confirmation code will be sent to the phone number your entered via SMS";
     [self.view addSubview:self.detailLabel];
-    
-    self.sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
-    self.sendButton.translatesAutoresizingMaskIntoConstraints = NO;
-    self.sendButton.exclusiveTouch = YES;
-    self.sendButton.layer.cornerRadius = 20.0f;
-    self.sendButton.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_GREEN, 0.5);
-    self.sendButton.enabled = NO;
-    self.sendButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
-    [self.sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.sendButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [self.sendButton addTarget:self action:@selector(sendConfirmationCode:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.sendButton];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
@@ -131,20 +94,6 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_tipLabel)]];
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.phoneTextField
-//                                                          attribute:NSLayoutAttributeCenterX
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:self.view
-//                                                          attribute:NSLayoutAttributeCenterX
-//                                                         multiplier:1.0f
-//                                                           constant:0.0f]];
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.phoneTextField
-//                                                          attribute:NSLayoutAttributeWidth
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:nil
-//                                                          attribute:NSLayoutAttributeNotAnAttribute
-//                                                         multiplier:1.0f
-//                                                           constant:310.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_phoneTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
@@ -161,20 +110,6 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_sendButton)]];
-//    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
-//                                                          attribute:NSLayoutAttributeCenterX
-//                                                          relatedBy:NSLayoutRelationEqual
-//                                                             toItem:self.view
-//                                                          attribute:NSLayoutAttributeCenterX
-//                                                         multiplier:1.0f
-//                                                           constant:0.0f]];
-//    [self.sendButton addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
-//                                                                attribute:NSLayoutAttributeWidth
-//                                                                relatedBy:NSLayoutRelationEqual
-//                                                                   toItem:nil
-//                                                                attribute:NSLayoutAttributeNotAnAttribute
-//                                                               multiplier:1.0f
-//                                                                 constant:310.0f]];
     [self.sendButton addConstraint:[NSLayoutConstraint constraintWithItem:self.sendButton
                                                                 attribute:NSLayoutAttributeHeight
                                                                 relatedBy:NSLayoutRelationEqual
@@ -222,7 +157,7 @@
         NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
         self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
         
-        [SVProgressHUD showWithStatus:@"正在获取验证码" maskType:SVProgressHUDMaskTypeBlack];
+        [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeBlack];
         __weak typeof(self) wself = self;
         
         void (^completionBlock)(NSError *) = ^(NSError * _Nullable error){
@@ -287,6 +222,72 @@
         _stepperView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _stepperView;
+}
+
+- (UILabel *)tipLabel
+{
+    if (_tipLabel == nil) {
+        _tipLabel = [[UILabel alloc] init];
+        _tipLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _tipLabel.font = [UIFont boldSystemFontOfSize:19.0f];
+        _tipLabel.textColor = SAMC_COLOR_INK;
+        _tipLabel.textAlignment = NSTextAlignmentCenter;
+        _tipLabel.text = @"Enter your phone number";
+    }
+    return _tipLabel;
+}
+
+- (SAMCTextField *)phoneTextField
+{
+    if (_phoneTextField == nil) {
+        _phoneTextField = [[SAMCTextField alloc] initWithFrame:CGRectZero];
+        _phoneTextField.translatesAutoresizingMaskIntoConstraints = NO;
+        [_phoneTextField.leftButton setTitle:self.countryCode?:@"+1" forState:UIControlStateNormal];
+        [_phoneTextField.leftButton setTitleColor:SAMC_COLOR_INK forState:UIControlStateNormal];
+        [_phoneTextField.leftButton setTitleColor:SAMC_COLOR_TEXT_HINT_LIGHT forState:UIControlStateHighlighted];
+        [_phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
+        [_phoneTextField.rightTextField addTarget:self action:@selector(phoneNumberEditingChanged:) forControlEvents:UIControlEventEditingChanged];
+        _phoneTextField.splitLabel.backgroundColor = SAMC_COLOR_TEXT_HINT_LIGHT;
+        _phoneTextField.rightTextField.textColor = SAMC_COLOR_INK;
+        _phoneTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your phone number" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_LIGHT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        self.phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
+    }
+    return _phoneTextField;
+}
+
+- (UILabel *)detailLabel
+{
+    if (_detailLabel == nil) {
+        _detailLabel = [[UILabel alloc] init];
+        _detailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        _detailLabel.numberOfLines = 0;
+        _detailLabel.font = [UIFont systemFontOfSize:15.0f];
+        _detailLabel.textColor = SAMC_COLOR_BODY_MID;
+        _detailLabel.textAlignment = NSTextAlignmentCenter;
+        _detailLabel.text = @"A confirmation code will be sent to the phone number your entered via SMS";
+    }
+    return _detailLabel;
+}
+
+- (UIButton *)sendButton
+{
+    if (_sendButton == nil) {
+        _sendButton = [[UIButton alloc] initWithFrame:CGRectZero];
+        _sendButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _sendButton.exclusiveTouch = YES;
+        _sendButton.layer.cornerRadius = 20.0f;
+        _sendButton.layer.masksToBounds = YES;
+        _sendButton.enabled = NO;
+        [_sendButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_active"] forState:UIControlStateNormal];
+        [_sendButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_pressed"] forState:UIControlStateHighlighted];
+        [_sendButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_inactive"] forState:UIControlStateDisabled];
+        _sendButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
+        [_sendButton setTitle:SAMC_SEND_CONFIRMATION_CODE forState:UIControlStateNormal];
+        [_sendButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_sendButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
+        [_sendButton addTarget:self action:@selector(sendConfirmationCode:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _sendButton;
 }
 
 @end
