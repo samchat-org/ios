@@ -183,7 +183,7 @@
         [_phoneTextField.leftButton addTarget:self action:@selector(selectCountryCode:) forControlEvents:UIControlEventTouchUpInside];
         [_phoneTextField.rightTextField addTarget:self action:@selector(phoneNumberEditingChanged:) forControlEvents:UIControlEventEditingChanged];
         _phoneTextField.splitLabel.backgroundColor = SAMC_COLOR_LIGHTGREY;
-        _phoneTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your phone number" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_INPUTTEXT_HINT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
+        _phoneTextField.rightTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Your phone number" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_LIGHT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
         _phoneTextField.rightTextField.keyboardType = UIKeyboardTypePhonePad;
     }
     return _phoneTextField;
