@@ -20,14 +20,14 @@
 {
     self = [super initWithFrame:CGRectMake(0, 0, 40, 40)];
     if (self) {
-        [self setupSubviews:image hpadding:10.0f vpadding:10.0f];
+        [self setupSubviews:image hpadding:7.5f vpadding:7.5f];
     }
     return self;
 }
 
 - (id)initWithImage:(UIImage *)image hpadding:(CGFloat)hpadding vpadding:(CGFloat)vpadding
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 20+hpadding*2, 20+vpadding*2)];
+    self = [super initWithFrame:CGRectMake(0, 0, 40+(hpadding-vpadding)*2, 40)];
     if (self) {
         [self setupSubviews:image hpadding:hpadding vpadding:vpadding];
     }

@@ -19,6 +19,7 @@
 #import "SAMCPadImageView.h"
 #import "SAMCStepperView.h"
 #import "SAMCWebViewController.h"
+#import "NSString+SAMCValidation.h"
 
 @interface SAMCSetPasswordViewController ()
 
@@ -76,16 +77,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-//- (void)viewWillAppear:(BOOL)animated
-//{
-//    [super viewWillAppear:animated];
-//    if (self.isSignupOperation) {
-//        [self.usernameTextField becomeFirstResponder];
-//    } else {
-//        [self.passwordTextField becomeFirstResponder];
-//    }
-//}
-
 - (void)setupSignUpViews
 {
     [self.view addSubview:self.stepperView];
@@ -120,19 +111,19 @@
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_usernameCheckLabel]-40-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_usernameCheckLabel]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameCheckLabel)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_usernameTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_usernameTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_usernameTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_passwordTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_passwordTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_agreeLabel]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_agreeLabel]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_agreeLabel)]];
@@ -140,7 +131,7 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_termsButton)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(40)]-30-[_passwordTextField(40)]-20-[_agreeLabel]-0-[_termsButton(20)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-22-[_tipLabel]-10-[_usernameCheckLabel]-10-[_usernameTextField(40)]-20-[_passwordTextField(40)]-20-[_agreeLabel]-0-[_termsButton(20)]"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_usernameCheckLabel,_usernameTextField,_passwordTextField,_agreeLabel,_termsButton)]];
@@ -175,7 +166,7 @@
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_passwordTextField]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_passwordTextField]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_passwordTextField)]];
@@ -187,18 +178,8 @@
 
 - (void)setupDoneButton
 {
-    _doneButton = [[UIButton alloc] init];
-    _doneButton.translatesAutoresizingMaskIntoConstraints = NO;
-    _doneButton.exclusiveTouch = YES;
-    _doneButton.backgroundColor = UIColorFromRGB(0xA9E0A7);
-    _doneButton.enabled = NO;
-    _doneButton.layer.cornerRadius = 17.5f;
-    [_doneButton setTitle:@"Confirm" forState:UIControlStateNormal];
-    [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [_doneButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateHighlighted];
-    [_doneButton addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_doneButton];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_doneButton]-20-|"
+    [self.view addSubview:self.doneButton];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_doneButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_doneButton)]];
@@ -208,7 +189,7 @@
                                                                toItem:nil
                                                             attribute:NSLayoutAttributeNotAnAttribute
                                                            multiplier:0.0f
-                                                             constant:35.0f]];
+                                                             constant:40.0f]];
     self.doneButtonBottomContraint = [NSLayoutConstraint constraintWithItem:_doneButton
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
@@ -219,13 +200,9 @@
     [self.view addConstraint:self.doneButtonBottomContraint];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    UIView *view = (UIView *)[touch view];
-    if (view == self.view) {
-        [self.view endEditing:YES];
-    }
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [super touchesBegan:touches withEvent:event];
+    [self.view endEditing:YES];
 }
 
 #pragma mark - Action
@@ -303,14 +280,10 @@
         DDLogDebug(@"checkExistOfUsername:%@ isExists:%@", username, isExists?@"YES":@"NO");
         if ([wself.usernameTextField.text isEqualToString:username]) {
             wself.isUsernameExists = isExists;
-            wself.doneButton.enabled = [self isAllInputOK];
+            wself.doneButton.enabled = !isExists;
             SAMCPadImageView *rightView = (SAMCPadImageView *)self.usernameTextField.rightView;
             if (error == nil) {
-                if (isExists) {
-                   [rightView setImage:[UIImage imageNamed:@"ico_warning"]];
-                } else {
-                   [rightView setImage:[UIImage imageNamed:@"ico_check"]];
-                }
+                [rightView setImage:[UIImage imageNamed:isExists?@"ico_warning":@"ico_check"]];
             }
         }
     }];
@@ -319,37 +292,13 @@
 - (void)showPassword:(UIButton *)sender
 {
     self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    UIButton *showPWDButton = (UIButton *)self.passwordTextField.rightView;
+    NSString *showImageName = self.passwordTextField.secureTextEntry ? @"ico_showpw_light_dim" : @"ico_showpw_light_full";
+    [showPWDButton setImage:[UIImage imageNamed:showImageName] forState:UIControlStateNormal];
     // fix cursor location unchanged issue
     NSString *tempString = self.passwordTextField.text;
     self.passwordTextField.text = @"";
     self.passwordTextField.text = tempString;
-}
-
-- (BOOL)isPasswordFormatOK
-{
-    NSString *password = self.passwordTextField.text;
-    return ([password length] && [password rangeOfString:@" "].location == NSNotFound);
-}
-
-- (BOOL)isUsernameValid
-{
-    if (!self.signupOperation) {
-        return YES;
-    }
-    return ([self.usernameTextField.text length] && (!self.isUsernameExists));
-}
-
-- (BOOL)isAllInputOK
-{
-    BOOL isOk = ([self isPasswordFormatOK] && [self isUsernameValid]);
-    if (isOk) {
-        self.doneButton.enabled = YES;
-        self.doneButton.backgroundColor = SAMC_COLOR_GREEN;
-    } else {
-        self.doneButton.enabled = NO;
-        self.doneButton.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_GREEN, 0.5);
-    }
-    return isOk;
 }
 
 #pragma mark - UIKeyBoard Notification
@@ -404,7 +353,7 @@
         _usernameCheckLabel.numberOfLines = 0;
         _usernameCheckLabel.textAlignment = NSTextAlignmentCenter;
         _usernameCheckLabel.textColor = SAMC_COLOR_RED;
-        _usernameCheckLabel.text = @" ";
+        _usernameCheckLabel.text = @"";
     }
     return _usernameCheckLabel;
 }
@@ -415,21 +364,21 @@
         _usernameTextField = [[UITextField alloc] init];
         _usernameTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameTextField.layer.cornerRadius = 5.0f;
+        _usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+        _usernameTextField.layer.cornerRadius = 6.0f;
         _usernameTextField.backgroundColor = [UIColor whiteColor];
+        _usernameTextField.textColor = SAMC_COLOR_INK;
         _usernameTextField.font = [UIFont systemFontOfSize:17.0f];
-        _usernameTextField.placeholder = @"Username";
+        _usernameTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Username" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_LIGHT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
         _usernameTextField.returnKeyType = UIReturnKeyNext;
         [_usernameTextField addTarget:self action:@selector(usernameTextFieldEditingDidEndOnExit) forControlEvents:UIControlEventEditingDidEndOnExit];
         [_usernameTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
         [_usernameTextField addTarget:self action:@selector(usernameTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
-        _usernameTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_option_username"]
-                                                                     hpadding:15.0f
-                                                                     vpadding:15.0f];
+        _usernameTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_username"]];
         _usernameTextField.leftViewMode = UITextFieldViewModeAlways;
         
-        SAMCPadImageView *rightView = [[SAMCPadImageView alloc] initWithImage:nil hpadding:15.0f vpadding:15.0f];
+        SAMCPadImageView *rightView = [[SAMCPadImageView alloc] initWithImage:nil];
         _usernameTextField.rightView = rightView;
         _usernameTextField.rightViewMode = UITextFieldViewModeAlways;
     }
@@ -442,23 +391,23 @@
         _passwordTextField = [[UITextField alloc] init];
         _passwordTextField.translatesAutoresizingMaskIntoConstraints = NO;
         _passwordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _passwordTextField.layer.cornerRadius = 5.0f;
+        _passwordTextField.layer.cornerRadius = 6.0f;
         _passwordTextField.backgroundColor = [UIColor whiteColor];
+        _passwordTextField.textColor = SAMC_COLOR_INK;
         _passwordTextField.font = [UIFont systemFontOfSize:17.0f];
         _passwordTextField.secureTextEntry = YES;
-        _passwordTextField.placeholder = @"Password";
+        _passwordTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"Password" attributes:@{NSForegroundColorAttributeName:SAMC_COLOR_TEXT_HINT_LIGHT,NSFontAttributeName:[UIFont systemFontOfSize:17.0f]}];
         _passwordTextField.returnKeyType = UIReturnKeyDone;
         [_passwordTextField addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventEditingDidEndOnExit];
         [_passwordTextField addTarget:self action:@selector(textFieldDidEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
         [_passwordTextField addTarget:self action:@selector(passwordTextFieldDidChangedEditing:) forControlEvents:UIControlEventEditingChanged];
         
-        _passwordTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_password"]
-                                                                     hpadding:15.0f
-                                                                     vpadding:15.0f];
+        _passwordTextField.leftView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ico_password"]];
+        _passwordTextField.leftView = [[SAMCPadImageView alloc] initWithImage:[UIImage imageNamed:@"ico_password"]];
         _passwordTextField.leftViewMode = UITextFieldViewModeAlways;
         
-        UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 35, 35)];
-        [showPWDButton setImage:[UIImage imageNamed:@"login_pwd_eye"] forState:UIControlStateNormal];
+        UIButton *showPWDButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+        [showPWDButton setImage:[UIImage imageNamed:@"ico_showpw_light_dim"] forState:UIControlStateNormal];
         showPWDButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
         [showPWDButton addTarget:self action:@selector(showPassword:) forControlEvents:UIControlEventTouchUpInside];
         self.passwordTextField.rightView = showPWDButton;
@@ -472,10 +421,10 @@
     if (_agreeLabel == nil) {
         _agreeLabel = [[UILabel alloc] init];
         _agreeLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _agreeLabel.font = [UIFont systemFontOfSize:13.0f];
+        _agreeLabel.font = [UIFont systemFontOfSize:15.0f];
         _agreeLabel.numberOfLines = 0;
         _agreeLabel.textAlignment = NSTextAlignmentCenter;
-        _agreeLabel.textColor = SAMC_COLOR_BODY_MID;
+        _agreeLabel.textColor = SAMC_COLOR_INGRABLUE;
         _agreeLabel.text = @"By clicking Confirm, I accept to the SamChat";
     }
     return _agreeLabel;
@@ -487,7 +436,7 @@
         _termsButton = [[UIButton alloc] init];
         _termsButton.translatesAutoresizingMaskIntoConstraints = NO;
         _termsButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-        _termsButton.titleLabel.font = [UIFont boldSystemFontOfSize:13.0f];
+        _termsButton.titleLabel.font = [UIFont boldSystemFontOfSize:15.0f];
         [_termsButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
         [_termsButton setTitleColor:UIColorFromRGBA(SAMC_COLOR_RGB_INGRABLUE, 0.5) forState:UIControlStateHighlighted];
         _termsButton.backgroundColor = [UIColor clearColor];
@@ -497,6 +446,26 @@
     return _termsButton;
 }
 
+- (UIButton *)doneButton
+{
+    if (_doneButton == nil) {
+        _doneButton = [[UIButton alloc] init];
+        _doneButton.translatesAutoresizingMaskIntoConstraints = NO;
+        _doneButton.exclusiveTouch = YES;
+        _doneButton.enabled = NO;
+        _doneButton.layer.cornerRadius = 20.f;
+        _doneButton.layer.masksToBounds = YES;
+        [_doneButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_active"] forState:UIControlStateNormal];
+        [_doneButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_pressed"] forState:UIControlStateHighlighted];
+        [_doneButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_inactive"] forState:UIControlStateDisabled];
+        [_doneButton setTitle:@"Confirm" forState:UIControlStateNormal];
+        [_doneButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_doneButton setTitleColor:SAMC_COLOR_TEXT_HINT_DARK forState:UIControlStateHighlighted];
+        [_doneButton addTarget:self action:@selector(touchDoneButton:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _doneButton;
+}
+
 - (void)setIsUsernameExists:(BOOL)isUsernameExists
 {
     _isUsernameExists = isUsernameExists;
@@ -504,12 +473,12 @@
         self.usernameCheckLabel.text = @"Ooops, username already token. Try a combination of letters and numbers";
         self.usernameTextField.textColor = SAMC_COLOR_RED;
         SAMCPadImageView *leftView = (SAMCPadImageView *)self.usernameTextField.leftView;
-        [leftView setImage:[UIImage imageNamed:@"signup_username_wrong"]];
+        [leftView setImage:[UIImage imageNamed:@"ico_username_error"]];
     } else {
-        self.usernameCheckLabel.text = @" ";
-        self.usernameTextField.textColor = UIColorFromRGB(0x3B4E6E);
+        self.usernameCheckLabel.text = @"";
+        self.usernameTextField.textColor = SAMC_COLOR_INK;
         SAMCPadImageView *leftView = (SAMCPadImageView *)self.usernameTextField.leftView;
-        [leftView setImage:[UIImage imageNamed:@"ico_option_username"]];
+        [leftView setImage:[UIImage imageNamed:@"ico_username"]];
     }
 }
 
@@ -527,16 +496,19 @@
     SAMCPadImageView *rightView = (SAMCPadImageView *)self.usernameTextField.rightView;
     [rightView setImage:nil];
     NSString *username = self.usernameTextField.text;
-    [self isAllInputOK];
-    if ([username length] <= 0) {
-        return;
+    self.doneButton.enabled = [username samc_isValidUsername] && [self.passwordTextField.text samc_isValidPassword];
+    if ([username samc_isValidUsername]) {
+        [self performSelector:@selector(checkExistOfUsername:) withObject:username afterDelay:2];
     }
-    [self performSelector:@selector(checkExistOfUsername:) withObject:username afterDelay:2];
 }
 
 - (void)passwordTextFieldDidChangedEditing:(id)sender
 {
-    [self isAllInputOK];
+    if (self.isSignupOperation) {
+        self.doneButton.enabled = [self.usernameTextField.text samc_isValidUsername] && [self.passwordTextField.text samc_isValidPassword];
+    } else {
+        self.doneButton.enabled = [self.passwordTextField.text samc_isValidPassword];
+    }
 }
 
 @end
