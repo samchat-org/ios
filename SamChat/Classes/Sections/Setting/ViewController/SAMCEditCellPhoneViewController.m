@@ -13,7 +13,7 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCTextField.h"
-#import "SAMCUtils.h"
+#import "NSString+SAMCValidation.h"
 
 @interface SAMCEditCellPhoneViewController ()
 
@@ -131,20 +131,12 @@
 - (void)phoneNumberEditingChanged:(id)sender
 {
     NSString *phone = self.phoneTextField.rightTextField.text;
-    if ([SAMCUtils isValidCellphone:phone]) {
-        _rightNavButton.enabled = YES;
-    } else {
-        _rightNavButton.enabled = NO;
-    }
+    _rightNavButton.enabled = [phone samc_isValidCellphone];
 }
 
 - (void)sendConfirmationCode
 {
     self.cellPhone = self.phoneTextField.rightTextField.text;
-    if (![SAMCUtils isValidCellphone:self.cellPhone]) {
-        [self.view makeToast:@"Invalid Phone Number" duration:2.0f position:CSToastPositionCenter];
-        return;
-    }
     NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
     self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
     [SVProgressHUD showWithStatus:@"Loading" maskType:SVProgressHUDMaskTypeBlack];

@@ -15,7 +15,7 @@
 #import "SVProgressHUD.h"
 #import "UIButton+SAMC.h"
 #import "SAMCStepperView.h"
-#import "SAMCUtils.h"
+#import "NSString+SAMCValidation.h"
 
 #define SAMC_SEND_CONFIRMATION_CODE @"Send Confirmation Code"
 
@@ -205,7 +205,8 @@
 
 - (void)phoneNumberEditingChanged:(id)sender
 {
-    if ([SAMCUtils isValidCellphone:self.phoneTextField.rightTextField.text]) {
+    NSString *phone = self.phoneTextField.rightTextField.text;
+    if ([phone samc_isValidCellphone]) {
         self.sendButton.enabled = YES;
         self.sendButton.backgroundColor = SAMC_COLOR_GREEN;
     } else {
@@ -218,10 +219,6 @@
 {
     if ([sender.currentTitle isEqualToString:SAMC_SEND_CONFIRMATION_CODE]) {
         self.phoneNumber = self.phoneTextField.rightTextField.text;
-        if (![SAMCUtils isValidCellphone:self.phoneNumber]) {
-            [self.view makeToast:@"Invalid Phone Number" duration:2.0f position:CSToastPositionCenter];
-            return;
-        }
         NSString *countryCode = self.phoneTextField.leftButton.titleLabel.text;
         self.countryCode = [countryCode stringByReplacingOccurrencesOfString:@"+" withString:@""];
         

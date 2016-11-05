@@ -8,7 +8,7 @@
 
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCPadImageView.h"
-#import "SAMCUtils.h"
+#import "NSString+SAMCValidation.h"
 #import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
@@ -142,7 +142,9 @@
 
 - (void)textFieldEditingChanged:(UITextField *)textField
 {
-    _doneButton.enabled = [SAMCUtils isValidPassword:_currentPasswordTextField.text] && [SAMCUtils isValidPassword:_changePasswordTextField.text];
+    NSString *currentPassword = _currentPasswordTextField.text;
+    NSString *changePassword = _changePasswordTextField.text;
+    _doneButton.enabled = [currentPassword samc_isValidPassword] && [changePassword samc_isValidPassword];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField

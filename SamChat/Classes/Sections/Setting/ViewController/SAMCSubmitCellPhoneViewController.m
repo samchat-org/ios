@@ -11,7 +11,7 @@
 #import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
-#import "SAMCUtils.h"
+#import "NSString+SAMCValidation.h"
 
 @interface SAMCSubmitCellPhoneViewController ()
 
@@ -120,11 +120,7 @@
 - (void)codeTextFieldEditingChanged:(id)sender
 {
     NSString *code = _codeTextField.text;
-    if ([SAMCUtils isValidVerificationCode:code]) {
-        _rightNavButton.enabled = YES;
-    } else {
-        _rightNavButton.enabled = NO;
-    }
+    _rightNavButton.enabled = [code samc_isValidVerificationCode];
 }
 
 #pragma mark - lazy load
