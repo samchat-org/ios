@@ -23,6 +23,7 @@ typedef void (^SyncAction)();
 @property (nonatomic, strong) Reachability *internetReachability;
 @property (nonatomic, strong) SAMCStateDateInfo *stateDateInfo;
 @property (nonatomic, assign) BOOL isSyncing;
+@property (nonatomic, assign) BOOL stoped;
 @property (nonatomic, copy) SyncAction syncBlock;
 @property (nonatomic, assign) NSTimeInterval retryDelay;
 
@@ -59,6 +60,7 @@ typedef void (^SyncAction)();
                                                  name:kReachabilityChangedNotification object:nil];
     self.syncBlock = [self queryStateDateBlock];
     self.isSyncing = NO;
+    self.stoped = NO;
     [self doSync];
     
     self.internetReachability = [Reachability reachabilityForInternetConnection];
@@ -69,6 +71,7 @@ typedef void (^SyncAction)();
 {
     [self.internetReachability stopNotifier];
     self.internetReachability = nil;
+    self.stoped = YES;
     _syncBlock = NULL;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -76,6 +79,9 @@ typedef void (^SyncAction)();
 - (void)doSync
 {
     if (_isSyncing) {
+        return;
+    }
+    if (_stoped) {
         return;
     }
     _isSyncing = YES;
