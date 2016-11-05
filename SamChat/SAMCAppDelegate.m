@@ -222,6 +222,10 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
 
 - (void)doLogout
 {
+    if (![self.window.rootViewController isKindOfClass:[NTESMainTabController class]]) {
+        // already logout, may happen when auto login failed & token error
+        return;
+    }
     [[SAMCUnreadCountManager sharedManager] close];
     [[SAMCSyncManager sharedManager] close];
     [[SAMCPushManager sharedManager] close];
