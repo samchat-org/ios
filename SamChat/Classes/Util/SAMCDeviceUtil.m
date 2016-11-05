@@ -19,6 +19,7 @@
         return @"AABBCC";
     }
     deviceId = [deviceId substringWithRange:NSMakeRange(deviceId.length-6,6)];
+    deviceId = @"CCDDEE"; // TODO: delete, for test
     DDLogDebug(@"device id: %@", deviceId);
     return deviceId;
 }
