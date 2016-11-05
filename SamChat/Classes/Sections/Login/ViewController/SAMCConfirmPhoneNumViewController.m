@@ -141,13 +141,7 @@
 - (void)phoneNumberEditingChanged:(id)sender
 {
     NSString *phone = self.phoneTextField.rightTextField.text;
-    if ([phone samc_isValidCellphone]) {
-        self.sendButton.enabled = YES;
-        self.sendButton.backgroundColor = SAMC_COLOR_GREEN;
-    } else {
-        self.sendButton.enabled = NO;
-        self.sendButton.backgroundColor = UIColorFromRGBA(SAMC_COLOR_RGB_GREEN, 0.5);
-    }
+    _sendButton.enabled = [phone samc_isValidCellphone];
 }
 
 - (void)sendConfirmationCode:(UIButton *)sender
