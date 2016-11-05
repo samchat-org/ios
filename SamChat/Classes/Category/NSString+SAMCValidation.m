@@ -22,7 +22,7 @@
 
 - (BOOL)samc_isValidCellphone
 {
-    if ((self.length<5) || (self.length>11)) {
+    if ((self.length<6) || (self.length>11)) {
         return false;
     }
     NSString *cellphone = [self stringByTrimmingCharactersInSet:[NSCharacterSet decimalDigitCharacterSet]];
@@ -46,7 +46,19 @@
 
 - (BOOL)samc_isValidPassword
 {
-    // TODO: add password checking
+    NSString *password = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ((password.length<6) || (password.length>32)) {
+        return false;
+    }
+    return true;
+}
+
+- (BOOL)samc_isValidUsername
+{
+    NSString *username = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if ((username.length<3) || (username.length>15)) {
+        return false;
+    }
     return true;
 }
 
