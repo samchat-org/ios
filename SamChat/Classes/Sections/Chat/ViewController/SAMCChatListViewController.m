@@ -32,6 +32,8 @@
 #import "SAMCServicerCardViewController.h"
 #import "SAMCCustomerCardViewController.h"
 #import "SAMCSPChatListCell.h"
+#import "SVProgressHUD.h"
+#import "UIView+Toast.h"
 
 #define SessionListTitle @"Chat"
 
@@ -137,9 +139,9 @@
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.recentSessions[indexPath.row].session.sessionType == NIMSessionTypeP2P) {
-        return @[[self deleteAction], [self muteAction], [self moreAction]];
+        return @[[self deleteAction], [self muteAction:indexPath], [self moreAction]];
     } else {
-        return @[[self deleteAction], [self muteAction]];
+        return @[[self deleteAction], [self muteAction:indexPath]];
     }
 }
 
@@ -387,6 +389,7 @@
 {
     __weak typeof(self) wself = self;
     UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"More" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [wself.tableView setEditing:NO animated:YES];
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
         UIAlertAction *viewProfileAction = [UIAlertAction actionWithTitle:@"View Profle" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -406,10 +409,43 @@
     return action;
 }
 
-- (UITableViewRowAction *)muteAction
+- (UITableViewRowAction *)muteAction:(NSIndexPath *)indexPath
 {
-    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Mute" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
-        DDLogDebug(@"touch mute");
+    __weak typeof(self) wself = self;
+    SAMCRecentSession *recentSession = wself.recentSessions[indexPath.row];
+    BOOL needNotify;
+    if (recentSession.session.sessionType == NIMSessionTypeP2P) {
+        needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:recentSession.session.sessionId];
+    } else {
+        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
+        needNotify = [team notifyForNewMsg];
+    }
+    NSString *title = needNotify ? @"Mute" : @"Unmute";
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [wself.tableView setEditing:NO animated:YES];
+        SAMCRecentSession *recentSession = wself.recentSessions[indexPath.row];
+        BOOL needNotify;
+        if (recentSession.session.sessionType == NIMSessionTypeP2P) {
+            needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:recentSession.session.sessionId];
+            [SVProgressHUD show];
+            [[NIMSDK sharedSDK].userManager updateNotifyState:!needNotify forUser:recentSession.session.sessionId completion:^(NSError *error) {
+            [SVProgressHUD dismiss];
+                if (error) {
+                    [wself.view makeToast:@"操作失败" duration:2.0f position:CSToastPositionCenter];
+                }
+            }];
+            
+        } else {
+            NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
+            needNotify = [team notifyForNewMsg];
+            [SVProgressHUD show];
+            [[[NIMSDK sharedSDK] teamManager] updateNotifyState:!needNotify inTeam:[team teamId] completion:^(NSError *error) {
+                [SVProgressHUD dismiss];
+                if (error) {
+                    [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
+                }
+            }];
+        }
     }];
     action.backgroundColor = SAMC_COLOR_GREY;
     return action;
