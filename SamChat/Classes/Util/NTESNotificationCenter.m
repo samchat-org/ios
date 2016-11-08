@@ -10,7 +10,7 @@
 #import "NTESVideoChatViewController.h"
 #import "NTESAudioChatViewController.h"
 #import "NTESMainTabController.h"
-#import "NTESSessionViewController.h"
+#import "SAMCSessionViewController.h"
 #import "NSDictionary+NTESJson.h"
 #import "NTESCustomNotificationDB.h"
 #import "NTESCustomNotificationObject.h"
@@ -20,6 +20,7 @@
 #import "SAMCGlobalMacro.h"
 #import <AVFoundation/AVFoundation.h>
 #import "NTESLiveViewController.h"
+#import "SAMCPublicMessageViewController.h"
 
 NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChanged";
 
@@ -79,8 +80,10 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
     UINavigationController *nav = [NTESMainTabController instance].selectedViewController;
     BOOL needPlay = YES;
     for (UIViewController *vc in nav.viewControllers) {
-        if ([vc isKindOfClass:[NIMSessionViewController class]] ||  [vc isKindOfClass:[NTESLiveViewController class]])
-        {
+//        if ([vc isKindOfClass:[NIMSessionViewController class]] ||  [vc isKindOfClass:[NTESLiveViewController class]])
+        if ([vc isKindOfClass:[SAMCSessionViewController class]]
+            || [vc isKindOfClass:[NTESLiveViewController class]]
+            || [vc isKindOfClass:[SAMCPublicMessageViewController class]]) {
             needPlay = NO;
             break;
         }
