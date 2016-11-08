@@ -44,7 +44,6 @@
 #import "NTESFPSLabel.h"
 #import "UIAlertView+NTESBlock.h"
 #import "NTESDataManager.h"
-#import "SAMCNormalTeamCardViewController.h"
 #import "SAMCCustomTeamCardViewController.h"
 #import "SAMCSPTeamCardViewController.h"
 #import "SAMCAccountManager.h"
@@ -673,12 +672,6 @@ NIMContactSelectDelegate>
     } else {
         vc = [[SAMCCustomTeamCardViewController alloc] initWithTeam:team];
     }
-//    if (team.type == NIMTeamTypeNormal) {
-////        self.myTeamInfo.type != NIMTeamMemberTypeOwner
-//        vc = [[SAMCNormalTeamCardViewController alloc] initWithTeam:team];
-//    }else if(team.type == NIMTeamTypeAdvanced){
-////        vc = [[NIMAdvancedTeamCardViewController alloc] initWithTeam:team];
-//    }
     [self.navigationController pushViewController:vc animated:YES];
 }
 
