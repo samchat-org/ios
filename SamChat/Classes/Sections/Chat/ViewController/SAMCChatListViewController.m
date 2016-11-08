@@ -392,12 +392,20 @@
         [wself.tableView setEditing:NO animated:YES];
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
         UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil];
+        NSString *userId = wself.recentSessions[indexPath.row].session.sessionId;
         UIAlertAction *viewProfileAction = [UIAlertAction actionWithTitle:@"View Profle" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            SAMCRecentSession *recentSession = wself.recentSessions[indexPath.row];
-            [wself enterPersonalCard:recentSession.session.sessionId];
+            [wself enterPersonalCard:userId];
         }];
         UIAlertAction *blockAction = [UIAlertAction actionWithTitle:@"Block User" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-            DDLogDebug(@"touch block user");
+            [SVProgressHUD show];
+            [[NIMSDK sharedSDK].userManager addToBlackList:userId completion:^(NSError *error) {
+                [SVProgressHUD dismiss];
+                if (!error) {
+                    [wself.view makeToast:@"拉黑成功"duration:2.0f position:CSToastPositionCenter];
+                }else{
+                    [wself.view makeToast:@"拉黑失败"duration:2.0f position:CSToastPositionCenter];
+                }
+            }];
         }];
         [alertController addAction:cancelAction];
         [alertController addAction:viewProfileAction];
