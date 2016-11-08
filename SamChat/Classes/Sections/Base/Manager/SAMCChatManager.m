@@ -17,6 +17,8 @@
 #import "SAMCAccountManager.h"
 #import "NTESCustomSysNotificationSender.h"
 #import "NSDictionary+NTESJson.h"
+#import "SAMCPublicManager.h"
+#import "SAMCImageAttachment.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate,NIMSystemNotificationManagerDelegate>
 
@@ -101,6 +103,12 @@
     // the messages belongs to the same session
     if (([messages count] == 0) || (messages.firstObject.session.sessionType != NIMSessionTypeP2P)) {
         [self.multicastDelegate onRecvMessages:messages];
+        return;
+    }
+    NIMMessage *lastMessage = [messages lastObject];
+    // receive public message
+    if ([lastMessage.from hasPrefix:SAMC_PUBLIC_ACCOUNT_PREFIX]) {
+        [self receivedNewPublicMessages:messages];
         return;
     }
     NSMutableArray *normalMessages = [messages mutableCopy];
@@ -258,13 +266,10 @@
 {
     NSString *content = notification.content;
     NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
-    if (data)
-    {
+    if (data) {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-        if ([dict isKindOfClass:[NSDictionary class]])
-        {
-            if ([dict jsonInteger:NTESNotifyID] == NTESCustomRequestPush)
-            {
+        if ([dict isKindOfClass:[NSDictionary class]]) {
+            if ([dict jsonInteger:NTESNotifyID] == NTESCustomRequestPush) {
                 NSDictionary *requestDict = [dict jsonDict:NTESCustomContent];
                 [[SAMCQuestionManager sharedManager] insertReceivedQuestion:requestDict];
             }
@@ -272,5 +277,29 @@
     }
 }
 
+- (void)receivedNewPublicMessages:(NSArray *)publicMessages
+{
+    for (NIMMessage *message in publicMessages) {
+        NSString *content = message.text;
+        NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        if ([dict isKindOfClass:[NSDictionary class]]) {
+            SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:dict];
+            if (message.messageType == NIMMessageTypeCustom) {
+                NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
+                SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
+                [[NIMSDK sharedSDK].resourceManager download:attachment.thumbUrl filepath:attachment.thumbPath progress:nil completion:^(NSError * _Nullable error) {
+                    if (error) {
+                        DDLogError(@"download thumb image error: %@", error);
+                    }
+                    [[SAMCPublicManager sharedManager] receivePublicMessage:message];
+                }];
+            } else {
+                [[SAMCPublicManager sharedManager] receivePublicMessage:message];
+            }
+        }
+        [[NIMSDK sharedSDK].conversationManager deleteMessage:message];
+    }
+}
 
 @end
