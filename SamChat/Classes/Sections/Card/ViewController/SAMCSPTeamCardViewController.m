@@ -297,11 +297,7 @@
             break;
         case 1:
         {
-            if (self.myTeamInfo.type != NIMTeamMemberTypeOwner) {
-                return [self cellOfOptionsRow:indexPath.row+1 tableView:tableView];
-            } else {
-                return [self cellOfOptionsRow:indexPath.row tableView:tableView];
-            }
+            return [self cellOfOptionsRow:indexPath.row tableView:tableView];
         }
             break;
         default:
