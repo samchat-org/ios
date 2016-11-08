@@ -838,17 +838,27 @@ NIMContactSelectDelegate>
 
 
 - (void)setUpNav{
+    NSString *optionImageName;
+    NSString *optionPressedImageName;
+    if (self.samcSession.sessionMode == SAMCUserModeTypeSP) {
+        optionImageName = @"ico_nav_options_dark";
+        optionPressedImageName = @"ico_nav_options_dark_pressed";
+    } else {
+        optionImageName = @"ico_nav_options_light";
+        optionPressedImageName = @"ico_nav_options_light_pressed";
+    }
+    
     UIButton *enterTeamCard = [UIButton buttonWithType:UIButtonTypeCustom];
     [enterTeamCard addTarget:self action:@selector(enterTeamCard:) forControlEvents:UIControlEventTouchUpInside];
-    [enterTeamCard setImage:[UIImage imageNamed:@"icon_session_info_normal"] forState:UIControlStateNormal];
-    [enterTeamCard setImage:[UIImage imageNamed:@"icon_session_info_pressed"] forState:UIControlStateHighlighted];
+    [enterTeamCard setImage:[UIImage imageNamed:optionImageName] forState:UIControlStateNormal];
+    [enterTeamCard setImage:[UIImage imageNamed:optionPressedImageName] forState:UIControlStateHighlighted];
     [enterTeamCard sizeToFit];
     UIBarButtonItem *enterTeamCardItem = [[UIBarButtonItem alloc] initWithCustomView:enterTeamCard];
     
     UIButton *infoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [infoBtn addTarget:self action:@selector(onTouchUpInfoBtn:) forControlEvents:UIControlEventTouchUpInside];
-    [infoBtn setImage:[UIImage imageNamed:@"icon_session_info_normal"] forState:UIControlStateNormal];
-    [infoBtn setImage:[UIImage imageNamed:@"icon_session_info_pressed"] forState:UIControlStateHighlighted];
+    [infoBtn setImage:[UIImage imageNamed:optionImageName] forState:UIControlStateNormal];
+    [infoBtn setImage:[UIImage imageNamed:optionPressedImageName] forState:UIControlStateHighlighted];
     [infoBtn sizeToFit];
     UIBarButtonItem *enterUInfoItem = [[UIBarButtonItem alloc] initWithCustomView:infoBtn];
     

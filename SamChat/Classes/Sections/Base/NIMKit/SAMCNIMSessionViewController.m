@@ -86,10 +86,10 @@ NIMUserManagerDelegate>
 - (void)makeUI
 {
     self.navigationItem.title = [self sessionTitle];
-    NIMCustomLeftBarView *leftBarView = [[NIMCustomLeftBarView alloc] init];
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBarView];
-    self.navigationItem.leftBarButtonItem = leftItem;
-    self.navigationItem.leftItemsSupplementBackButton = YES;
+//    NIMCustomLeftBarView *leftBarView = [[NIMCustomLeftBarView alloc] init];
+//    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithCustomView:leftBarView];
+//    self.navigationItem.leftBarButtonItem = leftItem;
+//    self.navigationItem.leftItemsSupplementBackButton = YES;
     
     self.view.backgroundColor = [UIColor whiteColor];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
