@@ -27,7 +27,6 @@
 #import "SAMCEditTeamNameViewController.h"
 
 @interface SAMCSPTeamCardViewController ()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol,SAMCContactSelectDelegate,NIMMemberGroupViewDelegate>{
-    UIAlertView *_updateTeamNameAlertView;
     UIAlertView *_quitTeamAlertView;
 }
 
@@ -135,9 +134,6 @@
 {
     SAMCEditTeamNameViewController *vc = [[SAMCEditTeamNameViewController alloc] initWithTeam:self.team];
     [self.navigationController pushViewController:vc animated:YES];
-//    _updateTeamNameAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Change group name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
-//    _updateTeamNameAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-//    [_updateTeamNameAlertView show];
 }
 
 - (void)quitTeam
@@ -306,30 +302,6 @@
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    if (alertView == _updateTeamNameAlertView) {
-        switch (buttonIndex) {
-            case 0://取消
-                break;
-            case 1:{
-                NSString *name = [alertView textFieldAtIndex:0].text;
-                if (name.length) {
-                    [[NIMSDK sharedSDK].teamManager updateTeamName:name teamId:self.team.teamId completion:^(NSError *error) {
-                        if (!error) {
-                            self.team = [[[NIMSDK sharedSDK] teamManager] teamById:self.team.teamId];
-                            [self.view nimkit_makeToast:@"change success"];
-                            //                            [self refreshTableBody];
-                        }else{
-                            [self.view nimkit_makeToast:@"change failed"];
-                        }
-                    }];
-                }
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    
     if (alertView == _quitTeamAlertView) {
         switch (buttonIndex) {
             case 0://取消
