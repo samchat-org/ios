@@ -30,7 +30,7 @@
 //        _appKey = @"45c6af3c98409b18a84451215d0bdd6e"; // Demo
         _appKey = @"a95830f52659eec125b54bc1b88f05b2"; // SamChat
         _apiURL = @"https://app.netease.im/api";
-        _cerName= @"ENTERPRISE";
+        _cerName= @"samchatDevPush";
     }
     return self;
 }
