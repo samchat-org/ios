@@ -15,8 +15,10 @@
 #import "SAMCQuestionManager.h"
 #import "SAMCQuestionSession.h"
 #import "SAMCAccountManager.h"
+#import "NTESCustomSysNotificationSender.h"
+#import "NSDictionary+NTESJson.h"
 
-@interface SAMCChatManager ()<NIMChatManagerDelegate>
+@interface SAMCChatManager ()<NIMChatManagerDelegate,NIMSystemNotificationManagerDelegate>
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCChatManagerDelegate> *multicastDelegate;
 
@@ -39,6 +41,7 @@
     self = [super init];
     if (self) {
         [[NIMSDK sharedSDK].chatManager addDelegate:self];
+        [[NIMSDK sharedSDK].systemNotificationManager addDelegate:self];
     }
     return self;
 }
@@ -46,6 +49,7 @@
 - (void)dealloc
 {
     [[NIMSDK sharedSDK].chatManager removeDelegate:self];
+    [[NIMSDK sharedSDK].systemNotificationManager removeDelegate:self];
 }
 
 - (void)addDelegate:(id<SAMCChatManagerDelegate>)delegate
@@ -248,5 +252,25 @@
     }
     return samcmessage;
 }
+
+#pragma mark - NIMSystemNotificationManagerDelegate
+- (void)onReceiveCustomSystemNotification:(NIMCustomSystemNotification *)notification
+{
+    NSString *content = notification.content;
+    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
+    if (data)
+    {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+        if ([dict isKindOfClass:[NSDictionary class]])
+        {
+            if ([dict jsonInteger:NTESNotifyID] == NTESCustomRequestPush)
+            {
+                NSDictionary *requestDict = [dict jsonDict:NTESCustomContent];
+                [[SAMCQuestionManager sharedManager] insertReceivedQuestion:requestDict];
+            }
+        }
+    }
+}
+
 
 @end

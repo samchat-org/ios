@@ -10,8 +10,9 @@
 #define NTESNotifyID        @"id"
 #define NTESCustomContent  @"content"
 
-#define NTESCommandTyping  (1)
-#define NTESCustom         (2)
+#define NTESCommandTyping       (1)
+#define NTESCustom              (2)
+#define NTESCustomRequestPush   (3)
 
 
 @interface NTESCustomSysNotificationSender : NSObject

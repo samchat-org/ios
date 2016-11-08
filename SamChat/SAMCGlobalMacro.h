@@ -155,6 +155,8 @@ static inline void method_execute_frequency(id obj ,SEL selecter, NSTimeInterval
 
 #define SAMC_QR_ADDCONTACT_PREFIX           @"Samchat:"
 
+#define SAMC_PUBLIC_ACCOUNT_PREFIX          @"public_"
+
 typedef NS_ENUM(NSInteger,SAMCUserModeType) {
     SAMCUserModeTypeCustom,
     SAMCUserModeTypeSP,
