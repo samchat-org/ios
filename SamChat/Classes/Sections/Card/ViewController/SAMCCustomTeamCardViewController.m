@@ -21,7 +21,8 @@
 #import "NIMTeamSwitchTableViewCell.h"
 #import "NIMContactSelectConfig.h"
 #import "SAMCContactSelectViewController.h"
-#import "NIMProgressHUD.h"
+#import "SVProgressHUD.h"
+#import "UIView+Toast.h"
 #import "NIMGlobalMacro.h"
 #import "SAMCTableCellFactory.h"
 
@@ -311,8 +312,8 @@
         {
             SAMCCommonSwitcherCell *swithCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
             swithCell.textLabel.text = @"Mute chat";
-            //    [cell.switcher setOn:];
-            //    [cell.switcher addTarget:self action:@selector() forControlEvents:UIControlEventValueChanged];
+            [swithCell.switcher setOn:![self.team notifyForNewMsg]];
+            [swithCell.switcher addTarget:self action:@selector(onActionNeedNotifyValueChange:) forControlEvents:UIControlEventValueChanged];
             cell = swithCell;
         }
             break;
@@ -335,5 +336,18 @@
     return cell;
 }
 
+- (void)onActionNeedNotifyValueChange:(id)sender
+{
+    UISwitch *switcher = sender;
+    [SVProgressHUD show];
+    __weak typeof(self) wself = self;
+    [[[NIMSDK sharedSDK] teamManager] updateNotifyState:!switcher.on inTeam:[self.team teamId] completion:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
+            [switcher setOn:!switcher.on animated:YES];
+        }
+    }];
+}
 
 @end
