@@ -297,6 +297,7 @@
 		3195DE4E1D63137E001BD2B4 /* SAMCDataPostSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE4D1D63137E001BD2B4 /* SAMCDataPostSerializer.m */; };
 		3195DE511D642E80001BD2B4 /* UIButton+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */; };
 		319B1EDB1DCD802400C423C5 /* NSString+SAMCValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */; };
+		31A1C1AB1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1AA1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m */; };
 		31DB30281DA8F3740072BE34 /* SAMCOneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */; };
 		31DB302E1DAB671C0072BE34 /* SAMCRequestEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB302D1DAB671C0072BE34 /* SAMCRequestEmptyView.m */; };
 		31DB30311DABB25E0072BE34 /* SAMCResponseAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30301DABB25E0072BE34 /* SAMCResponseAvatarsView.m */; };
@@ -921,6 +922,8 @@
 		3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+SAMC.m"; sourceTree = "<group>"; };
 		319B1ED91DCD802400C423C5 /* NSString+SAMCValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+SAMCValidation.h"; sourceTree = "<group>"; };
 		319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SAMCValidation.m"; sourceTree = "<group>"; };
+		31A1C1A91DD1B55800F84FC9 /* SAMCEditTeamNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCEditTeamNameViewController.h; sourceTree = "<group>"; };
+		31A1C1AA1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCEditTeamNameViewController.m; sourceTree = "<group>"; };
 		31DB30261DA8F3740072BE34 /* SAMCOneCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCOneCodeView.h; path = View/SAMCOneCodeView.h; sourceTree = "<group>"; };
 		31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCOneCodeView.m; path = View/SAMCOneCodeView.m; sourceTree = "<group>"; };
 		31DB302C1DAB671C0072BE34 /* SAMCRequestEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestEmptyView.h; path = Service/View/SAMCRequestEmptyView.h; sourceTree = "<group>"; };
@@ -1372,6 +1375,8 @@
 				311B76BE1DC6F8CF0056D4C5 /* SAMCCustomTeamCardViewController.m */,
 				311B76C01DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.h */,
 				311B76C11DC6F8DE0056D4C5 /* SAMCSPTeamCardViewController.m */,
+				31A1C1A91DD1B55800F84FC9 /* SAMCEditTeamNameViewController.h */,
+				31A1C1AA1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -2842,6 +2847,7 @@
 				311B76B71DC2004B0056D4C5 /* SAMCNormalTeamCardViewController.m in Sources */,
 				312C1CB71D35D85B00242906 /* NTESLogViewController.m in Sources */,
 				312C1C8C1D35D85B00242906 /* NTESSessionCustomLayoutConfig.m in Sources */,
+				31A1C1AB1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m in Sources */,
 				31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */,
 				312C1CCF1D35D85B00242906 /* NTESDemoRegisterTask.m in Sources */,
 				312C1C861D35D85B00242906 /* NTESLocationPoint.m in Sources */,

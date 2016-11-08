@@ -62,4 +62,13 @@
     return true;
 }
 
+- (BOOL)samc_isValidTeamname
+{
+    NSString *teamname = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if (teamname.length) {
+        return true;
+    }
+    return false;
+}
+
 @end

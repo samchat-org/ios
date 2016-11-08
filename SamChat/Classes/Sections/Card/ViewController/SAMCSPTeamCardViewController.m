@@ -24,6 +24,7 @@
 #import "NIMProgressHUD.h"
 #import "NIMGlobalMacro.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCEditTeamNameViewController.h"
 
 @interface SAMCSPTeamCardViewController ()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol,SAMCContactSelectDelegate,NIMMemberGroupViewDelegate>{
     UIAlertView *_updateTeamNameAlertView;
@@ -132,9 +133,11 @@
 #pragma mark - UITableViewAction
 - (void)updateTeamInfoName
 {
-    _updateTeamNameAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Change group name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
-    _updateTeamNameAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [_updateTeamNameAlertView show];
+    SAMCEditTeamNameViewController *vc = [[SAMCEditTeamNameViewController alloc] initWithTeam:self.team];
+    [self.navigationController pushViewController:vc animated:YES];
+//    _updateTeamNameAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"Change group name" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Done", nil];
+//    _updateTeamNameAlertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+//    [_updateTeamNameAlertView show];
 }
 
 - (void)quitTeam
@@ -159,10 +162,7 @@
                                                   if (!error) {
                                                       if (self.team.type == NIMTeamTypeNormal) {
                                                           [wself addHeaderDatas:members];
-                                                      }else{
-                                                          [wself.view nimkit_makeToast:@"邀请成功，等待验证" duration:2.0 position:NIMKitToastPositionCenter];
                                                       }
-                                                      //                                                      [wself refreshTableHeader:self.view.nim_width];
                                                   }else{
                                                       [wself.view nimkit_makeToast:@"邀请失败"];
                                                   }
@@ -198,6 +198,7 @@
 {
     if ([team.teamId isEqualToString:self.team.teamId]) {
         __weak typeof(self) wself = self;
+        wself.team = team;
         [self requestData:^(NSError *error, NSArray *data) {
             [wself refreshWithMembers:data];
         }];
@@ -213,21 +214,6 @@
     }
     return nil;
 }
-
-- (void)transferOwner:(NSString *)memberId isLeave:(BOOL)isLeave
-{
-    __block typeof(self) wself = self;
-    NIMTeamMember *memberInfo = [self teamInfo:memberId];
-    [[NIMSDK sharedSDK].teamManager transferManagerWithTeam:self.team.teamId newOwnerId:memberId isLeave:isLeave completion:^(NSError *error) {
-        if (!error) {
-            memberInfo.type = NIMTeamMemberTypeOwner;
-            [wself.view nimkit_makeToast:@"修改成功"];
-        }else{
-            [wself.view nimkit_makeToast:@"修改失败"];
-        }
-    }];
-}
-
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -375,7 +361,7 @@
         if (!error) {
             [wself removeMembers:@[uid]];
         }else{
-            [wself.view nimkit_makeToast:@"移除失败"];
+            [wself.view nimkit_makeToast:@"Remove error"];
         }
     }];
 }

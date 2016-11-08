@@ -15,5 +15,6 @@
 - (BOOL)samc_isValidVerificationCode;
 - (BOOL)samc_isValidPassword;
 - (BOOL)samc_isValidUsername;
+- (BOOL)samc_isValidTeamname;
 
 @end
