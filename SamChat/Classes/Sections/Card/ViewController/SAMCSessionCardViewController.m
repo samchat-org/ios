@@ -175,11 +175,12 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    SAMCCommonSwitcherCell *swithCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
-                    swithCell.textLabel.text = @"Mute chat";
-                    //    [cell.switcher setOn:];
-                    //    [cell.switcher addTarget:self action:@selector() forControlEvents:UIControlEventValueChanged];
-                    cell = swithCell;
+                    SAMCCommonSwitcherCell *switchCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
+                    switchCell.textLabel.text = @"Mute chat";
+                    BOOL needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:self.session.sessionId];
+                    [switchCell.switcher setOn:!needNotify];
+                    [switchCell.switcher addTarget:self action:@selector(onActionNeedNotifyValueChange:) forControlEvents:UIControlEventValueChanged];
+                    cell = switchCell;
                 }
                     break;
                 case 1:
@@ -255,6 +256,21 @@
                                             [wself.view makeToast:@"创建讨论组失败" duration:2.0 position:CSToastPositionCenter];
                                         }
                                     }];
+}
+
+
+#pragma mark - Action
+- (void)onActionNeedNotifyValueChange:(id)sender{
+    UISwitch *switcher = sender;
+    [SVProgressHUD show];
+    __weak typeof(self) wself = self;
+    [[NIMSDK sharedSDK].userManager updateNotifyState:!switcher.on forUser:self.session.sessionId completion:^(NSError *error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
+            [switcher setOn:!switcher.on animated:YES];
+        }
+    }];
 }
 
 @end
