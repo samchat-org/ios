@@ -11,13 +11,12 @@
 #import "SAMCConversationManager.h"
 #import "SAMCSessionViewController.h"
 #import "SAMCPersonalCardViewController.h"
-#import "NIMSessionListCell.h"
-#import "NIMSessionListCell+SAMC.h"
 #import "NIMAvatarImageView.h"
 #import "NIMKitUtil.h"
 #import "NIMMessage+SAMC.h"
 #import "SAMCQuestionManager.h"
 #import "SAMCRequestEmptyView.h"
+#import "SAMCCustomChatListCell.h"
 
 @interface SAMCRequestDetailViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCQuestionManagerDelegate,SAMCConversationManagerDelegate>
 
@@ -152,23 +151,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"cellId";
-    NIMSessionListCell * cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    static NSString * cellId = @"SAMCCustomChatListCellId";
+    SAMCCustomChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
-        cell = [[NIMSessionListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-        [cell.avatarImageView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
+        cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    SAMCRecentSession *recent = self.answerSessions[indexPath.row];
-    NIMSession *nimsession = [NIMSession session:recent.session.sessionId type:recent.session.sessionType];
-    cell.nameLabel.text = [self nameForRecentSession:recent];
-    [cell.avatarImageView setAvatarBySession:nimsession];
-    [cell.nameLabel sizeToFit];
-    cell.messageLabel.text = recent.lastMessageContent;
-    [cell.messageLabel sizeToFit];
-    cell.timeLabel.text = [self timestampDescriptionForRecentSession:recent];
-    [cell.timeLabel sizeToFit];
-    
-    [cell refreshBadge:recent.unreadCount];
+    cell.recentSession = self.self.answerSessions[indexPath.row];
     return cell;
 }
 
