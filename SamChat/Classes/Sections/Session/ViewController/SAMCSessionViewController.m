@@ -862,20 +862,22 @@ NIMContactSelectDelegate>
     [infoBtn sizeToFit];
     UIBarButtonItem *enterUInfoItem = [[UIBarButtonItem alloc] initWithCustomView:infoBtn];
     
-    UIButton *historyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [historyBtn addTarget:self action:@selector(enterHistory:) forControlEvents:UIControlEventTouchUpInside];
-    [historyBtn setImage:[UIImage imageNamed:@"icon_history_normal"] forState:UIControlStateNormal];
-    [historyBtn setImage:[UIImage imageNamed:@"icon_history_pressed"] forState:UIControlStateHighlighted];
-    [historyBtn sizeToFit];
-    UIBarButtonItem *historyButtonItem = [[UIBarButtonItem alloc] initWithCustomView:historyBtn];
+//    UIButton *historyBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+//    [historyBtn addTarget:self action:@selector(enterHistory:) forControlEvents:UIControlEventTouchUpInside];
+//    [historyBtn setImage:[UIImage imageNamed:@"icon_history_normal"] forState:UIControlStateNormal];
+//    [historyBtn setImage:[UIImage imageNamed:@"icon_history_pressed"] forState:UIControlStateHighlighted];
+//    [historyBtn sizeToFit];
+//    UIBarButtonItem *historyButtonItem = [[UIBarButtonItem alloc] initWithCustomView:historyBtn];
     
     if (self.samcSession.sessionType == NIMSessionTypeTeam) {
-        self.navigationItem.rightBarButtonItems  = @[enterTeamCardItem,historyButtonItem];
+//        self.navigationItem.rightBarButtonItems  = @[enterTeamCardItem,historyButtonItem];
+        self.navigationItem.rightBarButtonItems  = @[enterTeamCardItem];
     }else if(self.samcSession.sessionType == NIMSessionTypeP2P){
         if ([self.samcSession.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
-            self.navigationItem.rightBarButtonItems = @[historyButtonItem];
+//            self.navigationItem.rightBarButtonItems = @[historyButtonItem];
         }else{
-            self.navigationItem.rightBarButtonItems = @[enterUInfoItem,historyButtonItem];
+//            self.navigationItem.rightBarButtonItems = @[enterUInfoItem,historyButtonItem];
+            self.navigationItem.rightBarButtonItems = @[enterUInfoItem];
         }
     }
 }
