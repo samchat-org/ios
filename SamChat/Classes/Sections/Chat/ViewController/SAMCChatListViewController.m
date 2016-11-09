@@ -37,7 +37,7 @@
 
 #define SessionListTitle @"Chat"
 
-@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate,NIMUserManagerDelegate>
 
 @property (nonatomic,strong) NTESListHeader *header;
 @property (nonatomic,strong) UITableView *tableView;
@@ -88,6 +88,7 @@
 //    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
     [[SAMCAccountManager sharedManager] addDelegate:self];
+    [[NIMSDK sharedSDK].userManager addDelegate:self];
     
     extern NSString *const NIMKitTeamInfoHasUpdatedNotification;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onTeamInfoHasUpdatedNotification:) name:NIMKitTeamInfoHasUpdatedNotification object:nil];
@@ -102,6 +103,7 @@
 - (void)dealloc
 {
 //    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
+    [[NIMSDK sharedSDK].userManager removeDelegate:self];
     [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[SAMCAccountManager sharedManager] removeDelegate:self];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -358,6 +360,12 @@
 }
 
 - (void)onTeamMembersHasUpdatedNotification:(NSNotification *)notification
+{
+    [self reload];
+}
+
+#pragma mark - NIMUserManagerDelegate
+- (void)onMuteListChanged
 {
     [self reload];
 }
