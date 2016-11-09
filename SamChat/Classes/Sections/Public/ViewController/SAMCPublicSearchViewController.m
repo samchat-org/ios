@@ -28,6 +28,8 @@
 @property (nonatomic, assign) NSInteger currentCount;
 @property (nonatomic, copy) NSString *searchText;
 
+@property (nonatomic, assign) BOOL isSearching;
+
 @end
 
 @implementation SAMCPublicSearchViewController
@@ -37,6 +39,7 @@
     [super viewDidLoad];
     _data = [[NSMutableArray alloc] init];
     _currentCount = 0;
+    _isSearching = NO;
     [self setupSubviews];
     self.isSearchBarFirstResponder = YES;
 }
@@ -102,6 +105,10 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
+    if (self.isSearching) {
+        return;
+    }
+    self.isSearching = YES;
     self.searchText = self.searchBar.text;
     self.tableView.tableFooterView.hidden = NO;
     self.currentCount = 0;
@@ -199,6 +206,7 @@
 {
     __weak typeof(self) wself = self;
     [[SAMCPublicManager sharedManager] searchPublicWithKey:self.searchText currentCount:_currentCount location:nil completion:^(NSArray * _Nullable users, NSError * _Nullable error) {
+        wself.isSearching = NO;
         if (error) {
             wself.tableView.tableFooterView.hidden = YES;
             NSString *toast = error.userInfo[NSLocalizedDescriptionKey];
