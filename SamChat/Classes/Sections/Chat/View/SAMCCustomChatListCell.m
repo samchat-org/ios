@@ -22,6 +22,7 @@
 @property (nonatomic, strong) UILabel *dotLabel;
 
 @property (nonatomic, strong) NIMBadgeView *badgeView;
+@property (nonatomic, strong) UIImageView *muteImageView;
 
 @end
 
@@ -44,6 +45,7 @@
     [self addSubview:self.timeLabel];
     [self addSubview:self.messageLabel];
     [self addSubview:self.badgeView];
+    [self addSubview:self.muteImageView];
     
     [_avatarView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                             attribute:NSLayoutAttributeWidth
@@ -98,10 +100,10 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-10-[_badgeView]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-5-[_muteImageView]-5-[_badgeView]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_badgeView)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_muteImageView,_badgeView)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -117,18 +119,28 @@
                                                     multiplier:1.0f
                                                       constant:-15.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_badgeView
-                                                     attribute:NSLayoutAttributeBottom
+                                                     attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
-                                                        toItem:self
-                                                     attribute:NSLayoutAttributeBottom
+                                                        toItem:_messageLabel
+                                                     attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
-                                                      constant:-15.0f]];
+                                                      constant:0.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_muteImageView
+                                                     attribute:NSLayoutAttributeCenterY
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:_messageLabel
+                                                     attribute:NSLayoutAttributeCenterY
+                                                    multiplier:1.0f
+                                                      constant:0.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_messageLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_badgeView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_badgeView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_muteImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_muteImageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -172,11 +184,12 @@
     if (recentSession.unreadCount) {
         self.avatarView.circleColor = SAMC_COLOR_LIME;
         self.badgeView.hidden = NO;
+        self.badgeView.badgeValue = [@(recentSession.unreadCount) stringValue];
     } else {
         self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
         self.badgeView.hidden = YES;
+        self.badgeView.badgeValue = @"";
     }
-    self.badgeView.badgeValue = [@(recentSession.unreadCount) stringValue];
     
     NSString *name = @"";
     if ([recentSession.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
@@ -189,6 +202,16 @@
         name = team.teamName;
     }
     self.nameLabel.text = name;
+    
+    BOOL needNotify;
+    if (recentSession.session.sessionType == NIMSessionTypeP2P) {
+        needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:recentSession.session.sessionId];
+    } else {
+        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
+        needNotify = [team notifyForNewMsg];
+    }
+    self.muteImageView.hidden = needNotify;
+    self.muteImageView.image = needNotify?nil:[UIImage imageNamed:@"ico_chat_mute"];
 }
 
 - (NSString *)nameForRecentSession:(SAMCRecentSession *)recent
@@ -284,6 +307,15 @@
         _badgeView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _badgeView;
+}
+
+- (UIImageView *)muteImageView
+{
+    if (_muteImageView == nil) {
+        _muteImageView = [[UIImageView alloc] init];
+        _muteImageView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _muteImageView;
 }
 
 @end
