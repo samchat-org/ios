@@ -19,6 +19,7 @@
 #import "NSDictionary+NTESJson.h"
 #import "SAMCPublicManager.h"
 #import "SAMCImageAttachment.h"
+#import "SAMCServerAPIMacro.h"
 
 @interface SAMCChatManager ()<NIMChatManagerDelegate,NIMSystemNotificationManagerDelegate>
 
@@ -271,7 +272,7 @@
         if ([dict isKindOfClass:[NSDictionary class]]) {
             if ([dict jsonInteger:NTESNotifyID] == NTESCustomRequestPush) {
                 NSDictionary *requestDict = [dict jsonDict:NTESCustomContent];
-                [[SAMCQuestionManager sharedManager] insertReceivedQuestion:requestDict];
+                [[SAMCQuestionManager sharedManager] insertReceivedQuestion:requestDict[SAMC_BODY]];
             }
         }
     }
