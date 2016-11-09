@@ -285,7 +285,7 @@
         NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
         if ([dict isKindOfClass:[NSDictionary class]]) {
-            SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:dict];
+            SAMCPublicMessage *message = [SAMCPublicMessage publicMessageFromDict:dict[SAMC_BODY]];
             if (message.messageType == NIMMessageTypeCustom) {
                 NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
                 SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
