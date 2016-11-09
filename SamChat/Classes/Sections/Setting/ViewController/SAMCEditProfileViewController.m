@@ -12,8 +12,9 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "NSString+SAMCValidation.h"
+#import "SAMCTextView.h"
 
-@interface SAMCEditProfileViewController ()
+@interface SAMCEditProfileViewController () <UITextViewDelegate>
 
 @property (nonatomic, assign) SAMCEditProfileType profileType;
 @property (nonatomic, strong) NSDictionary *profileDict;
@@ -22,6 +23,7 @@
 @property (nonatomic, assign) SEL action;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UITextField *normalTextField;
+@property (nonatomic, strong) SAMCTextView *descriptionTextView;
 
 @property (nonatomic, weak) id currentEditView;
 
@@ -71,6 +73,8 @@
     } else if (_profileType == SAMCEditProfileTypeSPEmail) {
         [self setupCommonViews];
         [self setupSPEmailViews];
+    } else if (_profileType == SAMCEditProfileTypeSPDescription) {
+        [self setupSPDescriptionViews];
     }
 }
 
@@ -136,7 +140,7 @@
 - (void)setupEmailViews
 {
     [self setupNavItemOfUserMode:SAMCUserModeTypeCustom];
-    self.navigationItem.title = @"Change Email";
+    self.navigationItem.title = @"Email";
     _action = @selector(updateEmail);
     _tipLabel.text = @"Enter your Email.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
@@ -149,7 +153,7 @@
 - (void)setupCompanyNameViews
 {
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
-    self.navigationItem.title = @"Change Company Name";
+    self.navigationItem.title = @"Company Name";
     _action = @selector(updateSPCompanyName);
     _tipLabel.text = @"Enter your company name.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
@@ -162,7 +166,7 @@
 - (void)setupServiceCategoryViews
 {
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
-    self.navigationItem.title = @"Change Service Category";
+    self.navigationItem.title = @"Service Category";
     _action = @selector(updateSPServiceCategory);
     _tipLabel.text = @"Enter your service category.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
@@ -175,7 +179,7 @@
 - (void)setupSPPhoneViews
 {
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
-    self.navigationItem.title = @"Change Work Phone";
+    self.navigationItem.title = @"Work Phone";
     _action = @selector(updateSPPhone);
     _tipLabel.text = @"Enter your service work phone no.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
@@ -188,7 +192,7 @@
 - (void)setupSPEmailViews
 {
     [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
-    self.navigationItem.title = @"Change Service Email";
+    self.navigationItem.title = @"Service Email";
     _action = @selector(updateSPEmail);
     _tipLabel.text = @"Enter your service email.";
     _tipLabel.textAlignment = NSTextAlignmentLeft;
@@ -196,6 +200,24 @@
                                                                              attributes:@{NSForegroundColorAttributeName: UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5f)}];
     _normalTextField.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_EMAIL] ?:@"";
     _currentEditView = _normalTextField;
+}
+
+- (void)setupSPDescriptionViews
+{
+    [self setupNavItemOfUserMode:SAMCUserModeTypeSP];
+    self.navigationItem.title = @"Service Description";
+    _action = @selector(updateSPDescription);
+    [self.view addSubview:self.descriptionTextView];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_descriptionTextView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_descriptionTextView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_descriptionTextView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_descriptionTextView)]];
+    _descriptionTextView.text = [_profileDict valueForKeyPath:SAMC_SAM_PROS_INFO_SERVICE_DESCRIPTION] ?:@"";
+    _currentEditView = _descriptionTextView;
 }
 
 #pragma mark - Action
@@ -247,6 +269,13 @@
     [self updateProfile:profileDict];
 }
 
+- (void)updateSPDescription
+{
+    NSString *spdesc = self.descriptionTextView.text;
+    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_SERVICE_DESCRIPTION:spdesc}};
+    [self updateProfile:profileDict];
+}
+
 - (void)updateProfile:(NSDictionary *)profileDict
 {
     __weak typeof(self) wself = self;
@@ -271,6 +300,7 @@
     } else if (_profileType == SAMCEditProfileTypeSPPhone) {
     } else if (_profileType == SAMCEditProfileTypeSPEmail) {
         isValid = [text samc_isValidEmail];
+    } else if (_profileType == SAMCEditProfileTypeSPDescription) {
     }
     return isValid;
 }
@@ -283,6 +313,12 @@
 
 - (void)normalTextFieldEditingDidEndOnExit:(id)sender
 {
+}
+
+#pragma mark - UITextViewDelegate
+- (void)textViewDidChange:(UITextView *)textView
+{
+    self.rightNavItem.enabled = [_descriptionTextView.text length];
 }
 
 #pragma mark - lazy load
@@ -318,6 +354,17 @@
     }
     
     return _normalTextField;
+}
+
+- (SAMCTextView *)descriptionTextView
+{
+    if (_descriptionTextView == nil) {
+        _descriptionTextView = [[SAMCTextView alloc] init];
+        _descriptionTextView.translatesAutoresizingMaskIntoConstraints = NO;
+        _descriptionTextView.placeholder = @"i.e. your specialization, years of experience, how do you work with your client, etc.";
+        _descriptionTextView.delegate = self;
+    }
+    return _descriptionTextView;
 }
 
 @end

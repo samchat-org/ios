@@ -95,6 +95,11 @@
                     break;
                 case 2: // service desc
                 {
+                    NSString *desc = self.user.userInfo.spInfo.serviceDescription ?:@"";
+                    NSDictionary *profileDict = @{SAMC_SAM_PROS_INFO:@{SAMC_SERVICE_DESCRIPTION:desc}};
+                    SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeSPDescription
+                                                                                                       profileDict:profileDict];
+                    [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                     

@@ -76,6 +76,12 @@
     [_placeholderLabel setText:placeholder];
 }
 
+- (void)setText:(NSString *)text
+{
+    [super setText:text];
+    _placeholderLabel.hidden = [text length];
+}
+
 - (void)layoutSubviews
 {
     [super layoutSubviews];
