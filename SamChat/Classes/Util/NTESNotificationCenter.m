@@ -72,7 +72,17 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
 #pragma mark - NIMChatManagerDelegate
 - (void)onRecvMessages:(NSArray *)messages
 {
-    method_execute_frequency(self, @selector(playMessageAudioTip), 0.3);
+    NIMMessage *message = [messages lastObject];
+    BOOL needNotify;
+    if (message.session.sessionType == NIMSessionTypeP2P) {
+        needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:message.session.sessionId];
+    } else {
+        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:message.session.sessionId];
+        needNotify = [team notifyForNewMsg];
+    }
+    if (needNotify) {
+        method_execute_frequency(self, @selector(playMessageAudioTip), 0.3);
+    }
 }
 
 - (void)playMessageAudioTip
