@@ -46,7 +46,7 @@
     _placeholderLabel.numberOfLines = 0;
     [self addSubview:_placeholderLabel];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_placeholderLabel]-20-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-25-[_placeholderLabel]-25-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_placeholderLabel)]];
