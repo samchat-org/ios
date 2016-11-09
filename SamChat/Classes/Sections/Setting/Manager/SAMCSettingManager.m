@@ -15,6 +15,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCDataBaseManager.h"
 #import "SAMCUserManager.h"
+#import "SAMCPreferenceManager.h"
 
 @implementation SAMCSettingManager
 
@@ -228,6 +229,10 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
+                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
+                [[SAMCUserManager sharedManager] updateUser:user];
+                [SAMCPreferenceManager sharedManager].needQuestionNotify = @(needNotify);
                 completion(nil);
             }
         } else {

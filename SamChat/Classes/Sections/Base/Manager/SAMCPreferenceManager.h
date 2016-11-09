@@ -19,6 +19,8 @@
 @property (nonatomic, copy) NSString *localCustomerListVersion;
 @property (nonatomic, copy) NSString *localFollowListVersion;
 
+@property (nonatomic, strong) NSNumber *needQuestionNotify;
+
 + (instancetype)sharedManager;
 - (void)reset;
 

@@ -14,6 +14,7 @@
 #define SAMC_LOCALFOLLOWLISTVERSION_KEY     @"samc_localfollowlistversion_key"
 #define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
 #define SAMC_LOCALSERVICERLISTVERSION_KEY   @"samc_localservicerlistversion_key"
+#define SAMC_NEEDQUESTIONNOTIFY_KEY         @"samc_needquestionnotify_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -29,6 +30,7 @@
 @synthesize localFollowListVersion = _localFollowListVersion;
 @synthesize localCustomerListVersion = _localCustomerListVersion;
 @synthesize localServicerListVersion = _localServicerListVersion;
+@synthesize needQuestionNotify = _needQuestionNotify;
 
 + (instancetype)sharedManager
 {
@@ -64,6 +66,8 @@
         [[NSUserDefaults standardUserDefaults] setValue:_localServicerListVersion forKey:SAMC_LOCALSERVICERLISTVERSION_KEY];
         _localCustomerListVersion = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_localCustomerListVersion forKey:SAMC_LOCALCUSTOMERLISTVERSION_KEY];
+        _needQuestionNotify = @(YES);
+        [[NSUserDefaults standardUserDefaults] setValue:_needQuestionNotify forKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
     });
 }
 
@@ -195,6 +199,28 @@
     dispatch_barrier_async(_syncQueue, ^{
         _sendClientIdFlag = sendClientIdFlag;
         [[NSUserDefaults standardUserDefaults] setValue:sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
+    });
+}
+
+#pragma mark - needQuestionNotify
+- (NSNumber *)needQuestionNotify
+{
+    __block NSNumber *flag;
+    dispatch_sync(_syncQueue, ^{
+        if (_needQuestionNotify == nil) {
+            _needQuestionNotify = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
+            _needQuestionNotify = _needQuestionNotify ?:@(YES);
+        }
+        flag = _needQuestionNotify;
+    });
+    return flag;
+}
+
+- (void)setNeedQuestionNotify:(NSNumber *)needQuestionNotify
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _needQuestionNotify = needQuestionNotify;
+        [[NSUserDefaults standardUserDefaults] setValue:needQuestionNotify forKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
     });
 }
 

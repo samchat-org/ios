@@ -169,4 +169,6 @@
 #define SAMC_SAM_PROS_INFO_EMAIL                @"sam_pros_info.email"
 #define SAMC_SAM_PROS_INFO_ADDRESS              @"sam_pros_info.address"
 
+#define SAMC_MY_SETTINGS_QUESTION_NOTIFY        @"my_settings.question_notify"
+
 #endif /* SAMCServerAPIMacro_h */

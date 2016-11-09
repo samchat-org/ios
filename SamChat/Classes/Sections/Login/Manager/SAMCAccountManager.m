@@ -24,6 +24,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCSyncManager.h"
+#import "SAMCPreferenceManager.h"
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate, SAMCUserManagerDelegate>
 
@@ -195,6 +196,7 @@
             } else {
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
+                [SAMCPreferenceManager sharedManager].needQuestionNotify = [userInfo valueForKeyPath:SAMC_MY_SETTINGS_QUESTION_NOTIFY];
                 SAMCUser *user = [SAMCUser userFromDict:userInfo];
                 [self loginNetEase:user token:token completion:completion];
             }
