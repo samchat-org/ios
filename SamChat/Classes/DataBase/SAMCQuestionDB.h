@@ -16,6 +16,7 @@
 
 - (NSArray<SAMCQuestionSession *> *)allSendQuestion;
 - (NSArray<SAMCQuestionSession *> *)allReceivedQuestion;
+- (NSArray<NSString *> *)sendQuestionHistory;
 - (void)insertSendQuestion:(NSDictionary *)questionInfo;
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session;
 - (void)clearSendQuestionNewResponseCount:(SAMCQuestionSession *)session;

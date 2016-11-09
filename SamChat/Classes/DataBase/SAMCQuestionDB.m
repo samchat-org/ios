@@ -120,6 +120,20 @@
     return questions;
 }
 
+- (NSArray<NSString *> *)sendQuestionHistory
+{
+    __block NSMutableArray *questions = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        FMResultSet *s = [db executeQuery:@"SELECT question FROM send_question ORDER BY serial DESC LIMIT ?", @(10)];
+        while ([s next]) {
+            NSString *question = [s stringForColumnIndex:0];
+            [questions addObject:question];
+        }
+        [s close];
+    }];
+    return questions;
+}
+
 - (void)insertSendQuestion:(NSDictionary *)questionInfo
 {
     DDLogDebug(@"insertSendQuestion: %@", questionInfo);

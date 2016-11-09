@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UITextField *locationTextField;
 @property (nonatomic, strong) UITableView *tableView;
 
-@property (nonatomic, strong) NSMutableArray *data;
+@property (nonatomic, strong) NSArray *data;
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) CLLocation *currentLocation;
@@ -58,12 +58,14 @@
                     position:CSToastPositionCenter];
     }
     
-    [self queryPopularRequests];
+    self.data = [[SAMCQuestionManager sharedManager] sendQuestionHistory];
+    _tableView.hidden = ([self.data count] == 0);
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self.requestTextField becomeFirstResponder];
 }
 
 - (void)setupSubviews
@@ -151,20 +153,20 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)queryPopularRequests
-{
-    __weak typeof(self) wself = self;
-    [[SAMCQuestionManager sharedManager] queryPopularRequest:20 completion:^(NSArray<NSString *> * _Nullable populars) {
-        DDLogDebug(@"tet:%@", populars);
-        wself.data = [populars mutableCopy];
-        [wself.tableView reloadData];
-    }];
-}
+//- (void)queryPopularRequests
+//{
+//    __weak typeof(self) wself = self;
+//    [[SAMCQuestionManager sharedManager] queryPopularRequest:20 completion:^(NSArray<NSString *> * _Nullable populars) {
+//        DDLogDebug(@"tet:%@", populars);
+//        wself.data = [populars mutableCopy];
+//        [wself.tableView reloadData];
+//    }];
+//}
 
 #pragma mark - UITableViewDataSource
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    return @"popular requests";
+    return @"request history";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -174,14 +176,14 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString * cellId = @"SAMCSPopularRequestCellId";
+    static NSString * cellId = @"SAMCSHistoryRequestCellId";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
     if (!cell) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     cell.textLabel.text = self.data[indexPath.row];
     cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
-    cell.textLabel.textColor = UIColorFromRGB(0x52626F);
+    cell.textLabel.textColor = SAMC_COLOR_INK;
     return cell;
 }
 
@@ -223,8 +225,8 @@
         _requestLabel = [[UILabel alloc] init];
         _requestLabel.translatesAutoresizingMaskIntoConstraints = NO;
         _requestLabel.text = @"How can we help?";
-        _requestLabel.font = [UIFont boldSystemFontOfSize:15.0f];
-        _requestLabel.textColor = SAMC_MAIN_DARKCOLOR;
+        _requestLabel.font = [UIFont systemFontOfSize:15.0f];
+        _requestLabel.textColor = SAMC_COLOR_DARKBLUE;
     }
     return _requestLabel;
 }

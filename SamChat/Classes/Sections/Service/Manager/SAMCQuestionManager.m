@@ -52,6 +52,11 @@
     return [[SAMCDataBaseManager sharedManager].questionDB allReceivedQuestion];
 }
 
+- (NSArray<NSString *> *)sendQuestionHistory
+{
+    return [[SAMCDataBaseManager sharedManager].questionDB sendQuestionHistory];
+}
+
 - (void)sendQuestion:(NSString *)question
             location:(NSDictionary *)location
           completion:(void (^)(NSError * __nullable error))completion
