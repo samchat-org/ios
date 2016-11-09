@@ -75,8 +75,10 @@
 
     self.frame = [self frameWithStr:badgeValue];
     
-    
     [self setNeedsDisplay];
+// SAMC_BEGIN
+    [self invalidateIntrinsicContentSize];
+// SAMC_END
 }
 
 - (CGSize)badgeSizeWithStr:(NSString *)badgeValue{
@@ -96,7 +98,12 @@
     return badgeFrame;
 }
 
-
+// SAMC_BEGIN
+- (CGSize)intrinsicContentSize
+{
+    return self.frame.size;
+}
+// SAMC_END
 
 #pragma mark - Private
 - (void)drawWithContent:(CGRect)rect context:(CGContextRef)context{
