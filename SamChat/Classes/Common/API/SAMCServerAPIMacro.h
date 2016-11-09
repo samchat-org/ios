@@ -41,6 +41,7 @@
 #define SAMC_URL_PROFILE_PROFILE_UPDATE             SAMC_API_PREFIX@"api_1.0_profile_profileUpdate.do"
 #define SAMC_URL_PROFILE_EDITCELLPHONE_CODER_EQUEST SAMC_API_PREFIX@"api_1.0_profile_editCellPhoneCodeRequest.do"
 #define SAMC_URL_PROFILE_EDITCELLPHONE_UPDATE       SAMC_API_PREFIX@"api_1.0_profile_editCellPhoneUpdate.do"
+#define SAMC_URL_PROFILE_UPDATE_QUESTION_NOTIFY     SAMC_API_PREFIX@"api_1.0_profile_updateQuestionNotify.do"
 
 #define SAMC_AWSS3_URLPREFIX            @"http://storage-test.samchat.com/"
 #define SAMC_AWSS3_BUCKETNAME           @"storage-test.samchat.com"
@@ -89,6 +90,7 @@
 #define SAMC_PROFILE_UPDATE             @"profile-update"
 #define SAMC_EDITCELLPHONE_CODE_REQUEST @"editCellPhone-code-request"
 #define SAMC_EDITCELLPHONE_UPDATE       @"editCellPhone-update"
+#define SAMC_update_question_notify     @"update-question-notify"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -106,6 +108,7 @@
 #define SAMC_COUNT                      @"count"
 #define SAMC_OLD_PWD                    @"old_pwd"
 #define SAMC_NEW_PWD                    @"new_pwd"
+#define SAMC_QUESTION_NOTIFY            @"question_notify"
 
 #define SAMC_COMPANY_NAME               @"company_name"
 #define SAMC_SERVICE_CATEGORY           @"service_category"

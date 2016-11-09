@@ -778,6 +778,24 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "update-question-notify"
+//        "token": "token"
+//    },
+//    "body" :
+//    {
+//        “question_notify”:0  //   1. need notify   0. no
+//    } 
+//}
++ (NSDictionary *)updateQuestionNotify:(BOOL)needNotify
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_update_question_notify, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_QUESTION_NOTIFY:@(needNotify)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

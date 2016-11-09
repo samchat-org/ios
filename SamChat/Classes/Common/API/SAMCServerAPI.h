@@ -104,4 +104,6 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
                                            cellPhone:(NSString *)cellPhone
                                           verifyCode:(NSString *)verifyCode;
 
++ (NSDictionary *)updateQuestionNotify:(BOOL)needNotify;
+
 @end

@@ -37,6 +37,9 @@ NS_ASSUME_NONNULL_BEGIN
                    to:(NSString *)changePWD
            completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)updateQuestionNotify:(BOOL)needNotify
+                  completion:(void (^)(NSError * __nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
