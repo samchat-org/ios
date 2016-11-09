@@ -10,6 +10,7 @@
 #import "SAMCAvatarImageView.h"
 #import "SAMCSession.h"
 #import "NIMKitUtil.h"
+#import "NIMBadgeView.h"
 
 @interface SAMCCustomChatListCell ()
 
@@ -19,6 +20,8 @@
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *dotLabel;
+
+@property (nonatomic, strong) NIMBadgeView *badgeView;
 
 @end
 
@@ -40,6 +43,7 @@
     [self addSubview:self.dotLabel];
     [self addSubview:self.timeLabel];
     [self addSubview:self.messageLabel];
+    [self addSubview:self.badgeView];
     
     [_avatarView addConstraint:[NSLayoutConstraint constraintWithItem:_avatarView
                                                             attribute:NSLayoutAttributeWidth
@@ -94,10 +98,10 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-10-[_badgeView]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_badgeView)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -112,10 +116,19 @@
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
                                                       constant:-15.0f]];
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:_badgeView
+                                                     attribute:NSLayoutAttributeBottom
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeBottom
+                                                    multiplier:1.0f
+                                                      constant:-15.0f]];
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_badgeView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_badgeView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -138,7 +151,6 @@
 
 - (void)setRecentSession:(SAMCRecentSession *)recentSession
 {
-//    self.nameLabel.text = [self nameForRecentSession:recentSession];
     self.messageLabel.text = recentSession.lastMessageContent;
     self.timeLabel.text = [self timestampDescriptionForRecentSession:recentSession];
     
@@ -159,9 +171,12 @@
     self.categoryLabel.text = info.serviceCategory;
     if (recentSession.unreadCount) {
         self.avatarView.circleColor = SAMC_COLOR_LIME;
+        self.badgeView.hidden = NO;
     } else {
         self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
+        self.badgeView.hidden = YES;
     }
+    self.badgeView.badgeValue = [@(recentSession.unreadCount) stringValue];
     
     NSString *name = @"";
     if ([recentSession.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
@@ -260,6 +275,15 @@
         _messageLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
     }
     return _messageLabel;
+}
+
+- (NIMBadgeView *)badgeView
+{
+    if (_badgeView == nil) {
+        _badgeView = [NIMBadgeView viewWithBadgeTip:@""];
+        _badgeView.translatesAutoresizingMaskIntoConstraints = NO;
+    }
+    return _badgeView;
 }
 
 @end
