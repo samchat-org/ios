@@ -21,7 +21,7 @@
 #import "SAMCWebViewController.h"
 #import "SAMCQRCodeScanViewController.h"
 #import "SAMCSPIntroViewController.h"
-#import "SAMCButton.h"
+#import "SAMCCellButton.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -353,7 +353,7 @@
 
 - (void)addLearnMoreButton:(UITableViewCell *)cell
 {
-    SAMCButton *learnMoreButton = [[SAMCButton alloc] init];
+    SAMCCellButton *learnMoreButton = [[SAMCCellButton alloc] init];
     learnMoreButton.translatesAutoresizingMaskIntoConstraints = NO;
     learnMoreButton.layer.cornerRadius = 14.0f;
     learnMoreButton.layer.masksToBounds = YES;

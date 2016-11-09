@@ -1,16 +1,16 @@
 //
-//  SAMCButton.m
+//  SAMCCellButton.m
 //  SamChat
 //
-//  Created by HJ on 11/4/16.
+//  Created by HJ on 11/9/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
-#import "SAMCButton.h"
+#import "SAMCCellButton.h"
 
 // fix delayed “Touch Down” event for UIButton in UITableViewCell
 // is caused by the UIScrollView property delaysContentTouches
-@implementation SAMCButton
+@implementation SAMCCellButton
 
 - (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {

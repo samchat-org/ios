@@ -38,7 +38,6 @@
 		311B77021DCC74C70056D4C5 /* SAMCButtonRightCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B77011DCC74C70056D4C5 /* SAMCButtonRightCell.m */; };
 		311B77051DCC7E5E0056D4C5 /* SAMCSPIntroViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B77041DCC7E5E0056D4C5 /* SAMCSPIntroViewController.m */; };
 		311B77071DCC82320056D4C5 /* becomesp.html in Resources */ = {isa = PBXBuildFile; fileRef = 311B77061DCC82320056D4C5 /* becomesp.html */; };
-		311B770A1DCC83E00056D4C5 /* SAMCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 311B77091DCC83E00056D4C5 /* SAMCButton.m */; };
 		3124116C1D421DC2008B2A35 /* SAMCCountryCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */; };
 		312411701D45A36B008B2A35 /* SAMCAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3124116F1D45A36B008B2A35 /* SAMCAppDelegate.m */; };
 		312A057E1DBF28100045A8C6 /* samchat_adhoc.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 312A057D1DBF28100045A8C6 /* samchat_adhoc.xcconfig */; };
@@ -297,6 +296,8 @@
 		3195DE511D642E80001BD2B4 /* UIButton+SAMC.m in Sources */ = {isa = PBXBuildFile; fileRef = 3195DE501D642E80001BD2B4 /* UIButton+SAMC.m */; };
 		319B1EDB1DCD802400C423C5 /* NSString+SAMCValidation.m in Sources */ = {isa = PBXBuildFile; fileRef = 319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */; };
 		31A1C1AB1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1AA1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m */; };
+		31A1C1AE1DD2C00700F84FC9 /* SAMCLazyButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1AD1DD2C00700F84FC9 /* SAMCLazyButton.m */; };
+		31A1C1B11DD2C15A00F84FC9 /* SAMCCellButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1B01DD2C15A00F84FC9 /* SAMCCellButton.m */; };
 		31DB30281DA8F3740072BE34 /* SAMCOneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */; };
 		31DB302E1DAB671C0072BE34 /* SAMCRequestEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB302D1DAB671C0072BE34 /* SAMCRequestEmptyView.m */; };
 		31DB30311DABB25E0072BE34 /* SAMCResponseAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30301DABB25E0072BE34 /* SAMCResponseAvatarsView.m */; };
@@ -430,8 +431,6 @@
 		311B77031DCC7E5E0056D4C5 /* SAMCSPIntroViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSPIntroViewController.h; path = ViewController/SAMCSPIntroViewController.h; sourceTree = "<group>"; };
 		311B77041DCC7E5E0056D4C5 /* SAMCSPIntroViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSPIntroViewController.m; path = ViewController/SAMCSPIntroViewController.m; sourceTree = "<group>"; };
 		311B77061DCC82320056D4C5 /* becomesp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = becomesp.html; sourceTree = "<group>"; };
-		311B77081DCC83E00056D4C5 /* SAMCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCButton.h; sourceTree = "<group>"; };
-		311B77091DCC83E00056D4C5 /* SAMCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCButton.m; sourceTree = "<group>"; };
 		3124116A1D421DC2008B2A35 /* SAMCCountryCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCountryCodeViewController.h; sourceTree = "<group>"; };
 		3124116B1D421DC2008B2A35 /* SAMCCountryCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCountryCodeViewController.m; sourceTree = "<group>"; };
 		3124116E1D45A36B008B2A35 /* SAMCAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCAppDelegate.h; sourceTree = "<group>"; };
@@ -921,6 +920,10 @@
 		319B1EDA1DCD802400C423C5 /* NSString+SAMCValidation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SAMCValidation.m"; sourceTree = "<group>"; };
 		31A1C1A91DD1B55800F84FC9 /* SAMCEditTeamNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCEditTeamNameViewController.h; sourceTree = "<group>"; };
 		31A1C1AA1DD1B55800F84FC9 /* SAMCEditTeamNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCEditTeamNameViewController.m; sourceTree = "<group>"; };
+		31A1C1AC1DD2C00700F84FC9 /* SAMCLazyButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCLazyButton.h; sourceTree = "<group>"; };
+		31A1C1AD1DD2C00700F84FC9 /* SAMCLazyButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCLazyButton.m; sourceTree = "<group>"; };
+		31A1C1AF1DD2C15A00F84FC9 /* SAMCCellButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCCellButton.h; sourceTree = "<group>"; };
+		31A1C1B01DD2C15A00F84FC9 /* SAMCCellButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCCellButton.m; sourceTree = "<group>"; };
 		31DB30261DA8F3740072BE34 /* SAMCOneCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCOneCodeView.h; path = View/SAMCOneCodeView.h; sourceTree = "<group>"; };
 		31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCOneCodeView.m; path = View/SAMCOneCodeView.m; sourceTree = "<group>"; };
 		31DB302C1DAB671C0072BE34 /* SAMCRequestEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestEmptyView.h; path = Service/View/SAMCRequestEmptyView.h; sourceTree = "<group>"; };
@@ -1286,8 +1289,10 @@
 				31DB30BD1DBC616C0072BE34 /* SAMCTableCellFactory.m */,
 				311B76D81DC770BD0056D4C5 /* SAMCRefreshView.h */,
 				311B76D91DC770BD0056D4C5 /* SAMCRefreshView.m */,
-				311B77081DCC83E00056D4C5 /* SAMCButton.h */,
-				311B77091DCC83E00056D4C5 /* SAMCButton.m */,
+				31A1C1AC1DD2C00700F84FC9 /* SAMCLazyButton.h */,
+				31A1C1AD1DD2C00700F84FC9 /* SAMCLazyButton.m */,
+				31A1C1AF1DD2C15A00F84FC9 /* SAMCCellButton.h */,
+				31A1C1B01DD2C15A00F84FC9 /* SAMCCellButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2952,6 +2957,7 @@
 				312C1CCD1D35D85B00242906 /* NTESSettingSwitcherCell.m in Sources */,
 				312C1C6A1D35D85B00242906 /* NTESContactDataMember.m in Sources */,
 				316A678D1D8BCA3700B56A5D /* SAMCUnreadCountManager.m in Sources */,
+				31A1C1B11DD2C15A00F84FC9 /* SAMCCellButton.m in Sources */,
 				31F8FCA71D74337100734068 /* SAMCPublicManager.m in Sources */,
 				31DB30CB1DBDBCD90072BE34 /* SAMCPhone.m in Sources */,
 				316A672B1D7E66CD00B56A5D /* SAMCUser.m in Sources */,
@@ -3054,7 +3060,6 @@
 				312C1C8D1D35D85B00242906 /* NTESSessionTipConfig.m in Sources */,
 				314444F31D49ED290062B797 /* SAMCConfirmPhoneCodeViewController.m in Sources */,
 				312C1C5B1D35D85B00242906 /* NTESChatroomListViewController.m in Sources */,
-				311B770A1DCC83E00056D4C5 /* SAMCButton.m in Sources */,
 				31DB30C51DBCB6A80072BE34 /* SAMCSPContactCell.m in Sources */,
 				3195DE241D5877F6001BD2B4 /* SAMCSessionConfig.m in Sources */,
 				314444FA1D4A41A50062B797 /* SAMCSetPasswordViewController.m in Sources */,
@@ -3089,6 +3094,7 @@
 				312C1C4D1D35D85B00242906 /* NTESCardPortraitCell.m in Sources */,
 				316A67971D8FDAFE00B56A5D /* SAMCUserManager.m in Sources */,
 				312C1C571D35D85B00242906 /* NTESChatroomCellLayoutConfig.m in Sources */,
+				31A1C1AE1DD2C00700F84FC9 /* SAMCLazyButton.m in Sources */,
 				312C1CC41D35D85B00242906 /* NTESGenderSettingViewController.m in Sources */,
 				312C1C701D35D85B00242906 /* NTESUserListCell.m in Sources */,
 				312C1CAD1D35D85B00242906 /* NTESVideoChatNetStatusView.m in Sources */,

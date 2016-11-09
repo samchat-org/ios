@@ -1,13 +1,13 @@
 //
-//  SAMCButton.h
+//  SAMCLazyButton.h
 //  SamChat
 //
-//  Created by HJ on 11/4/16.
+//  Created by HJ on 11/9/16.
 //  Copyright © 2016 SamChat. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-@interface SAMCButton : UIButton
+@interface SAMCLazyButton : UIButton
 
 @end
