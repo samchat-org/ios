@@ -11,6 +11,7 @@
 #import "SAMCSession.h"
 #import "NIMKitUtil.h"
 #import "NIMBadgeView.h"
+#import "UIView+NIM.h"
 
 @interface SAMCSPChatListCell ()
 
@@ -73,7 +74,7 @@
                                                           attribute:NSLayoutAttributeHeight
                                                          multiplier:1.0f
                                                            constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-5-[_dotLabel(8)]-5-[_nameLabel][_timeLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-10-[_dotLabel(8)]-5-[_nameLabel][_timeLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_dotLabel,_timeLabel)]];
@@ -91,10 +92,10 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-5-[_messageLabel]-5-[_muteImageView]-5-[_badgeView]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-10-[_messageLabel]-5-[_muteImageView]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_muteImageView,_badgeView)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_messageLabel,_muteImageView)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeTop
                                                      relatedBy:NSLayoutRelationEqual
@@ -109,13 +110,6 @@
                                                      attribute:NSLayoutAttributeBottom
                                                     multiplier:1.0f
                                                       constant:-15.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_badgeView
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_messageLabel
-                                                     attribute:NSLayoutAttributeCenterY
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_muteImageView
                                                      attribute:NSLayoutAttributeCenterY
                                                      relatedBy:NSLayoutRelationEqual
@@ -123,11 +117,10 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
+    
     [_nameLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_messageLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-    [_badgeView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-    [_badgeView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_muteImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_muteImageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
@@ -148,11 +141,12 @@
 {
     [super layoutSubviews];
     _dotLabel.layer.cornerRadius = _dotLabel.frame.size.width/2;
+    _badgeView.nim_right = _avatarView.nim_right + 6.0f;
+    _badgeView.nim_top = _avatarView.nim_top - 6.0f;
 }
 
 - (void)setRecentSession:(SAMCRecentSession *)recentSession
 {
-    //    self.nameLabel.text = [self nameForRecentSession:recentSession];
     self.messageLabel.text = recentSession.lastMessageContent;
     self.timeLabel.text = [self timestampDescriptionForRecentSession:recentSession];
     
@@ -282,7 +276,6 @@
 {
     if (_badgeView == nil) {
         _badgeView = [NIMBadgeView viewWithBadgeTip:@""];
-        _badgeView.translatesAutoresizingMaskIntoConstraints = NO;
     }
     return _badgeView;
 }
