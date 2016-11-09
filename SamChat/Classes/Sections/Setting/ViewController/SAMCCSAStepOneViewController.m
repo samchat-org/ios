@@ -10,10 +10,11 @@
 #import "SAMCCSAStepTwoViewController.h"
 #import "SAMCServerAPIMacro.h"
 #import "SAMCPadImageView.h"
+#import "SAMCStepperView.h"
 
 @interface SAMCCSAStepOneViewController ()
 
-@property (nonatomic, strong) UIImageView *stepImageView;
+@property (nonatomic, strong) SAMCStepperView *stepperView;
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UITextField *companyNameTextField;
 @property (nonatomic, strong) UITextField *serviceCategoryTextField;
@@ -59,20 +60,27 @@
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     [self setUpNavItem];
 
-    [self.view addSubview:self.stepImageView];
+    [self.view addSubview:self.stepperView];
     [self.view addSubview:self.tipLabel];
     [self.view addSubview:self.companyNameTextField];
     [self.view addSubview:self.serviceCategoryTextField];
     [self.view addSubview:self.skipButton];
     [self.view addSubview:self.nextButton];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepImageView
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0f
                                                            constant:0.0f]];
+    [_stepperView addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
+                                                             attribute:NSLayoutAttributeWidth
+                                                             relatedBy:NSLayoutRelationEqual
+                                                                toItem:nil
+                                                             attribute:NSLayoutAttributeNotAnAttribute
+                                                            multiplier:0.0f
+                                                              constant:72.0f]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-40-[_tipLabel]-40-|"
                                                                       options:0
                                                                       metrics:nil
@@ -85,10 +93,10 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_serviceCategoryTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepImageView(16)]-10-[_tipLabel]-20-[_companyNameTextField(40)]-5-[_serviceCategoryTextField(40)]"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-20-[_stepperView(12)]-10-[_tipLabel]-20-[_companyNameTextField(40)]-5-[_serviceCategoryTextField(40)]"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_stepImageView,_tipLabel,_companyNameTextField,_serviceCategoryTextField)]];
+                                                                        views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_companyNameTextField,_serviceCategoryTextField)]];
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_skipButton]-10-[_nextButton(==_skipButton)]-20-|"
                                                                       options:0
                                                                       metrics:nil
@@ -205,14 +213,13 @@
     return _samProsInformation;
 }
 
-- (UIImageView *)stepImageView
+- (SAMCStepperView *)stepperView
 {
-    if (_stepImageView == nil) {
-        _stepImageView = [[UIImageView alloc] init];
-        _stepImageView.translatesAutoresizingMaskIntoConstraints = NO;
-        _stepImageView.image = [UIImage imageNamed:@"create_servicer_step1"];
+    if (_stepperView == nil) {
+        _stepperView = [[SAMCStepperView alloc] initWithFrame:CGRectZero step:1 color:SAMC_COLOR_LAKE];
+        _stepperView.translatesAutoresizingMaskIntoConstraints = NO;
     }
-    return _stepImageView;
+    return _stepperView;
 }
 
 - (UILabel *)tipLabel
