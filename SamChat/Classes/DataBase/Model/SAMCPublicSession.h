@@ -27,6 +27,12 @@
         lastMessageTime:(NSTimeInterval)messageTime
             unreadCount:(NSInteger)unreadCount;
 
++ (instancetype)sessionId:(NSString *)userId
+            lastMessageId:(NSString *)messageId
+       lastMessageContent:(NSString *)messageContent
+          lastMessageTime:(NSTimeInterval)messageTime
+              unreadCount:(NSInteger)unreadCount;
+
 + (instancetype)sessionOfMyself;
 
 @end

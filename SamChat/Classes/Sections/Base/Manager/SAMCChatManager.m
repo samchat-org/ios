@@ -281,6 +281,7 @@
 - (void)receivedNewPublicMessages:(NSArray *)publicMessages
 {
     for (NIMMessage *message in publicMessages) {
+        DDLogDebug(@"receivedNewPublicMessages: %@", message);
         NSString *content = message.text;
         NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];

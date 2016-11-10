@@ -37,6 +37,21 @@
     return session;
 }
 
++ (instancetype)sessionId:(NSString *)userId
+            lastMessageId:(NSString *)messageId
+       lastMessageContent:(NSString *)messageContent
+          lastMessageTime:(NSTimeInterval)messageTime
+              unreadCount:(NSInteger)unreadCount
+{
+    SAMCPublicSession *session = [[SAMCPublicSession alloc] init];
+    session.userId = userId;
+    session.lastMessageId = messageId;
+    session.lastMessageContent = messageContent;
+    session.lastMessageTime = messageTime;
+    session.unreadCount = unreadCount;
+    return session;
+}
+
 + (instancetype)sessionOfMyself
 {
     SAMCPublicSession *session = [[SAMCPublicSession alloc] init];

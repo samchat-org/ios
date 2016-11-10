@@ -18,9 +18,12 @@
 - (BOOL)migrateDatabase:(FMDatabase *)db error:(out NSError *__autoreleasing *)error
 {
     DDLogDebug(@"SAMCPublicDB_2016082201");
-    // | serial | unique_id | username | avatar | block_tag | favourite_tag | sp_service_category
-    // | last_message_content | last_message_time | unread_count
-    NSArray *sqls = @[SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201];
+    NSArray *sqls = @[SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201,
+                      @"CREATE TABLE IF NOT EXISTS session_list(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
+                      unique_id INTEGER UNIQUE, last_msg_id TEXT, last_msg_state INTEGER, \
+                      last_msg_content TEXT, last_msg_time INTEGER, unread_count INTEGER DEFAULT 0, \
+                      tag INTEGER DEFAULT 0)",
+                      @"CREATE INDEX IF NOT EXISTS session_id_index ON session_list(unique_id)"];
     for (NSString *sql in sqls) {
         if (![db executeUpdate:sql]) {
             DDLogError(@"error: execute sql %@ failed error %@",sql,[db lastError]);
