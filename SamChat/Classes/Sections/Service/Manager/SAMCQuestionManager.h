@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)deleteSendQuestion:(SAMCQuestionSession *)session;
 - (void)deleteReceivedQuestion:(SAMCQuestionSession *)session;
 
+- (void)removeAnswer:(NSString *)answer fromSendQuestion:(NSNumber *)questionId;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -167,4 +167,11 @@
     });
 }
 
+- (void)removeAnswer:(NSString *)answer fromSendQuestion:(NSNumber *)questionId
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].questionDB sendQuestion:questionId removeAnswer:answer];
+    });
+}
+
 @end

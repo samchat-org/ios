@@ -257,7 +257,7 @@
     return session;
 }
 
-- (NSString *)sendQuestion:(NSNumber *)questionId insertAnswer:(NSString *)answer time:(NSTimeInterval)time;
+- (NSString *)sendQuestion:(NSNumber *)questionId insertAnswer:(NSString *)answer time:(NSTimeInterval)time
 {
     if ((questionId == nil) || (answer == nil)) {
         return nil;
@@ -308,6 +308,42 @@
     return question;
 }
 
+- (void)sendQuestion:(NSNumber *)questionId removeAnswer:(NSString *)answer
+{
+    if ((questionId == nil) || (answer == nil)) {
+        return;
+    }
+    __block NSString *question = nil;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *answersStr = nil;
+        FMResultSet *s = [db executeQuery:@"SELECT * FROM send_question WHERE question_id = ?",questionId];
+        NSMutableArray *answers;
+        if ([s next]) {
+            question = [s stringForColumn:@"question"];
+            answersStr = [s stringForColumn:@"answers"];
+            answers = [[self answersFromString:answersStr] mutableCopy];
+            [answers removeObject:answer];
+        }
+        
+        NSString *address = [s stringForColumn:@"address"];
+        NSTimeInterval datetime = [s doubleForColumn:@"datetime"];
+        NSTimeInterval lastAnswerTime = [s doubleForColumn:@"last_answer_time"];
+        NSInteger responseCount = [s longForColumn:@"new_response_count"] + 1;
+        NSInteger status = [s longForColumn:@"status"];
+        answersStr = [self jsonStringWithAnswers:answers];
+        [db executeUpdate:@"UPDATE send_question SET answers=? WHERE question_id=?",answersStr,questionId];
+        SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[questionId integerValue]
+                                                               question:question
+                                                                address:address
+                                                               datetime:datetime
+                                                          responseCount:responseCount
+                                                           responsetime:lastAnswerTime
+                                                                 status:status
+                                                                answers:answers];
+        [self.questionDelegate didUpdateQuestionSession:session];
+        [s close];
+    }];
+}
 
 
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)mode

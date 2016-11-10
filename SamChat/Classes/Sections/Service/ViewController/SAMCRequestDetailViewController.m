@@ -129,15 +129,13 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: delete
-//    SAMCRecentSession *recentSession = self.answerSessions[indexPath.row];
-//    if (editingStyle == UITableViewCellEditingStyleDelete) {
-//        [[SAMCConversationManager sharedManager] deleteRecentSession:recentSession];
-//        
-//        [self.answerSessions removeObjectAtIndex:indexPath.row];
-//        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-//    }
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        SAMCRecentSession *recentSession = self.answerSessions[indexPath.row];
+        NSString *answerId = recentSession.session.sessionId;
+        [[SAMCQuestionManager sharedManager] removeAnswer:answerId fromSendQuestion:@(self.questionSession.questionId)];
+    }
 }
+
 #pragma mark - UITableViewDataSource
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
