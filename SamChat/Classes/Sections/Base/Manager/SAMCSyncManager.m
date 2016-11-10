@@ -216,7 +216,8 @@ typedef void (^SyncAction)();
         DDLogDebug(@"queryFollowListBlock start");
         NSString *localFollowListVersion = [SAMCPreferenceManager sharedManager].localFollowListVersion;
         if ([wself.stateDateInfo.followListVersion isEqualToString:localFollowListVersion]) {
-            wself.syncBlock = [wself sendClientIdBlock];
+//            wself.syncBlock = [wself sendClientIdBlock];
+            wself.syncBlock = NULL;
             wself.isSyncing = NO;
             [wself doSync];
             return;
@@ -227,7 +228,8 @@ typedef void (^SyncAction)();
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
                 [SAMCPreferenceManager sharedManager].localFollowListVersion = wself.stateDateInfo.followListVersion;
-                wself.syncBlock = [wself sendClientIdBlock];
+//                wself.syncBlock = [wself sendClientIdBlock];
+                wself.syncBlock = NULL;
                 wself.isSyncing = NO;
                 [wself doSync];
             }

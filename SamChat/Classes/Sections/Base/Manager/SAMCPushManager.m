@@ -54,18 +54,18 @@
 
 - (void)open
 {
-    // [ GTSdk ]：是否允许APP后台运行
-    [GeTuiSdk runBackgroundEnable:YES];
-    // [ GTSdk ]：是否运行电子围栏Lbs功能和是否SDK主动请求用户定位
-    [GeTuiSdk lbsLocationEnable:NO andUserVerify:NO];
-    // [ GTSdk ]：使用APPID/APPKEY/APPSECRENT创建个推实例
-    [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
+//    // [ GTSdk ]：是否允许APP后台运行
+//    [GeTuiSdk runBackgroundEnable:YES];
+//    // [ GTSdk ]：是否运行电子围栏Lbs功能和是否SDK主动请求用户定位
+//    [GeTuiSdk lbsLocationEnable:NO andUserVerify:NO];
+//    // [ GTSdk ]：使用APPID/APPKEY/APPSECRENT创建个推实例
+//    [GeTuiSdk startSdkWithAppId:SAMCGeTuiAppId appKey:SAMCGeTuiAppKey appSecret:SAMCGeTuiAppSecret delegate:self];
 }
 
 - (void)close
 {
-    NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
-    [GeTuiSdk unbindAlias:getuiAlias andSequenceNum:@"123456"];
+//    NSString *getuiAlias = [[[NTESLoginManager sharedManager] currentLoginData] getuiAlias];
+//    [GeTuiSdk unbindAlias:getuiAlias andSequenceNum:@"123456"];
 }
 
 #pragma mark - GeTuiSdkDelegate

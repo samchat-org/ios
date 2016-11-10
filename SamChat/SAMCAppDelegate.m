@@ -121,11 +121,11 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     [[NIMSDK sharedSDK] updateApnsToken:deviceToken];
     DDLogInfo(@"didRegisterForRemoteNotificationsWithDeviceToken:  %@", deviceToken);
     
-    // 个推DeviceToken上传
-    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    DDLogInfo(@"\n>>>[DeviceToken Success]:%@\n\n", token);
-    [GeTuiSdk registerDeviceToken:token];
+//    // 个推DeviceToken上传
+//    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+//    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+//    DDLogInfo(@"\n>>>[DeviceToken Success]:%@\n\n", token);
+//    [GeTuiSdk registerDeviceToken:token];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo{
