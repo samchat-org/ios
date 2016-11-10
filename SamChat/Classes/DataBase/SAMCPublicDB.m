@@ -13,6 +13,7 @@
 #import "NTESCustomAttachmentDecoder.h"
 #import "SAMCImageAttachment.h"
 #import "NIMMessage+SAMC.h"
+#import "NSString+NIM.h"
 
 @interface SAMCPublicDB ()
 
@@ -599,7 +600,8 @@
 {
     [db executeUpdate:@"DELETE FROM follow_list WHERE unique_id = ?", uniqueId];
     [db executeUpdate:@"DELETE FROM session_list WHERE unique_id = ?", uniqueId];
-    // TODO: drop message table
+    NSString *sql = [NSString stringWithFormat:@"DROP TABLE IF EXISTS publicmsg_%@", [uniqueId.stringValue nim_MD5String]];
+    [db executeUpdate:sql];
 }
 
 //- (BOOL)resetFollowListTable
