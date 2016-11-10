@@ -14,7 +14,7 @@
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
 
-@interface SAMCPublicListViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCPublicManagerDelegate>
+@interface SAMCPublicListViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCPublicManagerDelegate,NIMUserManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
@@ -31,11 +31,13 @@
     [self setupSubviews];
     [self setUpNavItem];
     [[SAMCPublicManager sharedManager] addDelegate:self];
+    [[NIMSDK sharedSDK].userManager addDelegate:self];
 }
 
 - (void)dealloc
 {
     [[SAMCPublicManager sharedManager] removeDelegate:self];
+    [[NIMSDK sharedSDK].userManager removeDelegate:self];
 }
 
 - (void)setupSubviews
@@ -161,6 +163,12 @@
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:index inSection:0];
     [[self data] removeObjectAtIndex:index];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+#pragma mark - NIMUserManagerDelegate
+- (void)onMuteListChanged
+{
+    [self reload];
 }
 
 #pragma mark - 
