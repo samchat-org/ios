@@ -121,6 +121,33 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
     }];
 }
 
+- (void)block:(BOOL)blockFlag
+         user:(NSString *)userId
+   completion:(void (^)(NSError * __nullable error))completion
+{
+    NSAssert(completion != nil, @"completion block should not be nil");
+    NSDictionary *parameters = [SAMCServerAPI block:blockFlag user:userId];
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
+    [manager POST:SAMC_URL_OFFICIALACCOUNT_BLOCK parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *response = responseObject;
+            NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
+            if (errorCode) {
+                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
+            } else {
+                [wself block:blockFlag user:userId];
+                completion(nil);
+            }
+        } else {
+            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
+        }
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
+    }];
+}
+
 - (NSArray<SAMCPublicSession *> *)myFollowList
 {
     return [[SAMCDataBaseManager sharedManager].publicDB myFollowList];
@@ -142,6 +169,13 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].publicDB deleteFromFollowList:userInfo];
+    });
+}
+
+- (void)block:(BOOL)blockFlag user:(NSString *)userId
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB block:blockFlag user:userId];
     });
 }
 

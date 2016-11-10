@@ -29,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 officialAccount:(SAMCSPBasicInfo *)userInfo
     completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)block:(BOOL)blockFlag
+         user:(NSString *)userId
+   completion:(void (^)(NSError * __nullable error))completion;
+
 - (NSArray<SAMCPublicSession *> *)myFollowList;
 
 - (BOOL)isFollowing:(NSString *)userId;

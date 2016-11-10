@@ -367,6 +367,30 @@
 //{
 //    "header":
 //    {
+//        "action" : "block",
+//        "token"  : "token"
+//    },
+//    "body":
+//    {
+//        "opt" :  [0/1]
+//        0 :  unblock
+//        1 :  block
+//        " id " : unique_id_in_samchat of Sam-pros
+//    }
+//}
++ (NSDictionary *)block:(BOOL)blockFlag
+                   user:(NSString *)userId
+{
+    NSNumber *uniqueId = @([userId integerValue]);
+    NSDictionary *header = @{SAMC_ACTION:SAMC_BLOCK,SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_OPT:blockFlag? @(1):@(0),
+                           SAMC_ID:uniqueId};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
 //        "action" : "query-fuzzy",
 //        "token": "token"
 //    },

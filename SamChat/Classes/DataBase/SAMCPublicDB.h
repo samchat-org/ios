@@ -37,4 +37,6 @@
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)userMode;
 - (void)markAllMessagesReadInSession:(SAMCPublicSession *)session;
 
+- (void)block:(BOOL)blockFlag user:(NSString *)userId;
+
 @end

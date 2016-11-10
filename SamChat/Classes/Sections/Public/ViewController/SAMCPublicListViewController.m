@@ -126,7 +126,7 @@
 
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return @[[self unfollowAction], [self muteAction:indexPath]];
+    return @[[self unfollowAction], [self muteAction:indexPath], [self blockAction:indexPath]];
 }
 
 #pragma mark - SAMCPublicManagerDelegate
@@ -209,6 +209,29 @@
 }
 
 #pragma mark - UITableViewRowAction
+- (UITableViewRowAction *)blockAction:(NSIndexPath *)indexPath
+{
+    __weak typeof(self) wself = self;
+    SAMCPublicSession *session = [self data][indexPath.row];
+    NSString *userId = session.userId;
+    BOOL isBlock = session.spBasicInfo.blockTag;
+    NSString *title = isBlock ? @"Unblock":@"Block";
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [wself.tableView setEditing:NO animated:YES];
+        [SVProgressHUD show];
+        [[SAMCPublicManager sharedManager] block:!isBlock user:userId completion:^(NSError * _Nullable error) {
+            [SVProgressHUD dismiss];
+            if (error) {
+                [wself.view makeToast:@"操作失败"duration:2.0f position:CSToastPositionCenter];
+            } else {
+                [wself.view makeToast:@"操作成功"duration:2.0f position:CSToastPositionCenter];
+            }
+        }];
+    }];
+    action.backgroundColor = SAMC_COLOR_LIMEGREY;
+    return action;
+}
+
 - (UITableViewRowAction *)muteAction:(NSIndexPath *)indexPath
 {
     __weak typeof(self) wself = self;
@@ -218,13 +241,13 @@
     NSString *title = needNotify ? @"Mute" : @"Unmute";
     UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         [wself.tableView setEditing:NO animated:YES];
-            [SVProgressHUD show];
-            [[NIMSDK sharedSDK].userManager updateNotifyState:!needNotify forUser:publicUserId completion:^(NSError *error) {
-                [SVProgressHUD dismiss];
-                if (error) {
-                    [wself.view makeToast:@"操作失败" duration:2.0f position:CSToastPositionCenter];
-                }
-            }];
+        [SVProgressHUD show];
+        [[NIMSDK sharedSDK].userManager updateNotifyState:!needNotify forUser:publicUserId completion:^(NSError *error) {
+            [SVProgressHUD dismiss];
+            if (error) {
+                [wself.view makeToast:@"操作失败" duration:2.0f position:CSToastPositionCenter];
+            }
+        }];
 
     }];
     action.backgroundColor = SAMC_COLOR_GREY;
@@ -236,10 +259,10 @@
     __weak typeof(self) wself = self;
     UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Unfollow" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
         SAMCPublicSession *session = [wself data][indexPath.row];
+        [SVProgressHUD show];
         [[SAMCPublicManager sharedManager] follow:NO officialAccount:session.spBasicInfo completion:^(NSError * _Nullable error) {
-            if (error == nil) {
-                // use SAMCPublicManagerDelegate to delete
-            }
+            [SVProgressHUD dismiss];
+            // use SAMCPublicManagerDelegate to delete
         }];
     }];
     action.backgroundColor = SAMC_COLOR_RED;

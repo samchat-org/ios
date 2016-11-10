@@ -64,6 +64,8 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 + (NSDictionary *)follow:(BOOL)isFollow
          officialAccount:(NSString *)userId;
 
++ (NSDictionary *)block:(BOOL)blockFlag
+                   user:(NSString *)userId;
 
 + (NSDictionary *)queryFuzzyUser:(NSString *)key;
 + (NSDictionary *)queryAccurateUser:(id)key type:(SAMCQueryAccurateUserType)type;

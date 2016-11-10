@@ -470,6 +470,16 @@
     }];
 }
 
+- (void)block:(BOOL)blockFlag user:(NSString *)userId
+{
+    __weak typeof(self) wself = self;
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSNumber *uniqueId = @([userId integerValue]);
+        [db executeUpdate:@"UPDATE follow_list SET block_tag=? WHERE unique_id=?", @(blockFlag), uniqueId];
+        [wself delegateUpdatePublicSession:db uniqueId:uniqueId];
+    }];
+}
+
 #pragma mark -
 - (void)delegateUpdatePublicSession:(FMDatabase *)db
                            uniqueId:(NSNumber *)uniqueId
