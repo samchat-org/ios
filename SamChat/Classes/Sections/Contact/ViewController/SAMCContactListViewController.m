@@ -37,7 +37,7 @@
 #import "SAMCPublicManager.h"
 
 @interface SAMCContactListViewController ()<UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate,UISearchDisplayDelegate,
-NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataCellDelegate,SAMCLoginManagerDelegate,SAMCUserManagerDelegate>
+SAMCUserManagerDelegate>
 {
     SAMCGroupedContacts *_contacts;
 }
@@ -53,7 +53,8 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 @implementation SAMCContactListViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [self setupSubviews];
     
@@ -68,15 +69,12 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     
     [self prepareData];
     
-    [[[NIMSDK sharedSDK] systemNotificationManager] addDelegate:self];
-    [[SAMCAccountManager sharedManager] addDelegate:self];
     [[SAMCUserManager sharedManager] addDelegate:self];
 }
 
-- (void)dealloc{
+- (void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[[NIMSDK sharedSDK] systemNotificationManager] removeDelegate:self];
-    [[SAMCAccountManager sharedManager] removeDelegate:self];
     [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
@@ -137,84 +135,14 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     [addBtn sizeToFit];
     UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
     self.navigationItem.rightBarButtonItem = addItem;
-    
-//    [_contacts addGroupAboveWithTitle:@"" members:self.contactUtils];
 }
 
-
 #pragma mark - Action
-- (void)onOpera:(id)sender{
+- (void)onOpera:(id)sender
+{
     SAMCAddContactViewController *vc = [[SAMCAddContactViewController alloc] init];
     vc.currentUserMode = self.currentUserMode;
     [self.navigationController pushViewController:vc animated:YES];
-//    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择操作" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"添加好友",@"创建高级群",@"创建讨论组",@"搜索高级群", nil];
-//    __weak typeof(self) wself = self;
-//    NSString *currentUserId = [[NIMSDK sharedSDK].loginManager currentAccount];
-//    [sheet showInView:self.view completionHandler:^(NSInteger index) {
-//        UIViewController *vc;
-//        switch (index) {
-//            case 0:
-//                vc = [[NTESContactAddFriendViewController alloc] initWithNibName:nil bundle:nil];
-//                break;
-//            case 1:{  //创建高级群
-//                [wself presentMemberSelector:^(NSArray *uids) {
-//                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
-//                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-//                    option.name       = @"高级群";
-//                    option.type       = NIMTeamTypeAdvanced;
-//                    option.joinMode   = NIMTeamJoinModeNoAuth;
-//                    option.postscript = @"邀请你加入群组";
-//                    [SVProgressHUD show];
-//                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
-//                        [SVProgressHUD dismiss];
-//                        if (!error) {
-////                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-//                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-//                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
-//                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-//                            [wself.navigationController pushViewController:vc animated:YES];
-//                        }else{
-//                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
-//                        }
-//                    }];
-//                }];
-//                break;
-//            }
-//            case 2:{ //创建讨论组
-//                [wself presentMemberSelector:^(NSArray *uids) {
-//                    if (!uids.count) {
-//                        return; //讨论组必须除自己外必须要有一个群成员
-//                    }
-//                    NSArray *members = [@[currentUserId] arrayByAddingObjectsFromArray:uids];
-//                    NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-//                    option.name       = @"讨论组";
-//                    option.type       = NIMTeamTypeNormal;
-//                    [SVProgressHUD show];
-//                    [[NIMSDK sharedSDK].teamManager createTeam:option users:members completion:^(NSError *error, NSString *teamId) {
-//                        [SVProgressHUD dismiss];
-//                        if (!error) {
-////                            NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-//                            SAMCUserModeType mode = [[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue];
-//                            SAMCSession *session = [SAMCSession session:teamId type:NIMSessionTypeTeam mode:mode];
-//                            SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:session];
-//                            [wself.navigationController pushViewController:vc animated:YES];
-//                        }else{
-//                            [wself.view makeToast:@"创建失败" duration:2.0 position:CSToastPositionCenter];
-//                        }
-//                    }];
-//                }];
-//                break;
-//            }
-//            case 3:
-//                vc = [[NTESSearchTeamViewController alloc] initWithNibName:nil bundle:nil];
-//                break;
-//            default:
-//                break;
-//        }
-//        if (vc) {
-//            [wself.navigationController pushViewController:vc animated:YES];
-//        }
-//    }];
 }
 
 #pragma mark - UITableViewDelegate
@@ -248,8 +176,6 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 60.0f;
-//    id<NTESContactItem> contactItem = (id<NTESContactItem>)[_contacts memberOfIndex:indexPath];
-//    return contactItem.uiHeight;
 }
 
 
@@ -348,42 +274,9 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
     }
 }
 
-#pragma mark - NIMContactDataCellDelegate
-- (void)onPressAvatar:(NSString *)memberId{
-    [self enterPersonalCard:memberId];
-}
-
-#pragma mark - NTESContactUtilCellDelegate
-- (void)onPressUtilImage:(NSString *)content{
-    [self.view makeToast:[NSString stringWithFormat:@"点我干嘛 我是<%@>",content] duration:2.0 position:CSToastPositionCenter];
-}
-
-#pragma mark - NIMContactSelectDelegate
-- (void)didFinishedSelect:(NSArray *)selectedContacts{
-    
-}
-
-#pragma mark - NIMSDK Delegate
-#pragma mark - NIMSystemNotificationManagerDelegate
-- (void)onSystemNotificationCountChanged:(NSInteger)unreadCount
-{
-    [self prepareData];
-    [self.tableView reloadData];
-}
-
-#pragma mark - SAMCLoginManagerDelegate
-- (void)onLogin:(NIMLoginStep)step
-{
-    if (step == NIMLoginStepSyncOK) {
-        if (self.isViewLoaded) {//没有加载view的话viewDidLoad里会走一遍prepareData
-            [self prepareData];
-            [self.tableView reloadData];
-        }
-    }
-}
-
 #pragma mark - Notification
-- (void)onUserInfoHasUpdatedNotification:(NSNotification *)notfication{
+- (void)onUserInfoHasUpdatedNotification:(NSNotification *)notfication
+{
     [self prepareData];
     [self.tableView reloadData];
 }
@@ -500,10 +393,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 #pragma mark - SAMCUserManagerDelegate
 - (void)didAddContact:(SAMCUser *)user type:(SAMCContactListType)type
 {
-    if ((self.currentUserMode == SAMCUserModeTypeCustom) && (type == SAMCContactListTypeCustomer)) {
-        return;
-    }
-    if ((self.currentUserMode == SAMCUserModeTypeSP) && (type == SAMCContactListTypeServicer)) {
+    if (![self isCurrentModeContactList:type]) {
         return;
     }
     NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:user.userId];
@@ -515,10 +405,7 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
 
 - (void)didRemoveContact:(SAMCUser *)user type:(SAMCContactListType)type
 {
-    if ((self.currentUserMode == SAMCUserModeTypeCustom) && (type == SAMCContactListTypeCustomer)) {
-        return;
-    }
-    if ((self.currentUserMode == SAMCUserModeTypeSP) && (type == SAMCContactListTypeServicer)) {
+    if (![self isCurrentModeContactList:type]) {
         return;
     }
     NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:user.userId];
@@ -536,6 +423,29 @@ NIMSystemNotificationManagerDelegate,NTESContactUtilCellDelegate,NIMContactDataC
             [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
     }
+}
+
+- (void)didUpdateFollowListOfType:(SAMCContactListType)type
+{
+    if (![self isCurrentModeContactList:type]) {
+        return;
+    }
+    if (self.isViewLoaded) {//没有加载view的话viewDidLoad里会走一遍prepareData
+        [self prepareData];
+        [self.tableView reloadData];
+    }
+}
+
+#pragma mark - 
+- (BOOL)isCurrentModeContactList:(SAMCContactListType)type
+{
+    if ((self.currentUserMode == SAMCUserModeTypeCustom) && (type == SAMCContactListTypeCustomer)) {
+        return NO;
+    }
+    if ((self.currentUserMode == SAMCUserModeTypeSP) && (type == SAMCContactListTypeServicer)) {
+        return NO;
+    }
+    return YES;
 }
 
 @end

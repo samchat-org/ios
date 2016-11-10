@@ -10,6 +10,13 @@
 #import "SAMCServerAPIMacro.h"
 #import "SAMCUserInfoDB_2016082201.h"
 #import "SAMCDataBaseMacro.h"
+#import "GCDMulticastDelegate.h"
+
+@interface SAMCUserInfoDB ()
+
+@property (nonatomic, strong) GCDMulticastDelegate<SAMCUserManagerDelegate> *multicastDelegate;
+
+@end
 
 @implementation SAMCUserInfoDB
 
@@ -20,6 +27,25 @@
         [self createMigrationInfo];
     }
     return self;
+}
+
+- (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate
+{
+    [self.multicastDelegate addDelegate:delegate delegateQueue:dispatch_get_main_queue()];
+}
+
+- (void)removeDelegate:(id<SAMCUserManagerDelegate>)delegate
+{
+    [self.multicastDelegate removeDelegate:delegate];
+}
+
+#pragma mark - lazy load
+- (GCDMulticastDelegate<SAMCUserManagerDelegate> *)multicastDelegate
+{
+    if (_multicastDelegate == nil) {
+        _multicastDelegate = (GCDMulticastDelegate <SAMCUserManagerDelegate> *)[[GCDMulticastDelegate alloc] init];
+    }
+    return _multicastDelegate;
 }
 
 #pragma mark - Create DB
@@ -187,6 +213,9 @@
             }
         }
     }];
+    if (result) {
+        [self.multicastDelegate didUpdateFollowListOfType:listType];
+    }
     return result;
 }
 
@@ -202,6 +231,7 @@
     } else {
         tableName = @"contact_list_servicer";
     }
+    __weak typeof(self) wself = self;
     [self.queue inDatabase:^(FMDatabase *db) {
         if (![db tableExists:tableName]) {
             DDLogError(@"insertToContactList table %@ not exists", tableName);
@@ -209,6 +239,7 @@
         }
         NSString *sql = [NSString stringWithFormat:@"INSERT OR IGNORE INTO %@(unique_id) VALUES(?)", tableName];
         [db executeUpdate:sql, @([user.userId integerValue])];
+        [wself.multicastDelegate didAddContact:user type:listType];
     }];
 }
 
@@ -223,6 +254,7 @@
     } else {
         tableName = @"contact_list_servicer";
     }
+    __weak typeof(self) wself = self;
     [self.queue inDatabase:^(FMDatabase *db) {
         if (![db tableExists:tableName]) {
             DDLogError(@"deleteFromContactList table %@ not exists", tableName);
@@ -230,6 +262,7 @@
         }
         NSString *sql = [NSString stringWithFormat:@"DELETE FROM '%@' WHERE unique_id=?", tableName];
         [db executeUpdate:sql, @([user.userId integerValue])];
+        [wself.multicastDelegate didRemoveContact:user type:listType];
     }];
 }
 

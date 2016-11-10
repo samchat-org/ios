@@ -8,9 +8,13 @@
 
 #import "SAMCDBBase.h"
 #import "SAMCPublicSession.h"
+#import "SAMCUserManagerDelegate.h"
 #import "SAMCUser.h"
 
 @interface SAMCUserInfoDB : SAMCDBBase
+
+- (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate;
+- (void)removeDelegate:(id<SAMCUserManagerDelegate>)delegate;
 
 - (SAMCUser *)userInfo:(NSString *)userId;
 
