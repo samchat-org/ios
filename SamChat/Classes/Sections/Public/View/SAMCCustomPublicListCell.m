@@ -114,6 +114,7 @@
     [_categoryLabel setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_categoryLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_timeLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+    [_messageLabel setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     [_muteImageView setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [_muteImageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
@@ -130,7 +131,11 @@
     self.nameLabel.text = publicSession.spBasicInfo.username;
     self.categoryLabel.text = publicSession.spBasicInfo.spServiceCategory;
     self.timeLabel.text = [NIMKitUtil showTime:publicSession.lastMessageTime showDetail:NO];
-    self.messageLabel.text = publicSession.lastMessageContent;
+    if ([publicSession.lastMessageContent length]) {
+        self.messageLabel.text = publicSession.lastMessageContent;
+    } else {
+        self.messageLabel.text = @" ";
+    }
     
     NSURL *url = publicSession.spBasicInfo.avatar? [NSURL URLWithString:publicSession.spBasicInfo.avatar] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"avatar_user"] options:SDWebImageRetryFailed];
