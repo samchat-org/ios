@@ -351,11 +351,16 @@
         NSString *lastMsgContent = message.messageContent;
         NSInteger lastMsgState = deliveryState;
         NSTimeInterval lastMsgTime = message.timestamp;
-        s = [db executeQuery:@"SELECT unread_count FROM session_list WHERE unique_id = ?", uniqueId];
+        s = [db executeQuery:@"SELECT unread_count,last_msg_time FROM session_list WHERE unique_id = ?", uniqueId];
         // 3. update unread count&last message info or insert session
         if ([s next]) {
             sessionUnreadCount += [s intForColumn:@"unread_count"];
-            [db executeUpdate:@"UPDATE session_list SET unread_count=?, last_msg_id=?, last_msg_state=?, last_msg_content=?, last_msg_time=? WHERE unique_id = ?", @(sessionUnreadCount),lastMsgId,@(lastMsgState),lastMsgContent,@(lastMsgTime),uniqueId];
+            NSTimeInterval preLastMsgTime = [s doubleForColumn:@"last_msg_time"];
+            if (preLastMsgTime > lastMsgTime) {
+                [db executeUpdate:@"UPDATE session_list SET unread_count=? WHERE unique_id = ?", @(sessionUnreadCount),uniqueId];
+            } else {
+                [db executeUpdate:@"UPDATE session_list SET unread_count=?, last_msg_id=?, last_msg_state=?, last_msg_content=?, last_msg_time=? WHERE unique_id = ?", @(sessionUnreadCount),lastMsgId,@(lastMsgState),lastMsgContent,@(lastMsgTime),uniqueId];
+            }
         } else {
             [db executeUpdate:@"INSERT INTO session_list (unique_id, unread_count, last_msg_id, last_msg_state, last_msg_content, last_msg_time) VALUES (?,?,?,?,?,?)",uniqueId, @(sessionUnreadCount),lastMsgId,@(lastMsgState),lastMsgContent,@(lastMsgTime)];
         }
