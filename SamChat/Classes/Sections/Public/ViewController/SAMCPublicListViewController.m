@@ -114,7 +114,7 @@
     SAMCPublicMessageViewController *vc = [[SAMCPublicMessageViewController alloc] init];
     SAMCPublicSession *session = [self data][indexPath.row];
     vc.publicSession = session;
-    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:session];
+//    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:session];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

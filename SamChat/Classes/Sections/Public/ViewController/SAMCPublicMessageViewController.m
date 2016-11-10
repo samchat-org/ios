@@ -143,6 +143,7 @@ UITableViewDelegate>
     NSInteger limit = 10;
     NSTimeInterval showTimestampInterval = 0;//[NIMUIConfig messageTimeInterval];
     _sessionDatasource = [[SAMCPublicMsgDataSource alloc] initWithSession:self.publicSession showTimeInterval:showTimestampInterval limit:limit];
+    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:self.publicSession];
     _sessionDatasource.delegate = self;
     
     [_sessionDatasource resetMessages:nil];
@@ -425,6 +426,7 @@ UITableViewDelegate>
 - (void)onRecvMessage:(SAMCPublicMessage *)message
 {
     if ([message.publicSession isEqual:_publicSession]) {
+        [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:self.publicSession];
         [self uiAddMessages:@[message]];
     }
 }
