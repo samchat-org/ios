@@ -51,6 +51,10 @@
     [[SAMCConversationManager sharedManager] addDelegate:self];
     [[SAMCQuestionManager sharedManager] addDelegate:self];
     [[SAMCPublicManager sharedManager] addDelegate:self];
+    __weak typeof(self) wself = self;
+    [[NIMSDK sharedSDK].apnsManager registerBadgeCountHandler:^NSUInteger{
+        return [wself allUnreadCount];
+    }];
 }
 
 - (void)close
