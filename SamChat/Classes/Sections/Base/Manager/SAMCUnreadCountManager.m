@@ -128,6 +128,12 @@
     }
 }
 
+- (NSInteger)allUnreadCount
+{
+    return self.customChatUnreadCount+ self.customPublicUnreadCount+self.customServiceUnreadCount
+    + self.spChatUnreadCount+self.spPublicUnreadCount+self.spServiceUnreadCount;
+}
+
 #pragma mark - Property
 - (void)setCustomChatUnreadCount:(NSInteger)customChatUnreadCount
 {

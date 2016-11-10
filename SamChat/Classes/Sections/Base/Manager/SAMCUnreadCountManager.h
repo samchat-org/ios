@@ -32,5 +32,6 @@
 - (NSInteger)publicUnreadCountOfUserMode:(SAMCUserModeType)mode;
 
 - (NSInteger)allUnreadCountOfUserMode:(SAMCUserModeType)mode;
+- (NSInteger)allUnreadCount;
 
 @end

@@ -102,7 +102,7 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    NSInteger count = [[[NIMSDK sharedSDK] conversationManager] allUnreadCount];
+    NSInteger count = [[SAMCUnreadCountManager sharedManager] allUnreadCount];
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:count];
 }
 
