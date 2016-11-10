@@ -143,6 +143,11 @@
         self.badgeView.hidden = YES;
         self.badgeView.badgeValue = @"";
     }
+    
+    NSString *publicUserId = [NSString stringWithFormat:@"%@%@",SAMC_PUBLIC_ACCOUNT_PREFIX,publicSession.userId];
+    BOOL needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:publicUserId];
+    self.muteImageView.hidden = needNotify;
+    self.muteImageView.image = needNotify?nil:[UIImage imageNamed:@"ico_chat_mute"];
 }
 
 #pragma mark - lazy load

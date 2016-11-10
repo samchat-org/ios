@@ -11,6 +11,8 @@
 #import "SAMCPublicSearchViewController.h"
 #import "SAMCCustomPublicListCell.h"
 #import "SAMCPublicMessageViewController.h"
+#import "SVProgressHUD.h"
+#import "UIView+Toast.h"
 
 @interface SAMCPublicListViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCPublicManagerDelegate>
 
@@ -114,7 +116,6 @@
     SAMCPublicMessageViewController *vc = [[SAMCPublicMessageViewController alloc] init];
     SAMCPublicSession *session = [self data][indexPath.row];
     vc.publicSession = session;
-//    [[SAMCPublicManager sharedManager] markAllMessagesReadInSession:session];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -123,28 +124,9 @@
     return 70.f;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"Unfollow";
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    SAMCPublicSession *session = [self data][indexPath.row];
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [[SAMCPublicManager sharedManager] follow:NO officialAccount:session.spBasicInfo completion:^(NSError * _Nullable error) {
-            if (error == nil) {
-                // use SAMCPublicManagerDelegate to delete
-//                [[self data] removeObjectAtIndex:indexPath.row];
-//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            }
-        }];
-    }
+    return @[[self unfollowAction], [self muteAction:indexPath]];
 }
 
 #pragma mark - SAMCPublicManagerDelegate
@@ -219,6 +201,49 @@
     }else{
         return self.data.count;
     }
+}
+
+- (NSString *)publicUserIdOfSession:(SAMCPublicSession *)session
+{
+    return [NSString stringWithFormat:@"%@%@",SAMC_PUBLIC_ACCOUNT_PREFIX,session.userId];
+}
+
+#pragma mark - UITableViewRowAction
+- (UITableViewRowAction *)muteAction:(NSIndexPath *)indexPath
+{
+    __weak typeof(self) wself = self;
+    SAMCPublicSession *session = [self data][indexPath.row];
+    NSString *publicUserId = [self publicUserIdOfSession:session];
+    BOOL needNotify = [[NIMSDK sharedSDK].userManager notifyForNewMsg:publicUserId];
+    NSString *title = needNotify ? @"Mute" : @"Unmute";
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:title handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        [wself.tableView setEditing:NO animated:YES];
+            [SVProgressHUD show];
+            [[NIMSDK sharedSDK].userManager updateNotifyState:!needNotify forUser:publicUserId completion:^(NSError *error) {
+                [SVProgressHUD dismiss];
+                if (error) {
+                    [wself.view makeToast:@"操作失败" duration:2.0f position:CSToastPositionCenter];
+                }
+            }];
+
+    }];
+    action.backgroundColor = SAMC_COLOR_GREY;
+    return action;
+}
+
+- (UITableViewRowAction *)unfollowAction
+{
+    __weak typeof(self) wself = self;
+    UITableViewRowAction *action = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"Unfollow" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        SAMCPublicSession *session = [wself data][indexPath.row];
+        [[SAMCPublicManager sharedManager] follow:NO officialAccount:session.spBasicInfo completion:^(NSError * _Nullable error) {
+            if (error == nil) {
+                // use SAMCPublicManagerDelegate to delete
+            }
+        }];
+    }];
+    action.backgroundColor = SAMC_COLOR_RED;
+    return action;
 }
 
 @end
