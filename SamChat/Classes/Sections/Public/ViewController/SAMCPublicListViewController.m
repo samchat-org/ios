@@ -165,6 +165,14 @@
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
+- (void)didUpdateFollowList
+{
+    [self.data removeAllObjects];
+    [self.data addObjectsFromArray:[[SAMCPublicManager sharedManager] myFollowList]];
+    [self sort];
+    [self reload];
+}
+
 #pragma mark - NIMUserManagerDelegate
 - (void)onMuteListChanged
 {

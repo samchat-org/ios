@@ -87,7 +87,9 @@
             }
         }
     }];
-    // TODO: delegate to ui
+    if (result && [increasedFollowList count]) {
+        [self.publicDelegate didUpdateFollowList];
+    }
     return result;
 }
 

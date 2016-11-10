@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)didUpdatePublicSession:(SAMCPublicSession *)publicSession;
 - (void)didRemovePublicSession:(SAMCPublicSession *)publicSession;
 - (void)publicUnreadCountDidChanged:(NSInteger)unreadCount userMode:(SAMCUserModeType)mode;
+- (void)didUpdateFollowList;
 
 - (void)willSendMessage:(SAMCPublicMessage *)message;
 
