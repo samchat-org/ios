@@ -315,8 +315,11 @@
         _firstRequestButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_firstRequestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_firstRequestButton setTitle:@"Make a New Request" forState:UIControlStateNormal];
-        _firstRequestButton.backgroundColor = SAMC_COLOR_GREEN;
         _firstRequestButton.layer.cornerRadius = 20.0f;
+        _firstRequestButton.layer.masksToBounds = YES;
+        [_firstRequestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_active"] forState:UIControlStateNormal];
+        [_firstRequestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_pressed"] forState:UIControlStateHighlighted];
+        [_firstRequestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_inactive"] forState:UIControlStateDisabled];
         [_firstRequestButton addTarget:self action:@selector(touchMakeNewRequest:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _firstRequestButton;
@@ -330,8 +333,11 @@
         _requestButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_requestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_requestButton setTitle:@"New Request" forState:UIControlStateNormal];
-        _requestButton.backgroundColor = SAMC_COLOR_GREEN;
         _requestButton.layer.cornerRadius = 20.0f;
+        _requestButton.layer.masksToBounds = YES;
+        [_requestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_active"] forState:UIControlStateNormal];
+        [_requestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_pressed"] forState:UIControlStateHighlighted];
+        [_requestButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_green_inactive"] forState:UIControlStateDisabled];
         [_requestButton addTarget:self action:@selector(touchMakeNewRequest:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _requestButton;
