@@ -394,8 +394,10 @@
         _updateSPProfileButton.translatesAutoresizingMaskIntoConstraints = NO;
         _updateSPProfileButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_updateSPProfileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _updateSPProfileButton.backgroundColor = SAMC_COLOR_LAKE;
         _updateSPProfileButton.layer.cornerRadius = 20.0f;
+        _updateSPProfileButton.layer.masksToBounds = YES;
+        [_updateSPProfileButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_lake_active"] forState:UIControlStateNormal];
+        [_updateSPProfileButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_lake_pressed"] forState:UIControlStateHighlighted];
         [_updateSPProfileButton setTitle:@"Update Service Profile" forState:UIControlStateNormal];
         [_updateSPProfileButton addTarget:self action:@selector(touchUpdateServiceProfile:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -409,8 +411,10 @@
         _sendPublicUpdateButton.translatesAutoresizingMaskIntoConstraints = NO;
         _sendPublicUpdateButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_sendPublicUpdateButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _sendPublicUpdateButton.backgroundColor = SAMC_COLOR_GREY;
         _sendPublicUpdateButton.layer.cornerRadius = 20.0f;
+        _sendPublicUpdateButton.layer.masksToBounds = YES;
+        [_sendPublicUpdateButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_grey_active"] forState:UIControlStateNormal];
+        [_sendPublicUpdateButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_grey_pressed"] forState:UIControlStateHighlighted];
         [_sendPublicUpdateButton setTitle:@"Send Public Update" forState:UIControlStateNormal];
         [_sendPublicUpdateButton addTarget:self action:@selector(touchSendPublicUpdate:) forControlEvents:UIControlEventTouchUpInside];
     }
@@ -424,8 +428,10 @@
         _addCustomerButton.translatesAutoresizingMaskIntoConstraints = NO;
         _addCustomerButton.titleLabel.font = [UIFont systemFontOfSize:17.0f];
         [_addCustomerButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _addCustomerButton.backgroundColor = SAMC_COLOR_GREY;
         _addCustomerButton.layer.cornerRadius = 20.0f;
+        _addCustomerButton.layer.masksToBounds = YES;
+        [_addCustomerButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_grey_active"] forState:UIControlStateNormal];
+        [_addCustomerButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_grey_pressed"] forState:UIControlStateHighlighted];
         [_addCustomerButton setTitle:@"Add Existing Customers" forState:UIControlStateNormal];
         [_addCustomerButton addTarget:self action:@selector(touchAddCustomer:) forControlEvents:UIControlEventTouchUpInside];
     }
