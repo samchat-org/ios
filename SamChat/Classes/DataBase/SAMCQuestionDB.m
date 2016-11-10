@@ -259,17 +259,18 @@
 
 - (NSString *)sendQuestion:(NSNumber *)questionId insertAnswer:(NSString *)answer time:(NSTimeInterval)time;
 {
-    if (questionId == nil) {
+    if ((questionId == nil) || (answer == nil)) {
         return nil;
     }
     __block NSString *question = nil;
     [self.queue inDatabase:^(FMDatabase *db) {
         NSString *answersStr = nil;
         FMResultSet *s = [db executeQuery:@"SELECT * FROM send_question WHERE question_id = ?",questionId];
+        NSMutableArray *answers;
         if ([s next]) {
             question = [s stringForColumn:@"question"];
             answersStr = [s stringForColumn:@"answers"];
-            NSArray *answers = [self answersFromString:answersStr];
+            answers = [[self answersFromString:answersStr] mutableCopy];
             for (NSString *answerIdStr in answers) {
                 if ([answerIdStr isEqualToString:answer]) {
                     // already find, no need to insert
@@ -284,11 +285,12 @@
             NSTimeInterval lastAnswerTime = time;
             NSInteger responseCount = [s longForColumn:@"new_response_count"] + 1;
             NSInteger status = [s longForColumn:@"status"];
-            if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
-                answersStr = answer;
+            if (answers) {
+                [answers addObject:answer];
             } else {
-                answersStr = [NSString stringWithFormat:@"%@,%@",answersStr,answer];
+                answers = [@[answer] mutableCopy];
             }
+            answersStr = [self jsonStringWithAnswers:answers];
             [db executeUpdate:@"UPDATE send_question SET answers=?, last_answer_time=?, new_response_count=? WHERE question_id=?",answersStr,@(lastAnswerTime), @(responseCount), questionId];
             SAMCQuestionSession *session = [SAMCQuestionSession sendSession:[questionId integerValue]
                                               question:question
@@ -297,7 +299,7 @@
                                          responseCount:responseCount
                                           responsetime:lastAnswerTime
                                                 status:status
-                                               answers:[self answersFromString:answersStr]];
+                                               answers:answers];
             [self.questionDelegate didUpdateQuestionSession:session];
         }
         [s close];
@@ -320,10 +322,21 @@
 #pragma mark - Private
 - (NSArray<NSString *> *)answersFromString:(NSString *)answersStr
 {
-    if ((answersStr == nil) || [answersStr isEqualToString:@""]) {
-        return nil;
+    NSData *data = [answersStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSArray *answers = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+    if ([answers isKindOfClass:[NSArray class]]) {
+        return answers;
     }
-    return [answersStr componentsSeparatedByString:@","];
+    return nil;
+}
+
+- (NSString *)jsonStringWithAnswers:(NSArray<NSString *> *)answers
+{
+    if ([answers count] == 0) {
+        return @"";
+    }
+    NSData *data = [NSJSONSerialization dataWithJSONObject:answers options:0 error:nil];
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 - (NSInteger)allUnreadCountOfReceivedQuestion
