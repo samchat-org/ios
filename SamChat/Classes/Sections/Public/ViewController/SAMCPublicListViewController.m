@@ -74,7 +74,7 @@
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addBtn addTarget:self action:@selector(searchPublic:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn setImage:[UIImage imageNamed:@"ico_nav_add_light"] forState:UIControlStateNormal];
-    //    [addBtn setImage:[UIImage imageNamed:@"public_add_pressed"] forState:UIControlStateHighlighted];
+    [addBtn setImage:[UIImage imageNamed:@"ico_nav_add_light_pressed"] forState:UIControlStateHighlighted];
     [addBtn sizeToFit];
     UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
     self.parentViewController.navigationItem.rightBarButtonItem = addItem;

@@ -118,20 +118,23 @@ SAMCUserManagerDelegate>
 
 - (void)prepareData{
     NSString *addButtonNormalImage;
+    NSString *addButtonPressedImage;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         self.navigationItem.title = @"Service Provider";
         addButtonNormalImage = @"ico_nav_add_light";
+        addButtonPressedImage = @"ico_nav_add_light_pressed";
         _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeServicer];
     } else {
         self.navigationItem.title = @"My Clients";
         addButtonNormalImage = @"ico_nav_add_dark";
+        addButtonPressedImage = @"ico_nav_add_dark_pressed";
         _contacts = [[SAMCGroupedContacts alloc] initWithType:SAMCContactListTypeCustomer];
     }
     
     UIButton *addBtn = [UIButton buttonWithType:UIButtonTypeCustom];
     [addBtn addTarget:self action:@selector(onOpera:) forControlEvents:UIControlEventTouchUpInside];
     [addBtn setImage:[UIImage imageNamed:addButtonNormalImage] forState:UIControlStateNormal];
-    //    [teamBtn setImage:[UIImage imageNamed:@"icon_tinfo_pressed"] forState:UIControlStateHighlighted];
+    [addBtn setImage:[UIImage imageNamed:addButtonPressedImage] forState:UIControlStateHighlighted];
     [addBtn sizeToFit];
     UIBarButtonItem *addItem = [[UIBarButtonItem alloc] initWithCustomView:addBtn];
     self.navigationItem.rightBarButtonItem = addItem;
