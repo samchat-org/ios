@@ -9,6 +9,7 @@
 #import "SAMCNotificationSettingViewController.h"
 #import "SAMCFooterView.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCPreferenceManager.h"
 
 @interface SAMCNotificationSettingViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -106,7 +107,7 @@
                 {
                     SAMCCommonSwitcherCell *swithCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
                     swithCell.textLabel.text = @"In-App Alert Sound";
-                    [swithCell.switcher setOn:YES];
+                    [swithCell.switcher setOn:[[SAMCPreferenceManager sharedManager].needSound boolValue]];
                     [swithCell.switcher addTarget:self action:@selector(onActionAlertSoundChanged:) forControlEvents:UIControlEventValueChanged];
                     cell = swithCell;
                 }
@@ -115,7 +116,7 @@
                 {
                     SAMCCommonSwitcherCell *swithCell = [SAMCTableCellFactory commonSwitcherCell:tableView];
                     swithCell.textLabel.text = @"Vibrate";
-                    [swithCell.switcher setOn:YES];
+                    [swithCell.switcher setOn:[[SAMCPreferenceManager sharedManager].needVibrate boolValue]];
                     [swithCell.switcher addTarget:self action:@selector(onActionVibrateChanged:) forControlEvents:UIControlEventValueChanged];
                     cell = swithCell;
                 }
@@ -132,12 +133,14 @@
 }
 
 #pragma mark - Action
-- (void)onActionAlertSoundChanged:(id)sender
+- (void)onActionAlertSoundChanged:(UISwitch *)sender
 {
+    [SAMCPreferenceManager sharedManager].needSound = @(sender.on);
 }
 
-- (void)onActionVibrateChanged:(id)sender
+- (void)onActionVibrateChanged:(UISwitch *)sender
 {
+    [SAMCPreferenceManager sharedManager].needVibrate = @(sender.on);
 }
 
 @end

@@ -20,6 +20,8 @@
 @property (nonatomic, copy) NSString *localFollowListVersion;
 
 @property (nonatomic, strong) NSNumber *needQuestionNotify;
+@property (nonatomic, strong) NSNumber *needSound;
+@property (nonatomic, strong) NSNumber *needVibrate;
 
 + (instancetype)sharedManager;
 - (void)reset;

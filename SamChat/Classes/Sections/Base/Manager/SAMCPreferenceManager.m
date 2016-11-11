@@ -15,6 +15,8 @@
 #define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
 #define SAMC_LOCALSERVICERLISTVERSION_KEY   @"samc_localservicerlistversion_key"
 #define SAMC_NEEDQUESTIONNOTIFY_KEY         @"samc_needquestionnotify_key"
+#define SAMC_NEEDSOUND_KEY                  @"samc_needsound_key"
+#define SAMC_NEEDVIBRATE_KEY                @"samc_needvibrate_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -31,6 +33,8 @@
 @synthesize localCustomerListVersion = _localCustomerListVersion;
 @synthesize localServicerListVersion = _localServicerListVersion;
 @synthesize needQuestionNotify = _needQuestionNotify;
+@synthesize needSound = _needSound;
+@synthesize needVibrate = _needVibrate;
 
 + (instancetype)sharedManager
 {
@@ -68,6 +72,10 @@
         [[NSUserDefaults standardUserDefaults] setValue:_localCustomerListVersion forKey:SAMC_LOCALCUSTOMERLISTVERSION_KEY];
         _needQuestionNotify = @(YES);
         [[NSUserDefaults standardUserDefaults] setValue:_needQuestionNotify forKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
+        _needSound = @(YES);
+        [[NSUserDefaults standardUserDefaults] setValue:_needSound forKey:SAMC_NEEDSOUND_KEY];
+        _needVibrate = @(YES);
+        [[NSUserDefaults standardUserDefaults] setValue:_needVibrate forKey:SAMC_NEEDVIBRATE_KEY];
     });
 }
 
@@ -221,6 +229,50 @@
     dispatch_barrier_async(_syncQueue, ^{
         _needQuestionNotify = needQuestionNotify;
         [[NSUserDefaults standardUserDefaults] setValue:needQuestionNotify forKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
+    });
+}
+
+#pragma mark - needSound
+- (NSNumber *)needSound
+{
+    __block NSNumber *flag;
+    dispatch_sync(_syncQueue, ^{
+        if (_needSound == nil) {
+            _needSound = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_NEEDSOUND_KEY];
+            _needSound = _needSound ?:@(YES);
+        }
+        flag = _needSound;
+    });
+    return flag;
+}
+
+- (void)setNeedSound:(NSNumber *)needSound
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _needSound = needSound;
+        [[NSUserDefaults standardUserDefaults] setValue:needSound forKey:SAMC_NEEDSOUND_KEY];
+    });
+}
+
+#pragma mark - needVibrate
+- (NSNumber *)needVibrate
+{
+    __block NSNumber *flag;
+    dispatch_sync(_syncQueue, ^{
+        if (_needVibrate == nil) {
+            _needVibrate = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_NEEDVIBRATE_KEY];
+            _needVibrate = _needVibrate ?:@(YES);
+        }
+        flag = _needVibrate;
+    });
+    return flag;
+}
+
+- (void)setNeedVibrate:(NSNumber *)needVibrate
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _needVibrate = needVibrate;
+        [[NSUserDefaults standardUserDefaults] setValue:needVibrate forKey:SAMC_NEEDVIBRATE_KEY];
     });
 }
 

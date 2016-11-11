@@ -21,6 +21,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "NTESLiveViewController.h"
 #import "SAMCPublicMessageViewController.h"
+#import "SAMCPreferenceManager.h"
 
 NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChanged";
 
@@ -99,9 +100,14 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
         }
     }
     if (needPlay) {
-        [self.player stop];
-        [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error:nil];
-        [self.player play];
+        if ([[SAMCPreferenceManager sharedManager].needSound boolValue]) {
+            [self.player stop];
+            [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryAmbient error:nil];
+            [self.player play];
+        }
+        if ([[SAMCPreferenceManager sharedManager].needVibrate boolValue]) {
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+        }
     }
 }
 
