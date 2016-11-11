@@ -40,7 +40,7 @@
     _inputConfig = config;
     
     //设置最大输入字数
-    NSInteger textInputLength = 1000;
+    NSInteger textInputLength = 4000;
     if ([_inputConfig respondsToSelector:@selector(maxInputLength)]) {
         textInputLength = [_inputConfig maxInputLength];
     }
