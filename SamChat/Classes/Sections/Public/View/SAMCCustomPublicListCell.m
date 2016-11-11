@@ -128,14 +128,10 @@
 
 - (void)setPublicSession:(SAMCPublicSession *)publicSession
 {
-    self.nameLabel.text = publicSession.spBasicInfo.username;
+    self.nameLabel.text = [publicSession.spBasicInfo.username length] ? publicSession.spBasicInfo.username : @" ";
     self.categoryLabel.text = publicSession.spBasicInfo.spServiceCategory;
     self.timeLabel.text = [NIMKitUtil showTime:publicSession.lastMessageTime showDetail:NO];
-    if ([publicSession.lastMessageContent length]) {
-        self.messageLabel.text = publicSession.lastMessageContent;
-    } else {
-        self.messageLabel.text = @" ";
-    }
+    self.messageLabel.text = [publicSession.lastMessageContent length] ? publicSession.lastMessageContent : @" ";
     
     NSURL *url = publicSession.spBasicInfo.avatar? [NSURL URLWithString:publicSession.spBasicInfo.avatar] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"avatar_user"] options:SDWebImageRetryFailed];

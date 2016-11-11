@@ -158,7 +158,7 @@
 
 - (void)setRecentSession:(SAMCRecentSession *)recentSession
 {
-    self.messageLabel.text = recentSession.lastMessageContent;
+    self.messageLabel.text = [recentSession.lastMessageContent length] ? recentSession.lastMessageContent : @" ";
     self.timeLabel.text = [self timestampDescriptionForRecentSession:recentSession];
     
     NIMKitInfo *info = nil;
@@ -196,7 +196,7 @@
         NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
         name = team.teamName;
     }
-    self.nameLabel.text = name;
+    self.nameLabel.text = [name length] ? name : @" ";
     
     BOOL needNotify;
     if (recentSession.session.sessionType == NIMSessionTypeP2P) {
