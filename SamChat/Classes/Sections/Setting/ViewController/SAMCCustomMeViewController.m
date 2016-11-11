@@ -22,6 +22,7 @@
 #import "SAMCQRCodeScanViewController.h"
 #import "SAMCSPIntroViewController.h"
 #import "SAMCCellButton.h"
+#import "SAMCNotificationSettingViewController.h"
 
 @interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -109,6 +110,12 @@
                 case 2: // Change password
                 {
                     SAMCChangePasswordViewController *vc = [[SAMCChangePasswordViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 3:
+                {
+                    SAMCNotificationSettingViewController *vc = [[SAMCNotificationSettingViewController alloc] init];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;

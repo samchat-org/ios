@@ -35,7 +35,7 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_textLabel)]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_textLabel]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_textLabel]-5-|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:NSDictionaryOfVariableBindings(_textLabel)]];
