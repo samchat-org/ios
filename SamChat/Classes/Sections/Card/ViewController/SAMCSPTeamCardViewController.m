@@ -444,10 +444,12 @@
     switch (row) {
         case 0:
         {
-            SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-            tipCell.textLabel.text = @"Group name";
-            tipCell.tipRightLabel.text = self.team.teamName;
-            cell = tipCell;
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = @"Group name";
+            cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
+            cell.detailTextLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
+            cell.detailTextLabel.text = self.team.teamName;
         }
             break;
         case 1:
