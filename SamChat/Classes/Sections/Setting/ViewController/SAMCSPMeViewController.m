@@ -14,6 +14,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCQRCodeScanViewController.h"
+#import "SAMCFooterView.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -127,12 +128,22 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return CGFLOAT_MIN;
 }
 
 #pragma mark - UITableViewDataSource
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section != 2) {
+        return nil;
+    }
+    SAMCFooterView *footerView = [[SAMCFooterView alloc] init];
+    footerView.textLabel.text = @"Enable or disable SamChat Notifications via \"Settings\"->\"Notifications\" on your iPhone.";
+    return footerView;
+}
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 3;
