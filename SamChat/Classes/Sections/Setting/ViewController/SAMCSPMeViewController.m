@@ -14,6 +14,7 @@
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCQRCodeScanViewController.h"
+#import "SAMCSPNotificationViewController.h"
 
 @interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
 
@@ -117,6 +118,21 @@
                                                                       userInfo:nil];
                 }
                     break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 2:
+        {
+            switch (indexPath.row) {
+                case 0:
+                {
+                    SAMCSPNotificationViewController *vc = [[SAMCSPNotificationViewController alloc] init];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                    
                 default:
                     break;
             }

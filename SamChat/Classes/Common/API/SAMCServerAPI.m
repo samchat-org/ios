@@ -816,7 +816,7 @@
 + (NSDictionary *)updateQuestionNotify:(BOOL)needNotify
 {
     NSDictionary *header = @{SAMC_ACTION:SAMC_update_question_notify, SAMC_TOKEN:[SAMCServerAPI token]};
-    NSDictionary *body = @{SAMC_QUESTION_NOTIFY:@(needNotify)};
+    NSDictionary *body = @{SAMC_QUESTION_NOTIFY:needNotify ? @(1) : @(0)};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
