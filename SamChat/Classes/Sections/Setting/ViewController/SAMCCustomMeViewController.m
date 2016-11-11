@@ -220,11 +220,13 @@
                     break;
                 case 3:
                 {
-                    SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    tipCell.textLabel.text = @"Notification";
-                    tipCell.tipRightLabel.text = @"On";
-                    tipCell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
-                    cell = tipCell;
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text = @"Notification";
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
+                    cell.detailTextLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
+                    cell.detailTextLabel.text = @"On";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_notification"];
                 }
                     break;
                 case 4:

@@ -166,11 +166,13 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    SAMCTipRightCell *tipCell = [SAMCTableCellFactory tipRightCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
-                    tipCell.textLabel.text = _user.userInfo.username;
-                    tipCell.tipRightLabel.text = @"QR code";
-                    tipCell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
-                    cell = tipCell;
+                    cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.textLabel.text = _user.userInfo.username;
+                    cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
+                    cell.detailTextLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
+                    cell.detailTextLabel.text = @"QR code";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
                 }
                     break;
 

@@ -12,7 +12,6 @@
 #import "SAMCServicerInfoCell.h"
 #import "SAMCCustomContactCell.h"
 #import "SAMCSPContactCell.h"
-#import "SAMCTipRightCell.h"
 #import "SAMCMemberGroupCell.h"
 #import "SAMCBadgeRightCell.h"
 
@@ -27,8 +26,6 @@
 + (SAMCServicerInfoCell *)servicerInfoCell:(UITableView *)tableView;
 + (SAMCCustomContactCell *)customContactCell:(UITableView *)tableView;
 + (SAMCSPContactCell *)spContactCell:(UITableView *)tableView;
-+ (SAMCTipRightCell *)tipRightCell:(UITableView *)tabeleView
-                     accessoryType:(UITableViewCellAccessoryType)accessoryType;
 + (SAMCMemberGroupCell *)memberGroupCell:(UITableView *)tableView;
 + (SAMCBadgeRightCell *)badgeRightCell:(UITableView *)tableView
                          accessoryType:(UITableViewCellAccessoryType)accessoryType;

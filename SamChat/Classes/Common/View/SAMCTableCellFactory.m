@@ -90,18 +90,6 @@
     return cell;
 }
 
-+ (SAMCTipRightCell *)tipRightCell:(UITableView *)tableView
-                     accessoryType:(UITableViewCellAccessoryType)accessoryType;
-{
-    static NSString *cellId = @"SAMCTipRightCellId";
-    SAMCTipRightCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
-    if (!cell) {
-        cell = [[SAMCTipRightCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
-    }
-    cell.accessoryType = accessoryType;
-    return cell;
-}
-
 + (SAMCMemberGroupCell *)memberGroupCell:(UITableView *)tableView
 {
     static NSString *cellId = @"SAMCMemberGroupCellId";
