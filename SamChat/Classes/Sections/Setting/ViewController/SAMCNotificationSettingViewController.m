@@ -85,11 +85,12 @@
             switch (indexPath.row) {
                 case 0:
                 {
+                    BOOL disableRemoteNotification = [UIApplication sharedApplication].currentUserNotificationSettings.types == UIUserNotificationTypeNone;
                     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
                     cell.textLabel.text = @"Notification";
                     cell.detailTextLabel.font = [UIFont systemFontOfSize:15.0f];
                     cell.detailTextLabel.textColor = UIColorFromRGBA(SAMC_COLOR_RGB_INK, 0.5);
-                    cell.detailTextLabel.text = @"On";
+                    cell.detailTextLabel.text = disableRemoteNotification ? @"Off" : @"On";
                 }
                     break;
                 default:
