@@ -232,10 +232,25 @@
         return;
     }
     DDLogDebug(@"didFinishedSelect: %@", selectedContacts);
-    NSString *uid = [[NIMSDK sharedSDK].loginManager currentAccount];
+    NSString *uid = [SAMCAccountManager sharedManager].currentAccount;
     NSArray *users = [@[uid] arrayByAddingObjectsFromArray:selectedContacts];
+    NSString *groupName;
+    for (int i=0; i<users.count; i++) {
+        if (i>=5) {
+            groupName = [groupName stringByAppendingString:@", ..."];
+            break;
+        }
+        NSString *userId = users[i];
+        NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:userId];
+        if (i == 0) {
+            groupName = info.showName;
+            continue;
+        }
+        groupName = [groupName stringByAppendingString:[NSString stringWithFormat:@", %@", info.showName]];
+    }
+    
     NIMCreateTeamOption *option = [[NIMCreateTeamOption alloc] init];
-    option.name = @"讨论组";
+    option.name = groupName;
     option.type = NIMTeamTypeNormal;
     __weak typeof(self) wself = self;
     [SVProgressHUD show];
