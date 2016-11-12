@@ -15,7 +15,7 @@
 #import "NTESFileLocationHelper.h"
 #import "NTESSessionMsgConverter.h"
 #import "UIView+Toast.h"
-#import "NTESGalleryViewController.h"
+#import "SAMCGalleryViewController.h"
 #import "NSDictionary+NTESJson.h"
 #import "UIView+NTES.h"
 #import "NTESPersonalCardViewController.h"
@@ -240,11 +240,11 @@ UITableViewDelegate>
     NIMCustomObject * customObject = (NIMCustomObject*)message.messageObject;
     SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
     
-    NTESGalleryItem *item = [[NTESGalleryItem alloc] init];
+    SAMCGalleryItem *item = [[SAMCGalleryItem alloc] init];
     item.thumbPath      = attachment.thumbPath;
     item.imageURL       = attachment.url;
     item.name           = attachment.displayName;
-    NTESGalleryViewController *vc = [[NTESGalleryViewController alloc] initWithItem:item];
+    SAMCGalleryViewController *vc = [[SAMCGalleryViewController alloc] initWithItem:item];
     [self.navigationController pushViewController:vc animated:YES];
     if(![[NSFileManager defaultManager] fileExistsAtPath:attachment.thumbPath]){
         //如果缩略图下跪了，点进看大图的时候再去下一把缩略图

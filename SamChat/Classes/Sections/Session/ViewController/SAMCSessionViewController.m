@@ -24,7 +24,7 @@
 #import "NTESAudioChatViewController.h"
 #import "NTESVideoChatViewController.h"
 #import "NTESChartletAttachment.h"
-#import "NTESGalleryViewController.h"
+#import "SAMCGalleryViewController.h"
 #import "NTESLocationViewController.h"
 #import "NTESVideoViewController.h"
 #import "NTESLocationPoint.h"
@@ -552,11 +552,11 @@ NIMContactSelectDelegate>
 - (void)showImage:(NIMMessage *)message
 {
     NIMImageObject *object = message.messageObject;
-    NTESGalleryItem *item = [[NTESGalleryItem alloc] init];
+    SAMCGalleryItem *item = [[SAMCGalleryItem alloc] init];
     item.thumbPath      = [object thumbPath];
     item.imageURL       = [object url];
     item.name           = [object displayName];
-    NTESGalleryViewController *vc = [[NTESGalleryViewController alloc] initWithItem:item];
+    SAMCGalleryViewController *vc = [[SAMCGalleryViewController alloc] initWithItem:item];
     [self.navigationController pushViewController:vc animated:YES];
     if(![[NSFileManager defaultManager] fileExistsAtPath:object.thumbPath]){
         //如果缩略图下跪了，点进看大图的时候再去下一把缩略图
@@ -608,11 +608,11 @@ NIMContactSelectDelegate>
     }
     SAMCImageAttachment *attachment = (SAMCImageAttachment *)customObject.attachment;
     
-    NTESGalleryItem *item = [[NTESGalleryItem alloc] init];
+    SAMCGalleryItem *item = [[SAMCGalleryItem alloc] init];
     item.thumbPath      = attachment.thumbPath;
     item.imageURL       = attachment.url;
     item.name           = attachment.displayName;
-    NTESGalleryViewController *vc = [[NTESGalleryViewController alloc] initWithItem:item];
+    SAMCGalleryViewController *vc = [[SAMCGalleryViewController alloc] initWithItem:item];
     [self.navigationController pushViewController:vc animated:YES];
     if(![[NSFileManager defaultManager] fileExistsAtPath:attachment.thumbPath]){
         //如果缩略图下跪了，点进看大图的时候再去下一把缩略图
