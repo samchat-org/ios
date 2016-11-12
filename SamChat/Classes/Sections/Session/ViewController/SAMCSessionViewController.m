@@ -54,6 +54,7 @@
 #import "SAMCMyProfileViewController.h"
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCImageAttachment.h"
+#import "SAMCPreferenceManager.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
@@ -336,6 +337,27 @@ NIMContactSelectDelegate>
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeMovie,(NSString *)kUTTypeImage];
     return YES;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    if (navigationController == _imagePicker && navigationController.viewControllers.count == 1) {
+        // When showing the ImagePicker update the status bar and nav bar properties.
+        [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+        navigationController.topViewController.title = @"Photos";
+        navigationController.navigationBar.translucent = NO;
+        
+        if ([[[SAMCPreferenceManager sharedManager] currentUserMode] integerValue] == SAMCUserModeTypeCustom) {
+            navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_LIGHT;
+            navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = SAMC_COLOR_INK;
+        } else {
+            navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_DARK;
+            navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+        }
+        [navigationController setNavigationBarHidden:NO animated:animated];
+    }
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info

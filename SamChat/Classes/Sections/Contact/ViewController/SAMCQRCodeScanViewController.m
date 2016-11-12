@@ -354,7 +354,7 @@
     UIImagePickerController *picker = [[UIImagePickerController alloc] init];
     picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     picker.delegate = self;
-    picker.allowsEditing = YES;
+//    picker.allowsEditing = YES;
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -390,26 +390,56 @@
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    __block UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
+    UIImage* image = [info objectForKey:UIImagePickerControllerEditedImage];
     
     if (!image){
         image = [info objectForKey:UIImagePickerControllerOriginalImage];
     }
     
-    CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{ CIDetectorAccuracy : CIDetectorAccuracyHigh }];
-    NSArray *features = [detector featuresInImage:[CIImage imageWithCGImage:image.CGImage]];
-    if (features.count >=1)
-    {
-        CIQRCodeFeature *feature = [features objectAtIndex:0];
-        NSString *scanResult = feature.messageString;
-        
-        NSLog(@"%@",scanResult);
-    }
+    __weak typeof(self) wself = self;
+    [SVProgressHUD showWithStatus:@"scaning" maskType:SVProgressHUDMaskTypeBlack];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CIDetector *detector = [CIDetector detectorOfType:CIDetectorTypeQRCode context:nil options:@{ CIDetectorAccuracy : CIDetectorAccuracyLow }];
+        NSArray *features = [detector featuresInImage:[CIImage imageWithCGImage:image.CGImage]];
+        NSString *scanResult;
+        if (features.count >= 1) {
+            CIQRCodeFeature *feature = [features objectAtIndex:0];
+            scanResult = feature.messageString;
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [SVProgressHUD dismiss];
+            if (scanResult) {
+                [SAMCQRScanner systemVibrate];
+                [wself handleScanResult:scanResult];
+            } else {
+                [wself.view makeToast:@"failed" duration:2.0f position:CSToastPositionCenter];
+            }
+        });
+    });
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    // When showing the ImagePicker update the status bar and nav bar properties.
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    navigationController.topViewController.title = @"Photos";
+    navigationController.navigationBar.translucent = NO;
+    
+    if (self.currentUserMode == SAMCUserModeTypeCustom) {
+        navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_LIGHT;
+        navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = SAMC_COLOR_INK;
+    } else {
+        navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_DARK;
+        navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = [UIColor whiteColor];
+    }
+    [navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 - (void)showError:(NSString*)str

@@ -229,6 +229,19 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+- (void)navigationController:(UINavigationController *)navigationController
+      willShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated
+{
+    // When showing the ImagePicker update the status bar and nav bar properties.
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    navigationController.topViewController.title = @"Photos";
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_LIGHT;
+    navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = SAMC_COLOR_INK;
+    [navigationController setNavigationBarHidden:NO animated:animated];
+}
+
 #pragma mark - SAMCUserManagerDelegate
 - (void)onUserInfoChanged:(SAMCUser *)user
 {
