@@ -372,20 +372,19 @@
 		31F8FCDB1D77D15A00734068 /* SAMCPublicMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCDA1D77D15A00734068 /* SAMCPublicMessageViewController.m */; };
 		31F8FCDE1D77D17700734068 /* SAMCPublicListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCDD1D77D17700734068 /* SAMCPublicListViewController.m */; };
 		31F8FCE51D78253B00734068 /* SAMCPublicSessionConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F8FCE41D78253B00734068 /* SAMCPublicSessionConfig.m */; };
-		611FE9EE1BB02320005E8E45 /* (null) in Sources */ = {isa = PBXBuildFile; };
+		611FE9EE1BB02320005E8E45 /* BuildFile in Sources */ = {isa = PBXBuildFile; };
 		61530BE71BABAD3B00FE50CC /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */; };
 		61530BEB1BABAD8200FE50CC /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BEA1BABAD8200FE50CC /* libz.tbd */; };
 		617C4FF71BE06D26009AD1B4 /* libstdc++.6.0.9.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 61530BE81BABAD5900FE50CC /* libstdc++.6.0.9.tbd */; };
 		619184891C45E4D000BB2FE9 /* libNIMKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 619184881C45E4D000BB2FE9 /* libNIMKit.a */; };
 		86B7F5B61AE88C040040A547 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86B7F5B51AE88C040040A547 /* CoreTelephony.framework */; };
 		BDA64F1A1CA38A3800BCF04D /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDA64F191CA38A3800BCF04D /* VideoToolbox.framework */; };
-		C4E43434FD003E69D8A1CE98 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF9898D58E36D61F8B0727 /* libPods.a */; };
 		E4168E291B6A364800F3D35D /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4168E281B6A364800F3D35D /* AudioToolbox.framework */; };
 		E4168E2B1B6A364F00F3D35D /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4168E2A1B6A364F00F3D35D /* CoreMedia.framework */; };
+		ED8105C3B74A8EB9ED25B736 /* libPods-SamChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A08245E960A9B30C894C2AF /* libPods-SamChat.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		16AF9898D58E36D61F8B0727 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		311B76A31DC089570056D4C5 /* SAMCMemberGroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCMemberGroupCell.h; sourceTree = "<group>"; };
 		311B76A41DC089570056D4C5 /* SAMCMemberGroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCMemberGroupCell.m; sourceTree = "<group>"; };
 		311B76A91DC0C9AD0056D4C5 /* SAMCContactSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SAMCContactSelectViewController.h; sourceTree = "<group>"; };
@@ -1072,18 +1071,20 @@
 		31F8FCE31D78253B00734068 /* SAMCPublicSessionConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicSessionConfig.h; path = Public/Config/SAMCPublicSessionConfig.h; sourceTree = "<group>"; };
 		31F8FCE41D78253B00734068 /* SAMCPublicSessionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicSessionConfig.m; path = Public/Config/SAMCPublicSessionConfig.m; sourceTree = "<group>"; };
 		31FC07FB1D35DD2A000E6496 /* SamChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SamChat-Prefix.pch"; sourceTree = "<group>"; };
-		3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		41D1B4DF800907017793D935 /* Pods-SamChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SamChat.release.xcconfig"; path = "Pods/Target Support Files/Pods-SamChat/Pods-SamChat.release.xcconfig"; sourceTree = "<group>"; };
 		61530BE61BABAD3B00FE50CC /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		61530BE81BABAD5900FE50CC /* libstdc++.6.0.9.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.0.9.tbd"; path = "usr/lib/libstdc++.6.0.9.tbd"; sourceTree = SDKROOT; };
 		61530BEA1BABAD8200FE50CC /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6187FA151B819C3F00EFFB3A /* libNIMKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNIMKit.a; path = "../NIMKit/build/Debug-iphoneos/libNIMKit.a"; sourceTree = "<group>"; };
 		619184881C45E4D000BB2FE9 /* libNIMKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libNIMKit.a; path = "../../Library/Developer/Xcode/DerivedData/NIM-daygdisfzttuqvfcbtxsvonwyzrh/Build/Products/Debug-iphoneos/libNIMKit.a"; sourceTree = "<group>"; };
+		7A08245E960A9B30C894C2AF /* libPods-SamChat.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SamChat.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7CB77AE66CB21525203A0409 /* Pods-SamChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SamChat.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SamChat/Pods-SamChat.debug.xcconfig"; sourceTree = "<group>"; };
 		86B7F5B51AE88C040040A547 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		AE5882E51A6F47E10070536A /* SamChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SamChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BDA64F191CA38A3800BCF04D /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
-		DF30F6A4FA82195516F742F7 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E4168E281B6A364800F3D35D /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E4168E2A1B6A364F00F3D35D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		F0845BE6FBAC914628584A4E /* Pods-SamChat.ad hoc distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SamChat.ad hoc distribution.xcconfig"; path = "Pods/Target Support Files/Pods-SamChat/Pods-SamChat.ad hoc distribution.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1108,22 +1109,13 @@
 				E4168E2B1B6A364F00F3D35D /* CoreMedia.framework in Frameworks */,
 				E4168E291B6A364800F3D35D /* AudioToolbox.framework in Frameworks */,
 				86B7F5B61AE88C040040A547 /* CoreTelephony.framework in Frameworks */,
-				C4E43434FD003E69D8A1CE98 /* libPods.a in Frameworks */,
+				ED8105C3B74A8EB9ED25B736 /* libPods-SamChat.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		304B100AECEFB170E443A1D6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				DF30F6A4FA82195516F742F7 /* Pods.debug.xcconfig */,
-				3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */,
-			);
-			name = Pods;
-			sourceTree = "<group>";
-		};
 		311B76C31DC75D350056D4C5 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -2296,6 +2288,16 @@
 			name = View;
 			sourceTree = "<group>";
 		};
+		314B5D47C526ABA7A521979D /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7CB77AE66CB21525203A0409 /* Pods-SamChat.debug.xcconfig */,
+				41D1B4DF800907017793D935 /* Pods-SamChat.release.xcconfig */,
+				F0845BE6FBAC914628584A4E /* Pods-SamChat.ad hoc distribution.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		314D5D191D6A9B1F004B3DE4 /* Migration */ = {
 			isa = PBXGroup;
 			children = (
@@ -2629,7 +2631,7 @@
 				E4168E2A1B6A364F00F3D35D /* CoreMedia.framework */,
 				E4168E281B6A364800F3D35D /* AudioToolbox.framework */,
 				86B7F5B51AE88C040040A547 /* CoreTelephony.framework */,
-				16AF9898D58E36D61F8B0727 /* libPods.a */,
+				7A08245E960A9B30C894C2AF /* libPods-SamChat.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2639,8 +2641,8 @@
 			children = (
 				312C1A991D35D85B00242906 /* SamChat */,
 				AE5882E61A6F47E10070536A /* Products */,
-				304B100AECEFB170E443A1D6 /* Pods */,
 				5176189D0086B38FE643A26A /* Frameworks */,
+				314B5D47C526ABA7A521979D /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2659,12 +2661,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AE5883081A6F47E10070536A /* Build configuration list for PBXNativeTarget "SamChat" */;
 			buildPhases = (
-				21178737748CC5995E04AEB1 /* Check Pods Manifest.lock */,
+				E59FD8255E65BBE9A3493131 /* [CP] Check Pods Manifest.lock */,
 				AE5882E11A6F47E10070536A /* Sources */,
 				AE5882E21A6F47E10070536A /* Frameworks */,
 				AE5882E31A6F47E10070536A /* Resources */,
-				B3B34DE9D3E5DD0A80DF90FE /* Copy Pods Resources */,
-				994CB901FBB2E5663C0A40CF /* Embed Pods Frameworks */,
+				178C5E81531393044D1FAC4F /* [CP] Embed Pods Frameworks */,
+				15E01B6FBB77C0D2DDE484D0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2782,49 +2784,49 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		21178737748CC5995E04AEB1 /* Check Pods Manifest.lock */ = {
+		15E01B6FBB77C0D2DDE484D0 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SamChat/Pods-SamChat-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		994CB901FBB2E5663C0A40CF /* Embed Pods Frameworks */ = {
+		178C5E81531393044D1FAC4F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SamChat/Pods-SamChat-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B3B34DE9D3E5DD0A80DF90FE /* Copy Pods Resources */ = {
+		E59FD8255E65BBE9A3493131 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -3067,7 +3069,7 @@
 				312C1C711D35D85B00242906 /* NTESBlackListViewController.m in Sources */,
 				312C1C751D35D85B00242906 /* NTESCustomNotificationDB.m in Sources */,
 				31DB304F1DAF58C60072BE34 /* SAMCServicerInfoCell.m in Sources */,
-				611FE9EE1BB02320005E8E45 /* (null) in Sources */,
+				611FE9EE1BB02320005E8E45 /* BuildFile in Sources */,
 				312C1CB61D35D85B00242906 /* NTESLogUploader.m in Sources */,
 				31E37B771D6589E900832CC8 /* SAMCPushManager.m in Sources */,
 				3195DE281D587932001BD2B4 /* SAMCSessionMessageDataProvider.m in Sources */,
@@ -3190,7 +3192,7 @@
 		};
 		312A057A1DBF251D0045A8C6 /* ad hoc distribution */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */;
+			baseConfigurationReference = F0845BE6FBAC914628584A4E /* Pods-SamChat.ad hoc distribution.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
@@ -3327,7 +3329,7 @@
 		};
 		AE5883091A6F47E10070536A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DF30F6A4FA82195516F742F7 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 7CB77AE66CB21525203A0409 /* Pods-SamChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
@@ -3362,7 +3364,7 @@
 		};
 		AE58830A1A6F47E10070536A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3CB9917FFA15BA7164D3339E /* Pods.release.xcconfig */;
+			baseConfigurationReference = 41D1B4DF800907017793D935 /* Pods-SamChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
