@@ -15,7 +15,6 @@
 #import "SVProgressHUD.h"
 #import "SAMCMyProfileViewController.h"
 #import "SAMCTableCellFactory.h"
-#import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCWebViewController.h"
@@ -24,7 +23,7 @@
 #import "SAMCCellButton.h"
 #import "SAMCNotificationSettingViewController.h"
 
-@interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
+@interface SAMCCustomMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUnreadCountManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 

@@ -17,14 +17,14 @@
 #import "SAMCResourceManager.h"
 #import "UIImage+NTES.h"
 #import "NTESFileLocationHelper.h"
-#import "SAMCUserManager.h"
 #import "SAMCSettingManager.h"
 #import "SDWebImageManager.h"
 #import "SAMCEditProfileViewController.h"
 #import "SAMCSelectLocationViewController.h"
 #import "SAMCEditCellPhoneViewController.h"
+#import "SAMCServerAPIMacro.h"
 
-@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate, SAMCUserManagerDelegate>
+@interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @property (nonatomic, strong) SAMCUser *user;
 @property (nonatomic, strong) UITableView *tableView;
@@ -64,12 +64,17 @@
     [headerView.avatarView addTarget:self action:@selector(onTouchPortraitAvatar:) forControlEvents:UIControlEventTouchUpInside];
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [[SAMCUserManager sharedManager] addDelegate:self];
+    
+    extern NSString *const NIMKitUserInfoHasUpdatedNotification;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onUserInfoHasUpdatedNotification:)
+                                                 name:NIMKitUserInfoHasUpdatedNotification
+                                               object:nil];
 }
 
 - (void)dealloc
 {
-    [[SAMCUserManager sharedManager] removeDelegate:self];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITableViewDelegate
@@ -242,15 +247,10 @@
     [navigationController setNavigationBarHidden:NO animated:animated];
 }
 
-#pragma mark - SAMCUserManagerDelegate
-- (void)onUserInfoChanged:(SAMCUser *)user
+#pragma mark - NIMKitUserInfoHasUpdatedNotification
+- (void)onUserInfoHasUpdatedNotification:(NSNotification *)notification
 {
-    if ([user.userId isEqualToString:self.user.userId]) {
-        self.user = user;
-//        SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)self.tableView.tableHeaderView;
-//        headerView.avatarUrl = user.userInfo.avatar;
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
 }
 
 #pragma mark - Private

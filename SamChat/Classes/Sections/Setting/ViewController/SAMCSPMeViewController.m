@@ -11,15 +11,13 @@
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCTableCellFactory.h"
 #import "SAMCAccountManager.h"
-#import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
 #import "SAMCQRCodeScanViewController.h"
 #import "SAMCSPNotificationViewController.h"
 
-@interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUserManagerDelegate, SAMCUnreadCountManagerDelegate>
+@interface SAMCSPMeViewController ()<UITableViewDelegate, UITableViewDataSource, SAMCUnreadCountManagerDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) SAMCUser *currentUser;
 
 @property (nonatomic, strong) SAMCBadgeRightCell *switchUserModeCell;
 
@@ -50,28 +48,27 @@
                                                                         views:NSDictionaryOfVariableBindings(_tableView)]];
     
     SAMCCardPortraitView *headerView = [[SAMCCardPortraitView alloc] initWithFrame:CGRectMake(0, 0, 0, 140) effect:NO];
-    _currentUser = [SAMCAccountManager sharedManager].currentUser;
-    headerView.avatarUrl = _currentUser.userInfo.avatar;
+    headerView.avatarUrl = [SAMCAccountManager sharedManager].currentUser.userInfo.avatar;
     self.tableView.tableHeaderView = headerView;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
-    [[SAMCUserManager sharedManager] addDelegate:self];
     [[SAMCUnreadCountManager sharedManager] addDelegate:self];
+    extern NSString *const NIMKitUserInfoHasUpdatedNotification;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(onUserInfoHasUpdatedNotification:)
+                                                 name:NIMKitUserInfoHasUpdatedNotification
+                                               object:nil];
 }
 
 - (void)dealloc
 {
-    [[SAMCUserManager sharedManager] removeDelegate:self];
     [[SAMCUnreadCountManager sharedManager] removeDelegate:self];
 }
 
-#pragma mark - SAMCUserManagerDelegate
-- (void)onUserInfoChanged:(SAMCUser *)user
+#pragma mark - NIMKitUserInfoHasUpdatedNotification
+- (void)onUserInfoHasUpdatedNotification:(NSNotification *)notification
 {
-    if ([user.userId isEqualToString:_currentUser.userId]) {
-        _currentUser = user;
-        SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)self.tableView.tableHeaderView;
-        headerView.avatarUrl = user.userInfo.avatar;
-    }
+    SAMCCardPortraitView *headerView = (SAMCCardPortraitView *)self.tableView.tableHeaderView;
+    headerView.avatarUrl = [SAMCAccountManager sharedManager].currentUser.userInfo.avatar;
 }
 
 #pragma mark - UITableViewDelegate
