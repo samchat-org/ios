@@ -367,6 +367,7 @@
 #pragma mark - NIMUserManagerDelegate
 - (void)onMuteListChanged
 {
+    // directly use NIMUserManagerDelegate, not NIMKitUserMuteListHasUpdatedNotification, to speed up the rereshing
     [self reload];
 }
 
