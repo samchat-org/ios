@@ -179,6 +179,7 @@
                     // update cache
                     [_userInfoCache setObject:user forKey:user.userId];
                     // directly store to db, not trigger onUserInfoChanged:
+                    // SAMCDataManager will notfiyUserInfoChanged once a batch
                     [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
                     [users addObject:user];
                 }
