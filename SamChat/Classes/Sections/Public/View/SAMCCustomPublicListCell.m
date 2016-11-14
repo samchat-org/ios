@@ -128,13 +128,15 @@
 
 - (void)setPublicSession:(SAMCPublicSession *)publicSession
 {
-    self.nameLabel.text = [publicSession.spBasicInfo.username length] ? publicSession.spBasicInfo.username : @" ";
-    self.categoryLabel.text = publicSession.spBasicInfo.spServiceCategory;
+    NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:publicSession.userId];
+    NSString *username = info.showName;
+    self.nameLabel.text = [username length] ? username : @" ";
+    self.categoryLabel.text = info.serviceCategory;
     self.timeLabel.text = [NIMKitUtil showTime:publicSession.lastMessageTime showDetail:NO];
     self.messageLabel.text = [publicSession.lastMessageContent length] ? publicSession.lastMessageContent : @" ";
     
-    NSURL *url = publicSession.spBasicInfo.avatar? [NSURL URLWithString:publicSession.spBasicInfo.avatar] : nil;
-    [self.avatarView samc_setImageWithURL:url placeholderImage:[UIImage imageNamed:@"avatar_user"] options:SDWebImageRetryFailed];
+    NSURL *url = info.avatarUrlString ? [NSURL URLWithString:info.avatarUrlString] : nil;
+    [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     if (publicSession.unreadCount) {
         self.avatarView.circleColor = SAMC_COLOR_LIME;
         self.badgeView.hidden = NO;
