@@ -39,12 +39,22 @@
     self = [super init];
     if (self) {
         _userInfoCache = [[NSMutableDictionary alloc] init];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(didReceivedMemoryWaring:)
+                                                     name:UIApplicationDidReceiveMemoryWarningNotification
+                                                   object:nil];
     }
     return self;
 }
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)didReceivedMemoryWaring:(NSNotification *)notification
+{
+    [_userInfoCache removeAllObjects];
 }
 
 - (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate
