@@ -37,7 +37,7 @@
 
 #define SessionListTitle @"Chat"
 
-@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate,NIMUserManagerDelegate>
+@interface SAMCChatListViewController ()<SAMCConversationManagerDelegate,NIMTeamManagerDelegate,SAMCLoginManagerDelegate,NTESListHeaderDelegate,UITableViewDataSource,UITableViewDelegate,NIMUserManagerDelegate,UISearchBarDelegate,UISearchDisplayDelegate>
 
 @property (nonatomic,strong) NTESListHeader *header;
 @property (nonatomic,strong) UITableView *tableView;
@@ -45,6 +45,8 @@
 @property (nonatomic, strong) UISearchBar *searchBar;
 
 @property (nonatomic,readonly) NSMutableArray<SAMCRecentSession *> * recentSessions;
+
+@property (nonatomic, strong) NSArray *searchResultData;
 
 @end
 
@@ -70,22 +72,21 @@
     [self sort];
     
     self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-//    self.searchBar.delegate = self;
+    self.searchBar.delegate = self;
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.tableView.tableHeaderView = self.searchBar;
     
     self.searchResultController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar
                                                                     contentsController:self];
-//    self.searchResultController.delegate = self;
-//    self.searchResultController.searchResultsDataSource = self;
-//    self.searchResultController.searchResultsDelegate = self;
+    self.searchResultController.delegate = self;
+    self.searchResultController.searchResultsDataSource = self;
+    self.searchResultController.searchResultsDelegate = self;
     
     self.header = [[NTESListHeader alloc] initWithFrame:CGRectMake(0, 0, self.view.width, 0)];
     self.header.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     self.header.delegate = self;
     [self.view addSubview:self.header];
     
-//    [[NIMSDK sharedSDK].conversationManager addDelegate:self];
     [[SAMCConversationManager sharedManager] addDelegate:self];
     [[SAMCAccountManager sharedManager] addDelegate:self];
     [[NIMSDK sharedSDK].userManager addDelegate:self];
@@ -102,7 +103,6 @@
 
 - (void)dealloc
 {
-//    [[NIMSDK sharedSDK].conversationManager removeDelegate:self];
     [[NIMSDK sharedSDK].userManager removeDelegate:self];
     [[SAMCConversationManager sharedManager] removeDelegate:self];
     [[SAMCAccountManager sharedManager] removeDelegate:self];
@@ -128,7 +128,12 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    SAMCRecentSession *recentSession = self.recentSessions[indexPath.row];
+    SAMCRecentSession *recentSession;
+    if ([tableView isEqual:self.tableView]) {
+        recentSession = self.recentSessions[indexPath.row];
+    } else {
+        recentSession = self.searchResultData[indexPath.row];
+    }
     SAMCSessionViewController *vc = [[SAMCSessionViewController alloc] initWithSession:recentSession.session];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -147,21 +152,39 @@
     }
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([tableView isEqual:self.tableView]) {
+        return YES;
+    }
+    return NO;
+}
+
 #pragma mark - UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.recentSessions.count;
+    if ([tableView isEqual:self.tableView]) {
+        return self.recentSessions.count;
+    } else {
+        return self.searchResultData.count;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    SAMCRecentSession *recentSession;
+    if ([tableView isEqual:self.tableView]) {
+        recentSession = self.recentSessions[indexPath.row];
+    } else {
+        recentSession = self.searchResultData[indexPath.row];
+    }
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         static NSString * cellId = @"SAMCCustomChatListCellId";
         SAMCCustomChatListCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
         if (!cell) {
             cell = [[SAMCCustomChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         }
-        cell.recentSession = self.recentSessions[indexPath.row];
+        cell.recentSession = recentSession;
         return cell;
     } else {
         static NSString * cellId = @"SAMCSPChatListCellId";
@@ -169,7 +192,7 @@
         if (!cell) {
             cell = [[SAMCSPChatListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
         }
-        cell.recentSession = self.recentSessions[indexPath.row];
+        cell.recentSession = recentSession;
         return cell;
     }
 }
@@ -390,6 +413,33 @@
         vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
     }
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - UISearchBarDelegate
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    __block NSMutableArray *tempResultArray = [[NSMutableArray alloc] init];
+    [self.recentSessions enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        SAMCRecentSession *recentSession = obj;
+        NIMKitInfo *info = nil;
+        if (recentSession.session.sessionType == NIMSessionTypeTeam)
+        {
+            info = [[NIMKit sharedKit] infoByTeam:recentSession.session.sessionId];
+        }
+        else
+        {
+            info = [[NIMKit sharedKit] infoByUser:recentSession.session.sessionId
+                                        inSession:recentSession.session.nimSession];
+        }
+        
+        NSRange range = [info.showName rangeOfString:searchText options:NSCaseInsensitiveSearch];
+        if (range.location != NSNotFound) {
+            [tempResultArray addObject:recentSession];
+        }
+    }];
+    
+    self.searchResultData = tempResultArray;
+    [self.searchResultController.searchResultsTableView reloadData];
 }
 
 
