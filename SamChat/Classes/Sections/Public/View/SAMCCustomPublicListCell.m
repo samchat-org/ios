@@ -129,13 +129,21 @@
 - (void)setPublicSession:(SAMCPublicSession *)publicSession
 {
     NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:publicSession.userId];
-    NSString *username = info.showName;
-    self.nameLabel.text = [username length] ? username : @" ";
-    self.categoryLabel.text = info.serviceCategory;
+    NSString *avatarUrlString;
+    if (info.serviceCategory == nil) {
+        // kit info not sync ok
+        self.nameLabel.text = [publicSession.spBasicInfo.username length] ? publicSession.spBasicInfo.username : @" ";
+        self.categoryLabel.text = publicSession.spBasicInfo.spServiceCategory;
+        avatarUrlString = publicSession.spBasicInfo.avatar;
+    } else {
+        self.nameLabel.text = [info.showName length] ? info.showName : @" ";
+        self.categoryLabel.text = info.serviceCategory;
+        avatarUrlString = info.avatarUrlString;
+    }
     self.timeLabel.text = [NIMKitUtil showTime:publicSession.lastMessageTime showDetail:NO];
     self.messageLabel.text = [publicSession.lastMessageContent length] ? publicSession.lastMessageContent : @" ";
     
-    NSURL *url = info.avatarUrlString ? [NSURL URLWithString:info.avatarUrlString] : nil;
+    NSURL *url = avatarUrlString ? [NSURL URLWithString:avatarUrlString] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     if (publicSession.unreadCount) {
         self.avatarView.circleColor = SAMC_COLOR_LIME;
