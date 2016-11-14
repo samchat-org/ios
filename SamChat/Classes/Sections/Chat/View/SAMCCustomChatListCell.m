@@ -185,18 +185,8 @@
         self.badgeView.hidden = YES;
         self.badgeView.badgeValue = @"";
     }
-    
-    NSString *name = @"";
-    if ([recentSession.session.sessionId isEqualToString:[[NIMSDK sharedSDK].loginManager currentAccount]]) {
-        name = @"Me";
-    }
-    if (recentSession.session.sessionType == NIMSessionTypeP2P) {
-        name = info.showName;
-    }else{
-        NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:recentSession.session.sessionId];
-        name = team.teamName;
-    }
-    self.nameLabel.text = [name length] ? name : @" ";
+
+    self.nameLabel.text = [info.showName length] ? info.showName: @" ";
     
     BOOL needNotify;
     if (recentSession.session.sessionType == NIMSessionTypeP2P) {
