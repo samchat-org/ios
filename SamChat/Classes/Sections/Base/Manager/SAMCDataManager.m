@@ -21,7 +21,7 @@
 @end
 
 
-@interface SAMCDataManager()<NIMUserManagerDelegate,NIMTeamManagerDelegate>
+@interface SAMCDataManager()<NIMUserManagerDelegate,NIMTeamManagerDelegate,SAMCUserManagerDelegate>
 
 @property (nonatomic,strong) SAMCDataRequest *request;
 @property (nonatomic,strong) UIImage *defaultUserAvatar;
@@ -51,6 +51,7 @@
         _request.maxMergeCount = 20;
         [[NIMSDK sharedSDK].userManager addDelegate:self];
         [[NIMSDK sharedSDK].teamManager addDelegate:self];
+        [[SAMCUserManager sharedManager] addDelegate:self];
     }
     return self;
 }
@@ -59,6 +60,7 @@
 {
     [[NIMSDK sharedSDK].userManager removeDelegate:self];
     [[NIMSDK sharedSDK].teamManager removeDelegate:self];
+    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 - (NIMKitInfo *)infoByUser:(NSString *)userId
@@ -159,17 +161,15 @@
 
 //将个人信息和群组信息变化通知给 NIMKit 。
 //如果您的应用不托管个人信息给云信，则需要您自行在上层监听个人信息变动，并将变动通知给 NIMKit。
-
 #pragma mark - NIMUserManagerDelegate
-
-- (void)onFriendChanged:(NIMUser *)user
+- (void)onUserInfoChanged:(id)user // SAMCUserManagerDelegate & NIMUserManagerDelegate
 {
-    [[NIMKit sharedKit] notfiyUserInfoChanged:@[user.userId]];
-}
-
-- (void)onUserInfoChanged:(NIMUser *)user
-{
-    [[NIMKit sharedKit] notfiyUserInfoChanged:@[user.userId]];
+    if ([user isKindOfClass:[NIMUser class]]) {
+        DDLogWarn(@"NIMUserManagerDelegate onUserInfoChanged:%@", user);
+    }
+    if ([user isKindOfClass:[SAMCUser class]]) {
+        [[NIMKit sharedKit] notfiyUserInfoChanged:@[((SAMCUser *)user).userId]];
+    }
 }
 
 - (void)onBlackListChanged{
