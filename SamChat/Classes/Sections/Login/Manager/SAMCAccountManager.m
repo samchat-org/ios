@@ -28,7 +28,6 @@
 
 @interface SAMCAccountManager () <NIMLoginManagerDelegate, SAMCUserManagerDelegate>
 
-@property (nonatomic, strong) SAMCUser *currentUser;
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCLoginManagerDelegate> *multicastDelegate;
 
 @end
@@ -49,7 +48,6 @@
 {
     if (self = [super init]) {
         [[[NIMSDK sharedSDK] loginManager] addDelegate:self];
-        [[SAMCUserManager sharedManager] addDelegate:self];
     }
     return self;
 }
@@ -57,7 +55,6 @@
 - (void)dealloc
 {
     [[[NIMSDK sharedSDK] loginManager] removeDelegate:self];
-    [[SAMCUserManager sharedManager] removeDelegate:self];
 }
 
 - (void)registerCodeRequestWithCountryCode:(NSString *)countryCode
@@ -293,16 +290,12 @@
 
 - (SAMCUser *)currentUser
 {
-    NSString *userId = self.currentAccount;
-    if ((_currentUser == nil) || (![userId isEqualToString:_currentUser.userId])) {
-        _currentUser = [[SAMCUserManager sharedManager] userInfo:userId];
-    }
-    return _currentUser;
+    return [[SAMCUserManager sharedManager] userInfo:[self currentAccount]];
 }
 
 - (BOOL)isCurrentUserServicer
 {
-    return [[SAMCAccountManager sharedManager].currentUser.userInfo.usertype isEqual:@(SAMCuserTypeSamPros)];
+    return [[self currentUser].userInfo.usertype isEqual:@(SAMCuserTypeSamPros)];
 }
 
 - (BOOL)isLogined
@@ -400,14 +393,6 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
-}
-
-#pragma mark - SAMCUserManagerDelegate
-- (void)onUserInfoChanged:(SAMCUser *)user
-{
-    if ([user.userId isEqualToString:_currentUser.userId]) {
-        _currentUser = user;
-    }
 }
 
 @end

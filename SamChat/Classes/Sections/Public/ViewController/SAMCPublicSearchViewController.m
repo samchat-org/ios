@@ -136,7 +136,7 @@
         } else {
             if (isFollow) {
                 toast = @"follow success";
-                [[SAMCUserManager sharedManager] updateUser:user];
+                // do not update user here, as the user info has only kit info
                 [self.myFollowIdList addObject:user.userId];
             } else {
                 toast = @"unfollow success";

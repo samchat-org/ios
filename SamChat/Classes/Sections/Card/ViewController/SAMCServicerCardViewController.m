@@ -273,7 +273,7 @@
             if (follow) {
                 toast = @"follow success";
                 wself.isFollow = true;
-                [[SAMCUserManager sharedManager] updateUser:_user];
+                // no need to update user info here
             } else {
                 toast = @"unfollow success";
                 wself.isFollow = false;

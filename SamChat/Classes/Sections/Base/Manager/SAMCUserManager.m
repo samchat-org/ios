@@ -18,6 +18,7 @@
 @interface SAMCUserManager ()
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCUserManagerDelegate> *multicastDelegate;
+@property (nonatomic, strong) NSMutableDictionary *userInfoCache;
 
 @end
 
@@ -37,6 +38,7 @@
 {
     self = [super init];
     if (self) {
+        _userInfoCache = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -136,6 +138,7 @@
                     completion(nil, [SAMCServerErrorHelper errorWithCode:SAMCServerErrorUserNotExists]);
                 } else {
                     completion(response[SAMC_USERS][0], nil);
+                    // not updateUser here, update according action
                 }
             }
         } else {
@@ -163,7 +166,9 @@
                 NSMutableArray *users = [[NSMutableArray alloc] init];
                 for (NSDictionary *userDict in response[SAMC_USERS]) {
                     SAMCUser *user = [SAMCUser userFromDict:userDict];
-                    // TODO: do not use this updateUser, as it will trigger onUserInfoChanged:
+                    // update cache
+                    [_userInfoCache setObject:user forKey:user.userId];
+                    // directly store to db, not trigger onUserInfoChanged:
                     [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
                     [users addObject:user];
                 }
@@ -254,15 +259,22 @@
 
 - (SAMCUser *)userInfo:(NSString *)userId
 {
-    return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
+    id object = [_userInfoCache objectForKey:userId];
+    if (!object) {
+        object = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
+        if (object) {
+            [_userInfoCache setObject:object forKey:userId];
+        }
+    }
+    return object;
 }
 
 - (void)updateUser:(SAMCUser *)user
 {
-    __weak typeof(self) wself = self;
+    [_userInfoCache setObject:user forKey:user.userId];
+    [self.multicastDelegate onUserInfoChanged:[self userInfo:user.userId]];
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
-        [wself.multicastDelegate onUserInfoChanged:[wself userInfo:user.userId]];
     });
 }
 

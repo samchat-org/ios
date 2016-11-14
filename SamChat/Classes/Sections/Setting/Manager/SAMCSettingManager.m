@@ -51,8 +51,9 @@
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
                 DDLogDebug(@"createSamPros response:%@", response);
-                NSDictionary *userInfo = response[SAMC_USER];
-                SAMCUser *user = [SAMCUser userFromDict:userInfo];
+                SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
+                user.userInfo.usertype = @(SAMCuserTypeSamPros);
+                user.userInfo.spInfo = [SAMCSamProsInfo spInfoFromDict:info];
                 [[SAMCUserManager sharedManager] updateUser:user];
                 completion(nil);
             }
@@ -78,7 +79,7 @@
             if (errorCode) {
                 completion(nil, [SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.avatar = [response valueForKeyPath:SAMC_USER_THUMB];
                 user.userInfo.avatarOriginal = url;
                 [[SAMCUserManager sharedManager] updateUser:user];
@@ -106,7 +107,7 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
                 user.userInfo.countryCode = profileDict[SAMC_COUNTRYCODE] ?:user.userInfo.countryCode;
                 user.userInfo.cellPhone = profileDict[SAMC_CELLPHONE] ?:user.userInfo.cellPhone;
@@ -175,7 +176,7 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.countryCode = countryCode;
                 user.userInfo.cellPhone = cellPhone;
                 user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
@@ -229,7 +230,7 @@
             if (errorCode) {
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
-                SAMCUser *user = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:[SAMCAccountManager sharedManager].currentAccount];
+                SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
                 [[SAMCUserManager sharedManager] updateUser:user];
                 [SAMCPreferenceManager sharedManager].needQuestionNotify = @(needNotify);
