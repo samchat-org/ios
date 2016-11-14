@@ -12,8 +12,4 @@
 
 + (instancetype)sharedManager;
 
-@property (nonatomic,strong) UIImage *defaultUserAvatar;
-
-@property (nonatomic,strong) UIImage *defaultTeamAvatar;
-
 @end

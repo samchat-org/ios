@@ -24,6 +24,8 @@
 @interface SAMCDataManager()<NIMUserManagerDelegate,NIMTeamManagerDelegate>
 
 @property (nonatomic,strong) SAMCDataRequest *request;
+@property (nonatomic,strong) UIImage *defaultUserAvatar;
+@property (nonatomic,strong) UIImage *defaultTeamAvatar;
 
 @end
 
@@ -201,19 +203,7 @@
     [[NIMKit sharedKit] notfiyTeamMemebersChanged:@[team.teamId]];
 }
 
-#pragma mark - nickname
-- (NSString *)nicknameOfMemberInfo:(NIMTeamMember *)memberInfo
-{
-    NSString *name = nil;
-    if (memberInfo && [memberInfo.nickname length]) {
-        name = memberInfo.nickname;
-    }
-    return name;
-}
-
 @end
-
-
 
 
 @implementation SAMCDataRequest{
