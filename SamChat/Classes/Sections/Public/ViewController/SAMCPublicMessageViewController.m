@@ -281,7 +281,9 @@ UITableViewDelegate>
         [items addObject:[[UIMenuItem alloc] initWithTitle:@"Copy" action:@selector(copyText:)]];
     }
     [items addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteMsg:)]];
-    [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
+    if (!self.publicSession.isOutgoing) {
+        [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
+    }
 //    [items addObject:[[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(forwardMessage:)]];
     return items;
 }
