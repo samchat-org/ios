@@ -28,6 +28,4 @@
 
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
 
-- (BOOL)isUser:(NSString *)userId inMyContactListOfType:(SAMCContactListType)listType;
-
 @end

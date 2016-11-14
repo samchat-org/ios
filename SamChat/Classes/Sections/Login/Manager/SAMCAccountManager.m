@@ -223,6 +223,7 @@
             if ([[SAMCDataBaseManager sharedManager] needsMigration]) {
                 [[SAMCDataBaseManager sharedManager] doMigration];
             }
+            [[SAMCUserManager sharedManager] reset];
             [SAMCChatManager sharedManager];
             [[SAMCUserManager sharedManager] updateUser:user];
             [[SAMCPushManager sharedManager] open];

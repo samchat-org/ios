@@ -32,6 +32,7 @@
 #import <AWSS3/AWSS3.h>
 #import "SAMCSyncManager.h"
 #import "SAMCUnreadCountManager.h"
+#import "SAMCUserManager.h"
 
 NSString *NTESNotificationLogout = @"NTESNotificationLogout";
 NSString * const SAMCLoginNotification = @"SAMCLoginNotification";
@@ -231,6 +232,7 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     [[SAMCPushManager sharedManager] close];
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
+    [[SAMCUserManager sharedManager] reset];
     [[SAMCDataBaseManager sharedManager] close];
     [self setupLoginViewController];
 }
