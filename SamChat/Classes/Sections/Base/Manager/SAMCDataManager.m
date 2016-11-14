@@ -73,12 +73,7 @@
         {
             SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
             SAMCUserInfo *userInfo = user.userInfo;
-            NSString *name;
-            if (sessionType == NIMSessionTypeTeam) {
-                NIMTeamMember *member = [[NIMSDK sharedSDK].teamManager teamMember:userId inTeam:session.sessionId];
-                name = [self nicknameOfMemberInfo:member];
-            }
-            if ((name==nil) && ([userInfo.username length]>0)) {
+            if ([userInfo.username length] > 0) {
                 info.showName = userInfo.username;
             }
             info.avatarUrlString = userInfo.avatar;
