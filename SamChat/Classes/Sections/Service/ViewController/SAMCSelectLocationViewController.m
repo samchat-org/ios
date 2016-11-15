@@ -10,10 +10,11 @@
 #import "SAMCResourceManager.h"
 #import "SAMCPlaceInfo.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCSearchBar.h"
 
 @interface SAMCSelectLocationViewController ()<UISearchBarDelegate,UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) SAMCSearchBar *searchBar;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSMutableArray *data;
 @property (nonatomic, assign) NSInteger fixCellCount;
@@ -37,7 +38,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.fixCellCount = 0;
+    self.fixCellCount = _hideCurrentLocation ? 0 : 1;
     self.data = [[NSMutableArray alloc] init];
     [self setupSubviews];
     [self setupNavItem];
@@ -48,21 +49,17 @@
 {
     self.view.backgroundColor = SAMC_COLOR_LIGHTGREY;
     
-    _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+    _searchBar = [[SAMCSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     _searchBar.placeholder = @"Find a location";
     _searchBar.searchBarStyle = UISearchBarStyleMinimal;
-    _searchBar.backgroundColor = UIColorFromRGB(0xF9F9F9);
     _searchBar.delegate = self;
     _searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    for (UIView* subview in [[_searchBar.subviews lastObject] subviews]) {
-        if ([subview isKindOfClass:[UITextField class]]) {
-            UITextField *textField = (UITextField*)subview;
-            [textField setBackgroundColor:SAMC_COLOR_LIGHTGREY];
-        }
-    }
     
     _tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     _tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    UIEdgeInsets separatorInset   = _tableView.separatorInset;
+    separatorInset.right          = 0;
+    _tableView.separatorInset = separatorInset;
     _tableView.dataSource = self;
     _tableView.delegate = self;
     _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -83,18 +80,8 @@
 - (void)setupNavItem
 {
     self.navigationItem.title = @"Select Location";
-    [self.navigationItem setHidesBackButton:YES];
     UIBarButtonItem *negativeSpacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     negativeSpacer.width = -5;
-    
-    if (!_hideCurrentLocation) {
-        UIButton *locationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [locationButton addTarget:self action:@selector(onSelectCurrentLocation:) forControlEvents:UIControlEventTouchUpInside];
-        [locationButton setImage:[UIImage imageNamed:@"btn_location_normal"] forState:UIControlStateNormal];
-        [locationButton sizeToFit];
-        UIBarButtonItem *locationItem = [[UIBarButtonItem alloc] initWithCustomView:locationButton];
-        self.navigationItem.leftBarButtonItems = @[negativeSpacer,locationItem];
-    }
     
     UIColor *activeColor;
     UIColor *pressedColor;
@@ -106,14 +93,14 @@
         pressedColor = UIColorFromRGBA(0xFFFFFF, 0.5);
     }
     
-    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [cancelButton addTarget:self action:@selector(onCancel:) forControlEvents:UIControlEventTouchUpInside];
-    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:activeColor forState:UIControlStateNormal];
-    [cancelButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
-    [cancelButton sizeToFit];
-    UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-    self.navigationItem.rightBarButtonItem = cancelItem;
+    UIButton *doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [doneButton addTarget:self action:@selector(done:) forControlEvents:UIControlEventTouchUpInside];
+    [doneButton setTitle:@"Done" forState:UIControlStateNormal];
+    [doneButton setTitleColor:activeColor forState:UIControlStateNormal];
+    [doneButton setTitleColor:pressedColor forState:UIControlStateHighlighted];
+    [doneButton sizeToFit];
+    UIBarButtonItem *doneItem = [[UIBarButtonItem alloc] initWithCustomView:doneButton];
+    self.navigationItem.rightBarButtonItem = doneItem;
 }
 
 #pragma mark - Action
@@ -136,9 +123,11 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)onCancel:(id)sender
+- (void)done:(id)sender
 {
     if (self.selectBlock != nil) {
+        NSDictionary *location = @{SAMC_ADDRESS:self.searchBar.text};
+        self.selectBlock(location, NO);
         self.selectBlock = nil;
     }
     [self.navigationController popViewControllerAnimated:YES];
@@ -170,9 +159,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     cell.textLabel.font = [UIFont systemFontOfSize:15.0f];
-    cell.textLabel.textColor = UIColorFromRGB(0x13243F);
+    cell.textLabel.textColor = SAMC_COLOR_INK;
     if (self.fixCellCount && indexPath.row == 0) {
-        cell.textLabel.text = self.searchBar.text;
+        cell.textLabel.text = @"CurrentLocation";
+        cell.imageView.image = [UIImage imageNamed:@"service_location"];
     } else {
         SAMCPlaceInfo *placeInfo = self.data[indexPath.row-self.fixCellCount];
         cell.textLabel.text = placeInfo.desc;
@@ -184,18 +174,20 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    NSMutableDictionary *location = [[NSMutableDictionary alloc] init];
-    if (indexPath.row == 0) {
-        [location setObject:self.searchBar.text forKey:SAMC_ADDRESS];
+    if (self.fixCellCount && indexPath.row == 0) {
+        if (self.selectBlock != nil) {
+            self.selectBlock(nil, YES);
+        }
     } else {
-        SAMCPlaceInfo *info = self.data[indexPath.row-self.fixCellCount];
-        [location setObject:info.desc forKey:SAMC_ADDRESS];
-        [location setObject:info.placeId forKey:SAMC_PLACE_ID];
-    }
-    
-    if (self.selectBlock != nil) {
-        self.selectBlock(location, NO);
-        self.selectBlock = nil;
+        if (self.selectBlock != nil) {
+            NSMutableDictionary *location = [[NSMutableDictionary alloc] init];
+            SAMCPlaceInfo *info = self.data[indexPath.row-self.fixCellCount];
+            [location setObject:info.desc forKey:SAMC_ADDRESS];
+            [location setObject:info.placeId forKey:SAMC_PLACE_ID];
+        
+            self.selectBlock(location, NO);
+            self.selectBlock = nil;
+        }
     }
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -213,14 +205,6 @@
 #pragma mark - UISearchBarDelegate
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    BOOL isInputEmpty = ([searchText length] == 0);
-    if ((self.fixCellCount == 0) || isInputEmpty) {
-        self.fixCellCount = isInputEmpty ? 0 : 1;
-        [self.tableView reloadData];
-    } else {
-        NSIndexPath *tmpIndexpath=[NSIndexPath indexPathForRow:0 inSection:0];
-        [self.tableView reloadRowsAtIndexPaths:@[tmpIndexpath] withRowAnimation:UITableViewRowAnimationNone];
-    }
     [self findLocation];
 }
 
