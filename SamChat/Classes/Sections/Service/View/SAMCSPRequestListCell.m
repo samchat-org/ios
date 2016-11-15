@@ -80,11 +80,6 @@
     NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:[@(questionSession.senderId) stringValue]];
     NSURL *url = info.avatarUrlString ? [NSURL URLWithString:info.avatarUrlString] : nil;
     [_avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
-    if (questionSession.status == SAMCReceivedQuestionStatusNew) {
-        _avatarView.circleColor = SAMC_COLOR_LIME;
-    } else {
-        _avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
-    }
     _nameLabel.text = questionSession.senderUsername;
     _locationLabel.text = questionSession.address;
     _timeLabel.text = questionSession.questionTimeDescription;

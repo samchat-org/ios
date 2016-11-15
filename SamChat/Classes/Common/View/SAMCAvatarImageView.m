@@ -24,7 +24,7 @@ static char imageURLKey;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self setupSubviewsWithCircleWidth:2.0f];
+        [self setupSubviewsWithCircleWidth:0.0f];
     }
     return self;
 }

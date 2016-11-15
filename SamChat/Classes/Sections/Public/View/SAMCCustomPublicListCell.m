@@ -146,11 +146,9 @@
     NSURL *url = avatarUrlString ? [NSURL URLWithString:avatarUrlString] : nil;
     [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     if (publicSession.unreadCount) {
-        self.avatarView.circleColor = SAMC_COLOR_LIME;
         self.badgeView.hidden = NO;
         self.badgeView.badgeValue = [@(publicSession.unreadCount) stringValue];
     } else {
-        self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
         self.badgeView.hidden = YES;
         self.badgeView.badgeValue = @"";
     }

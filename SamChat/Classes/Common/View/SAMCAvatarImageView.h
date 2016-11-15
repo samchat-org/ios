@@ -15,6 +15,8 @@
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIColor *circleColor;
 
+- (instancetype)initWithFrame:(CGRect)frame circleWidth:(CGFloat)width;
+
 @end
 
 @interface SAMCAvatarImageView (SDWebImageCache)

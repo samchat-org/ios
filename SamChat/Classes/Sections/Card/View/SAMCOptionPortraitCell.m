@@ -78,7 +78,7 @@
 - (SAMCAvatarImageView *)avatarView
 {
     if (_avatarView == nil) {
-        _avatarView = [[SAMCAvatarImageView alloc] init];
+        _avatarView = [[SAMCAvatarImageView alloc] initWithFrame:CGRectZero circleWidth:2.0f];
         _avatarView.translatesAutoresizingMaskIntoConstraints = NO;
         _avatarView.circleColor = [UIColor clearColor];
     }

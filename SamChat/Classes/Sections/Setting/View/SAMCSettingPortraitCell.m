@@ -31,8 +31,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         CGFloat avatarWidth = 55.f;
-//        _avatar = [[NIMAvatarImageView alloc] initWithFrame:CGRectMake(0, 0, avatarWidth, avatarWidth)];
-        _avatar = [[SAMCAvatarImageView alloc] init];
+        _avatar = [[SAMCAvatarImageView alloc] initWithFrame:CGRectZero circleWidth:2.0f];
         _avatar.translatesAutoresizingMaskIntoConstraints = NO;
         [self addSubview:_avatar];
         _topButton = [UIButton buttonWithType:UIButtonTypeCustom];

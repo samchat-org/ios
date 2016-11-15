@@ -148,11 +148,9 @@
     
     self.categoryLabel.text = info.serviceCategory;
     if (recentSession.unreadCount) {
-        self.avatarView.circleColor = SAMC_COLOR_LIME;
         self.badgeView.hidden = NO;
         self.badgeView.badgeValue = [@(recentSession.unreadCount) stringValue];
     } else {
-        self.avatarView.circleColor = SAMC_COLOR_LIGHTGREY;
         self.badgeView.hidden = YES;
         self.badgeView.badgeValue = @"";
     }
