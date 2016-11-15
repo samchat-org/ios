@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorActionUnsupported = -2, // Action参数不支持
     SAMCServerErrorParameterInvalid = -3, // 参数不满足
     SAMCServerErrorTokenFormatWrong = -4, // token格式不正确
+    SAMCServerErrorUnsupportVersion = -5, // 版本不支持
     SAMCServerErrorInternalError = -103, // 内部错误
     SAMCServerErrorCellphoneRegistered = -201, // 电话号码已经注册过
     SAMCServerErrorCellphoneInvalid = -202, // 非法电话号码
