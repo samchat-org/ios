@@ -37,7 +37,6 @@
 #define SAMC_URL_CONTACT_CONTACT                    SAMC_API_PREFIX@"api_1.0_contact_contact.do"
 #define SAMC_URL_PROFILE_AVATAR_UPDATE              SAMC_API_PREFIX@"api_1.0_profile_avatarUpdate.do"
 #define SAMC_URL_PROFILE_GET_PLACESINFO             SAMC_API_PREFIX@"api_1.0_profile_getPlacesInfoRequest.do"
-#define SAMC_URL_PROFILE_SEND_CLIENTID              SAMC_API_PREFIX@"api_1.0_profile_sendClientId.do"
 #define SAMC_URL_PROFILE_QUERY_STATE_DATE           SAMC_API_PREFIX@"api_1.0_profile_queryStateDate.do"
 #define SAMC_URL_PROFILE_PROFILE_UPDATE             SAMC_API_PREFIX@"api_1.0_profile_profileUpdate.do"
 #define SAMC_URL_PROFILE_EDITCELLPHONE_CODER_EQUEST SAMC_API_PREFIX@"api_1.0_profile_editCellPhoneCodeRequest.do"

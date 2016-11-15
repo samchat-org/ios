@@ -10,7 +10,6 @@
 
 #define SAMC_CURRENTUSERMODE_KEY            @"samc_currentusermode_key"
 #define SAMC_GETUIBINDEDALIAS_KEY           @"samc_getuibindedalias_key"
-#define SAMC_SENDCLIENTIDFLAG_KEY           @"samc_sendclientidflag_key"
 #define SAMC_LOCALFOLLOWLISTVERSION_KEY     @"samc_localfollowlistversion_key"
 #define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
 #define SAMC_LOCALSERVICERLISTVERSION_KEY   @"samc_localservicerlistversion_key"
@@ -28,7 +27,6 @@
 
 @synthesize currentUserMode = _currentUserMode;
 @synthesize getuiBindedAlias = _getuiBindedAlias;
-@synthesize sendClientIdFlag = _sendClientIdFlag;
 @synthesize localFollowListVersion = _localFollowListVersion;
 @synthesize localCustomerListVersion = _localCustomerListVersion;
 @synthesize localServicerListVersion = _localServicerListVersion;
@@ -62,8 +60,6 @@
         [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
         _getuiBindedAlias = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
-        _sendClientIdFlag = @(NO);
-        [[NSUserDefaults standardUserDefaults] setValue:_sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
         _localFollowListVersion = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
         _localServicerListVersion = @"";
@@ -185,28 +181,6 @@
     dispatch_barrier_async(_syncQueue, ^{
         _localServicerListVersion = localServicerListVersion;
         [[NSUserDefaults standardUserDefaults] setValue:localServicerListVersion forKey:SAMC_LOCALSERVICERLISTVERSION_KEY];
-    });
-}
-
-#pragma mark - sendClientIdFlag
-- (NSNumber *)sendClientIdFlag
-{
-    __block NSNumber *flag;
-    dispatch_sync(_syncQueue, ^{
-        if (_sendClientIdFlag == nil) {
-            _sendClientIdFlag = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_SENDCLIENTIDFLAG_KEY];
-            _sendClientIdFlag = _sendClientIdFlag ?:@(NO);
-        }
-        flag = _sendClientIdFlag;
-    });
-    return flag;
-}
-
-- (void)setSendClientIdFlag:(NSNumber *)sendClientIdFlag
-{
-    dispatch_barrier_async(_syncQueue, ^{
-        _sendClientIdFlag = sendClientIdFlag;
-        [[NSUserDefaults standardUserDefaults] setValue:sendClientIdFlag forKey:SAMC_SENDCLIENTIDFLAG_KEY];
     });
 }
 

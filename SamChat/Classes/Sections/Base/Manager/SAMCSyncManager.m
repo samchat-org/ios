@@ -216,7 +216,6 @@ typedef void (^SyncAction)();
         DDLogDebug(@"queryFollowListBlock start");
         NSString *localFollowListVersion = [SAMCPreferenceManager sharedManager].localFollowListVersion;
         if ([wself.stateDateInfo.followListVersion isEqualToString:localFollowListVersion]) {
-//            wself.syncBlock = [wself sendClientIdBlock];
             wself.syncBlock = NULL;
             wself.isSyncing = NO;
             [wself doSync];
@@ -228,37 +227,6 @@ typedef void (^SyncAction)();
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
                 [SAMCPreferenceManager sharedManager].localFollowListVersion = wself.stateDateInfo.followListVersion;
-//                wself.syncBlock = [wself sendClientIdBlock];
-                wself.syncBlock = NULL;
-                wself.isSyncing = NO;
-                [wself doSync];
-            }
-        }];
-    };
-}
-
-- (SyncAction)sendClientIdBlock
-{
-    __weak typeof(self) wself = self;
-    return ^(){
-        DDLogDebug(@"sendClientIdBlock start");
-        if ([[SAMCPreferenceManager sharedManager].sendClientIdFlag isEqual:@(YES)]) {
-            wself.syncBlock = NULL;
-            wself.isSyncing = NO;
-            [wself doSync];
-            return;
-        }
-        if (wself.clientId == nil) {
-            wself.isSyncing = NO;
-            [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
-            return;
-        }
-        [wself sendClientId:wself.clientId completion:^(NSError *error) {
-            if (error) {
-                wself.isSyncing = NO;
-                [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
-            } else {
-                [SAMCPreferenceManager sharedManager].sendClientIdFlag = @(YES);
                 wself.syncBlock = NULL;
                 wself.isSyncing = NO;
                 [wself doSync];
@@ -351,31 +319,6 @@ typedef void (^SyncAction)();
                 completion(aError);
             });
         });
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
-    }];
-}
-
-- (void)sendClientId:(NSString *)clientId
-          completion:(void(^)(NSError *error))completion
-{
-    NSAssert(completion != nil, @"completion block should not be nil");
-    NSDictionary *parameters = [SAMCServerAPI sendClientId:clientId];
-    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-    manager.requestSerializer = [SAMCDataPostSerializer serializer];
-    [manager POST:SAMC_URL_PROFILE_SEND_CLIENTID parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        DDLogDebug(@"sendClientId result:%@", responseObject);
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *response = responseObject;
-            NSInteger errorCode =  [((NSNumber *)response[SAMC_RET]) integerValue];
-            if (errorCode) {
-                completion([SAMCServerErrorHelper errorWithCode:errorCode]);
-            } else {
-                completion(nil);
-            }
-        } else {
-            completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorUnknowError]);
-        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];

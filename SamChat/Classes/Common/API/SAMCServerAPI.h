@@ -93,8 +93,6 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 
 + (NSDictionary *)getPlacesInfo:(NSString *)key;
 
-+ (NSDictionary *)sendClientId:(NSString *)clientId;
-
 + (NSDictionary *)queryStateDate;
 
 + (NSDictionary *)updateProfile:(NSDictionary *)profile;

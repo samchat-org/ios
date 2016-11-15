@@ -13,7 +13,6 @@
 
 @property (nonatomic, strong) NSNumber *currentUserMode;
 @property (nonatomic, copy) NSString *getuiBindedAlias;
-@property (nonatomic, strong) NSNumber *sendClientIdFlag;
 
 @property (nonatomic, copy) NSString *localServicerListVersion;
 @property (nonatomic, copy) NSString *localCustomerListVersion;
