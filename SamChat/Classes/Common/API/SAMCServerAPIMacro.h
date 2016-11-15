@@ -96,6 +96,8 @@
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
 #define SAMC_DEVICEID                   @"deviceid"
+#define SAMC_DEVICE_TYPE                @"device_type"
+#define SAMC_APP_VERSION                @"app_version"
 #define SAMC_VERIFYCODE                 @"verifycode"
 #define SAMC_USERNAME                   @"username"
 #define SAMC_PWD                        @"pwd"
