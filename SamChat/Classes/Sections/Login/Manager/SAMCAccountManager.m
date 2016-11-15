@@ -19,7 +19,6 @@
 #import "SAMCDataBaseManager.h"
 #import "NTESService.h"
 #import "SAMCChatManager.h"
-#import "SAMCPushManager.h"
 #import "SAMCPublicManager.h"
 #import "SAMCUserManager.h"
 #import "SAMCUnreadCountManager.h"
@@ -226,7 +225,6 @@
             [[SAMCUserManager sharedManager] reset];
             [SAMCChatManager sharedManager];
             [[SAMCUserManager sharedManager] updateUser:user];
-            [[SAMCPushManager sharedManager] open];
             [[SAMCSyncManager sharedManager] start];
             [[SAMCUnreadCountManager sharedManager] start];
             completion(nil);
@@ -269,7 +267,6 @@
         [[SAMCDataBaseManager sharedManager] doMigration];
     }
     [SAMCChatManager sharedManager];
-    [[SAMCPushManager sharedManager] open];
     [[SAMCSyncManager sharedManager] start];
     [[SAMCUnreadCountManager sharedManager] start];
     [[[NIMSDK sharedSDK] loginManager] autoLogin:loginData.account token:[loginData finalToken]];

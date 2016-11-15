@@ -10,7 +10,6 @@ target 'SamChat' do
     pod 'CocoaLumberjack', '~> 2.0.0-rc2'
     pod 'SSZipArchive', '~> 1.2'
     pod 'AFNetworking', '~> 3.0'
-    pod 'GTSDK', '1.5.0-noidfa'
     pod 'AWSS3'
     pod 'YYCache'
 end

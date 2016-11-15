@@ -28,7 +28,6 @@
 #import "SAMCChatManager.h"
 #import "SAMCPreferenceManager.h"
 #import "SAMCAccountManager.h"
-#import "SAMCPushManager.h"
 #import <AWSS3/AWSS3.h>
 #import "SAMCSyncManager.h"
 #import "SAMCUnreadCountManager.h"
@@ -229,7 +228,6 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     }
     [[SAMCUnreadCountManager sharedManager] close];
     [[SAMCSyncManager sharedManager] close];
-    [[SAMCPushManager sharedManager] close];
     [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCUserManager sharedManager] reset];
