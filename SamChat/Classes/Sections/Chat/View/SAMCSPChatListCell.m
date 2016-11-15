@@ -19,7 +19,6 @@
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *messageLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UILabel *dotLabel;
 
 @property (nonatomic, strong) NIMBadgeView *badgeView;
 @property (nonatomic, strong) UIImageView *muteImageView;
@@ -40,7 +39,6 @@
 {
     [self addSubview:self.avatarView];
     [self addSubview:self.nameLabel];
-    [self addSubview:self.dotLabel];
     [self addSubview:self.timeLabel];
     [self addSubview:self.messageLabel];
     [self addSubview:self.badgeView];
@@ -67,29 +65,15 @@
                                                      attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
-    [_dotLabel addConstraint:[NSLayoutConstraint constraintWithItem:_dotLabel
-                                                          attribute:NSLayoutAttributeWidth
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:_dotLabel
-                                                          attribute:NSLayoutAttributeHeight
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-10-[_dotLabel(8)]-5-[_nameLabel][_timeLabel]-10-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-5-[_avatarView]-10-[_nameLabel]-5-[_timeLabel]-10-|"
                                                                  options:0
                                                                  metrics:nil
-                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_dotLabel,_timeLabel)]];
+                                                                   views:NSDictionaryOfVariableBindings(_avatarView,_nameLabel,_timeLabel)]];
     [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
                                                      attribute:NSLayoutAttributeBottom
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:_timeLabel
                                                      attribute:NSLayoutAttributeBottom
-                                                    multiplier:1.0f
-                                                      constant:0.0f]];
-    [self addConstraint:[NSLayoutConstraint constraintWithItem:_nameLabel
-                                                     attribute:NSLayoutAttributeCenterY
-                                                     relatedBy:NSLayoutRelationEqual
-                                                        toItem:_dotLabel
-                                                     attribute:NSLayoutAttributeCenterY
                                                     multiplier:1.0f
                                                       constant:0.0f]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:[_avatarView]-10-[_messageLabel]-5-[_muteImageView]-10-|"
@@ -125,22 +109,9 @@
     [_muteImageView setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-    _dotLabel.backgroundColor = SAMC_COLOR_LIME;
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
-{
-    [super setHighlighted:highlighted animated:animated];
-    _dotLabel.backgroundColor = SAMC_COLOR_LIME;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    _dotLabel.layer.cornerRadius = _dotLabel.frame.size.width/2;
     _badgeView.nim_right = _avatarView.nim_right + 6.0f;
     _badgeView.nim_top = _avatarView.nim_top - 6.0f;
 }
@@ -236,17 +207,6 @@
         _nameLabel.textColor = SAMC_COLOR_INK;
     }
     return _nameLabel;
-}
-
-- (UILabel *)dotLabel
-{
-    if (_dotLabel == nil) {
-        _dotLabel = [[UILabel alloc] init];
-        _dotLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        _dotLabel.backgroundColor = SAMC_COLOR_LIME;
-        _dotLabel.layer.masksToBounds = YES;
-    }
-    return _dotLabel;
 }
 
 - (UILabel *)timeLabel
