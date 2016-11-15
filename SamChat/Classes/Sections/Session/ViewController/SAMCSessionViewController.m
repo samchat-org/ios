@@ -38,12 +38,12 @@
 #import "NTESBundleSetting.h"
 #import "NTESPersonalCardViewController.h"
 #import "NTESSessionLocalHistoryViewController.h"
-#import "NIMContactSelectViewController.h"
+#import "SAMCContactSelectViewController.h"
 #import "SVProgressHUD.h"
 #import "SAMCSessionCardViewController.h"
 #import "NTESFPSLabel.h"
 #import "UIAlertView+NTESBlock.h"
-#import "NTESDataManager.h"
+#import "SAMCDataManager.h"
 #import "SAMCCustomTeamCardViewController.h"
 #import "SAMCSPTeamCardViewController.h"
 #import "SAMCAccountManager.h"
@@ -55,6 +55,8 @@
 #import "SAMCServiceProfileViewController.h"
 #import "SAMCImageAttachment.h"
 #import "SAMCPreferenceManager.h"
+#import "SAMCMessage.h"
+#import "SAMCConversationManager.h"
 
 typedef enum : NSUInteger {
     NTESImagePickerModeImage,
@@ -66,8 +68,7 @@ UINavigationControllerDelegate,
 NTESLocationViewControllerDelegate,
 NIMSystemNotificationManagerDelegate,
 NIMMediaManagerDelgate,
-NTESTimerHolderDelegate,
-NIMContactSelectDelegate>
+NTESTimerHolderDelegate>
 
 @property (nonatomic,strong)    NTESCustomSysNotificationSender *notificaionSender;
 @property (nonatomic,strong)    SAMCSessionConfig       *sessionConfig;
@@ -742,7 +743,8 @@ NIMContactSelectDelegate>
             case 0:{
                 NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
                 config.needMutiSelected = NO;
-                NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
+                config.userMode = self.samcSession.sessionMode;
+                SAMCContactSelectViewController *vc = [[SAMCContactSelectViewController alloc] initWithConfig:config];
                 vc.finshBlock = ^(NSArray *array){
                     NSString *userId = array.firstObject;
                     NIMSession *session = [NIMSession session:userId type:NIMSessionTypeP2P];
@@ -753,7 +755,8 @@ NIMContactSelectDelegate>
                 break;
             case 1:{
                 NIMContactTeamSelectConfig *config = [[NIMContactTeamSelectConfig alloc] init];
-                NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
+                config.userMode = self.samcSession.sessionMode;
+                SAMCContactSelectViewController *vc = [[SAMCContactSelectViewController alloc] initWithConfig:config];
                 vc.finshBlock = ^(NSArray *array){
                     NSString *teamId = array.firstObject;
                     NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
@@ -773,13 +776,10 @@ NIMContactSelectDelegate>
 - (void)forwardMessage:(NIMMessage *)message toSession:(NIMSession *)session
 {
     NSString *name;
-    if (session.sessionType == NIMSessionTypeP2P)
-    {
-        name = [[NTESDataManager sharedInstance] infoByUser:session.sessionId inSession:session].showName;
-    }
-    else
-    {
-        name = [[NTESDataManager sharedInstance] infoByTeam:session.sessionId].showName;
+    if (session.sessionType == NIMSessionTypeP2P) {
+        name = [[SAMCDataManager sharedManager] infoByUser:session.sessionId inSession:session].showName;
+    } else {
+        name = [[SAMCDataManager sharedManager] infoByTeam:session.sessionId].showName;
     }
     NSString *tip = [NSString stringWithFormat:@"确认转发给 %@ ?",name];
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"确认转发" message:tip delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
@@ -787,8 +787,36 @@ NIMContactSelectDelegate>
     __weak typeof(self) weakSelf = self;
     [alert showAlertWithCompletionHandler:^(NSInteger index) {
         if(index == 1){
-            [[NIMSDK sharedSDK].chatManager forwardMessage:message toSession:session error:nil];
-            [weakSelf.view makeToast:@"已发送" duration:2.0 position:CSToastPositionCenter];
+            if (session.sessionType != NIMSessionTypeP2P) {
+                [[NIMSDK sharedSDK].chatManager forwardMessage:message toSession:session error:nil];
+                [weakSelf.view makeToast:@"已发送" duration:2.0 position:CSToastPositionCenter];
+                return;
+            }
+            
+            NIMMessage *forwardMsg = [NTESSessionMsgConverter createForwardMsgWithMsg:message];
+            id usermodeValue = nil;
+            if (weakSelf.samcSession.sessionMode == SAMCUserModeTypeSP) {
+                usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_SP;
+            } else {
+                usermodeValue = MESSAGE_EXT_FROM_USER_MODE_VALUE_CUSTOM;
+            }
+            NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:forwardMsg.remoteExt];
+            [ext setObject:usermodeValue forKey:MESSAGE_EXT_FROM_USER_MODE_KEY];
+            forwardMsg.remoteExt = ext;
+            
+            SAMCSession *samcSession = [SAMCSession session:session.sessionId type:session.sessionType mode:weakSelf.samcSession.sessionMode];
+            SAMCMessage *samcmessage = [SAMCMessage message:forwardMsg.messageId session:samcSession];
+            samcmessage.nimMessage = forwardMsg;
+            
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                // TODO: need check here, should insert message after sendMessage ok?
+                [[SAMCConversationManager sharedManager] insertMessages:@[samcmessage] unreadCount:0];
+                dispatch_async(dispatch_get_main_queue(), ^{
+//                    [[NIMSDK sharedSDK].chatManager forwardMessage:message toSession:session error:nil];
+                    [weakSelf.view makeToast:@"已发送" duration:2.0 position:CSToastPositionCenter];
+                    [[[NIMSDK sharedSDK] chatManager] sendMessage:forwardMsg toSession:session error:nil];
+                });
+            });
         }
     }];
 }
@@ -817,8 +845,11 @@ NIMContactSelectDelegate>
     }
     id<NIMMessageObject> messageobject = message.messageObject;
     if ([messageobject isKindOfClass:[NIMCustomObject class]]) {
-            return NO;
+        if ([((NIMCustomObject *)messageobject).attachment isKindOfClass:[SAMCImageAttachment class]]) {
+            return YES;
         }
+        return NO;
+    }
     if ([messageobject isKindOfClass:[NIMNotificationObject class]]) {
         return NO;
     }

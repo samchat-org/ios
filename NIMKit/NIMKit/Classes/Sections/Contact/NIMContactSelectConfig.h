@@ -24,6 +24,14 @@ typedef NS_ENUM(NSInteger, NIMContactSelectType) {
  */
 - (NIMContactSelectType)selectType;
 
+// SAMC_BEGIN
+/**
+ *   用户模式，商家模式或者普通用户模式
+ *
+ *  @return SAMCUserModeType
+ */
+- (NSInteger)userMode;
+// SAMC_END
 
 @optional
 
@@ -72,6 +80,10 @@ typedef NS_ENUM(NSInteger, NIMContactSelectType) {
 
 @property (nonatomic,copy) NSArray *filterIds;
 
+//SAMC_BEGIN
+@property (nonatomic,assign) NSInteger userMode;
+//SAMC_END
+
 @end
 
 /**
@@ -87,6 +99,10 @@ typedef NS_ENUM(NSInteger, NIMContactSelectType) {
 
 @property (nonatomic,copy) NSArray *filterIds;
 
+//SAMC_BEGIN
+@property (nonatomic,assign) NSInteger userMode;
+//SAMC_END
+
 @end
 
 
@@ -100,5 +116,9 @@ typedef NS_ENUM(NSInteger, NIMContactSelectType) {
 @property (nonatomic,copy) NSArray *alreadySelectedMemberId;
 
 @property (nonatomic,copy) NSArray *filterIds;
+
+//SAMC_BEGIN
+@property (nonatomic,assign) NSInteger userMode;
+//SAMC_END
 
 @end

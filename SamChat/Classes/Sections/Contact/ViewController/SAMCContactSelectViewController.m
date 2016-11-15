@@ -65,14 +65,22 @@
     self.tableView.delegate = self;
     self.navigationItem.title = [self.config respondsToSelector:@selector(title)] ? [self.config title] : @"Select Contact";
     self.navigationController.navigationBar.translucent = NO;
-    self.navigationController.navigationBar.barTintColor = SAMC_COLOR_INK;
+    if (self.config.userMode == SAMCUserModeTypeSP) {
+        self.navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_DARK;
+    } else {
+        self.navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_LIGHT;
+    }
     self.selectIndicatorView.pickedView.delegate = self;
     [self.selectIndicatorView.doneButton addTarget:self action:@selector(onDoneBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton addTarget:self action:@selector(onCancelBtnClick:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    if (self.config.userMode == SAMCUserModeTypeSP) {
+        [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    } else {
+        [cancelButton setTitleColor:SAMC_COLOR_INGRABLUE forState:UIControlStateNormal];
+    }
     [cancelButton sizeToFit];
     UIBarButtonItem *cancelItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     self.navigationItem.rightBarButtonItem = cancelItem;
@@ -136,16 +144,75 @@
 
 
 - (void)makeData{
-    NSMutableArray *myFriendArray = [[[SAMCUserManager sharedManager] myContactListOfType:SAMCContactListTypeCustomer] mutableCopy];
-    NSArray *uids = [self filterData:myFriendArray];
-    self.data = [self makeUserInfoData:uids];
-    
+    self.selectType = NIMContactSelectTypeFriend;
+    if ([self.config respondsToSelector:@selector(selectType)]) {
+        self.selectType = [self.config selectType];
+    }
+    switch (self.selectType) {
+        case NIMContactSelectTypeFriend:{
+            SAMCContactListType contactListType;
+            if (self.config.userMode == SAMCUserModeTypeSP) {
+                contactListType = SAMCContactListTypeCustomer;
+            } else {
+                contactListType = SAMCContactListTypeServicer;
+            }
+            NSMutableArray *myFriendArray = [[[SAMCUserManager sharedManager] myContactListOfType:contactListType] mutableCopy];
+            NSArray *uids = [self filterData:myFriendArray];
+            self.data = [self makeUserInfoData:uids];
+            break;
+        }
+        case NIMContactSelectTypeTeamMember:{
+            if ([self.config respondsToSelector:@selector(teamId)]) {
+                NSString *teamId = [self.config teamId];
+                __weak typeof(self) wself = self;
+                [[NIMSDK sharedSDK].teamManager fetchTeamMembers:teamId completion:^(NSError *error, NSArray *members) {
+                    if (!error) {
+                        NSMutableArray *data = [[NSMutableArray alloc] init];
+                        for (NIMTeamMember *member in members) {
+                            [data addObject:member.userId];
+                        }
+                        NSArray *uids = [wself filterData:data];
+                        wself.data = [wself makeTeamMemberInfoData:uids teamId:teamId];
+                    }
+                }];
+            }
+            break;
+        }
+        case NIMContactSelectTypeTeam:{
+            NSMutableArray *teams = [[NSMutableArray alloc] init];
+            NSMutableArray *data = [[NIMSDK sharedSDK].teamManager.allMyTeams mutableCopy];
+            NSString *myAccount = [[NIMSDK sharedSDK].loginManager currentAccount];
+            if (self.config.userMode == SAMCUserModeTypeSP) {
+                for (NIMTeam *team in data) {
+                    if ([team.owner isEqualToString:myAccount]) {
+                        [teams addObject:team.teamId];
+                    }
+                }
+            } else {
+                for (NIMTeam *team in data) {
+                    if (![team.owner isEqualToString:myAccount]) {
+                        [teams addObject:team.teamId];
+                    }
+                }
+            }
+            NSArray *uids = [self filterData:teams];
+            self.data = [self makeTeamInfoData:uids];
+            break;
+        }
+        default:
+            break;
+    }
     if ([self.config respondsToSelector:@selector(alreadySelectedMemberId)]) {
         _selectecContacts = [[self.config alreadySelectedMemberId] mutableCopy];
     }
     _selectecContacts = _selectecContacts.count ? _selectecContacts : [NSMutableArray array];
     for (NSString *selectId in _selectecContacts) {
-        NIMKitInfo *info = [[NIMKit sharedKit] infoByUser:selectId];
+        NIMKitInfo *info;
+        if (self.selectType == NIMContactSelectTypeTeam) {
+            info = [[NIMKit sharedKit] infoByTeam:selectId];
+        }else{
+            info = [[NIMKit sharedKit] infoByUser:selectId];
+        }
         [self.selectIndicatorView.pickedView addMemberInfo:info];
     }
 }
@@ -219,7 +286,11 @@
     }
     cell.accessoryBtn.hidden = NO;
     cell.accessoryBtn.selected = [_selectecContacts containsObject:[contactItem memberId]];
-    [cell refreshUser:contactItem];
+    if (self.selectType == NIMContactSelectTypeTeam) {
+        [cell refreshTeam:contactItem];
+    }else{
+        [cell refreshUser:contactItem];
+    }
     return cell;
 }
 
@@ -249,7 +320,11 @@
     NSString *memberId = [(id<NIMGroupMemberProtocol>)member memberId];
     NIMContactDataCell *cell = (NIMContactDataCell *)[tableView cellForRowAtIndexPath:indexPath];
     NIMKitInfo *info;
-    info = [[NIMKit sharedKit] infoByUser:memberId];
+    if (self.selectType == NIMContactSelectTypeTeam) {
+        info = [[NIMKit sharedKit] infoByTeam:memberId];
+    }else{
+        info = [[NIMKit sharedKit] infoByUser:memberId];
+    }
     if([_selectecContacts containsObject:memberId]) {
         [_selectecContacts removeObject:memberId];
         cell.accessoryBtn.selected = NO;

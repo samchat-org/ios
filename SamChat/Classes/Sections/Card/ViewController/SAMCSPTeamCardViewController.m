@@ -351,6 +351,7 @@
             NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
             config.filterIds = users;
             config.needMutiSelected = YES;
+            config.userMode = SAMCUserModeTypeSP;
             SAMCContactSelectViewController *vc = [[SAMCContactSelectViewController alloc] initWithConfig:config];
             vc.delegate = self;
             [vc show];

@@ -218,6 +218,7 @@
         config.filterIds = users;
         config.needMutiSelected = YES;
         config.alreadySelectedMemberId = @[self.session.sessionId];
+        config.userMode = self.session.sessionMode;
         SAMCContactSelectViewController *vc = [[SAMCContactSelectViewController alloc] initWithConfig:config];
         vc.delegate = self;
         [vc show];

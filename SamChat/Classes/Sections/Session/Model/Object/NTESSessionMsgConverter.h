@@ -42,4 +42,6 @@
 
 + (NIMMessage *)msgWithTip:(NSString *)tip;
 
++ (NIMMessage *)createForwardMsgWithMsg:(NIMMessage *)message;
+
 @end

@@ -20,7 +20,6 @@
 #import "NIMKitColorButtonCell.h"
 #import "NIMTeamSwitchTableViewCell.h"
 #import "NIMContactSelectConfig.h"
-#import "SAMCContactSelectViewController.h"
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
 #import "NIMGlobalMacro.h"

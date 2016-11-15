@@ -13,6 +13,7 @@
 #import "NTESSnapchatAttachment.h"
 #import "NTESChartletAttachment.h"
 #import "NTESWhiteboardAttachment.h"
+#import "SAMCImageAttachment.h"
 
 
 @implementation NTESSessionMsgConverter
@@ -163,5 +164,53 @@
     return message;
 }
 
++ (NIMMessage *)createForwardMsgWithMsg:(NIMMessage *)message
+{
+    NIMMessage *forwardMessage;
+    if (message.messageType == NIMMessageTypeText) {
+        forwardMessage = [NTESSessionMsgConverter msgWithText:message.text];
+    } else if (message.messageType == NIMMessageTypeImage) {
+        NIMImageObject *imageObject = message.messageObject;
+        UIImage *image;
+        if([[NSFileManager defaultManager] fileExistsAtPath:imageObject.path]){
+            image = [UIImage imageWithContentsOfFile:imageObject.path];
+        } else {
+            image = [UIImage imageWithContentsOfFile:imageObject.thumbPath];
+        }
+        forwardMessage = [NTESSessionMsgConverter msgWithImage:image];
+    } else if (message.messageType == NIMMessageTypeAudio) {
+        NIMAudioObject *audioObject = message.messageObject;
+        forwardMessage = [NTESSessionMsgConverter msgWithAudio:audioObject.path];
+    } else if (message.messageType == NIMMessageTypeVideo) {
+        NIMVideoObject *videoObject = message.messageObject;
+        forwardMessage = [NTESSessionMsgConverter msgWithVideo:videoObject.path];
+    } else if (message.messageType == NIMMessageTypeCustom) {
+        id<NIMMessageObject> messageobject = message.messageObject;
+        if ([messageobject isKindOfClass:[NIMCustomObject class]] &&
+            [((NIMCustomObject *)messageobject).attachment isKindOfClass:[SAMCImageAttachment class]]) {
+            SAMCImageAttachment *imageAttach = (SAMCImageAttachment *)((NIMCustomObject *)messageobject).attachment;
+            UIImage *image;
+            if([[NSFileManager defaultManager] fileExistsAtPath:imageAttach.path]){
+                image = [UIImage imageWithContentsOfFile:imageAttach.path];
+            } else {
+                image = [UIImage imageWithContentsOfFile:imageAttach.thumbPath];
+            }
+            forwardMessage = [NTESSessionMsgConverter msgWithImage:image];
+        } else {
+            forwardMessage = [[NIMMessage alloc] init];
+            forwardMessage.messageObject = message.messageObject;
+        }
+    } else {
+        DDLogError(@"unknow message createForwardMsgWithMsg:%@", message);
+        forwardMessage = [[NIMMessage alloc] init];
+        forwardMessage.messageObject = message.messageObject;
+    }
+    message.apnsContent = message.apnsContent;
+    NSMutableDictionary *ext = [[NSMutableDictionary alloc] initWithDictionary:message.remoteExt];
+    [ext removeObjectForKey:MESSAGE_EXT_QUESTION_ID_KEY];
+    [ext removeObjectForKey:MESSAGE_EXT_PUBLIC_ID_KEY];
+    message.remoteExt = ext;
+    return forwardMessage;
+}
 
 @end
