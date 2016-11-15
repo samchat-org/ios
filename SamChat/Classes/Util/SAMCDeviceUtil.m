@@ -24,4 +24,19 @@
     return deviceId;
 }
 
++ (NSString *)deviceInfo
+{
+    UIDevice *device = [UIDevice currentDevice];
+    NSString *deviceInfo = [NSString stringWithFormat:@"%@ %@",device.systemName,device.systemVersion];
+    return deviceInfo;
+}
+
++ (NSString *)appInfo
+{
+    NSDictionary *dic = [[NSBundle mainBundle] infoDictionary];
+    NSString *appName = [dic objectForKey:@"CFBundleName"];
+    NSString *appVersion = [dic valueForKey:@"CFBundleVersion"];
+    return [NSString stringWithFormat:@"%@ %@", appName, appVersion];
+}
+
 @end

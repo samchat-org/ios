@@ -11,5 +11,7 @@
 @interface SAMCDeviceUtil : NSObject
 
 + (NSString *)deviceId;
++ (NSString *)deviceInfo;
++ (NSString *)appInfo;
 
 @end
