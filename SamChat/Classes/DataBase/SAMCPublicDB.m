@@ -211,6 +211,40 @@
     return isFollowing;
 }
 
+- (NSString *)localFollowListVersion
+{
+    __block NSString *followListVersion = @"0";
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = @"follow_list_version";
+        if (![db tableExists:tableName]) {
+            DDLogError(@"localFollowListVersion: table %@ not exists", tableName);
+            return;
+        }
+        NSString *sql = [NSString stringWithFormat:@"SELECT version FROM %@ WHERE type = ?", tableName];
+        FMResultSet *s = [db executeQuery:sql, @(0)];
+        if([s next]) {
+            followListVersion = [s stringForColumnIndex:0];
+        }
+        [s close];
+    }];
+    DDLogDebug(@"local follow list version: %@", followListVersion);
+    return followListVersion;
+}
+
+- (void)updateFollowListVersion:(NSString *)version
+{
+    version = version ?:@"0";
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = @"follow_list_version";
+        if (![db tableExists:tableName]) {
+            DDLogError(@"updateFollowListVersion: table %@ not exists", tableName);
+            return;
+        }
+        NSString *sql = [NSString stringWithFormat:@"REPLACE INTO %@(type, version) VALUES (?,?)", tableName];
+        [db executeUpdate:sql, @(0), version];
+    }];
+}
+
 - (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit

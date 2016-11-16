@@ -25,6 +25,9 @@
 
 - (BOOL)isFollowing:(NSString *)userId;
 
+- (NSString *)localFollowListVersion;
+- (void)updateFollowListVersion:(NSString *)version;
+
 - (NSArray<SAMCPublicMessage *> *)messagesInSession:(SAMCPublicSession *)session
                                             message:(SAMCPublicMessage *)message
                                               limit:(NSInteger)limit;

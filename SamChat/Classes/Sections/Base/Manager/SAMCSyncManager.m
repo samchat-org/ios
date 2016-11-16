@@ -14,7 +14,6 @@
 #import "SAMCServerAPI.h"
 #import "SAMCServerErrorHelper.h"
 #import "SAMCDataBaseManager.h"
-#import "SAMCPreferenceManager.h"
 
 typedef void (^SyncAction)();
 
@@ -217,7 +216,7 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        NSString *localFollowListVersion = [SAMCPreferenceManager sharedManager].localFollowListVersion;
+        NSString *localFollowListVersion = [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
         if ([wself.stateDateInfo.followListVersion isEqualToString:localFollowListVersion]) {
             DDLogDebug(@"queryFollowListBlock no need to sync follow list");
             wself.syncBlock = NULL;
@@ -232,7 +231,7 @@ typedef void (^SyncAction)();
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
                 DDLogDebug(@"queryFollowListBlock sync finished");
-                [SAMCPreferenceManager sharedManager].localFollowListVersion = wself.stateDateInfo.followListVersion;
+                [wself updateLocalFollowListVersion:wself.stateDateInfo.followListVersion];
                 wself.syncBlock = NULL;
                 wself.isSyncing = NO;
                 [wself doSync];
@@ -336,6 +335,13 @@ typedef void (^SyncAction)();
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
        [[SAMCDataBaseManager sharedManager].userInfoDB updateLocalContactListVersion:version
                                                                                 type:listType];
+    });
+}
+
+- (void)updateLocalFollowListVersion:(NSString *)version
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[SAMCDataBaseManager sharedManager].publicDB updateFollowListVersion:version];
     });
 }
 

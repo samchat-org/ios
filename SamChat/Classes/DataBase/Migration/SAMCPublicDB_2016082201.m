@@ -19,6 +19,7 @@
 {
     DDLogDebug(@"SAMCPublicDB_2016082201");
     NSArray *sqls = @[SAMC_CREATE_FOLLOW_LIST_TABLE_SQL_2016082201,
+                      SAMC_CREATE_FOLLOW_LIST_VERSION_TABLE_SQL_2016082201,
                       @"CREATE TABLE IF NOT EXISTS session_list(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
                       unique_id INTEGER UNIQUE, last_msg_id TEXT, last_msg_state INTEGER, \
                       last_msg_content TEXT, last_msg_time INTEGER, unread_count INTEGER DEFAULT 0, \
