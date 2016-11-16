@@ -81,7 +81,9 @@
 #pragma mark - UITableViewDelegate
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 0) && (indexPath.row == 0)) {
+    if (indexPath.row == 0) {
+        return NO;
+    } else if ((indexPath.row == 1) && ([self.user.userInfo.samchatId length])) {
         return NO;
     }
     return YES;
@@ -96,8 +98,10 @@
             switch (indexPath.row) {
                 case 1:
                 {
-                    SAMCCreateSamChatIDViewController *vc = [[SAMCCreateSamChatIDViewController alloc] init];
-                    [self.navigationController pushViewController:vc animated:YES];
+                    if (![self.user.userInfo.samchatId length]) {
+                        SAMCCreateSamChatIDViewController *vc = [[SAMCCreateSamChatIDViewController alloc] init];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }
                 }
                     break;
                 case 2:
@@ -181,7 +185,11 @@
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"SamChat ID";
-                    cell.detailTextLabel.text = @" ";
+                    NSString *samchatId = self.user.userInfo.samchatId;
+                    cell.detailTextLabel.text = [samchatId length] ? samchatId :@" ";
+                    if ([samchatId length]) {
+                        cell.accessoryType = UITableViewCellAccessoryNone;
+                    }
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
                 }
                     break;
