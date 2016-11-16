@@ -53,6 +53,7 @@
                 DDLogDebug(@"createSamPros response:%@", response);
                 SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.usertype = @(SAMCuserTypeSamPros);
+                user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
                 user.userInfo.spInfo = [SAMCSamProsInfo spInfoFromDict:info];
                 [[SAMCUserManager sharedManager] updateUser:user];
                 completion(nil);
@@ -82,6 +83,7 @@
                 SAMCUser *user = [SAMCAccountManager sharedManager].currentUser;
                 user.userInfo.avatar = [response valueForKeyPath:SAMC_USER_THUMB];
                 user.userInfo.avatarOriginal = url;
+                user.userInfo.lastupdate = [response valueForKeyPath:SAMC_USER_LASTUPDATE];
                 [[SAMCUserManager sharedManager] updateUser:user];
                 completion(user, nil);
             }
