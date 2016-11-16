@@ -283,7 +283,7 @@
             DDLogError(@"myContactListOfType table %@ not exists", tableName);
             return;
         }
-        NSString *sql = [NSString stringWithFormat:@"select * from %@", tableName];
+        NSString *sql = [NSString stringWithFormat:@"SELECT * FROM %@", tableName];
         FMResultSet *s = [db executeQuery:sql];
         while ([s next]) {
             NSNumber *uniqueId = @([s longForColumn:@"unique_id"]);
@@ -292,6 +292,40 @@
         [s close];
     }];
     return contactList;
+}
+
+- (NSString *)localContactListVersionOfType:(SAMCContactListType)listType
+{
+    __block NSString *contactListVersion = @"0";
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = @"contact_list_version";
+        if (![db tableExists:tableName]) {
+            DDLogError(@"localContactListVersionOfType: contact_list_version table %@ not exists", tableName);
+            return;
+        }
+        NSString *sql = [NSString stringWithFormat:@"SELECT version FROM %@ WHERE type = ?", tableName];
+        FMResultSet *s = [db executeQuery:sql, @(listType)];
+        if([s next]) {
+            contactListVersion = [s stringForColumnIndex:0];
+        }
+        [s close];
+    }];
+    DDLogDebug(@"local %@ list version: %@", (listType==SAMCContactListTypeServicer)?@"servicer":@"customer", contactListVersion);
+    return contactListVersion;
+}
+
+- (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType
+{
+    version = version ?:@"0";
+    [self.queue inDatabase:^(FMDatabase *db) {
+        NSString *tableName = @"contact_list_version";
+        if (![db tableExists:tableName]) {
+            DDLogError(@"updateContactListVersion:type: contact_list_version table %@ not exists", tableName);
+            return;
+        }
+        NSString *sql = [NSString stringWithFormat:@"replace into %@(type, version) values (?,?)", tableName];
+        [db executeUpdate:sql, @(listType), version];
+    }];
 }
 
 //- (BOOL)isUser:(NSString *)userId inMyContactListOfType:(SAMCContactListType)listType

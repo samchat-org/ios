@@ -10,8 +10,6 @@
 
 @interface SAMCSyncManager : NSObject
 
-@property (nonatomic, strong) NSString *clientId;
-
 + (instancetype)sharedManager;
 
 - (void)start;

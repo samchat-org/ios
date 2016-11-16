@@ -28,4 +28,8 @@
 
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType;
 
+- (NSString *)localContactListVersionOfType:(SAMCContactListType)listType;
+
+- (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType;
+
 @end

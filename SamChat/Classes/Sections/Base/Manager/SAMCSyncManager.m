@@ -161,9 +161,9 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        DDLogDebug(@"queryServicerListBlock start");
-        NSString *localServicerListVersion = [SAMCPreferenceManager sharedManager].localServicerListVersion;
+        NSString *localServicerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeServicer];
         if ([wself.stateDateInfo.servicerListVersion isEqualToString:localServicerListVersion]) {
+            DDLogDebug(@"queryServicerListBlock no need to sync servicer list");
             wself.syncBlock = [wself queryCustomerListBlock];
             wself.isSyncing = NO;
             [wself doSync];
@@ -171,10 +171,12 @@ typedef void (^SyncAction)();
         }
         [wself queryContactList:SAMCContactListTypeServicer completion:^(NSError *error) {
             if (error) {
+                DDLogDebug(@"queryServicerListBlock sync servicer list error: %@", error);
                 wself.isSyncing = NO;
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
-                [SAMCPreferenceManager sharedManager].localServicerListVersion = wself.stateDateInfo.servicerListVersion;
+                DDLogDebug(@"queryServicerListBlock sync servicer list finished");
+                [wself updateLocalContactListVersion:wself.stateDateInfo.servicerListVersion type:SAMCContactListTypeServicer];
                 wself.syncBlock = [wself queryCustomerListBlock];
                 wself.isSyncing = NO;
                 [wself doSync];
@@ -187,9 +189,9 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        DDLogDebug(@"queryCustomerListBlock start");
-        NSString *localCustomerListVersion = [SAMCPreferenceManager sharedManager].localCustomerListVersion;
+        NSString *localCustomerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
         if ([wself.stateDateInfo.customerListVersion isEqualToString:localCustomerListVersion]) {
+            DDLogDebug(@"queryCustomerListBlock no need to sync customer list");
             wself.syncBlock = [wself queryFollowListBlock];
             wself.isSyncing = NO;
             [wself doSync];
@@ -197,10 +199,12 @@ typedef void (^SyncAction)();
         }
         [wself queryContactList:SAMCContactListTypeCustomer completion:^(NSError *error) {
             if (error) {
+                DDLogDebug(@"queryCustomerListBlock sync customer list error: %@", error);
                 wself.isSyncing = NO;
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
-                [SAMCPreferenceManager sharedManager].localCustomerListVersion = wself.stateDateInfo.customerListVersion;
+                DDLogDebug(@"queryCustomerListBlock sync customer list finished");
+                [wself updateLocalContactListVersion:wself.stateDateInfo.customerListVersion type:SAMCContactListTypeCustomer];
                 wself.syncBlock = [wself queryFollowListBlock];
                 wself.isSyncing = NO;
                 [wself doSync];
@@ -213,9 +217,9 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        DDLogDebug(@"queryFollowListBlock start");
         NSString *localFollowListVersion = [SAMCPreferenceManager sharedManager].localFollowListVersion;
         if ([wself.stateDateInfo.followListVersion isEqualToString:localFollowListVersion]) {
+            DDLogDebug(@"queryFollowListBlock no need to sync follow list");
             wself.syncBlock = NULL;
             wself.isSyncing = NO;
             [wself doSync];
@@ -223,9 +227,11 @@ typedef void (^SyncAction)();
         }
         [wself queryFollowListCompletion:^(NSError *error) {
             if (error) {
+                DDLogDebug(@"queryFollowListBlock sync error: %@", error);
                 wself.isSyncing = NO;
                 [wself performSelector:@selector(doSync) withObject:nil afterDelay:wself.retryDelay];
             } else {
+                DDLogDebug(@"queryFollowListBlock sync finished");
                 [SAMCPreferenceManager sharedManager].localFollowListVersion = wself.stateDateInfo.followListVersion;
                 wself.syncBlock = NULL;
                 wself.isSyncing = NO;
@@ -322,6 +328,15 @@ typedef void (^SyncAction)();
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
+}
+
+#pragma mark - 
+- (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+       [[SAMCDataBaseManager sharedManager].userInfoDB updateLocalContactListVersion:version
+                                                                                type:listType];
+    });
 }
 
 @end

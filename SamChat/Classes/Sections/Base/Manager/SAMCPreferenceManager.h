@@ -22,8 +22,6 @@
 
 @property (nonatomic, strong) SAMCLoginData *loginData;
 
-@property (nonatomic, copy) NSString *localServicerListVersion;
-@property (nonatomic, copy) NSString *localCustomerListVersion;
 @property (nonatomic, copy) NSString *localFollowListVersion;
 
 @property (nonatomic, strong) NSNumber *needQuestionNotify;
