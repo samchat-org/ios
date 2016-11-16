@@ -284,67 +284,7 @@ UITableViewDelegate>
     if (!self.publicSession.isOutgoing) {
         [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
     }
-//    [items addObject:[[UIMenuItem alloc] initWithTitle:@"转发" action:@selector(forwardMessage:)]];
     return items;
-}
-
-- (void)forwardMessage:(id)sender
-{
-    NIMMessage *message = [self messageForMenu];
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"选择会话类型" delegate:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"个人",@"群组", nil];
-    __weak typeof(self) weakSelf = self;
-    [sheet showInView:self.view completionHandler:^(NSInteger index) {
-        switch (index) {
-            case 0:{
-                NIMContactFriendSelectConfig *config = [[NIMContactFriendSelectConfig alloc] init];
-                config.needMutiSelected = NO;
-                NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
-                vc.finshBlock = ^(NSArray *array){
-                    NSString *userId = array.firstObject;
-                    NIMSession *session = [NIMSession session:userId type:NIMSessionTypeP2P];
-                    [weakSelf forwardMessage:message toSession:session];
-                };
-                [vc show];
-            }
-                break;
-            case 1:{
-                NIMContactTeamSelectConfig *config = [[NIMContactTeamSelectConfig alloc] init];
-                NIMContactSelectViewController *vc = [[NIMContactSelectViewController alloc] initWithConfig:config];
-                vc.finshBlock = ^(NSArray *array){
-                    NSString *teamId = array.firstObject;
-                    NIMSession *session = [NIMSession session:teamId type:NIMSessionTypeTeam];
-                    [weakSelf forwardMessage:message toSession:session];
-                };
-                [vc show];
-            }
-                break;
-            case 2:
-                break;
-            default:
-                break;
-        }
-    }];
-}
-
-- (void)forwardMessage:(NIMMessage *)message toSession:(NIMSession *)session
-{
-    NSString *name;
-    if (session.sessionType == NIMSessionTypeP2P) {
-        name = [[NTESDataManager sharedInstance] infoByUser:session.sessionId inSession:session].showName;
-    }
-    else {
-        name = [[NTESDataManager sharedInstance] infoByTeam:session.sessionId].showName;
-    }
-    NSString *tip = [NSString stringWithFormat:@"确认转发给 %@ ?",name];
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"确认转发" message:tip delegate:nil cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-    
-    __weak typeof(self) weakSelf = self;
-    [alert showAlertWithCompletionHandler:^(NSInteger index) {
-        if(index == 1){
-            [[NIMSDK sharedSDK].chatManager forwardMessage:message toSession:session error:nil];
-            [weakSelf.view makeToast:@"已发送" duration:2.0 position:CSToastPositionCenter];
-        }
-    }];
 }
 
 #pragma mark - UITableViewDataSource & UITableViewDelegate
