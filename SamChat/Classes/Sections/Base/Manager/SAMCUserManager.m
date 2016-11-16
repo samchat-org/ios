@@ -293,12 +293,12 @@
 
 - (BOOL)isMyProvider:(NSString *)userId
 {
-    return [[self myContactListOfType:SAMCContactListTypeServicer] containsObject:userId];
+    return [self.servicerList containsObject:userId];
 }
 
 - (BOOL)isMyCustomer:(NSString *)userId
 {
-    return [[self myContactListOfType:SAMCContactListTypeCustomer] containsObject:userId];
+    return [self.customerList containsObject:userId];
 }
 
 - (SAMCUser *)userInfo:(NSString *)userId
