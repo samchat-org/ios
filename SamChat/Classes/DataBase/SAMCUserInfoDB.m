@@ -69,6 +69,7 @@
         if ([s next]) {
             SAMCUserInfo *userInfo = [[SAMCUserInfo alloc] init];
             userInfo.username = [s stringForColumn:@"username"];
+            userInfo.samchatId = [s stringForColumn:@"samchat_id"];
             userInfo.usertype = @([s intForColumn:@"usertype"]);
             userInfo.lastupdate = @([s longForColumn:@"lastupdate"]);
             userInfo.avatar = [s stringForColumn:@"avatar"];
@@ -108,6 +109,7 @@
         FMResultSet *s = [db executeQuery:@"SELECT * FROM userinfo WHERE unique_id = ?", unique_id];
         
         NSString *username = userInfo.username;
+        NSString *samchat_id = userInfo.samchatId;
         NSString *countrycode = userInfo.countryCode;
         NSString *cellphone = userInfo.cellPhone;
         NSString *email = userInfo.email;
@@ -126,6 +128,7 @@
         
         if ([s next]) {
             username = username ?:[s stringForColumn:@"username"];
+            samchat_id = samchat_id ?:[s stringForColumn:@"samchat_id"];
             countrycode = countrycode ?:[s stringForColumn:@"countrycode"];
             cellphone = cellphone ?:[s stringForColumn:@"cellphone"];
             email = email ?:[s stringForColumn:@"email"];
@@ -141,15 +144,15 @@
             sp_phone = sp_phone ?:[s stringForColumn:@"sp_phone"];
             sp_address = sp_address ?:[s stringForColumn:@"sp_address"];
             sp_email = sp_email ?:[s stringForColumn:@"sp_email"];
-            [db executeUpdate:@"UPDATE userinfo SET username=?, usertype=?, lastupdate=?, avatar=?, avatar_original=?, countrycode=?, \
+            [db executeUpdate:@"UPDATE userinfo SET username=?, samchat_id=?, usertype=?, lastupdate=?, avatar=?, avatar_original=?, countrycode=?, \
              cellphone=?, email=?, address=?, sp_company_name=?, sp_service_category=?, sp_service_description=?, \
-             sp_countrycode=?, sp_phone=?, sp_address=?, sp_email=? WHERE unique_id = ?", username, usertype, lastupdate, avatar, avatar_original,
+             sp_countrycode=?, sp_phone=?, sp_address=?, sp_email=? WHERE unique_id = ?", username, samchat_id, usertype, lastupdate, avatar, avatar_original,
              countrycode, cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode,
              sp_phone, sp_address, sp_email, unique_id];
         } else {
-            [db executeUpdate:@"INSERT INTO userinfo(unique_id, username, usertype, lastupdate, avatar, avatar_original, countrycode, \
+            [db executeUpdate:@"INSERT INTO userinfo(unique_id, username, samchat_id, usertype, lastupdate, avatar, avatar_original, countrycode, \
              cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email) \
-             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, usertype, lastupdate, avatar, avatar_original, countrycode,
+             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, samchat_id, usertype, lastupdate, avatar, avatar_original, countrycode,
              cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email];
         }
         [s close];

@@ -18,6 +18,7 @@
     
     SAMCUserInfo *info = [[SAMCUserInfo alloc] init];
     info.username = userDict[SAMC_USERNAME];
+    info.samchatId = userDict[SAMC_SAMCHAT_ID];
     info.countryCode = [NSString stringWithFormat:@"%@",[userDict valueForKey:SAMC_COUNTRYCODE]];;
     info.cellPhone = userDict[SAMC_CELLPHONE];
     info.email = userDict[SAMC_EMAIL];

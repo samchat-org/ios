@@ -20,7 +20,7 @@
 {
     DDLogDebug(@"SAMCUserInfoDB_2016082201");
     NSArray *sqls = @[@"CREATE TABLE IF NOT EXISTS userinfo(serial INTEGER PRIMARY KEY AUTOINCREMENT, \
-                      unique_id INTEGER UNIQUE, username TEXT NOT NULL, usertype INTEGER, lastupdate INTEGER, \
+                      unique_id INTEGER UNIQUE, username TEXT NOT NULL, samchat_id TEXT, usertype INTEGER, lastupdate INTEGER, \
                       avatar TEXT, avatar_original TEXT, countrycode TEXT, cellphone TEXT, \
                       email TEXT, address TEXT, sp_company_name TEXT, sp_service_category TEXT, \
                       sp_service_description TEXT, sp_countrycode TEXT, sp_phone TEXT, sp_address TEXT, sp_email TEXT)",

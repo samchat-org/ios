@@ -26,6 +26,7 @@
 @interface SAMCUserInfo : NSObject
 
 @property (nonatomic, copy) NSString *username;
+@property (nonatomic, copy) NSString *samchatId;
 @property (nonatomic, strong) NSNumber *usertype;
 @property (nonatomic, strong) NSNumber *lastupdate;
 @property (nonatomic, copy) NSString *avatar;

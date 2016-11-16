@@ -100,6 +100,7 @@
 #define SAMC_APP_VERSION                @"app_version"
 #define SAMC_VERIFYCODE                 @"verifycode"
 #define SAMC_USERNAME                   @"username"
+#define SAMC_SAMCHAT_ID                 @"samchat_id"
 #define SAMC_PWD                        @"pwd"
 #define SAMC_ACCOUNT                    @"account"
 #define SAMC_ID                         @"id"
