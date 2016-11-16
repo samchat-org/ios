@@ -49,11 +49,6 @@
     return [_token stringByAppendingString:[SAMCDeviceUtil deviceId]];
 }
 
-- (NSString *)getuiAlias
-{
-    return [_account nim_MD5String];
-}
-
 @end
 
 @interface NTESLoginManager ()

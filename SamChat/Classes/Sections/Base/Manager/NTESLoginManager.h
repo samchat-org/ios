@@ -14,7 +14,6 @@
 @property (nonatomic,copy) NSString *token;
 
 - (NSString *)finalToken;
-- (NSString *)getuiAlias;
 @end
 
 @interface NTESLoginManager : NSObject

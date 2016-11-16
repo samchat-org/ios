@@ -26,7 +26,6 @@
 @implementation SAMCPreferenceManager
 
 @synthesize currentUserMode = _currentUserMode;
-@synthesize getuiBindedAlias = _getuiBindedAlias;
 @synthesize localFollowListVersion = _localFollowListVersion;
 @synthesize localCustomerListVersion = _localCustomerListVersion;
 @synthesize localServicerListVersion = _localServicerListVersion;
@@ -58,8 +57,6 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = @(SAMCUserModeTypeCustom);
         [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
-        _getuiBindedAlias = @"";
-        [[NSUserDefaults standardUserDefaults] setValue:_getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
         _localFollowListVersion = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
         _localServicerListVersion = @"";
@@ -94,27 +91,6 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = currentUserMode;
         [[NSUserDefaults standardUserDefaults] setValue:currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
-    });
-}
-
-#pragma mark - getuiBindedAlias
-- (NSString *)getuiBindedAlias
-{
-    __block NSString *alias;
-    dispatch_sync(_syncQueue, ^{
-        if (_getuiBindedAlias == nil) {
-            _getuiBindedAlias = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_GETUIBINDEDALIAS_KEY];
-        }
-        alias = _getuiBindedAlias;
-    });
-    return alias;
-}
-
-- (void)setGetuiBindedAlias:(NSString *)getuiBindedAlias
-{
-    dispatch_barrier_async(_syncQueue, ^{
-        _getuiBindedAlias = getuiBindedAlias;
-        [[NSUserDefaults standardUserDefaults] setValue:getuiBindedAlias forKey:SAMC_GETUIBINDEDALIAS_KEY];
     });
 }
 
