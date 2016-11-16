@@ -284,11 +284,25 @@ UITableViewDelegate>
     if (!self.publicSession.isOutgoing) {
         [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
     } else {
-        if (message.deliveryState == NIMMessageDeliveryStateDeliveried) {
+        if ([self canRecallMessage:message]) {
             [items addObject:[[UIMenuItem alloc] initWithTitle:@"Recall" action:@selector(recallMsg:)]];
         }
     }
     return items;
+}
+
+- (BOOL)canRecallMessage:(NIMMessage *)message
+{
+    if (message.deliveryState != NIMMessageDeliveryStateDeliveried) {
+        return NO;
+    }
+    NSTimeInterval timeInterval = [[NSDate date] timeIntervalSince1970];
+    NSTimeInterval msgTime = message.timestamp;
+    if ((timeInterval - msgTime) >= [[SAMCPreferenceManager sharedManager].advRecallTimeMinute integerValue]*60) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark - UITableViewDataSource & UITableViewDelegate
