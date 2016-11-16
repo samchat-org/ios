@@ -210,10 +210,7 @@
           completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-//    LoginData *sdkData = [[LoginData alloc] init];
     // netease account is the id of samchat
-//    sdkData.account = user.userId;
-//    sdkData.token = token;
     SAMCLoginData *loginData = [[SAMCLoginData alloc] init];
     loginData.account = user.userId;
     loginData.token = token;
@@ -255,8 +252,6 @@
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             DDLogDebug(@"Logout Error: %@", error);
         }];
-//        [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
-//      [[SAMCUserProfileManager sharedManager] setCurrentLoginData:nil];
         completion(nil);
     }];
 }
