@@ -99,7 +99,9 @@
                            SAMC_VERIFYCODE:verifyCode,
                            SAMC_USERNAME:username,
                            SAMC_PWD:password,
-                           SAMC_DEVICEID:deviceId};
+                           SAMC_DEVICEID:deviceId,
+                           SAMC_DEVICE_TYPE:[SAMCDeviceUtil deviceInfo],
+                           SAMC_APP_VERSION:[SAMCDeviceUtil appInfo]};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
