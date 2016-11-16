@@ -8,6 +8,9 @@
 
 #import "SAMCCreateSamChatIDViewController.h"
 #import "NSString+SAMCValidation.h"
+#import "SAMCSettingManager.h"
+#import "UIView+Toast.h"
+#import "SVProgressHUD.h"
 
 @interface SAMCCreateSamChatIDViewController ()
 
@@ -91,6 +94,17 @@
 
 - (void)onSave:(id)sender
 {
+    __weak typeof(self) wself = self;
+    NSString *samchatId = self.normalTextField.text;
+    [SVProgressHUD showWithStatus:@"updating" maskType:SVProgressHUDMaskTypeBlack];
+    [[SAMCSettingManager sharedManager] createSamchatId:samchatId completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2 position:CSToastPositionCenter];
+        } else {
+            [wself onCancel:nil];
+        }
+    }];
 }
 
 #pragma mark -

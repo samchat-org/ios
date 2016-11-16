@@ -106,4 +106,6 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 
 + (NSDictionary *)updateQuestionNotify:(BOOL)needNotify;
 
++ (NSDictionary *)createSamchatId:(NSString *)samchatId;
+
 @end

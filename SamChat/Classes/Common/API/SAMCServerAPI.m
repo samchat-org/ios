@@ -800,8 +800,27 @@
 //}
 + (NSDictionary *)updateQuestionNotify:(BOOL)needNotify
 {
-    NSDictionary *header = @{SAMC_ACTION:SAMC_update_question_notify, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *header = @{SAMC_ACTION:SAMC_UPDATE_QUESTION_NOTIFY, SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{SAMC_QUESTION_NOTIFY:needNotify ? @(1) : @(0)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
+//{
+//    "header":
+//    {
+//        "action" : "create-samchat-id"
+//        "token": "token"
+//    },
+//    "body" :
+//    {
+//        “samchat_id”:”123123132” //
+//    } 
+//}
++ (NSDictionary *)createSamchatId:(NSString *)samchatId
+{
+    samchatId = samchatId ?:@"";
+    NSDictionary *header = @{SAMC_ACTION:SAMC_CREATE_SAMCHAT_ID, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_SAMCHAT_ID:samchatId};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

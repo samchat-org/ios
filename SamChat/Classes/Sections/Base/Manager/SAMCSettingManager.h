@@ -40,6 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateQuestionNotify:(BOOL)needNotify
                   completion:(void (^)(NSError * __nullable error))completion;
 
+- (void)createSamchatId:(NSString *)samchatId
+             completion:(void (^)(NSError * __nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
