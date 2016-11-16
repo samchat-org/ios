@@ -210,7 +210,6 @@
 {
     NSAssert(completion != nil, @"completion block should not be nil");
     LoginData *sdkData = [[LoginData alloc] init];
-    sdkData.username = user.userInfo.username;
     // netease account is the id of samchat
     sdkData.account = user.userId;
     sdkData.token = token;
@@ -237,8 +236,7 @@
 - (void)logout:(void (^)(NSError * __nullable error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    LoginData *loginData = [[NTESLoginManager sharedManager] currentLoginData];
-    NSDictionary *paramers = [SAMCServerAPI logout:loginData.username];
+    NSDictionary *paramers = [SAMCServerAPI logout];
     [[[NIMSDK sharedSDK] loginManager] logout:^(NSError *error) {
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.requestSerializer = [SAMCDataPostSerializer serializer];

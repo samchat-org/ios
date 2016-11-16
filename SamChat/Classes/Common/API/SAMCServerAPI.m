@@ -146,9 +146,8 @@
 //    {
 //    }
 //}
-+ (NSDictionary *)logout:(NSString *)account
++ (NSDictionary *)logout
 {
-    account = account ?:@"";
     NSDictionary *header = @{SAMC_ACTION:SAMC_LOGOUT,SAMC_TOKEN:[SAMCServerAPI token]};
     NSDictionary *body = @{};
     return @{SAMC_HEADER:header,SAMC_BODY:body};

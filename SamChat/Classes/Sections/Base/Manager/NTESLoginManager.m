@@ -11,7 +11,6 @@
 #import "SAMCDeviceUtil.h"
 #import "NSString+NIM.h"
 
-#define SAMCUsername    @"username"
 #define NIMAccount      @"account"
 #define NIMToken        @"token"
 
@@ -24,7 +23,6 @@
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if (self = [super init]) {
-        _username = [aDecoder decodeObjectForKey:SAMCUsername];
         _account = [aDecoder decodeObjectForKey:NIMAccount];
         _token = [aDecoder decodeObjectForKey:NIMToken];
     }
@@ -33,9 +31,6 @@
 
 - (void)encodeWithCoder:(NSCoder *)encoder
 {
-    if ([_username length]) {
-        [encoder encodeObject:_username forKey:SAMCUsername];
-    }
     if ([_account length]) {
         [encoder encodeObject:_account forKey:NIMAccount];
     }

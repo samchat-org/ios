@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger,SAMCRecallType) {
                                account:(NSString *)account
                               password:(NSString *)password;
 
-+ (NSDictionary *)logout:(NSString *)account;
++ (NSDictionary *)logout;
 
 + (NSDictionary *)createSamPros:(NSDictionary *)info;
 
