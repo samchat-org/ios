@@ -23,6 +23,7 @@
 #import "SAMCSelectLocationViewController.h"
 #import "SAMCEditCellPhoneViewController.h"
 #import "SAMCServerAPIMacro.h"
+#import "SAMCCreateSamChatIDViewController.h"
 
 @interface SAMCMyProfileViewController ()<UITableViewDelegate, UITableViewDataSource,UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
@@ -95,11 +96,17 @@
             switch (indexPath.row) {
                 case 1:
                 {
-                    SAMCEditCellPhoneViewController *vc = [[SAMCEditCellPhoneViewController alloc] initWithCountryCode:self.user.userInfo.countryCode];
+                    SAMCCreateSamChatIDViewController *vc = [[SAMCCreateSamChatIDViewController alloc] init];
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
                 case 2:
+                {
+                    SAMCEditCellPhoneViewController *vc = [[SAMCEditCellPhoneViewController alloc] initWithCountryCode:self.user.userInfo.countryCode];
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                    break;
+                case 3:
                 {
                     NSDictionary *emailDict = @{SAMC_EMAIL:self.user.userInfo.email?:@""};
                     SAMCEditProfileViewController *vc = [[SAMCEditProfileViewController alloc] initWithProfileType:SAMCEditProfileTypeEmail
@@ -107,7 +114,7 @@
                     [self.navigationController pushViewController:vc animated:YES];
                 }
                     break;
-                case 3:
+                case 4:
                 {
                     [self updateLocation];
                 }
@@ -140,7 +147,7 @@
     NSInteger rows = 0;
     switch (section) {
         case 0:
-            rows = 4;
+            rows = 5;
             break;
         default:
             break;
@@ -173,6 +180,14 @@
                 case 1:
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
+                    cell.textLabel.text = @"SamChat ID";
+                    cell.detailTextLabel.text = @" ";
+                    cell.imageView.image = [UIImage imageNamed:@"ico_option_username"];
+                }
+                    break;
+                case 2:
+                {
+                    cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Phone no.";
                     NSString *countryCode = self.user.userInfo.countryCode;
                     countryCode = [countryCode length] ? [NSString stringWithFormat:@"+%@ ",countryCode] : @"";
@@ -182,7 +197,7 @@
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_phone"];
                 }
                     break;
-                case 2:
+                case 3:
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Email";
@@ -192,7 +207,7 @@
                     cell.imageView.image = [UIImage imageNamed:@"ico_option_email"];
                 }
                     break;
-                case 3:
+                case 4:
                 {
                     cell = [SAMCTableCellFactory commonDetailCell:tableView accessoryType:UITableViewCellAccessoryDisclosureIndicator];
                     cell.textLabel.text = @"Location";

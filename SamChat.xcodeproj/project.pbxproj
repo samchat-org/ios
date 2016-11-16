@@ -303,6 +303,7 @@
 		31A1C1BD1DD5ED5500F84FC9 /* SAMCSPNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1BC1DD5ED5500F84FC9 /* SAMCSPNotificationViewController.m */; };
 		31A1C1C01DD6A88500F84FC9 /* SAMCGalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31A1C1BF1DD6A88500F84FC9 /* SAMCGalleryViewController.m */; };
 		31C08CDC1DDAF5420088F253 /* SAMCSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CDB1DDAF5420088F253 /* SAMCSearchBar.m */; };
+		31C08CDF1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CDE1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m */; };
 		31DB30281DA8F3740072BE34 /* SAMCOneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */; };
 		31DB302E1DAB671C0072BE34 /* SAMCRequestEmptyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB302D1DAB671C0072BE34 /* SAMCRequestEmptyView.m */; };
 		31DB30311DABB25E0072BE34 /* SAMCResponseAvatarsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30301DABB25E0072BE34 /* SAMCResponseAvatarsView.m */; };
@@ -931,6 +932,8 @@
 		31A1C1BF1DD6A88500F84FC9 /* SAMCGalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SAMCGalleryViewController.m; sourceTree = "<group>"; };
 		31C08CDA1DDAF5420088F253 /* SAMCSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSearchBar.h; path = Service/View/SAMCSearchBar.h; sourceTree = "<group>"; };
 		31C08CDB1DDAF5420088F253 /* SAMCSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCSearchBar.m; path = Service/View/SAMCSearchBar.m; sourceTree = "<group>"; };
+		31C08CDD1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCCreateSamChatIDViewController.h; path = ViewController/SAMCCreateSamChatIDViewController.h; sourceTree = "<group>"; };
+		31C08CDE1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCCreateSamChatIDViewController.m; path = ViewController/SAMCCreateSamChatIDViewController.m; sourceTree = "<group>"; };
 		31DB30261DA8F3740072BE34 /* SAMCOneCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCOneCodeView.h; path = View/SAMCOneCodeView.h; sourceTree = "<group>"; };
 		31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCOneCodeView.m; path = View/SAMCOneCodeView.m; sourceTree = "<group>"; };
 		31DB302C1DAB671C0072BE34 /* SAMCRequestEmptyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCRequestEmptyView.h; path = Service/View/SAMCRequestEmptyView.h; sourceTree = "<group>"; };
@@ -2251,6 +2254,8 @@
 				31DB308C1DB73DF10072BE34 /* SAMCMyProfileViewController.m */,
 				311B76E11DC9AF410056D4C5 /* SAMCEditProfileViewController.h */,
 				311B76E21DC9AF410056D4C5 /* SAMCEditProfileViewController.m */,
+				31C08CDD1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.h */,
+				31C08CDE1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m */,
 				311B76E71DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.h */,
 				311B76E81DCADE3F0056D4C5 /* SAMCEditCellPhoneViewController.m */,
 				311B76EA1DCAFD490056D4C5 /* SAMCSubmitCellPhoneViewController.h */,
@@ -2997,6 +3002,7 @@
 				3195DE0C1D54BB35001BD2B4 /* SAMCNIMSessionViewController.m in Sources */,
 				312C1C6D1D35D85B00242906 /* NTESGroupedUsrInfo.m in Sources */,
 				3195DE3B1D604EA6001BD2B4 /* SAMCAccountManager.m in Sources */,
+				31C08CDF1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m in Sources */,
 				316A67021D7BC03D00B56A5D /* SAMCPublicMsgCellLayoutConfig.m in Sources */,
 				31F8FC971D6D3A5800734068 /* SAMCQuestionDB_2016082201.m in Sources */,
 				311B77021DCC74C70056D4C5 /* SAMCButtonRightCell.m in Sources */,

@@ -16,5 +16,6 @@
 - (BOOL)samc_isValidPassword;
 - (BOOL)samc_isValidUsername;
 - (BOOL)samc_isValidTeamname;
+- (BOOL)samc_isValidSamchatId;
 
 @end

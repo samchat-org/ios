@@ -71,4 +71,13 @@
     return false;
 }
 
+- (BOOL)samc_isValidSamchatId
+{
+    NSString *username = [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    if ((username.length<3) || (username.length>15)) {
+        return false;
+    }
+    return true;
+}
+
 @end
