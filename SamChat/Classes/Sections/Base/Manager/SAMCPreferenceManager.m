@@ -267,7 +267,7 @@
 {
     dispatch_barrier_async(_syncQueue, ^{
         _advRecallTimeMinute = advRecallTimeMinute;
-        [[NSUserDefaults standardUserDefaults] setValue:advRecallTimeMinute forKey:SAMC_NEEDVIBRATE_KEY];
+        [[NSUserDefaults standardUserDefaults] setValue:advRecallTimeMinute forKey:SAMC_ADVRECALL_MINUTE_KEY];
     });
 }
 
