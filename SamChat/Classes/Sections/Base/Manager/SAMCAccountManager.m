@@ -182,6 +182,7 @@
     NSDictionary *parameters = [SAMCServerAPI loginWithCountryCode:countryCode account:account password:password];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_USER_LOGIN parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
             NSDictionary *response = responseObject;
@@ -192,6 +193,7 @@
                 NSString *token = response[SAMC_TOKEN];
                 NSDictionary *userInfo = response[SAMC_USER];
                 [SAMCPreferenceManager sharedManager].needQuestionNotify = [userInfo valueForKeyPath:SAMC_MY_SETTINGS_QUESTION_NOTIFY];
+                [wself parseSysParams:response[SAMC_SYS_PARAMS]];
                 SAMCUser *user = [SAMCUser userFromDict:userInfo];
                 [self loginNetEase:user token:token completion:completion];
             }
@@ -391,6 +393,23 @@
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         completion([SAMCServerErrorHelper errorWithCode:SAMCServerErrorServerNotReachable]);
     }];
+}
+
+- (void)parseSysParams:(NSArray *)sysParams
+{
+    if (![sysParams isKindOfClass:[NSArray class]]) {
+        return;
+    }
+    for (NSDictionary *dict in sysParams) {
+        if (![dict isKindOfClass:[NSDictionary class]]) {
+            continue;
+        }
+        if ([dict[SAMC_PARAM_CODE] isEqualToString:SAMC_APP_ADVERTISEMENT_RECALL_MINUTE]) {
+            [SAMCPreferenceManager sharedManager].advRecallTimeMinute = @([dict[SAMC_PARAM_VALUE] integerValue]);
+            // only adv recall time now, so directly break if find
+            break;
+        }
+    }
 }
 
 @end

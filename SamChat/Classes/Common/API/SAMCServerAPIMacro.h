@@ -57,6 +57,9 @@
 #define SAMC_TOKEN                      @"token"
 #define SAMC_USER                       @"user"
 #define SAMC_COUNT                      @"count"
+#define SAMC_SYS_PARAMS                 @"sys_params"
+#define SAMC_PARAM_CODE                 @"param_code"
+#define SAMC_PARAM_VALUE                @"param_value"
 
 #define SAMC_ACTION                     @"action"
 
@@ -117,6 +120,7 @@
 #define SAMC_OLD_PWD                    @"old_pwd"
 #define SAMC_NEW_PWD                    @"new_pwd"
 #define SAMC_QUESTION_NOTIFY            @"question_notify"
+#define SAMC_APP_ADVERTISEMENT_RECALL_MINUTE    @"app_advertisement_recall_minute"
 
 #define SAMC_COMPANY_NAME               @"company_name"
 #define SAMC_SERVICE_CATEGORY           @"service_category"

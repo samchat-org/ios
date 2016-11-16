@@ -55,6 +55,7 @@
 #define SAMC_NEEDQUESTIONNOTIFY_KEY         @"samc_needquestionnotify_key"
 #define SAMC_NEEDSOUND_KEY                  @"samc_needsound_key"
 #define SAMC_NEEDVIBRATE_KEY                @"samc_needvibrate_key"
+#define SAMC_ADVRECALL_MINUTE_KEY           @"samc_advrecall_minute_key"
 
 @interface SAMCPreferenceManager ()
 
@@ -72,6 +73,7 @@
 @synthesize needQuestionNotify = _needQuestionNotify;
 @synthesize needSound = _needSound;
 @synthesize needVibrate = _needVibrate;
+@synthesize advRecallTimeMinute = _advRecallTimeMinute;
 
 + (instancetype)sharedManager
 {
@@ -111,6 +113,8 @@
         [[NSUserDefaults standardUserDefaults] setValue:_needSound forKey:SAMC_NEEDSOUND_KEY];
         _needVibrate = @(YES);
         [[NSUserDefaults standardUserDefaults] setValue:_needVibrate forKey:SAMC_NEEDVIBRATE_KEY];
+        _advRecallTimeMinute = @(2); // default to 2 minutes
+        [[NSUserDefaults standardUserDefaults] setValue:_advRecallTimeMinute forKey:SAMC_ADVRECALL_MINUTE_KEY];
     });
 }
 
@@ -294,6 +298,28 @@
     dispatch_barrier_async(_syncQueue, ^{
         _needVibrate = needVibrate;
         [[NSUserDefaults standardUserDefaults] setValue:needVibrate forKey:SAMC_NEEDVIBRATE_KEY];
+    });
+}
+
+#pragma mark - advRecallTimeMinute
+- (NSNumber *)advRecallTimeMinute
+{
+    __block NSNumber *minutes;
+    dispatch_sync(_syncQueue, ^{
+        if (_advRecallTimeMinute == nil) {
+            _advRecallTimeMinute = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_ADVRECALL_MINUTE_KEY];
+            _advRecallTimeMinute = _advRecallTimeMinute ?:@(2);
+        }
+        minutes = _advRecallTimeMinute;
+    });
+    return minutes;
+}
+
+- (void)setAdvRecallTimeMinute:(NSNumber *)advRecallTimeMinute
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _advRecallTimeMinute = advRecallTimeMinute;
+        [[NSUserDefaults standardUserDefaults] setValue:advRecallTimeMinute forKey:SAMC_NEEDVIBRATE_KEY];
     });
 }
 

@@ -30,6 +30,8 @@
 @property (nonatomic, strong) NSNumber *needSound;
 @property (nonatomic, strong) NSNumber *needVibrate;
 
+@property (nonatomic, strong) NSNumber *advRecallTimeMinute;
+
 + (instancetype)sharedManager;
 - (void)reset;
 
