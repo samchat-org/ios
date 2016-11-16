@@ -49,5 +49,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
 
 - (void)markAllMessagesReadInSession:(SAMCPublicSession *)session;
 
+- (void)recallPublicMessage:(SAMCPublicMessage *)message
+                 completion:(void (^)(NSError * __nullable error))completion;
+
 @end
 NS_ASSUME_NONNULL_END

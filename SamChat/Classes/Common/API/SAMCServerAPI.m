@@ -824,6 +824,29 @@
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 
+//{
+//    "header":
+//    {
+//        "action" : "recall"
+//        "token": "token"
+//    },
+//    "body" :
+//    {
+//        “type”:1  // 1 question  2 advertisement
+//        “business_id”:123123123  // question_id , ads_id
+//    } 
+//}
++ (NSDictionary *)recallType:(SAMCRecallType)type
+                  businessId:(NSInteger)businessId
+                   timestamp:(NSTimeInterval)timestamp
+{
+    NSDictionary *header = @{SAMC_ACTION:SAMC_RECALL, SAMC_TOKEN:[SAMCServerAPI token]};
+    NSDictionary *body = @{SAMC_TYPE:@(type),
+                           SAMC_BUSINESS_ID:@(businessId),
+                           SAMC_PUBLISH_TIMESTAMP:@(timestamp)};
+    return @{SAMC_HEADER:header,SAMC_BODY:body};
+}
+
 #pragma mark - Token
 + (NSString *)token
 {

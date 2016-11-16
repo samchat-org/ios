@@ -20,6 +20,11 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
     SAMCQueryAccurateUserTypeUsername
 };
 
+typedef NS_ENUM(NSInteger,SAMCRecallType) {
+    SAMCRecallTypeQuestion = 1,
+    SAMCRecallTypeAdvertisement
+};
+
 @interface SAMCServerAPI : NSObject
 
 #pragma mark - Register
@@ -107,5 +112,9 @@ typedef NS_ENUM(NSInteger,SAMCQueryAccurateUserType) {
 + (NSDictionary *)updateQuestionNotify:(BOOL)needNotify;
 
 + (NSDictionary *)createSamchatId:(NSString *)samchatId;
+
++ (NSDictionary *)recallType:(SAMCRecallType)type
+                  businessId:(NSInteger)businessId
+                   timestamp:(NSTimeInterval)timestamp;
 
 @end

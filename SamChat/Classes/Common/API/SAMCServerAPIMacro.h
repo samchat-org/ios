@@ -32,6 +32,7 @@
 #define SAMC_URL_OFFICIALACCOUNT_PUBLIC_QUERY       SAMC_API_PREFIX@"api_1.0_officialAccount_publicQuery.do"
 #define SAMC_URL_OFFICIALACCOUNT_BLOCK              SAMC_API_PREFIX@"api_1.0_officialAccount_block.do"
 #define SAMC_URL_COMMON_SEND_INVITE_MSG             SAMC_API_PREFIX@"api_1.0_common_sendInviteMsg.do"
+#define SAMC_URL_COMMON_RECALL                      SAMC_API_PREFIX@"api_1.0_common_recall.do"
 #define SAMC_URL_ADVERTISEMENT_ADVERTISEMENT_WRITE  SAMC_API_PREFIX@"api_1.0_advertisement_advertisementWrite.do"
 #define SAMC_URL_CONTACT_CONTACT_LIST_QUERY         SAMC_API_PREFIX@"api_1.0_contact_contactListQuery.do"
 #define SAMC_URL_CONTACT_CONTACT                    SAMC_API_PREFIX@"api_1.0_contact_contact.do"
@@ -94,6 +95,7 @@
 #define SAMC_EDITCELLPHONE_UPDATE       @"editCellPhone-update"
 #define SAMC_UPDATE_QUESTION_NOTIFY     @"update-question-notify"
 #define SAMC_CREATE_SAMCHAT_ID          @"create-samchat-id"
+#define SAMC_RECALL                     @"recall"
 
 #define SAMC_COUNTRYCODE                @"countrycode"
 #define SAMC_CELLPHONE                  @"cellphone"
@@ -153,6 +155,7 @@
 #define SAMC_FOLLOW_LIST                @"follow_list"
 #define SAMC_MESSAGE_ID                 @"message_id"
 #define SAMC_POPULAR_REQUEST            @"popular_request"
+#define SAMC_BUSINESS_ID                @"business_id"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"

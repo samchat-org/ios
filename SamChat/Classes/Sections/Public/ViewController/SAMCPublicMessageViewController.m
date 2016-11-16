@@ -283,6 +283,10 @@ UITableViewDelegate>
     [items addObject:[[UIMenuItem alloc] initWithTitle:@"Delete" action:@selector(deleteMsg:)]];
     if (!self.publicSession.isOutgoing) {
         [items addObject:[[UIMenuItem alloc] initWithTitle:@"Chat" action:@selector(chatNow:)]];
+    } else {
+        if (message.deliveryState == NIMMessageDeliveryStateDeliveried) {
+            [items addObject:[[UIMenuItem alloc] initWithTitle:@"Recall" action:@selector(recallMsg:)]];
+        }
     }
     return items;
 }
@@ -536,6 +540,22 @@ UITableViewDelegate>
 {
     SAMCPublicMessage *message = (SAMCPublicMessage *)[self messageForMenu];
     [self savePublicMessage:message];
+}
+
+- (void)recallMsg:(id)sender
+{
+    SAMCPublicMessage *message = (SAMCPublicMessage *)[self messageForMenu];
+    [SVProgressHUD showWithStatus:@"recalling" maskType:SVProgressHUDMaskTypeBlack];
+    __weak typeof(self) wself = self;
+    [[SAMCPublicManager sharedManager] recallPublicMessage:message completion:^(NSError * _Nullable error) {
+        [SVProgressHUD dismiss];
+        if (error) {
+            [wself.view makeToast:error.userInfo[NSLocalizedDescriptionKey] duration:2 position:CSToastPositionCenter];
+        } else {
+            [wself uiDeleteMessage:message];
+            [[SAMCPublicManager sharedManager] deleteMessage:message];
+        }
+    }];
 }
 
 - (void)menuDidHide:(NSNotification *)notification
