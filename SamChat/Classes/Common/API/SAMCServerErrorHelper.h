@@ -39,6 +39,8 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorCustomerCannotAddCustomer = -510, // 普通用户无法添加普通用户
     SAMCServerErrorCustomerCannotDoThis = -511, // 普通用户无法添加商户联系人列表
     SAMCServerErrorNotNewCellPhone = -512, // 更新的手机号码与当前使用的手机号相同
+    SAMCServerErrorSamchatIdExists = -513, // Samchat-Id重复
+    SAMCServerErrorRecallFailed = -514, // Recall失败
     
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,

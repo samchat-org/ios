@@ -27,6 +27,9 @@
         case SAMCServerErrorTokenFormatWrong: // token格式不正确
             localizedDescription = @"token格式不正确";
             break;
+        case SAMCServerErrorUnsupportVersion: // 版本不支持
+            localizedDescription = @"版本不支持";
+            break;
         case SAMCServerErrorInternalError: // 内部错误
             localizedDescription = @"内部错误";
             break;
@@ -101,6 +104,12 @@
             break;
         case SAMCServerErrorNotNewCellPhone: // 更新的手机号码与当前使用的手机号相同
             localizedDescription = @"更新的手机号码与当前使用的手机号相同";
+            break;
+        case SAMCServerErrorSamchatIdExists: //  Samchat-Id重复
+            localizedDescription = @"Samchat Id 已经存在";
+            break;
+        case SAMCServerErrorRecallFailed: // Recall失败
+            localizedDescription = @"撤回失败";
             break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
