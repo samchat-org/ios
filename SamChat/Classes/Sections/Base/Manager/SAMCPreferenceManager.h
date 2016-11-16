@@ -9,9 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "SAMCStateDateInfo.h"
 
+@interface SAMCLoginData : NSObject<NSCoding>
+@property (nonatomic,copy) NSString *account;
+@property (nonatomic,copy) NSString *token;
+
+- (NSString *)finalToken;
+@end
+
 @interface SAMCPreferenceManager : NSObject
 
 @property (nonatomic, strong) NSNumber *currentUserMode;
+
+@property (nonatomic, strong) SAMCLoginData *loginData;
 
 @property (nonatomic, copy) NSString *localServicerListVersion;
 @property (nonatomic, copy) NSString *localCustomerListVersion;

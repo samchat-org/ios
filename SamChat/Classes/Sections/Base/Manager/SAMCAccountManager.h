@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NTESLoginManager.h"
 #import "SAMCUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class SAMCLoginData;
 @protocol SAMCLoginManagerDelegate <NSObject>
 
 @optional
@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)logout:(void (^)(NSError * __nullable error))completion;
 
-- (void)autoLogin:(LoginData *)loginData;
+- (void)autoLogin:(SAMCLoginData *)loginData;
 
 - (void)kickOtherClient:(NIMLoginClient *)client
              completion:(NIMLoginHandler)completion;

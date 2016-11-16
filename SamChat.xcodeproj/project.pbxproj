@@ -304,7 +304,6 @@
 		31C08CDF1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CDE1DDB08AE0088F253 /* SAMCCreateSamChatIDViewController.m */; };
 		31C08CE21DDBE9F00088F253 /* SAMCQuestionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CE11DDBE9F00088F253 /* SAMCQuestionManager.m */; };
 		31C08CE51DDBEA160088F253 /* SAMCPublicManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CE41DDBEA160088F253 /* SAMCPublicManager.m */; };
-		31C08CEA1DDBEA540088F253 /* NTESLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CE71DDBEA540088F253 /* NTESLoginManager.m */; };
 		31C08CEB1DDBEA540088F253 /* SAMCAccountManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CE91DDBEA540088F253 /* SAMCAccountManager.m */; };
 		31C08CEE1DDBEA900088F253 /* SAMCSettingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 31C08CED1DDBEA900088F253 /* SAMCSettingManager.m */; };
 		31DB30281DA8F3740072BE34 /* SAMCOneCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 31DB30271DA8F3740072BE34 /* SAMCOneCodeView.m */; };
@@ -934,8 +933,6 @@
 		31C08CE11DDBE9F00088F253 /* SAMCQuestionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCQuestionManager.m; path = Base/Manager/SAMCQuestionManager.m; sourceTree = "<group>"; };
 		31C08CE31DDBEA160088F253 /* SAMCPublicManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCPublicManager.h; path = Base/Manager/SAMCPublicManager.h; sourceTree = "<group>"; };
 		31C08CE41DDBEA160088F253 /* SAMCPublicManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCPublicManager.m; path = Base/Manager/SAMCPublicManager.m; sourceTree = "<group>"; };
-		31C08CE61DDBEA540088F253 /* NTESLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NTESLoginManager.h; path = Base/Manager/NTESLoginManager.h; sourceTree = "<group>"; };
-		31C08CE71DDBEA540088F253 /* NTESLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NTESLoginManager.m; path = Base/Manager/NTESLoginManager.m; sourceTree = "<group>"; };
 		31C08CE81DDBEA540088F253 /* SAMCAccountManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCAccountManager.h; path = Base/Manager/SAMCAccountManager.h; sourceTree = "<group>"; };
 		31C08CE91DDBEA540088F253 /* SAMCAccountManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SAMCAccountManager.m; path = Base/Manager/SAMCAccountManager.m; sourceTree = "<group>"; };
 		31C08CEC1DDBEA900088F253 /* SAMCSettingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SAMCSettingManager.h; path = Base/Manager/SAMCSettingManager.h; sourceTree = "<group>"; };
@@ -2336,8 +2333,6 @@
 				31C08CE11DDBE9F00088F253 /* SAMCQuestionManager.m */,
 				31C08CE31DDBEA160088F253 /* SAMCPublicManager.h */,
 				31C08CE41DDBEA160088F253 /* SAMCPublicManager.m */,
-				31C08CE61DDBEA540088F253 /* NTESLoginManager.h */,
-				31C08CE71DDBEA540088F253 /* NTESLoginManager.m */,
 				31C08CE81DDBEA540088F253 /* SAMCAccountManager.h */,
 				31C08CE91DDBEA540088F253 /* SAMCAccountManager.m */,
 				31C08CEC1DDBEA900088F253 /* SAMCSettingManager.h */,
@@ -2964,7 +2959,6 @@
 				312C1C3E1D35D85B00242906 /* UIScrollView+NTESPullToRefresh.m in Sources */,
 				31DB30701DB1019F0072BE34 /* SAMCCSAStepThreeViewController.m in Sources */,
 				3154F9501D79691B00C540EB /* SAMCPublicMessageMaker.m in Sources */,
-				31C08CEA1DDBEA540088F253 /* NTESLoginManager.m in Sources */,
 				312C1C381D35D85B00242906 /* UIActionSheet+NTESBlock.m in Sources */,
 				312C1C871D35D85B00242906 /* NTESSearchLocalHistoryObject.m in Sources */,
 				31DB30A61DB9EAC00072BE34 /* SAMCPeopleDataMember.m in Sources */,

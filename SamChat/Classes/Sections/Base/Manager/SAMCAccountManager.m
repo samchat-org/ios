@@ -14,7 +14,6 @@
 #import "NIMLoginManagerProtocol.h"
 #import "GCDMulticastDelegate.h"
 #import "SAMCDeviceUtil.h"
-#import "NTESLoginManager.h"
 #import "SAMCDataPostSerializer.h"
 #import "SAMCDataBaseManager.h"
 #import "NTESService.h"
@@ -209,13 +208,16 @@
           completion:(void (^)(NSError *error))completion
 {
     NSAssert(completion != nil, @"completion block should not be nil");
-    LoginData *sdkData = [[LoginData alloc] init];
+//    LoginData *sdkData = [[LoginData alloc] init];
     // netease account is the id of samchat
-    sdkData.account = user.userId;
-    sdkData.token = token;
-    [[[NIMSDK sharedSDK] loginManager] login:sdkData.account token:[sdkData finalToken] completion:^(NSError *error) {
+//    sdkData.account = user.userId;
+//    sdkData.token = token;
+    SAMCLoginData *loginData = [[SAMCLoginData alloc] init];
+    loginData.account = user.userId;
+    loginData.token = token;
+    [[[NIMSDK sharedSDK] loginManager] login:loginData.account token:[loginData finalToken] completion:^(NSError *error) {
         if (error == nil) {
-            [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
+            [SAMCPreferenceManager sharedManager].loginData = loginData;
             [[NTESServiceManager sharedManager] start];
             [[SAMCDataBaseManager sharedManager] open];
             if ([[SAMCDataBaseManager sharedManager] needsMigration]) {
@@ -257,7 +259,7 @@
     }];
 }
 
-- (void)autoLogin:(LoginData *)loginData
+- (void)autoLogin:(SAMCLoginData *)loginData
 {
     [[NTESServiceManager sharedManager] start];
     [[SAMCDataBaseManager sharedManager] open];
@@ -281,7 +283,7 @@
 {
     // 自动登录的时候，未登录云信时，就需要检查数据库是否需要升级
     // 未登录云信时不能使用云信sdk的loginManager.currentAccount
-    return [[[NTESLoginManager sharedManager] currentLoginData] account];
+    return [SAMCPreferenceManager sharedManager].loginData.account;
 }
 
 - (SAMCUser *)currentUser

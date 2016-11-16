@@ -16,7 +16,6 @@
 #import "NTESDemoConfig.h"
 #import "NTESSessionUtil.h"
 #import "NTESMainTabController.h"
-#import "NTESLoginManager.h"
 #import "NTESCustomAttachmentDecoder.h"
 #import "NTESClientUtil.h"
 #import "NTESNotificationCenter.h"
@@ -165,13 +164,10 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
 
 - (void)setupUserViewController
 {
-    LoginData *data = [[NTESLoginManager sharedManager] currentLoginData];
-    NSString *account = [data account];
-    NSString *token = [data token];
-    
-    if ([account length] && [token length])
+    SAMCLoginData *loginData = [SAMCPreferenceManager sharedManager].loginData;
+    if ((loginData != nil) && [loginData.account length] && [loginData.token length])
     {
-        [[SAMCAccountManager sharedManager] autoLogin:data];
+        [[SAMCAccountManager sharedManager] autoLogin:loginData];
         [self setupMainViewController];
     }
     else
@@ -228,7 +224,6 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     }
     [[SAMCUnreadCountManager sharedManager] close];
     [[SAMCSyncManager sharedManager] close];
-    [[NTESLoginManager sharedManager] setCurrentLoginData:nil];
     [[NTESServiceManager sharedManager] destory];
     [[SAMCUserManager sharedManager] reset];
     [[SAMCDataBaseManager sharedManager] close];

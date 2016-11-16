@@ -8,7 +8,7 @@
 
 #import "SAMCServerAPI.h"
 #import "SAMCDeviceUtil.h"
-#import "NTESLoginManager.h"
+#import "SAMCPreferenceManager.h"
 
 @implementation SAMCServerAPI
 
@@ -849,7 +849,7 @@
 #pragma mark - Token
 + (NSString *)token
 {
-    NSString *token = [[[NTESLoginManager sharedManager] currentLoginData] finalToken];
+    NSString *token = [[SAMCPreferenceManager sharedManager].loginData finalToken];
     token = token ?:@"";
     return token;
 }

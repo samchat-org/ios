@@ -16,7 +16,7 @@
 #import "NTESService.h"
 #import "UIView+NTES.h"
 #import "NSString+NTES.h"
-#import "NTESLoginManager.h"
+//#import "NTESLoginManager.h"
 #import "NTESNotificationCenter.h"
 #import "UIActionSheet+NTESBlock.h"
 #import "NTESLogManager.h"
@@ -125,10 +125,10 @@ NTES_USE_CLEAR_BAR
                                       [SVProgressHUD dismiss];
                                       if (error == nil)
                                       {
-                                          LoginData *sdkData = [[LoginData alloc] init];
-                                          sdkData.account   = loginAccount;
-                                          sdkData.token     = loginToken;
-                                          [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
+//                                          LoginData *sdkData = [[LoginData alloc] init];
+//                                          sdkData.account   = loginAccount;
+//                                          sdkData.token     = loginToken;
+//                                          [[NTESLoginManager sharedManager] setCurrentLoginData:sdkData];
                                           
                                           [[NTESServiceManager sharedManager] start];
                                           NTESMainTabController * mainTab = [[NTESMainTabController alloc] initWithNibName:nil bundle:nil];

@@ -7,8 +7,47 @@
 //
 
 #import "SAMCPreferenceManager.h"
+#import "SAMCDeviceUtil.h"
+
+#define NIMAccount      @"account"
+#define NIMToken        @"token"
+
+@interface SAMCLoginData ()
+
+@end
+
+@implementation SAMCLoginData
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init]) {
+        _account = [aDecoder decodeObjectForKey:NIMAccount];
+        _token = [aDecoder decodeObjectForKey:NIMToken];
+    }
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder
+{
+    if ([_account length]) {
+        [encoder encodeObject:_account forKey:NIMAccount];
+    }
+    if ([_token length]) {
+        [encoder encodeObject:_token forKey:NIMToken];
+    }
+}
+
+- (NSString *)finalToken
+{
+    return [_token stringByAppendingString:[SAMCDeviceUtil deviceId]];
+}
+
+@end
 
 #define SAMC_CURRENTUSERMODE_KEY            @"samc_currentusermode_key"
+#define SAMC_ACCOUNT_KEY                    @"samc_account_key"
+#define SAMC_TOKEN_KEY                      @"samc_token_key"
+#define SAMC_LOGINDATA_KEY                  @"samc_logindata_key"
 #define SAMC_GETUIBINDEDALIAS_KEY           @"samc_getuibindedalias_key"
 #define SAMC_LOCALFOLLOWLISTVERSION_KEY     @"samc_localfollowlistversion_key"
 #define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
@@ -26,6 +65,7 @@
 @implementation SAMCPreferenceManager
 
 @synthesize currentUserMode = _currentUserMode;
+@synthesize loginData = _loginData;
 @synthesize localFollowListVersion = _localFollowListVersion;
 @synthesize localCustomerListVersion = _localCustomerListVersion;
 @synthesize localServicerListVersion = _localServicerListVersion;
@@ -57,6 +97,8 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = @(SAMCUserModeTypeCustom);
         [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
+        _loginData = nil;
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:SAMC_LOGINDATA_KEY];
         _localFollowListVersion = @"";
         [[NSUserDefaults standardUserDefaults] setValue:_localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
         _localServicerListVersion = @"";
@@ -91,6 +133,35 @@
     dispatch_barrier_async(_syncQueue, ^{
         _currentUserMode = currentUserMode;
         [[NSUserDefaults standardUserDefaults] setValue:currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
+    });
+}
+
+#pragma mark - loginData
+- (SAMCLoginData *)loginData
+{
+    __block SAMCLoginData *loginData;
+    dispatch_sync(_syncQueue, ^{
+        if (_loginData == nil) {
+            NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:SAMC_LOGINDATA_KEY];
+            if (data) {
+                _loginData = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            }
+        }
+        loginData = _loginData;
+    });
+    return loginData;
+}
+
+- (void)setLoginData:(SAMCLoginData *)loginData
+{
+    dispatch_barrier_async(_syncQueue, ^{
+        _loginData = loginData;
+        if (loginData) {
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:loginData];
+            [[NSUserDefaults standardUserDefaults] setObject:data forKey:SAMC_LOGINDATA_KEY];
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:SAMC_LOGINDATA_KEY];
+        }
     });
 }
 
