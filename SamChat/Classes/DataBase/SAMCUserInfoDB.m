@@ -152,7 +152,7 @@
         } else {
             [db executeUpdate:@"INSERT INTO userinfo(unique_id, username, samchat_id, usertype, lastupdate, avatar, avatar_original, countrycode, \
              cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email) \
-             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, samchat_id, usertype, lastupdate, avatar, avatar_original, countrycode,
+             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", unique_id, username, samchat_id, usertype, lastupdate, avatar, avatar_original, countrycode,
              cellphone, email, address, sp_company_name, sp_service_category, sp_service_description, sp_countrycode, sp_phone, sp_address, sp_email];
         }
         [s close];
