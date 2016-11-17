@@ -26,7 +26,6 @@
 #import "SAMCTableCellFactory.h"
 
 @interface SAMCCustomTeamCardViewController()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol>{
-    UIAlertView *_updateTeamNameAlertView;
     UIAlertView *_quitTeamAlertView;
 }
 
@@ -169,7 +168,7 @@
 {
     NSInteger number = 1;
     if (section == 2) {
-        number = 3;
+        number = 4;
     }
     return number;
 }
@@ -245,6 +244,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == 2) {
+        if (indexPath.row == 3) {
+            [self quitTeam];
+        }
+    }
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -328,7 +332,12 @@
             cell.textLabel.text = @"Report abuse";
         }
             break;
-            
+        case 3:
+        {
+            cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
+            cell.textLabel.text = @"Quit group";
+        }
+            break;
         default:
             break;
     }
