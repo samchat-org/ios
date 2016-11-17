@@ -91,7 +91,7 @@
             }
         }
     }];
-    if (result && [increasedFollowList count]) {
+    if (result) {
         [self.publicDelegate didUpdateFollowList];
     }
     return result;
