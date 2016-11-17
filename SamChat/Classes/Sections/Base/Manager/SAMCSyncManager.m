@@ -26,8 +26,6 @@ typedef void (^SyncAction)();
 @property (nonatomic, copy) SyncAction syncBlock;
 @property (nonatomic, assign) NSTimeInterval retryDelay;
 
-@property (nonatomic, copy) NSString *localServicerListVersion;
-@property (nonatomic, copy) NSString *localCustomerListVersion;
 @property (nonatomic, copy) NSString *localFollowListVersion;
 
 @end
@@ -61,8 +59,6 @@ typedef void (^SyncAction)();
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification object:nil];
-    _localServicerListVersion = nil;
-    _localCustomerListVersion = nil;
     _localFollowListVersion = nil;
     self.syncBlock = [self queryStateDateBlock];
     self.isSyncing = NO;
@@ -79,8 +75,6 @@ typedef void (^SyncAction)();
     self.internetReachability = nil;
     self.stoped = YES;
     _syncBlock = NULL;
-    _localServicerListVersion = nil;
-    _localCustomerListVersion = nil;
     _localFollowListVersion = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -380,23 +374,18 @@ typedef void (^SyncAction)();
     });
 }
 
-#pragma mark - lazy load
+#pragma mark - private
 - (NSString *)localServicerListVersion
 {
-    if (_localServicerListVersion == nil) {
-        _localServicerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeServicer];
-    }
-    return _localServicerListVersion;
+    return [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeServicer];
 }
 
 - (NSString *)localCustomerListVersion
 {
-    if (_localCustomerListVersion == nil) {
-        _localCustomerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
-    }
-    return _localCustomerListVersion;
+    return [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
 }
 
+#pragma mark - lazy load
 - (NSString *)localFollowListVersion
 {
     if (_localFollowListVersion == nil) {

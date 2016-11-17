@@ -20,6 +20,8 @@
 @property (nonatomic, strong) NSMutableDictionary *userInfoCache;
 @property (nonatomic, strong) NSMutableArray *servicerList;
 @property (nonatomic, strong) NSMutableArray *customerList;
+@property (nonatomic, copy) NSString *localServicerListVersion;
+@property (nonatomic, copy) NSString *localCustomerListVersion;
 
 @end
 
@@ -284,7 +286,7 @@
     return contactList;
 }
 
-- (NSString *)localContactListVersionOfType:(SAMCContactListType)listType
+- (NSString *)localContactListVersionOfTypeInDB:(SAMCContactListType)listType
 {
     __block NSString *contactListVersion = @"0";
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -304,7 +306,7 @@
     return contactListVersion;
 }
 
-- (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType
+- (void)updateLocalContactListVersionInDB:(NSString *)version type:(SAMCContactListType)listType
 {
     version = version ?:@"0";
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -430,6 +432,40 @@
         }
     });
     [self deleteFromContactListInDB:user type:listType];
+}
+
+- (NSString *)localContactListVersionOfType:(SAMCContactListType)listType
+{
+    NSString *version;
+    if (listType == SAMCContactListTypeServicer) {
+        version = self.localServicerListVersion;
+    } else {
+        version = self.localCustomerListVersion;
+    }
+    if (version) {
+        return version;
+    }
+    version = [self localContactListVersionOfTypeInDB:listType];
+    if (version) {
+        if (listType == SAMCContactListTypeServicer) {
+            self.localServicerListVersion = version;
+        } else {
+            self.localCustomerListVersion = version;
+        }
+    }
+    return version;
+}
+
+- (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (listType == SAMCContactListTypeServicer) {
+            self.localServicerListVersion = version;
+        } else {
+            self.localCustomerListVersion = version;
+        }
+    });
+    [self updateLocalContactListVersionInDB:version type:listType];
 }
 
 #pragma mark - lazy load
