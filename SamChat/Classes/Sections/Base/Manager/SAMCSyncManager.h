@@ -15,4 +15,10 @@
 - (void)start;
 - (void)close;
 
+- (void)updateLocalContactListVersionFrom:(NSString *)fromVersion
+                                       to:(NSString *)toVersion
+                                     type:(SAMCContactListType)listType;
+- (void)updateLocalFollowListVersionFrom:(NSString *)fromVersion
+                                      to:(NSString *)toVersion;
+
 @end

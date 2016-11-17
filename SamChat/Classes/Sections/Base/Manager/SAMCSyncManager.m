@@ -26,6 +26,10 @@ typedef void (^SyncAction)();
 @property (nonatomic, copy) SyncAction syncBlock;
 @property (nonatomic, assign) NSTimeInterval retryDelay;
 
+@property (nonatomic, copy) NSString *localServicerListVersion;
+@property (nonatomic, copy) NSString *localCustomerListVersion;
+@property (nonatomic, copy) NSString *localFollowListVersion;
+
 @end
 
 @implementation SAMCSyncManager
@@ -160,7 +164,7 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        NSString *localServicerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeServicer];
+        NSString *localServicerListVersion = wself.localServicerListVersion;
         if ([wself.stateDateInfo.servicerListVersion isEqualToString:localServicerListVersion]) {
             DDLogDebug(@"queryServicerListBlock no need to sync servicer list");
             wself.syncBlock = [wself queryCustomerListBlock];
@@ -188,7 +192,7 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        NSString *localCustomerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
+        NSString *localCustomerListVersion = wself.localCustomerListVersion;
         if ([wself.stateDateInfo.customerListVersion isEqualToString:localCustomerListVersion]) {
             DDLogDebug(@"queryCustomerListBlock no need to sync customer list");
             wself.syncBlock = [wself queryFollowListBlock];
@@ -216,7 +220,7 @@ typedef void (^SyncAction)();
 {
     __weak typeof(self) wself = self;
     return ^(){
-        NSString *localFollowListVersion = [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
+        NSString *localFollowListVersion = wself.localFollowListVersion;
         if ([wself.stateDateInfo.followListVersion isEqualToString:localFollowListVersion]) {
             DDLogDebug(@"queryFollowListBlock no need to sync follow list");
             wself.syncBlock = NULL;
@@ -329,7 +333,30 @@ typedef void (^SyncAction)();
     }];
 }
 
-#pragma mark - 
+#pragma mark -
+- (void)updateLocalContactListVersionFrom:(NSString *)fromVersion
+                                       to:(NSString *)toVersion
+                                     type:(SAMCContactListType)listType
+{
+    if (listType == SAMCContactListTypeServicer) {
+        if ([fromVersion isEqualToString:self.localServicerListVersion]) {
+            [self updateLocalContactListVersion:toVersion type:listType];
+        }
+    } else {
+        if ([fromVersion isEqualToString:self.localCustomerListVersion]) {
+            [self updateLocalContactListVersion:toVersion type:listType];
+        }
+    }
+}
+
+- (void)updateLocalFollowListVersionFrom:(NSString *)fromVersion
+                                      to:(NSString *)toVersion
+{
+    if ([fromVersion isEqualToString:self.localFollowListVersion]) {
+        [self updateLocalFollowListVersion:toVersion];
+    }
+}
+
 - (void)updateLocalContactListVersion:(NSString *)version type:(SAMCContactListType)listType
 {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -343,6 +370,31 @@ typedef void (^SyncAction)();
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [[SAMCDataBaseManager sharedManager].publicDB updateFollowListVersion:version];
     });
+}
+
+#pragma mark - lazy load
+- (NSString *)localServicerListVersion
+{
+    if (_localServicerListVersion == nil) {
+        _localServicerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeServicer];
+    }
+    return _localServicerListVersion;
+}
+
+- (NSString *)localCustomerListVersion
+{
+    if (_localCustomerListVersion == nil) {
+        _localCustomerListVersion = [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
+    }
+    return _localCustomerListVersion;
+}
+
+- (NSString *)localFollowListVersion
+{
+    if (_localFollowListVersion) {
+        _localFollowListVersion = [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
+    }
+    return _localFollowListVersion;
 }
 
 @end
