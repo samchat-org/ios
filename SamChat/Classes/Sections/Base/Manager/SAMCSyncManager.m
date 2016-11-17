@@ -61,6 +61,9 @@ typedef void (^SyncAction)();
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification object:nil];
+    _localServicerListVersion = nil;
+    _localCustomerListVersion = nil;
+    _localFollowListVersion = nil;
     self.syncBlock = [self queryStateDateBlock];
     self.isSyncing = NO;
     self.stoped = NO;
@@ -76,6 +79,9 @@ typedef void (^SyncAction)();
     self.internetReachability = nil;
     self.stoped = YES;
     _syncBlock = NULL;
+    _localServicerListVersion = nil;
+    _localCustomerListVersion = nil;
+    _localFollowListVersion = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -391,7 +397,7 @@ typedef void (^SyncAction)();
 
 - (NSString *)localFollowListVersion
 {
-    if (_localFollowListVersion) {
+    if (_localFollowListVersion == nil) {
         _localFollowListVersion = [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
     }
     return _localFollowListVersion;
