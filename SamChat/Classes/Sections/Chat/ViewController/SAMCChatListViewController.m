@@ -407,13 +407,11 @@
 
 - (void)enterPersonalCard:(NSString *)userId
 {
-    SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
     UIViewController *vc;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
     } else {
-        BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
-        vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+        vc = [[SAMCCustomerCardViewController alloc] initWithUserId:userId];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

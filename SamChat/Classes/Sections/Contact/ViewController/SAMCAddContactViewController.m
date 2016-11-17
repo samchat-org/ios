@@ -287,8 +287,7 @@
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
         vc = [[SAMCServicerCardViewController alloc] initWithUserId:user.userId];
     } else {
-        BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:user.userId];
-        vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+        vc = [[SAMCCustomerCardViewController alloc] initWithUserId:user.userId];
     }
     [self.navigationController pushViewController:vc animated:YES];
 }

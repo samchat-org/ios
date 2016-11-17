@@ -541,13 +541,11 @@ NTESTimerHolderDelegate>
         return;
     }
     
-    SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
     if (self.samcSession.sessionType == NIMSessionTypeP2P) {
         if (self.samcSession.sessionMode == SAMCUserModeTypeCustom) {
             vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
         } else {
-            BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
-            vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+            vc = [[SAMCCustomerCardViewController alloc] initWithUserId:userId];
         }
     } else {
         NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.samcSession.sessionId];
@@ -555,11 +553,9 @@ NTESTimerHolderDelegate>
             vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
         } else {
             if ([team.owner isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
-                BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
-                vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+                vc = [[SAMCCustomerCardViewController alloc] initWithUserId:userId];
             } else {
-                BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
-                vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+                vc = [[SAMCCustomerCardViewController alloc] initWithUserId:userId];
                 ((SAMCCustomerCardViewController *)vc).showInfoOnly = YES;
             }
         }

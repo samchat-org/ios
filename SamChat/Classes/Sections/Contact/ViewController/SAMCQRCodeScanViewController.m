@@ -505,8 +505,7 @@
         SAMCUser *user = [SAMCUser userFromDict:userDict];
         UIViewController *vc;
         if (wself.currentUserMode == SAMCUserModeTypeSP) {
-            BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:user.userId];
-            vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
+            vc = [[SAMCCustomerCardViewController alloc] initWithUserId:user.userId];
         } else {
             if (![user.userInfo.usertype isEqual:@(SAMCuserTypeSamPros)]) {
                 NSString *toast = @"the user is not a Samchat provider";

@@ -26,13 +26,13 @@
 
 @implementation SAMCCustomerCardViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user isMyCustomer:(BOOL)isMyCustomer
+- (instancetype)initWithUserId:(NSString *)userId
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
         _showInfoOnly = false;
-        _user = user;
-        _isMyCustomer = isMyCustomer;
+        _user = [[SAMCUserManager sharedManager] userInfo:userId];
+        _isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
     }
     return self;
 }
