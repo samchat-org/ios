@@ -84,11 +84,6 @@
 - (void)searchPublic:(id)sender
 {
     SAMCPublicSearchViewController *vc = [[SAMCPublicSearchViewController alloc] init];
-    NSMutableArray *ids = [[NSMutableArray alloc] init];
-    for (SAMCPublicSession *session in self.data) {
-        [ids addObject:session.userId];
-    }
-    vc.myFollowIdList = ids;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

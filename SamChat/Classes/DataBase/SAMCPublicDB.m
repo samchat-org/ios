@@ -21,6 +21,7 @@
 
 // cache
 @property (nonatomic, copy) NSString *localFollowListVersion;
+@property (nonatomic, strong) NSMutableArray<NSString *> *followIds;
 
 @end
 
@@ -69,7 +70,7 @@
     }
 }
 
-- (BOOL)updateFollowList:(NSArray *)users
+- (BOOL)updateFollowListInDB:(NSArray *)users
 {
     DDLogDebug(@"updateFollowList: %@", users);
     NSArray *increasedFollowList = [self increasedFollowList:users];
@@ -101,7 +102,7 @@
     __block NSMutableArray *follows = [[NSMutableArray alloc] init];
     [self.queue inDatabase:^(FMDatabase *db) {
         if (![db tableExists:@"follow_list"]) {
-            // table not found, may sync not finished
+            DDLogError(@"myFollowList follow_list table not found");
             return;
         }
         FMResultSet *s = [db executeQuery:@"SELECT * FROM session_list"];
@@ -156,7 +157,7 @@
     return follows;
 }
 
-- (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
+- (void)insertToFollowListInDB:(SAMCSPBasicInfo *)userInfo
 {
     [self.queue inDatabase:^(FMDatabase *db) {
         NSNumber *uniqueId = @([userInfo.userId integerValue]);
@@ -182,7 +183,7 @@
     }];
 }
 
-- (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
+- (void)deleteFromFollowListInDB:(SAMCSPBasicInfo *)userInfo
 {
     __weak typeof(self) wself = self;
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -198,21 +199,6 @@
     }];
 }
 
-- (BOOL)isFollowing:(NSString *)userId
-{
-    if (userId == nil) {
-        return NO;
-    }
-    __block BOOL isFollowing;
-    [self.queue inDatabase:^(FMDatabase *db) {
-        NSNumber *uniqueId = @([userId integerValue]);
-        FMResultSet *s = [db executeQuery:@"SELECT COUNT(*) FROM follow_list WHERE unique_id = ?",uniqueId];
-        [s next];
-        isFollowing = ([s intForColumnIndex:0] > 0);
-        [s close];
-    }];
-    return isFollowing;
-}
 
 - (NSString *)localFollowListVersionInDB
 {
@@ -648,6 +634,26 @@
     [db executeUpdate:sql];
 }
 
+- (NSMutableArray<NSString *> *)myFollowIds
+{
+    __block NSMutableArray *followIds = [[NSMutableArray alloc] init];
+    [self.queue inDatabase:^(FMDatabase *db) {
+        if (![db tableExists:@"follow_list"]) {
+            DDLogError(@"myFollowList follow_list table not found");
+            return;
+        }
+        FMResultSet *s = [db executeQuery:@"SELECT unique_id FROM follow_list"];
+        while ([s next]) {
+            NSInteger uniqueId = [s longForColumn:@"unique_id"];
+            NSString *uniqueIdString = @(uniqueId).stringValue;
+            [followIds addObject:uniqueIdString];
+        }
+        [s close];
+        
+    }];
+    return followIds;
+}
+
 //- (BOOL)resetFollowListTable
 //{
 //    __block BOOL result = YES;
@@ -682,7 +688,48 @@
     [self updateFollowListVersionInDB:version];
 }
 
+- (BOOL)updateFollowList:(NSArray *)users
+{
+    BOOL result = [self updateFollowListInDB:users];
+    if (result) {
+        NSMutableArray *followIds = [self myFollowIds];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _followIds = followIds;
+        });
+    }
+    return result;
+}
+
+- (void)insertToFollowList:(SAMCSPBasicInfo *)userInfo
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (_followIds) {
+            [_followIds addObject:userInfo.userId];
+        }
+    });
+    [self insertToFollowListInDB:userInfo];
+}
+
+- (void)deleteFromFollowList:(SAMCSPBasicInfo *)userInfo
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (_followIds) {
+            [_followIds removeObject:userInfo.userId];
+        }
+    });
+    [self deleteFromFollowListInDB:userInfo];
+}
 
 
+- (BOOL)isFollowing:(NSString *)userId
+{
+    if (userId == nil) {
+        return NO;
+    }
+    if (_followIds == nil) {
+        _followIds = [self myFollowIds];
+    }
+    return [_followIds containsObject:userId];
+}
 
 @end

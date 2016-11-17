@@ -137,10 +137,8 @@
             if (isFollow) {
                 toast = @"follow success";
                 // do not update user here, as the user info has only kit info
-                [self.myFollowIdList addObject:user.userId];
             } else {
                 toast = @"unfollow success";
-                [self.myFollowIdList removeObject:user.userId];
             }
             completion(YES);
         }
@@ -165,7 +163,7 @@
     
     SAMCUser *user = self.data[indexPath.row];
     cell.user = user;
-    cell.isFollowed = [self.myFollowIdList containsObject:user.userId];
+    cell.isFollowed = [[SAMCPublicManager sharedManager] isFollowing:user.userId];
     return cell;
 }
 
@@ -185,7 +183,7 @@
     [self.searchBar resignFirstResponder];
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     SAMCUser *user = self.data[indexPath.row];
-    BOOL isFollow = [self.myFollowIdList containsObject:user.userId];
+    BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:user.userId];
     BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:user.userId];
     SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:isMyProvider];
     [self.navigationController pushViewController:vc animated:YES];

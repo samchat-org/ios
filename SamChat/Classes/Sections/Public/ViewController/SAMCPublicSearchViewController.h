@@ -11,6 +11,4 @@
 
 @interface SAMCPublicSearchViewController : UIViewController
 
-@property (nonatomic, strong) NSMutableArray<NSString *> *myFollowIdList;
-
 @end
