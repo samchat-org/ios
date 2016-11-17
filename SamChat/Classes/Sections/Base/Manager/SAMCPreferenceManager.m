@@ -47,9 +47,6 @@
 #define SAMC_CURRENTUSERMODE_KEY            @"samc_currentusermode_key"
 #define SAMC_LOGINDATA_KEY                  @"samc_logindata_key"
 #define SAMC_GETUIBINDEDALIAS_KEY           @"samc_getuibindedalias_key"
-#define SAMC_LOCALFOLLOWLISTVERSION_KEY     @"samc_localfollowlistversion_key"
-#define SAMC_LOCALCUSTOMERLISTVERSION_KEY   @"samc_localcustomerlistversion_key"
-#define SAMC_LOCALSERVICERLISTVERSION_KEY   @"samc_localservicerlistversion_key"
 #define SAMC_NEEDQUESTIONNOTIFY_KEY         @"samc_needquestionnotify_key"
 #define SAMC_NEEDSOUND_KEY                  @"samc_needsound_key"
 #define SAMC_NEEDVIBRATE_KEY                @"samc_needvibrate_key"
@@ -65,7 +62,6 @@
 
 @synthesize currentUserMode = _currentUserMode;
 @synthesize loginData = _loginData;
-@synthesize localFollowListVersion = _localFollowListVersion;
 @synthesize needQuestionNotify = _needQuestionNotify;
 @synthesize needSound = _needSound;
 @synthesize needVibrate = _needVibrate;
@@ -97,8 +93,6 @@
         [[NSUserDefaults standardUserDefaults] setValue:_currentUserMode forKey:SAMC_CURRENTUSERMODE_KEY];
         _loginData = nil;
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:SAMC_LOGINDATA_KEY];
-        _localFollowListVersion = @"";
-        [[NSUserDefaults standardUserDefaults] setValue:_localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
         _needQuestionNotify = @(YES);
         [[NSUserDefaults standardUserDefaults] setValue:_needQuestionNotify forKey:SAMC_NEEDQUESTIONNOTIFY_KEY];
         _needSound = @(YES);
@@ -158,28 +152,6 @@
         } else {
             [[NSUserDefaults standardUserDefaults] removeObjectForKey:SAMC_LOGINDATA_KEY];
         }
-    });
-}
-
-#pragma mark - localFollowListVersion
-- (NSString *)localFollowListVersion
-{
-    __block NSString *version;
-    dispatch_sync(_syncQueue, ^{
-        if (_localFollowListVersion == nil) {
-            _localFollowListVersion = [[NSUserDefaults standardUserDefaults] valueForKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
-            _localFollowListVersion = _localFollowListVersion ?:@"";
-        }
-        version = _localFollowListVersion;
-    });
-    return version;
-}
-
-- (void)setLocalFollowListVersion:(NSString *)localFollowListVersion
-{
-    dispatch_barrier_async(_syncQueue, ^{
-        _localFollowListVersion = localFollowListVersion;
-        [[NSUserDefaults standardUserDefaults] setValue:localFollowListVersion forKey:SAMC_LOCALFOLLOWLISTVERSION_KEY];
     });
 }
 

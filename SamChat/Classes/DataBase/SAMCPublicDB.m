@@ -19,6 +19,9 @@
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCPublicManagerDelegate> *publicDelegate;
 
+// cache
+@property (nonatomic, copy) NSString *localFollowListVersion;
+
 @end
 
 @implementation SAMCPublicDB
@@ -211,7 +214,7 @@
     return isFollowing;
 }
 
-- (NSString *)localFollowListVersion
+- (NSString *)localFollowListVersionInDB
 {
     __block NSString *followListVersion = @"0";
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -231,7 +234,7 @@
     return followListVersion;
 }
 
-- (void)updateFollowListVersion:(NSString *)version
+- (void)updateFollowListVersionInDB:(NSString *)version
 {
     version = version ?:@"0";
     [self.queue inDatabase:^(FMDatabase *db) {
@@ -660,5 +663,26 @@
 //    }];
 //    return result;
 //}
+
+#pragma mark - Public
+- (NSString *)localFollowListVersion
+{
+    if (_localFollowListVersion) {
+        return _localFollowListVersion;
+    }
+    _localFollowListVersion = [self localFollowListVersionInDB];
+    return _localFollowListVersion;
+}
+
+- (void)updateFollowListVersion:(NSString *)version
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _localFollowListVersion = version;
+    });
+    [self updateFollowListVersionInDB:version];
+}
+
+
+
 
 @end

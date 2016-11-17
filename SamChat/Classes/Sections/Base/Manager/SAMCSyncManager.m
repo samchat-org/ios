@@ -26,8 +26,6 @@ typedef void (^SyncAction)();
 @property (nonatomic, copy) SyncAction syncBlock;
 @property (nonatomic, assign) NSTimeInterval retryDelay;
 
-@property (nonatomic, copy) NSString *localFollowListVersion;
-
 @end
 
 @implementation SAMCSyncManager
@@ -59,7 +57,6 @@ typedef void (^SyncAction)();
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
                                                  name:kReachabilityChangedNotification object:nil];
-    _localFollowListVersion = nil;
     self.syncBlock = [self queryStateDateBlock];
     self.isSyncing = NO;
     self.stoped = NO;
@@ -75,7 +72,6 @@ typedef void (^SyncAction)();
     self.internetReachability = nil;
     self.stoped = YES;
     _syncBlock = NULL;
-    _localFollowListVersion = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -385,13 +381,9 @@ typedef void (^SyncAction)();
     return [[SAMCDataBaseManager sharedManager].userInfoDB localContactListVersionOfType:SAMCContactListTypeCustomer];
 }
 
-#pragma mark - lazy load
 - (NSString *)localFollowListVersion
 {
-    if (_localFollowListVersion == nil) {
-        _localFollowListVersion = [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
-    }
-    return _localFollowListVersion;
+    return [[SAMCDataBaseManager sharedManager].publicDB localFollowListVersion];
 }
 
 @end
