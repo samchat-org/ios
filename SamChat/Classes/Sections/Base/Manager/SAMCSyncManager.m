@@ -273,13 +273,16 @@ typedef void (^SyncAction)();
     NSDictionary *parameters = [SAMCServerAPI queryContactList:type];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_CONTACT_CONTACT_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL result = NO;
+            NSString *syncVersion;
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
                 if (errorCode == 0) {
+                    syncVersion = [[response valueForKeyPath:SAMC_STATE_DATE_LAST] stringValue];
                     NSArray *users = response[SAMC_USERS];
                     result = [[SAMCDataBaseManager sharedManager].userInfoDB updateContactList:users type:type];
                 }
@@ -289,6 +292,13 @@ typedef void (^SyncAction)();
                 aError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorSyncFailed];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (result) {
+                    if (type == SAMCContactListTypeServicer) {
+                        wself.stateDateInfo.servicerListVersion = syncVersion;
+                    } else {
+                        wself.stateDateInfo.customerListVersion = syncVersion;
+                    }
+                }
                 completion(aError);
             });
         });
@@ -303,13 +313,16 @@ typedef void (^SyncAction)();
     NSDictionary *parameters = [SAMCServerAPI queryFollowList];
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
     manager.requestSerializer = [SAMCDataPostSerializer serializer];
+    __weak typeof(self) wself = self;
     [manager POST:SAMC_URL_OFFICIALACCOUNT_FOLLOW_LIST_QUERY parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             BOOL result = NO;
+            NSString *syncVersion;
             if ([responseObject isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *response = responseObject;
                 NSInteger errorCode = [((NSNumber *)response[SAMC_RET]) integerValue];
                 if (errorCode == 0) {
+                    syncVersion = [[response valueForKeyPath:SAMC_STATE_DATE_LAST] stringValue];
                     NSArray *users = response[SAMC_USERS];
                     if ((users != nil) && ([users isKindOfClass:[NSArray class]])) {
                         result = [[SAMCDataBaseManager sharedManager].publicDB updateFollowList:users];
@@ -321,6 +334,9 @@ typedef void (^SyncAction)();
                 aError = [SAMCServerErrorHelper errorWithCode:SAMCServerErrorSyncFailed];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
+                if (result) {
+                    wself.stateDateInfo.followListVersion = syncVersion;
+                }
                 completion(aError);
             });
         });
@@ -352,6 +368,7 @@ typedef void (^SyncAction)();
 {
     if ([fromVersion isEqualToString:self.localFollowListVersion]) {
         [self updateLocalFollowListVersion:toVersion];
+        DDLogDebug(@"update follow list version from %@ to %@", fromVersion, toVersion);
     }
 }
 
