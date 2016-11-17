@@ -227,7 +227,6 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     [[SAMCUnreadCountManager sharedManager] close];
     [[SAMCSyncManager sharedManager] close];
     [[NTESServiceManager sharedManager] destory];
-    [[SAMCUserManager sharedManager] reset];
     [[SAMCDataBaseManager sharedManager] close];
     [self setupLoginViewController];
 }

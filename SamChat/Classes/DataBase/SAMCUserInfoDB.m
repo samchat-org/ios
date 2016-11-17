@@ -16,6 +16,11 @@
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCUserManagerDelegate> *multicastDelegate;
 
+// cache
+@property (nonatomic, strong) NSMutableDictionary *userInfoCache;
+@property (nonatomic, strong) NSMutableArray *servicerList;
+@property (nonatomic, strong) NSMutableArray *customerList;
+
 @end
 
 @implementation SAMCUserInfoDB
@@ -59,7 +64,7 @@
     }
 }
 
-- (SAMCUser *)userInfo:(NSString *)userId
+- (SAMCUser *)userInfoInDB:(NSString *)userId
 {
     __block SAMCUser *user = [[SAMCUser alloc] init];
     user.userId = userId;
@@ -96,7 +101,7 @@
     return user;
 }
 
-- (void)updateUser:(SAMCUser *)user
+- (void)updateUserInDB:(SAMCUser *)user
 {
     DDLogDebug(@"updateUser: %@", user);
     if (user.userId == nil) {
@@ -159,7 +164,7 @@
     }];
 }
 
-- (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType;
+- (BOOL)updateContactListInDB:(NSArray *)users type:(SAMCContactListType)listType;
 {
     DDLogDebug(@"update %@ list: %@", listType==SAMCContactListTypeServicer?@"servicer":@"customer", users);
     if (![self resetContactListTable:(SAMCContactListType)listType]) {
@@ -170,21 +175,6 @@
     }
     __block BOOL result = YES;
     // TODO: separate transaction?
-//    {
-//        
-//        “id”: unique_id_in_samchat
-//        “username”: ”Kevin Dong”
-//        “lastupdate”: 123
-//        “type”:[0/1]  0:user  1:Sam-pros
-//        ”avatar”: // option
-//        {
-//            “thumb:” http://121.42.207.185/avatar/2016/1/18/thumb_145312348.png
-//        }
-//        “sam_pros_info”:{
-//            “service_category”:“fast food”
-//            
-//        }]
-//    }
     [self.queue inTransaction:^(FMDatabase *db, BOOL *rollback) {
         for (NSDictionary *user in users) {
             NSNumber *unique_id = user[SAMC_ID];
@@ -222,7 +212,7 @@
     return result;
 }
 
-- (void)insertToContactList:(SAMCUser *)user type:(SAMCContactListType)listType
+- (void)insertToContactListInDB:(SAMCUser *)user type:(SAMCContactListType)listType
 {
     if (user == nil) {
         return;
@@ -246,7 +236,7 @@
     }];
 }
 
-- (void)deleteFromContactList:(SAMCUser *)user type:(SAMCContactListType)listType
+- (void)deleteFromContactListInDB:(SAMCUser *)user type:(SAMCContactListType)listType
 {
     if (user == nil) {
         return;
@@ -269,7 +259,7 @@
     }];
 }
 
-- (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
+- (NSArray<NSString *> *)myContactListOfTypeInDB:(SAMCContactListType)listType
 {
     NSString *tableName;
     if (listType == SAMCContactListTypeCustomer) {
@@ -328,30 +318,6 @@
     }];
 }
 
-//- (BOOL)isUser:(NSString *)userId inMyContactListOfType:(SAMCContactListType)listType
-//{
-//    NSString *tableName;
-//    if (listType == SAMCContactListTypeCustomer) {
-//        tableName = @"contact_list_customer";
-//    } else {
-//        tableName = @"contact_list_servicer";
-//    }
-//    __block BOOL result;
-//    [self.queue inDatabase:^(FMDatabase *db) {
-//        if (![db tableExists:tableName]) {
-//            DDLogError(@"isUser:inMyContactListOfType: table %@ not exists", tableName);
-//            return;
-//        }
-//        NSNumber *uniqueId = @([userId integerValue]);
-//        NSString *sql = [NSString stringWithFormat:@"SELECT COUNT(*) FROM %@ WHERE unique_id = ?", tableName];
-//        FMResultSet *s = [db executeQuery:sql,uniqueId];
-//        [s next];
-//        result = ([s intForColumnIndex:0] > 0);
-//        [s close];
-//    }];
-//    return result;
-//}
-
 #pragma mark - Private
 - (BOOL)resetContactListTable:(SAMCContactListType)listType
 {
@@ -373,6 +339,131 @@
         }
     }];
     return result;
+}
+
+#pragma mark - cache
+- (NSMutableDictionary *)userInfoCache
+{
+    if (_userInfoCache == nil) {
+        _userInfoCache = [[NSMutableDictionary alloc] init];
+    }
+    return _userInfoCache;
+}
+
+- (SAMCUser *)userInfoInCache:(NSString *)userId
+{
+    return [self.userInfoCache objectForKey:userId];
+}
+
+- (void)updateUserInCache:(SAMCUser *)user
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.userInfoCache setObject:user forKey:user.userId];
+    });
+}
+
+- (NSArray<NSString *> *)myContactListOfTypeInCache:(SAMCContactListType)listType
+{
+    if (listType == SAMCContactListTypeServicer) {
+        return self.servicerList;
+    } else {
+        return self.customerList;
+    }
+}
+
+- (void)updateContactListInCache:(NSArray<NSString *> *)userIds type:(SAMCContactListType)listType
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (listType == SAMCContactListTypeServicer) {
+            self.servicerList = [userIds mutableCopy];
+        } else {
+            self.customerList = [userIds mutableCopy];
+        }
+    });
+}
+
+- (void)insertToContactListInCache:(SAMCUser *)user type:(SAMCContactListType)listType
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (listType == SAMCContactListTypeServicer) {
+            [self.servicerList addObject:user.userId];
+        } else {
+            [self.customerList addObject:user.userId];;
+        }
+    });
+}
+
+- (void)deleteFromContactListInCache:(SAMCUser *)user type:(SAMCContactListType)listType
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (listType == SAMCContactListTypeServicer) {
+            [self.servicerList removeObject:user.userId];
+        } else {
+            [self.customerList removeObject:user.userId];;
+        }
+    });
+}
+
+#pragma mark - Public
+- (SAMCUser *)userInfo:(NSString *)userId
+{
+    SAMCUser *user = [self userInfoInCache:userId];
+    if (user) {
+        return user;
+    }
+    user = [self userInfoInDB:userId];
+    if (user) {
+        [self.userInfoCache setObject:user forKey:user.userId];
+    }
+    return user;
+}
+
+- (void)updateUser:(SAMCUser *)user
+{
+    [self updateUserInDB:user];
+    // user may not have all info
+    // so update cache from db
+    user = [self userInfoInDB:user.userId];
+    if (user) {
+        [self updateUserInCache:user];
+    }
+}
+
+- (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
+{
+    NSArray *contactList = [self myContactListOfTypeInCache:listType];
+    if (contactList) {
+        return contactList;
+    }
+    contactList = [self myContactListOfTypeInDB:listType];
+    if (contactList) {
+        [self updateContactListInCache:contactList type:listType];
+    }
+    return contactList;
+}
+
+- (BOOL)updateContactList:(NSArray *)users type:(SAMCContactListType)listType
+{
+    BOOL result = [self updateContactListInDB:users type:listType];
+    if (result) {
+        NSArray *contactList = [self myContactListOfTypeInDB:listType];
+        if (contactList) {
+            [self updateContactListInCache:contactList type:listType];
+        }
+    }
+    return result;
+}
+
+- (void)insertToContactList:(SAMCUser *)user type:(SAMCContactListType)listType
+{
+    [self insertToContactListInCache:user type:listType];
+    [self insertToContactListInDB:user type:listType];
+}
+
+- (void)deleteFromContactList:(SAMCUser *)user type:(SAMCContactListType)listType
+{
+    [self deleteFromContactListInCache:user type:listType];
+    [self deleteFromContactListInDB:user type:listType];
 }
 
 @end

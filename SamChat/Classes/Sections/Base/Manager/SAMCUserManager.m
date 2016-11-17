@@ -19,9 +19,6 @@
 @interface SAMCUserManager ()
 
 @property (nonatomic, strong) GCDMulticastDelegate<SAMCUserManagerDelegate> *multicastDelegate;
-@property (nonatomic, strong) NSMutableDictionary *userInfoCache;
-@property (nonatomic, strong) NSMutableArray *servicerList;
-@property (nonatomic, strong) NSMutableArray *customerList;
 
 @end
 
@@ -41,41 +38,10 @@
 {
     self = [super init];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(didReceivedMemoryWaring:)
-                                                     name:UIApplicationDidReceiveMemoryWarningNotification
-                                                   object:nil];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)reset
-{
-    if (_userInfoCache) {
-        [_userInfoCache removeAllObjects];
-        _userInfoCache = nil;
-    }
-    if (_servicerList) {
-        [_servicerList removeAllObjects];
-        _servicerList = nil;
-    }
-    if (_customerList) {
-        [_customerList removeAllObjects];
-        _customerList = nil;
-    }
-}
-
-- (void)didReceivedMemoryWaring:(NSNotification *)notification
-{
-    if (_userInfoCache) {
-        [_userInfoCache removeAllObjects];
-    }
-}
 
 - (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate
 {
@@ -196,8 +162,6 @@
                 NSMutableArray *users = [[NSMutableArray alloc] init];
                 for (NSDictionary *userDict in response[SAMC_USERS]) {
                     SAMCUser *user = [SAMCUser userFromDict:userDict];
-                    // update cache
-                    [self.userInfoCache setObject:user forKey:user.userId];
                     // directly store to db, not trigger onUserInfoChanged:
                     // SAMCDataManager will notfiyUserInfoChanged once a batch
                     [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
@@ -231,18 +195,8 @@
             } else {
                 if (isAdd) {
                     [[SAMCDataBaseManager sharedManager].userInfoDB insertToContactList:user type:type];
-                    if (type == SAMCContactListTypeServicer) {
-                        [self.servicerList addObject:user.userId];
-                    } else {
-                        [self.customerList addObject:user.userId];
-                    }
                 } else {
                     [[SAMCDataBaseManager sharedManager].userInfoDB deleteFromContactList:user type:type];
-                    if (type == SAMCContactListTypeServicer) {
-                        [self.servicerList removeObject:user.userId];
-                    } else {
-                        [self.customerList removeObject:user.userId];
-                    }
                 }
                 NSDictionary *stateDate = response[SAMC_STATE_DATE];
                 if ([stateDate isKindOfClass:[NSDictionary class]]) {
@@ -291,67 +245,36 @@
 #pragma mark -
 - (NSArray<NSString *> *)myContactListOfType:(SAMCContactListType)listType
 {
-    if (listType == SAMCContactListTypeServicer) {
-        return self.servicerList;
-    } else {
-        return self.customerList;
-    }
+    return [[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:listType];
 }
 
 - (BOOL)isMyProvider:(NSString *)userId
 {
-    return [self.servicerList containsObject:userId];
+    return [[[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:SAMCContactListTypeServicer] containsObject:userId];
 }
 
 - (BOOL)isMyCustomer:(NSString *)userId
 {
-    return [self.customerList containsObject:userId];
+    return [[[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:SAMCContactListTypeCustomer] containsObject:userId];
 }
 
 - (SAMCUser *)userInfo:(NSString *)userId
 {
-    id object = [self.userInfoCache objectForKey:userId];
-    if (!object) {
-        object = [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
-        if (object) {
-            [self.userInfoCache setObject:object forKey:userId];
-        }
+    if ([userId length]) {
+        return [[SAMCDataBaseManager sharedManager].userInfoDB userInfo:userId];
+    } else {
+        return nil;
     }
-    return object;
 }
 
 - (void)updateUser:(SAMCUser *)user
 {
-    [self.userInfoCache setObject:user forKey:user.userId];
-    [self.multicastDelegate onUserInfoChanged:[self userInfo:user.userId]];
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
-    });
-}
-
-#pragma mark - lazy load
-- (NSMutableDictionary *)userInfoCache
-{
-    if (_userInfoCache == nil) {
-        _userInfoCache = [[NSMutableDictionary alloc] init];
+    if (user) {
+        [self.multicastDelegate onUserInfoChanged:[self userInfo:user.userId]];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [[SAMCDataBaseManager sharedManager].userInfoDB updateUser:user];
+        });
     }
-    return _userInfoCache;
-}
-
-- (NSMutableArray *)servicerList
-{
-    if (_servicerList == nil) {
-        _servicerList = [[[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:SAMCContactListTypeServicer] mutableCopy];
-    }
-    return _servicerList;
-}
-
-- (NSMutableArray *)customerList
-{
-    if (_customerList == nil) {
-        _customerList = [[[SAMCDataBaseManager sharedManager].userInfoDB myContactListOfType:SAMCContactListTypeCustomer] mutableCopy];
-    }
-    return _customerList;
 }
 
 @end

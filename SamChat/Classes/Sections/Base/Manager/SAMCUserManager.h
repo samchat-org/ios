@@ -18,8 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)sharedManager;
 
-- (void)reset;
-
 - (void)addDelegate:(id<SAMCUserManagerDelegate>)delegate;
 - (void)removeDelegate:(id<SAMCUserManagerDelegate>)delegate;
 
