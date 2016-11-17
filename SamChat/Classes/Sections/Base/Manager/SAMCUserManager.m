@@ -14,6 +14,7 @@
 #import "SAMCDataBaseManager.h"
 #import "SAMCAccountManager.h"
 #import "GCDMulticastDelegate.h"
+#import "SAMCSyncManager.h"
 
 @interface SAMCUserManager ()
 
@@ -242,6 +243,12 @@
                     } else {
                         [self.customerList removeObject:user.userId];
                     }
+                }
+                NSDictionary *stateDate = response[SAMC_STATE_DATE];
+                if ([stateDate isKindOfClass:[NSDictionary class]]) {
+                    [[SAMCSyncManager sharedManager] updateLocalContactListVersionFrom:stateDate[SAMC_PREVIOUS]
+                                                                                    to:stateDate[SAMC_LAST]
+                                                                                  type:type];
                 }
                 completion(nil);
             }

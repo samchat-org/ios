@@ -347,10 +347,12 @@ typedef void (^SyncAction)();
     if (listType == SAMCContactListTypeServicer) {
         if ([fromVersion isEqualToString:self.localServicerListVersion]) {
             [self updateLocalContactListVersion:toVersion type:listType];
+            DDLogDebug(@"update servicer list version from %@ to %@", fromVersion, toVersion);
         }
     } else {
         if ([fromVersion isEqualToString:self.localCustomerListVersion]) {
             [self updateLocalContactListVersion:toVersion type:listType];
+            DDLogDebug(@"update customer list version from %@ to %@", fromVersion, toVersion);
         }
     }
 }

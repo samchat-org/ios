@@ -18,6 +18,7 @@
 #import "SAMCImageUtil.h"
 #import "SAMCImageAttachment.h"
 #import "SDImageCache.h"
+#import "SAMCSyncManager.h"
 
 @interface SAMCPublicManager ()
 
@@ -111,6 +112,11 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 } else {
                     [wself deleteFromFollowList:userInfo];
                 }
+                NSDictionary *stateDate = response[SAMC_STATE_DATE];
+                if ([stateDate isKindOfClass:[NSDictionary class]]) {
+                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:stateDate[SAMC_PREVIOUS]
+                                                                                   to:stateDate[SAMC_LAST]];
+                }
                 completion(nil);
             }
         } else {
@@ -138,6 +144,11 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 completion([SAMCServerErrorHelper errorWithCode:errorCode]);
             } else {
                 [wself block:blockFlag user:userId];
+                NSDictionary *stateDate = response[SAMC_STATE_DATE];
+                if ([stateDate isKindOfClass:[NSDictionary class]]) {
+                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:stateDate[SAMC_PREVIOUS]
+                                                                                   to:stateDate[SAMC_LAST]];
+                }
                 completion(nil);
             }
         } else {

@@ -9,7 +9,8 @@
 #ifndef SAMCServerAPIMacro_h
 #define SAMCServerAPIMacro_h
 
-#define SAMC_API_PREFIX                 @"http://service-test.samchat.com/"
+//#define SAMC_API_PREFIX                 @"http://service-test.samchat.com/"
+#define SAMC_API_PREFIX @"http://service-dev.samchat.com:8081/sam_svr/"
 
 #define SAMC_URL_REGISTER_CODE_REQUEST      SAMC_API_PREFIX@"api_1.0_user_registerCodeRequest.do"
 #define SAMC_URL_SIGNUP_CODE_VERIFY         SAMC_API_PREFIX@"api_1.0_user_signupCodeVerify.do"
@@ -160,6 +161,9 @@
 #define SAMC_MESSAGE_ID                 @"message_id"
 #define SAMC_POPULAR_REQUEST            @"popular_request"
 #define SAMC_BUSINESS_ID                @"business_id"
+#define SAMC_STATE_DATE                 @"state_date"
+#define SAMC_PREVIOUS                   @"previous"
+#define SAMC_LAST                       @"last"
 
 #define SAMC_AVATAR_ORIGIN              @"avatar.origin"
 #define SAMC_AVATAR_THUMB               @"avatar.thumb"
