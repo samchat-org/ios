@@ -114,8 +114,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 }
                 NSDictionary *stateDate = response[SAMC_STATE_DATE];
                 if ([stateDate isKindOfClass:[NSDictionary class]]) {
-                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:stateDate[SAMC_PREVIOUS]
-                                                                                   to:stateDate[SAMC_LAST]];
+                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:[stateDate[SAMC_PREVIOUS] stringValue]
+                                                                                   to:[stateDate[SAMC_LAST] stringValue]];
                 }
                 completion(nil);
             }
@@ -146,8 +146,8 @@ officialAccount:(SAMCSPBasicInfo *)userInfo
                 [wself block:blockFlag user:userId];
                 NSDictionary *stateDate = response[SAMC_STATE_DATE];
                 if ([stateDate isKindOfClass:[NSDictionary class]]) {
-                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:stateDate[SAMC_PREVIOUS]
-                                                                                   to:stateDate[SAMC_LAST]];
+                    [[SAMCSyncManager sharedManager] updateLocalFollowListVersionFrom:[stateDate[SAMC_PREVIOUS] stringValue]
+                                                                                   to:[stateDate[SAMC_LAST] stringValue]];
                 }
                 completion(nil);
             }

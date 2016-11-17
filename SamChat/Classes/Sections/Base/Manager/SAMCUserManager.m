@@ -200,8 +200,8 @@
                 }
                 NSDictionary *stateDate = response[SAMC_STATE_DATE];
                 if ([stateDate isKindOfClass:[NSDictionary class]]) {
-                    [[SAMCSyncManager sharedManager] updateLocalContactListVersionFrom:stateDate[SAMC_PREVIOUS]
-                                                                                    to:stateDate[SAMC_LAST]
+                    [[SAMCSyncManager sharedManager] updateLocalContactListVersionFrom:[stateDate[SAMC_PREVIOUS] stringValue]
+                                                                                    to:[stateDate[SAMC_LAST] stringValue]
                                                                                   type:type];
                 }
                 completion(nil);
