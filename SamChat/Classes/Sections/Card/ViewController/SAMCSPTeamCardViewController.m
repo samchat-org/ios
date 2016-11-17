@@ -28,7 +28,7 @@
 #import "SAMCEditTeamNameViewController.h"
 
 @interface SAMCSPTeamCardViewController ()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol,SAMCContactSelectDelegate,NIMMemberGroupViewDelegate>{
-    UIAlertView *_quitTeamAlertView;
+    UIAlertView *_dismissTeamAlertView;
 }
 
 @property (nonatomic,strong) NIMTeamMember *myTeamInfo;
@@ -137,10 +137,9 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)quitTeam
-{
-    _quitTeamAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"确认退出讨论组?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
-    [_quitTeamAlertView show];
+- (void)dismissTeam{
+    _dismissTeamAlertView = [[UIAlertView alloc] initWithTitle:@"" message:@"确认解散群聊?" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确认", nil];
+    [_dismissTeamAlertView show];
 }
 
 #pragma mark - ContactSelectDelegate
@@ -222,7 +221,7 @@
 {
     NSInteger number = 1;
     if (section == 1) {
-        number = 4;
+        number = 5;
     }
     return number;
 }
@@ -297,32 +296,37 @@
     if (indexPath.section == 1) {
         if (indexPath.row == 0) {
             [self updateTeamInfoName];
+        } else if (indexPath.row == 4) {
+            [self dismissTeam];
         }
     }
 }
 
 #pragma mark - UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex{
-    if (alertView == _quitTeamAlertView) {
-        switch (buttonIndex) {
-            case 0://取消
-                break;
-            case 1:{
-                [[NIMSDK sharedSDK].teamManager quitTeam:self.team.teamId completion:^(NSError *error) {
-                    if (!error) {
-                        [self.navigationController popToRootViewControllerAnimated:YES];
-                    }else{
-                        [self.view nimkit_makeToast:@"退出失败"];
-                    }
-                }];
-                break;
-            }
-            default:
-                break;
-        }
+    if (alertView == _dismissTeamAlertView) {
+        [self dismissTeamAlert:buttonIndex];
     }
 }
 
+- (void)dismissTeamAlert:(NSInteger)index{
+    switch (index) {
+        case 0://取消
+            break;
+        case 1:{
+            [[NIMSDK sharedSDK].teamManager dismissTeam:self.team.teamId completion:^(NSError *error) {
+                if (!error) {
+                    [self.navigationController popToRootViewControllerAnimated:YES];
+                }else{
+                    [self.view nimkit_makeToast:[NSString stringWithFormat:@"解散失败 code:%zd",error.code]];
+                }
+            }];
+            break;
+        }
+        default:
+            break;
+    }
+}
 
 #pragma mark - NIMMemberGroupViewDelegate
 - (void)didSelectRemoveButtonWithMemberId:(NSString *)uid
@@ -474,7 +478,12 @@
             cell.textLabel.text = @"Report abuse";
         }
             break;
-            
+        case 4:
+        {
+            cell = [SAMCTableCellFactory commonBasicCell:tableView accessoryType:UITableViewCellAccessoryNone];
+            cell.textLabel.text = @"Dismiss group";
+        }
+            break;
         default:
             break;
     }
