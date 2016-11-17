@@ -106,7 +106,11 @@ NSString *NTESCustomNotificationCountChanged = @"NTESCustomNotificationCountChan
             [self.player play];
         }
         if ([[SAMCPreferenceManager sharedManager].needVibrate boolValue]) {
+#if TARGET_IPHONE_SIMULATOR
+            DDLogDebug(@"Vibrate");
+#else
             AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+#endif
         }
     }
 }

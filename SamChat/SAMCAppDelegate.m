@@ -73,7 +73,9 @@ NSString * const SAMCUserModeSwitchNotification = @"SAMCUserModeSwitchNotificati
     
     
     [self setupServices];
+#if !(TARGET_IPHONE_SIMULATOR)
     [self registerAPNs];
+#endif
     
     [self commonInitListenEvents];
     
