@@ -456,7 +456,7 @@
             return;
         }
         NSNumber *uniqueId = @([message.from integerValue]);
-        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id FROM follow_list WHERE unique_id = ?", uniqueId];
+        FMResultSet *s = [db executeQuery:@"SELECT last_msg_id FROM session_list WHERE unique_id = ?", uniqueId];
         NSString *lastMsgId = nil;
         if ([s next]) {
             lastMsgId = [s stringForColumnIndex:0];
