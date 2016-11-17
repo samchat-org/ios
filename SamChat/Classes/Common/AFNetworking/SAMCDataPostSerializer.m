@@ -42,15 +42,23 @@
         }
     }];
     
+//    if (parameters) {
+//        if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
+//            [mutableRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+//        }
+//        
+//        NSMutableData *data = [NSMutableData dataWithData:[@"data=" dataUsingEncoding:NSUTF8StringEncoding]];
+//        DDLogDebug(@"SerializerResult: %@",parameters);
+//        [data appendData:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
+//        [mutableRequest setHTTPBody:data];
+//    }
+    
     if (parameters) {
         if (![mutableRequest valueForHTTPHeaderField:@"Content-Type"]) {
-            [mutableRequest setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+            [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
         }
         
-        NSMutableData *data = [NSMutableData dataWithData:[@"data=" dataUsingEncoding:NSUTF8StringEncoding]];
-        DDLogDebug(@"SerializerResult: %@",parameters);
-        [data appendData:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
-        [mutableRequest setHTTPBody:data];
+        [mutableRequest setHTTPBody:[NSJSONSerialization dataWithJSONObject:parameters options:self.writingOptions error:error]];
     }
     
     return mutableRequest;
