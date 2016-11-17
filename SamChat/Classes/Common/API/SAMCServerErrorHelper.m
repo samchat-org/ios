@@ -111,6 +111,9 @@
         case SAMCServerErrorRecallFailed: // Recall失败
             localizedDescription = @"撤回失败";
             break;
+        case SAMCServerErrorSamchatIdAlreadyCreated: // Samchat-Id已创建
+            localizedDescription = @"Samchat-Id已创建";
+            break;
         case SAMCServerErrorNetworkUnavailable:
             localizedDescription = @"网络连接错误";
             break;

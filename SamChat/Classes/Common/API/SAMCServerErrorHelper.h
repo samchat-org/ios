@@ -41,6 +41,7 @@ typedef NS_ENUM(NSInteger, SAMCServerErrorCode) {
     SAMCServerErrorNotNewCellPhone = -512, // 更新的手机号码与当前使用的手机号相同
     SAMCServerErrorSamchatIdExists = -513, // Samchat-Id重复
     SAMCServerErrorRecallFailed = -514, // Recall失败
+    SAMCServerErrorSamchatIdAlreadyCreated = -515, // Samchat-Id已创建
     
     SAMCServerErrorNetworkUnavailable = 1,
     SAMCServerErrorServerNotReachable = 2,
