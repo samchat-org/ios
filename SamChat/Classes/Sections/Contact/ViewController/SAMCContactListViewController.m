@@ -289,8 +289,7 @@ SAMCUserManagerDelegate>
     SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
     UIViewController *vc;
     if (self.currentUserMode == SAMCUserModeTypeCustom) {
-        BOOL isFollow = [[SAMCPublicManager sharedManager] isFollowing:userId];
-        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollow isMyProvider:YES];
+        vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
     } else {
         BOOL isMyCustomer = YES;
         vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];

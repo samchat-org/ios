@@ -544,9 +544,7 @@ NTESTimerHolderDelegate>
     SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
     if (self.samcSession.sessionType == NIMSessionTypeP2P) {
         if (self.samcSession.sessionMode == SAMCUserModeTypeCustom) {
-            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
-            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
-            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+            vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
         } else {
             BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];
             vc = [[SAMCCustomerCardViewController alloc] initWithUser:user isMyCustomer:isMyCustomer];
@@ -554,9 +552,7 @@ NTESTimerHolderDelegate>
     } else {
         NIMTeam *team = [[NIMSDK sharedSDK].teamManager teamById:self.samcSession.sessionId];
         if([team.owner isEqualToString:userId]) {
-            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
-            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
-            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+            vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
         } else {
             if ([team.owner isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
                 BOOL isMyCustomer = [[SAMCUserManager sharedManager] isMyCustomer:userId];

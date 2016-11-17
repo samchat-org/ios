@@ -11,6 +11,6 @@
 
 @interface SAMCServicerCardViewController : UIViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user isFollow:(BOOL)isFollow isMyProvider:(BOOL)isMyProvider;
-    
+- (instancetype)initWithUserId:(NSString *)userId;
+
 @end

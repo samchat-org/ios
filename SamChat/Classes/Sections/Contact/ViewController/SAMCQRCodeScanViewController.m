@@ -514,9 +514,7 @@
                 [wself reStartDevice];
                 return;
             }
-            BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:user.userId];
-            BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:user.userId];
-            vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+            vc = [[SAMCServicerCardViewController alloc] initWithUserId:user.userId];
         }
         [self.navigationController pushViewController:vc animated:YES];
 //        [[SAMCUserManager sharedManager] addOrRemove:YES contact:user type:type completion:^(NSError * _Nullable error) {

@@ -240,10 +240,7 @@ UITableViewDelegate>
             vc = [[SAMCServiceProfileViewController alloc] init];
         }
     } else {
-        SAMCUser *user = [[SAMCUserManager sharedManager] userInfo:userId];
-        BOOL isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
-        BOOL isFollowing = [[SAMCPublicManager sharedManager] isFollowing:userId];
-        vc = [[SAMCServicerCardViewController alloc] initWithUser:user isFollow:isFollowing isMyProvider:isMyProvider];
+        vc = [[SAMCServicerCardViewController alloc] initWithUserId:userId];
     }
     if (vc) {
         [self.navigationController pushViewController:vc animated:YES];

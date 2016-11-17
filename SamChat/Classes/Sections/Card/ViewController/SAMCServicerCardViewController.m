@@ -29,13 +29,13 @@
 
 @implementation SAMCServicerCardViewController
 
-- (instancetype)initWithUser:(SAMCUser *)user isFollow:(BOOL)isFollow isMyProvider:(BOOL)isMyProvider
+- (instancetype)initWithUserId:(NSString *)userId
 {
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
-        _user = user;
-        _isFollow = isFollow;
-        _isMyProvider = isMyProvider;
+        _user = [[SAMCUserManager sharedManager] userInfo:userId];
+        _isFollow = [[SAMCPublicManager sharedManager] isFollowing:userId];
+        _isMyProvider = [[SAMCUserManager sharedManager] isMyProvider:userId];
     }
     return self;
 }
