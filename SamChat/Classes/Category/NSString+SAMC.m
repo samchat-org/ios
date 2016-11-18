@@ -9,6 +9,8 @@
 #import "NSString+SAMC.h"
 #import <CommonCrypto/CommonDigest.h>
 
+#define SAMC_PASSWORD_MIX_SUFFIX    @"s!a@m#c$h%a^t&"
+
 @implementation NSString (SAMC)
 
 - (NSString *)samc_MD5String
@@ -23,6 +25,12 @@
             result[8], result[9], result[10], result[11],
             result[12], result[13], result[14], result[15]
             ];
+}
+
+- (NSString *)samc_passWordString
+{
+    NSString *password = [self stringByAppendingString:SAMC_PASSWORD_MIX_SUFFIX];
+    return [password samc_MD5String];
 }
 
 - (BOOL)samc_isValidEmail

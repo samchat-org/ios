@@ -9,6 +9,7 @@
 #import "SAMCServerAPI.h"
 #import "SAMCDeviceUtil.h"
 #import "SAMCPreferenceManager.h"
+#import "NSString+SAMC.h"
 
 @implementation SAMCServerAPI
 
@@ -98,7 +99,7 @@
                            SAMC_CELLPHONE:cellPhone,
                            SAMC_VERIFYCODE:verifyCode,
                            SAMC_USERNAME:username,
-                           SAMC_PWD:password,
+                           SAMC_PWD:[password samc_passWordString],
                            SAMC_DEVICEID:deviceId,
                            SAMC_DEVICE_TYPE:[SAMCDeviceUtil deviceInfo],
                            SAMC_APP_VERSION:[SAMCDeviceUtil appInfo]};
@@ -129,7 +130,7 @@
     NSDictionary *header = @{SAMC_ACTION:SAMC_LOGIN};
     NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
                            SAMC_ACCOUNT:account,
-                           SAMC_PWD:password,
+                           SAMC_PWD:[password samc_passWordString],
                            SAMC_DEVICEID:deviceId,
                            SAMC_DEVICE_TYPE:[SAMCDeviceUtil deviceInfo],
                            SAMC_APP_VERSION:[SAMCDeviceUtil appInfo]};
@@ -266,7 +267,7 @@
     NSDictionary *body = @{SAMC_COUNTRYCODE:countryCode,
                            SAMC_CELLPHONE:cellPhone,
                            SAMC_VERIFYCODE:verifyCode,
-                           SAMC_PWD:password,
+                           SAMC_PWD:[password samc_passWordString],
                            SAMC_DEVICEID:deviceId};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
@@ -289,7 +290,8 @@
     currentPWD = currentPWD ?:@"";
     changePWD = changePWD ?:@"";
     NSDictionary *header = @{SAMC_ACTION:SAMC_PWD_UPDATE, SAMC_TOKEN:[SAMCServerAPI token]};
-    NSDictionary *body = @{SAMC_OLD_PWD:currentPWD, SAMC_NEW_PWD:changePWD};
+    NSDictionary *body = @{SAMC_OLD_PWD:[currentPWD samc_passWordString],
+                           SAMC_NEW_PWD:[changePWD samc_passWordString]};
     return @{SAMC_HEADER:header,SAMC_BODY:body};
 }
 

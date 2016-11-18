@@ -11,6 +11,7 @@
 @interface NSString (SAMC)
 
 - (NSString *)samc_MD5String;
+- (NSString *)samc_passWordString;
 
 - (BOOL)samc_isValidEmail;
 - (BOOL)samc_isValidCellphone;
