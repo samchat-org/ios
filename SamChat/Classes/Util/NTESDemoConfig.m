@@ -28,7 +28,7 @@
     if (self = [super init])
     {
 //        _appKey = @"45c6af3c98409b18a84451215d0bdd6e"; // Demo
-        _appKey = @"a95830f52659eec125b54bc1b88f05b2"; // SamChat
+        _appKey = @"e1a577a0658770e251de3aa530270077"; // samchat_test_west2
         _apiURL = @"https://app.netease.im/api";
         _cerName= @"samchatDevPush";
     }
