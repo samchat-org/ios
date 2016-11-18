@@ -25,8 +25,9 @@
 #import "NIMGlobalMacro.h"
 #import "SAMCTableCellFactory.h"
 #import "SAMCServicerCardViewController.h"
+#import "SAMCCustomerCardViewController.h"
 
-@interface SAMCCustomTeamCardViewController()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol>{
+@interface SAMCCustomTeamCardViewController()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol,NIMMemberGroupViewDelegate>{
     UIAlertView *_quitTeamAlertView;
 }
 
@@ -288,13 +289,22 @@
 - (void)setupMemberGroupView:(CGFloat)width
 {
     self.memberGroupView = [[NIMMemberGroupView alloc] initWithFrame:CGRectZero];
-    self.memberGroupView.delegate = nil;
+    self.memberGroupView.delegate = self;
     NIMKitCardHeaderOpeator opeartor;
     opeartor = CardHeaderOpeatorNone;
     [self.memberGroupView refreshUids:self.headerUserIds operators:opeartor];
     CGSize size = [self.memberGroupView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
     self.memberGroupView.nim_size = size;
     self.memberGroupView.enableRemove = self.currentOpera == CardHeaderOpeatorRemove;
+}
+
+#pragma mark - NIMMemberGroupViewDelegate
+- (void)didSelectMemberId:(NSString *)uid
+{
+    UIViewController *vc;
+    vc = [[SAMCCustomerCardViewController alloc] initWithUserId:uid];
+    ((SAMCCustomerCardViewController *)vc).showInfoOnly = YES;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
