@@ -263,7 +263,6 @@
 {
     // When showing the ImagePicker update the status bar and nav bar properties.
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-    navigationController.topViewController.title = @"Photos";
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.barTintColor = SAMC_COLOR_NAV_LIGHT;
     navigationController.navigationBar.topItem.rightBarButtonItem.tintColor = SAMC_COLOR_INK;
