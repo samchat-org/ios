@@ -8,13 +8,12 @@
 
 #import "NTESSessionMsgConverter.h"
 #import "NTESLocationPoint.h"
-#import "NSString+NTES.h"
 #import "NTESJanKenPonAttachment.h"
 #import "NTESSnapchatAttachment.h"
 #import "NTESChartletAttachment.h"
 #import "NTESWhiteboardAttachment.h"
 #import "SAMCImageAttachment.h"
-
+#import "NSString+SAMC.h"
 
 @implementation NTESSessionMsgConverter
 
@@ -116,9 +115,9 @@
     NIMFileObject *fileObject = [[NIMFileObject alloc] initWithData:data extension:extension];
     NSString *displayName;
     if (extension.length) {
-        displayName     = [NSString stringWithFormat:@"%@.%@",[NSUUID UUID].UUIDString.MD5String,extension];
+        displayName     = [NSString stringWithFormat:@"%@.%@",[NSUUID UUID].UUIDString.samc_MD5String,extension];
     }else{
-        displayName     = [NSString stringWithFormat:@"%@",[NSUUID UUID].UUIDString.MD5String];
+        displayName     = [NSString stringWithFormat:@"%@",[NSUUID UUID].UUIDString.samc_MD5String];
     }
     fileObject.displayName    = displayName;
     NIMMessage *message       = [[NIMMessage alloc] init];

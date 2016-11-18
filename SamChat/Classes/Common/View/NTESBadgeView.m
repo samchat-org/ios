@@ -8,7 +8,6 @@
 
 
 #import "NTESBadgeView.h"
-#import "NSString+NTES.h"
 
 @interface NTESBadgeView ()
 
