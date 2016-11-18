@@ -113,10 +113,6 @@
 		312C1C7A1D35D85B00242906 /* NTESSystemNotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 312C1B3B1D35D85B00242906 /* NTESSystemNotificationCell.xib */; };
 		312C1C7B1D35D85B00242906 /* NTESSystemNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B3D1D35D85B00242906 /* NTESSystemNotificationViewController.m */; };
 		312C1C7C1D35D85B00242906 /* NTESSystemNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 312C1B3E1D35D85B00242906 /* NTESSystemNotificationViewController.xib */; };
-		312C1C7E1D35D85B00242906 /* NTESLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B451D35D85B00242906 /* NTESLoginViewController.m */; };
-		312C1C7F1D35D85B00242906 /* NTESLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 312C1B461D35D85B00242906 /* NTESLoginViewController.xib */; };
-		312C1C801D35D85B00242906 /* NTESRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B481D35D85B00242906 /* NTESRegisterViewController.m */; };
-		312C1C811D35D85B00242906 /* NTESRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 312C1B491D35D85B00242906 /* NTESRegisterViewController.xib */; };
 		312C1C821D35D85B00242906 /* NTESSessionConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B4D1D35D85B00242906 /* NTESSessionConfig.m */; };
 		312C1C831D35D85B00242906 /* NTESChartletAttachment.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B511D35D85B00242906 /* NTESChartletAttachment.m */; };
 		312C1C841D35D85B00242906 /* NTESCustomAttachmentDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 312C1B531D35D85B00242906 /* NTESCustomAttachmentDecoder.m */; };
@@ -573,12 +569,6 @@
 		312C1B3C1D35D85B00242906 /* NTESSystemNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESSystemNotificationViewController.h; sourceTree = "<group>"; };
 		312C1B3D1D35D85B00242906 /* NTESSystemNotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESSystemNotificationViewController.m; sourceTree = "<group>"; };
 		312C1B3E1D35D85B00242906 /* NTESSystemNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESSystemNotificationViewController.xib; sourceTree = "<group>"; };
-		312C1B441D35D85B00242906 /* NTESLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESLoginViewController.h; sourceTree = "<group>"; };
-		312C1B451D35D85B00242906 /* NTESLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESLoginViewController.m; sourceTree = "<group>"; };
-		312C1B461D35D85B00242906 /* NTESLoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESLoginViewController.xib; sourceTree = "<group>"; };
-		312C1B471D35D85B00242906 /* NTESRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESRegisterViewController.h; sourceTree = "<group>"; };
-		312C1B481D35D85B00242906 /* NTESRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESRegisterViewController.m; sourceTree = "<group>"; };
-		312C1B491D35D85B00242906 /* NTESRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NTESRegisterViewController.xib; sourceTree = "<group>"; };
 		312C1B4C1D35D85B00242906 /* NTESSessionConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESSessionConfig.h; sourceTree = "<group>"; };
 		312C1B4D1D35D85B00242906 /* NTESSessionConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NTESSessionConfig.m; sourceTree = "<group>"; };
 		312C1B501D35D85B00242906 /* NTESChartletAttachment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NTESChartletAttachment.h; sourceTree = "<group>"; };
@@ -1605,12 +1595,6 @@
 			isa = PBXGroup;
 			children = (
 				31799EB51D4064EA00878058 /* CountryCode */,
-				312C1B441D35D85B00242906 /* NTESLoginViewController.h */,
-				312C1B451D35D85B00242906 /* NTESLoginViewController.m */,
-				312C1B461D35D85B00242906 /* NTESLoginViewController.xib */,
-				312C1B471D35D85B00242906 /* NTESRegisterViewController.h */,
-				312C1B481D35D85B00242906 /* NTESRegisterViewController.m */,
-				312C1B491D35D85B00242906 /* NTESRegisterViewController.xib */,
 				31799EB21D4063D000878058 /* SAMCLoginViewController.h */,
 				31799EB31D4063D000878058 /* SAMCLoginViewController.m */,
 				314444EB1D49D5CC0062B797 /* SAMCConfirmPhoneNumViewController.h */,
@@ -2698,7 +2682,6 @@
 				312C1CE01D35D85B00242906 /* Images.xcassets in Resources */,
 				312C1C531D35D85B00242906 /* NTESSearchTeamViewController.xib in Resources */,
 				312C1C7A1D35D85B00242906 /* NTESSystemNotificationCell.xib in Resources */,
-				312C1C811D35D85B00242906 /* NTESRegisterViewController.xib in Resources */,
 				312C1C501D35D85B00242906 /* NTESJionTeamViewController.xib in Resources */,
 				312C1C951D35D85B00242906 /* NTESAudio2TextViewController.xib in Resources */,
 				31799EBA1D4064EA00878058 /* CountryCodeListCh.plist in Resources */,
@@ -2726,7 +2709,6 @@
 				312C1C9B1D35D85B00242906 /* NTESGalleryViewController.xib in Resources */,
 				312C1CE31D35D85B00242906 /* d3.icns in Resources */,
 				312C1CA51D35D85B00242906 /* NTESVideoViewController.xib in Resources */,
-				312C1C7F1D35D85B00242906 /* NTESLoginViewController.xib in Resources */,
 				312C1C7C1D35D85B00242906 /* NTESSystemNotificationViewController.xib in Resources */,
 				312C1CA21D35D85B00242906 /* NTESWhiteboardViewController.xib in Resources */,
 				31DB307B1DB4DE880072BE34 /* LaunchScreen.storyboard in Resources */,
@@ -2825,7 +2807,6 @@
 				31E37B811D65B17000832CC8 /* SAMCTextView.m in Sources */,
 				312C1CCF1D35D85B00242906 /* NTESDemoRegisterTask.m in Sources */,
 				312C1C861D35D85B00242906 /* NTESLocationPoint.m in Sources */,
-				312C1C7E1D35D85B00242906 /* NTESLoginViewController.m in Sources */,
 				312C1C6F1D35D85B00242906 /* NTESContactUtilItem.m in Sources */,
 				31DB307E1DB4E5C80072BE34 /* SAMCStepperView.m in Sources */,
 				31DB303D1DADC82C0072BE34 /* SAMCSelectLocationViewController.m in Sources */,
@@ -3094,7 +3075,6 @@
 				31DB30C21DBCAEB40072BE34 /* SAMCCustomContactCell.m in Sources */,
 				3195DE3F1D604F82001BD2B4 /* SAMCServerAPI.m in Sources */,
 				312C1C451D35D85B00242906 /* NTESMainTabController.m in Sources */,
-				312C1C801D35D85B00242906 /* NTESRegisterViewController.m in Sources */,
 				312C1C9A1D35D85B00242906 /* NTESGalleryViewController.m in Sources */,
 				312C1C371D35D85B00242906 /* NSString+NTES.m in Sources */,
 			);

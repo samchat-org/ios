@@ -7,7 +7,6 @@
 //
 
 #import "SAMCAppDelegate.h"
-#import "NTESLoginViewController.h"
 #import "NIMSDK.h"
 #import "UIView+Toast.h"
 #import "NTESService.h"
