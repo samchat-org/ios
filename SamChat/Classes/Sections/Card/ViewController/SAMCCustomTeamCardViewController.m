@@ -24,6 +24,7 @@
 #import "UIView+Toast.h"
 #import "NIMGlobalMacro.h"
 #import "SAMCTableCellFactory.h"
+#import "SAMCServicerCardViewController.h"
 
 @interface SAMCCustomTeamCardViewController()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol>{
     UIAlertView *_quitTeamAlertView;
@@ -245,6 +246,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section == 0) {
+        SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUserId:self.team.owner];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if (indexPath.section == 2) {
         if (indexPath.row == 3) {
             [self quitTeam];

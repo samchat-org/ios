@@ -17,6 +17,7 @@
 #import "SAMCMemberGroupCell.h"
 #import "SAMCContactSelectViewController.h"
 #import "SAMCAccountManager.h"
+#import "SAMCServicerCardViewController.h"
 
 @interface SAMCSessionCardViewController ()<UITableViewDelegate,UITableViewDataSource,NIMMemberGroupViewDelegate,SAMCContactSelectDelegate>
 
@@ -75,6 +76,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+    if (_session.sessionMode == SAMCUserModeTypeSP) {
+    } else {
+        if (indexPath.section == 0) {
+            SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUserId:_session.sessionId];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
