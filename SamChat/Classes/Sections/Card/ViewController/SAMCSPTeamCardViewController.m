@@ -26,6 +26,9 @@
 #import "NIMGlobalMacro.h"
 #import "SAMCTableCellFactory.h"
 #import "SAMCEditTeamNameViewController.h"
+#import "SAMCCustomerCardViewController.h"
+#import "SAMCMyProfileViewController.h"
+#import "SAMCAccountManager.h"
 
 @interface SAMCSPTeamCardViewController ()<NIMTeamManagerDelegate, NIMTeamMemberCardActionDelegate,UITableViewDataSource,UITableViewDelegate,NIMTeamSwitchProtocol,SAMCContactSelectDelegate,NIMMemberGroupViewDelegate>{
     UIAlertView *_dismissTeamAlertView;
@@ -329,6 +332,17 @@
 }
 
 #pragma mark - NIMMemberGroupViewDelegate
+- (void)didSelectMemberId:(NSString *)uid
+{
+    UIViewController *vc;
+    if ([uid isEqualToString:[SAMCAccountManager sharedManager].currentAccount]) {
+        vc = [[SAMCMyProfileViewController alloc] init];
+    } else {
+        vc = [[SAMCCustomerCardViewController alloc] initWithUserId:uid];
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)didSelectRemoveButtonWithMemberId:(NSString *)uid
 {
     __weak typeof(self) wself = self;
@@ -406,6 +420,9 @@
             [uids addObject:data.memberId];
         }
     }
+    NSString *currentAccount = [SAMCAccountManager sharedManager].currentAccount;
+    [uids removeObject:currentAccount];
+    [uids insertObject:currentAccount atIndex:0];
     return uids;
 }
 
