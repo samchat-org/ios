@@ -7,7 +7,6 @@
 //
 
 #import "SAMCCustomPublicListCell.h"
-#import "SAMCAvatarImageView.h"
 #import "SAMCSession.h"
 #import "NIMKitUtil.h"
 #import "NIMBadgeView.h"
@@ -15,7 +14,6 @@
 
 @interface SAMCCustomPublicListCell ()
 
-@property (nonatomic, strong) SAMCAvatarImageView *avatarView;
 @property (nonatomic, strong) UILabel *nameLabel;
 @property (nonatomic, strong) UILabel *categoryLabel;
 @property (nonatomic, strong) UILabel *messageLabel;
@@ -144,6 +142,7 @@
     self.messageLabel.text = [publicSession.lastMessageContent length] ? publicSession.lastMessageContent : @" ";
     
     NSURL *url = avatarUrlString ? [NSURL URLWithString:avatarUrlString] : nil;
+    self.avatarView.userId = info.infoId;
     [self.avatarView samc_setImageWithURL:url placeholderImage:info.avatarImage options:SDWebImageRetryFailed];
     if (publicSession.unreadCount) {
         self.badgeView.hidden = NO;

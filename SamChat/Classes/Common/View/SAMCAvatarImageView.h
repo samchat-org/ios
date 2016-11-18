@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, strong) UIColor *circleColor;
+@property (nonatomic, copy) NSString *userId;
 
 - (instancetype)initWithFrame:(CGRect)frame circleWidth:(CGFloat)width;
 

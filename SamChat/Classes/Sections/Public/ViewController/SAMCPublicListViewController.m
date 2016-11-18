@@ -13,6 +13,7 @@
 #import "SAMCPublicMessageViewController.h"
 #import "SVProgressHUD.h"
 #import "UIView+Toast.h"
+#import "SAMCServicerCardViewController.h"
 
 @interface SAMCPublicListViewController ()<UITableViewDataSource,UITableViewDelegate,SAMCPublicManagerDelegate,NIMUserManagerDelegate>
 
@@ -103,6 +104,9 @@
     
     SAMCPublicSession *session = [self data][indexPath.row];
     cell.publicSession = session;
+    
+    [cell.avatarView addTarget:self action:@selector(onTouchAvatar:) forControlEvents:UIControlEventTouchUpInside];
+    cell.avatarView.userInteractionEnabled = YES;
     return cell;
 }
 
@@ -283,6 +287,12 @@
     }];
     action.backgroundColor = SAMC_COLOR_RED;
     return action;
+}
+
+- (void)onTouchAvatar:(SAMCAvatarImageView *)avatarView
+{
+    SAMCServicerCardViewController *vc = [[SAMCServicerCardViewController alloc] initWithUserId:avatarView.userId];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
