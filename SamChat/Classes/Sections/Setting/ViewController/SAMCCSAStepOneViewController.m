@@ -18,7 +18,6 @@
 @property (nonatomic, strong) UILabel *tipLabel;
 @property (nonatomic, strong) UITextField *companyNameTextField;
 @property (nonatomic, strong) UITextField *serviceCategoryTextField;
-@property (nonatomic, strong) UIButton *skipButton;
 @property (nonatomic, strong) UIButton *nextButton;
 
 @property (nonatomic, strong) NSMutableDictionary *samProsInformation;
@@ -64,7 +63,6 @@
     [self.view addSubview:self.tipLabel];
     [self.view addSubview:self.companyNameTextField];
     [self.view addSubview:self.serviceCategoryTextField];
-    [self.view addSubview:self.skipButton];
     [self.view addSubview:self.nextButton];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_stepperView
@@ -97,18 +95,18 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_stepperView,_tipLabel,_companyNameTextField,_serviceCategoryTextField)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-20-[_skipButton]-10-[_nextButton(==_skipButton)]-20-|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_nextButton]-32-|"
                                                                       options:0
                                                                       metrics:nil
-                                                                        views:NSDictionaryOfVariableBindings(_skipButton,_nextButton)]];
+                                                                        views:NSDictionaryOfVariableBindings(_nextButton)]];
     
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_skipButton
-                                                          attribute:NSLayoutAttributeBottom
-                                                          relatedBy:NSLayoutRelationEqual
-                                                             toItem:_nextButton
-                                                          attribute:NSLayoutAttributeBottom
-                                                         multiplier:1.0f
-                                                           constant:0.0f]];
+    [self.nextButton addConstraint:[NSLayoutConstraint constraintWithItem:_nextButton
+                                                                attribute:NSLayoutAttributeHeight
+                                                                relatedBy:NSLayoutRelationEqual
+                                                                   toItem:nil
+                                                                attribute:NSLayoutAttributeNotAnAttribute
+                                                               multiplier:1.0f
+                                                                 constant:40.0f]];
     self.nextButtonBottomContraint = [NSLayoutConstraint constraintWithItem:_nextButton
                                                                   attribute:NSLayoutAttributeBottom
                                                                   relatedBy:NSLayoutRelationEqual
@@ -132,11 +130,6 @@
 - (void)onCancel
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-}
-
-- (void)onSkip:(id)sender
-{
-    [self pushToNextStepVC];
 }
 
 - (void)onNext:(id)sender
@@ -165,10 +158,8 @@
 - (void)textFieldEditingChanged:(UITextField *)textField
 {
     if ([_companyNameTextField.text length] && [_serviceCategoryTextField.text length]) {
-        _nextButton.backgroundColor = UIColorFromRGB(0x2676B6);
         _nextButton.enabled = YES;
     } else {
-        _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
         _nextButton.enabled = NO;
     }
 }
@@ -273,42 +264,17 @@
     return _serviceCategoryTextField;
 }
 
-- (UIButton *)skipButton
-{
-    if (_skipButton == nil) {
-        _skipButton = [[UIButton alloc] init];
-        _skipButton.translatesAutoresizingMaskIntoConstraints = NO;
-        [_skipButton setTitle:@"Skip" forState:UIControlStateNormal];
-        [_skipButton addConstraint:[NSLayoutConstraint constraintWithItem:_skipButton
-                                                                attribute:NSLayoutAttributeHeight
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:nil
-                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                               multiplier:1.0f
-                                                                 constant:30.0f]];
-        _skipButton.layer.cornerRadius = 15.0f;
-        _skipButton.backgroundColor = UIColorFromRGB(0xA2AEBC);
-        [_skipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        [_skipButton addTarget:self action:@selector(onSkip:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _skipButton;
-}
-
 - (UIButton *)nextButton
 {
     if (_nextButton == nil) {
         _nextButton = [[UIButton alloc] init];
         _nextButton.translatesAutoresizingMaskIntoConstraints = NO;
         [_nextButton setTitle:@"Next" forState:UIControlStateNormal];
-        [_nextButton addConstraint:[NSLayoutConstraint constraintWithItem:_nextButton
-                                                                attribute:NSLayoutAttributeHeight
-                                                                relatedBy:NSLayoutRelationEqual
-                                                                   toItem:nil
-                                                                attribute:NSLayoutAttributeNotAnAttribute
-                                                               multiplier:1.0f
-                                                                 constant:30.0f]];
-        _nextButton.layer.cornerRadius = 15.0f;
-        _nextButton.backgroundColor = UIColorFromRGB(0x88B1D2);
+        _nextButton.layer.cornerRadius = 20.0f;
+        _nextButton.layer.masksToBounds = YES;
+        [_nextButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_lake_active"] forState:UIControlStateNormal];
+        [_nextButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_lake_pressed"] forState:UIControlStateHighlighted];
+        [_nextButton setBackgroundImage:[UIImage imageNamed:@"ico_bkg_lake_inactive"] forState:UIControlStateDisabled];
         [_nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [_nextButton addTarget:self action:@selector(onNext:) forControlEvents:UIControlEventTouchUpInside];
         _nextButton.enabled = NO;

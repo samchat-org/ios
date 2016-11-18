@@ -80,6 +80,10 @@
                                                                       options:0
                                                                       metrics:nil
                                                                         views:NSDictionaryOfVariableBindings(_welcomeLabel,_tipLabel)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-32-[_startButton]-32-|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:NSDictionaryOfVariableBindings(_startButton)]];
     
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_startButton
                                                           attribute:NSLayoutAttributeCenterX
@@ -95,13 +99,6 @@
                                                              attribute:NSLayoutAttributeNotAnAttribute
                                                             multiplier:0.0f
                                                               constant:40.0f]];
-    [_startButton addConstraint:[NSLayoutConstraint constraintWithItem:_startButton
-                                                             attribute:NSLayoutAttributeWidth
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:nil
-                                                             attribute:NSLayoutAttributeNotAnAttribute
-                                                            multiplier:0.0f
-                                                              constant:310.0f]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:_startButton
                                                           attribute:NSLayoutAttributeBottom
                                                           relatedBy:NSLayoutRelationEqual
