@@ -29,8 +29,12 @@
 }
 
 - (NSArray<NSNumber *> *)inputBarItemTypes{
-    return @[@(NIMInputBarItemTypeTextAndRecord),
-             @(NIMInputBarItemTypeMore)];
+    return @[
+      @(NIMInputBarItemTypeVoice),
+      @(NIMInputBarItemTypeTextAndRecord),
+//      @(NIMInputBarItemTypeEmoticon),
+      @(NIMInputBarItemTypeMore),
+      ];
 }
 
 - (NSArray *)mediaItems
@@ -55,10 +59,10 @@
                   selectedImage:[UIImage imageNamed:@"btn_media_telphone_message_pressed"]
                           title:@"Audio Call"],
              
-             [NIMMediaItem item:NTESMediaButtonVideoChat
-                    normalImage:[UIImage imageNamed:@"btn_bk_media_video_chat_normal"]
-                  selectedImage:[UIImage imageNamed:@"btn_bk_media_video_chat_pressed"]
-                          title:@"Video Call"],
+//             [NIMMediaItem item:NTESMediaButtonVideoChat
+//                    normalImage:[UIImage imageNamed:@"btn_bk_media_video_chat_normal"]
+//                  selectedImage:[UIImage imageNamed:@"btn_bk_media_video_chat_pressed"]
+//                          title:@"Video Call"],
              
              [NIMMediaItem item:NTESMediaButtonFileTrans
                     normalImage:[UIImage imageNamed:@"icon_file_trans_normal"]
