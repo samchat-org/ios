@@ -13,7 +13,7 @@
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
 #import "SAMCTextField.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 
 @interface SAMCEditCellPhoneViewController ()
 

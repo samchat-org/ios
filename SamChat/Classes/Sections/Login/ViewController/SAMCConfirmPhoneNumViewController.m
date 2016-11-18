@@ -15,7 +15,7 @@
 #import "SVProgressHUD.h"
 #import "UIButton+SAMC.h"
 #import "SAMCStepperView.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 
 #define SAMC_SEND_CONFIRMATION_CODE @"Send Confirmation Code"
 

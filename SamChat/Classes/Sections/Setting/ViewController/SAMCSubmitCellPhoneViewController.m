@@ -11,7 +11,7 @@
 #import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 
 @interface SAMCSubmitCellPhoneViewController ()
 

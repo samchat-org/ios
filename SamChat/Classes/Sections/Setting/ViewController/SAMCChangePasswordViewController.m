@@ -8,7 +8,7 @@
 
 #import "SAMCChangePasswordViewController.h"
 #import "SAMCPadImageView.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 #import "SAMCSettingManager.h"
 #import "UIView+Toast.h"
 #import "SVProgressHUD.h"

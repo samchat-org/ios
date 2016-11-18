@@ -19,7 +19,7 @@
 #import "SAMCPadImageView.h"
 #import "SAMCStepperView.h"
 #import "SAMCWebViewController.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 
 @interface SAMCSetPasswordViewController ()
 

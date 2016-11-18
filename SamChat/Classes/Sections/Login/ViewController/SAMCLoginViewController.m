@@ -14,7 +14,7 @@
 #import "UIView+Toast.h"
 #import "SAMCAccountManager.h"
 #import "SAMCGradientButton.h"
-#import "NSString+SAMCValidation.h"
+#import "NSString+SAMC.h"
 
 @interface SAMCLoginViewController ()
 
