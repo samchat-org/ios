@@ -136,7 +136,11 @@ NIMUserManagerDelegate>
     if ([self.sessionConfig respondsToSelector:@selector(showTimeInterval)]) {
         showTimestampInterval = [self.sessionConfig showTimestampInterval];
     }
-    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:[_samcSession nimSession] dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
+    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:[_samcSession nimSession]
+                                                                   spMode:(_samcSession.sessionMode==SAMCUserModeTypeSP)
+                                                             dataProvider:dataProvider
+                                                         showTimeInterval:showTimestampInterval
+                                                                    limit:limit];
     _sessionDatasource.sessionConfig = [self sessionConfig];
     [self.conversationManager markAllMessagesReadInSession:_samcSession];
     
@@ -651,7 +655,7 @@ NIMUserManagerDelegate>
         if (![self isCurrentModeMessage:message]) {
             continue;
         }
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:(_samcSession.sessionMode==SAMCUserModeTypeSP)];
         [self layoutConfig:model];
         [models addObject:model];
     }
@@ -820,7 +824,7 @@ NIMUserManagerDelegate>
 - (NIMMessageModel *)makeModel:(NIMMessage *)message{
     NIMMessageModel *model = [self findModel:message];
     if (!model) {
-        model = [[NIMMessageModel alloc] initWithMessage:message];
+        model = [[NIMMessageModel alloc] initWithMessage:message spMode:(_samcSession.sessionMode==SAMCUserModeTypeSP)];
     }
     [self layoutConfig:model];
     return model;
@@ -904,7 +908,7 @@ NIMUserManagerDelegate>
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for (NIMMessage *message in insert)
     {
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:(_samcSession.sessionMode==SAMCUserModeTypeSP)];
         [self layoutConfig:model];
         [models addObject:model];
     }

@@ -58,7 +58,7 @@
     if (self.model.message.session.sessionType == NIMSessionTypeChatroom) {
         return nil;
     }
-    return [super chatBubbleImageForState:state outgoing:outgoing];
+    return [super chatBubbleImageForState:state outgoing:outgoing spMode:self.model.isSPMode];
 }
 
 

@@ -56,7 +56,9 @@
     _progressView.frame   = self.bounds;
     
     CALayer *maskLayer = [CALayer layer];
-    maskLayer.cornerRadius = 13.0;
+    //SAMC_BEGIN
+    maskLayer.cornerRadius = 13.0-5.0;
+    //SAMC_EDN
     maskLayer.backgroundColor = [UIColor blackColor].CGColor;
     maskLayer.frame = self.imageView.bounds;
     self.imageView.layer.mask = maskLayer;

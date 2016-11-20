@@ -29,7 +29,9 @@
         _imageView  = [[UIImageView alloc] initWithImage:image];
         
         CALayer *maskLayer = [CALayer layer];
-        maskLayer.cornerRadius = 13.0;
+        // SAMC_BEGIN
+        maskLayer.cornerRadius = 13.0-5.0;
+        // SAMC_END
         maskLayer.backgroundColor = [UIColor blackColor].CGColor;
         maskLayer.frame = _imageView.bounds;
         _imageView.layer.mask = maskLayer;

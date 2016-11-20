@@ -608,7 +608,7 @@ UITableViewDelegate>
 {
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages) {
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:_publicSession.isOutgoing];
         [self layoutConfig:model];
         [models addObject:model];
     }
@@ -650,7 +650,7 @@ UITableViewDelegate>
 {
     NIMMessageModel *model = [self findModel:message];
     if (!model) {
-        model = [[NIMMessageModel alloc] initWithMessage:message];
+        model = [[NIMMessageModel alloc] initWithMessage:message spMode:_publicSession.isOutgoing];
         model.shouldShowReadLabel = NO;
     }
     [self layoutConfig:model];

@@ -134,7 +134,7 @@
 
 - (UIEdgeInsets)contentViewInsets:(NIMMessage *)message
 {
-    return message.isOutgoingMsg ? UIEdgeInsetsMake(3,3,3,8) : UIEdgeInsetsMake(3,8,3,3);
+    return message.isOutgoingMsg ? UIEdgeInsetsMake(3-1,3-1,3-1,8+5) : UIEdgeInsetsMake(3-1,8+5,3-1,3-1);
 }
 
 @end

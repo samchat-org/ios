@@ -105,7 +105,9 @@
     self.progressView.nim_left   = fileTransMessageProgressLeft;
     
     CALayer *maskLayer = [CALayer layer];
-    maskLayer.cornerRadius = 13.0;
+    // SAMC_BEGIN
+    maskLayer.cornerRadius = 13.0-5.0;
+    // SAMC_END
     maskLayer.backgroundColor = [UIColor blackColor].CGColor;
     maskLayer.frame = self.bkgView.bounds;
     self.bkgView.layer.mask = maskLayer;

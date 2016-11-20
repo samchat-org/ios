@@ -71,6 +71,9 @@ typedef NS_ENUM(NSInteger,NIMKitBubbleType){
  *  @param outgoing 是否是发出去的消息
  *
  */
-- (UIImage *)chatBubbleImageForState:(UIControlState)state outgoing:(BOOL)outgoing;
+// SAMC_BEGIN
+//- (UIImage *)chatBubbleImageForState:(UIControlState)state outgoing:(BOOL)outgoing;
+- (UIImage *)chatBubbleImageForState:(UIControlState)state outgoing:(BOOL)outgoing spMode:(BOOL)spMode;
+// SAMC_END
 
 @end

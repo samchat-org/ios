@@ -21,6 +21,7 @@
 @interface NIMSessionMsgDatasource : NSObject
 
 - (instancetype)initWithSession:(NIMSession*)session
+                         spMode:(BOOL)spMode
                    dataProvider:(id<NIMKitMessageProvider>)dataProvider
                showTimeInterval:(NSTimeInterval)timeInterval
                           limit:(NSInteger)limit;
@@ -32,6 +33,9 @@
 @property (nonatomic, weak) id<NIMSessionMsgDatasourceDelegate> delegate;
 @property (nonatomic, weak) id<NIMSessionConfig> sessionConfig;
 
+// SAMC_BEGIN
+@property (nonatomic, readonly) BOOL isSPMode;
+// SAMC_END
 
 - (NSInteger)indexAtModelArray:(NIMMessageModel*)model;
 

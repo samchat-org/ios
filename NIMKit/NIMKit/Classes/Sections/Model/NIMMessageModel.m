@@ -25,11 +25,15 @@
 @synthesize avatarMargin       = _avatarMargin;
 @synthesize nickNameMargin     = _nickNameMargin;
 
-- (instancetype)initWithMessage:(NIMMessage*)message
+// SAMC_BEGIN
+//- (instancetype)initWithMessage:(NIMMessage*)message
+- (instancetype)initWithMessage:(NIMMessage *)message spMode:(BOOL)spMode;
+// SAMC_END
 {
     if (self = [self init])
     {
         _message = message;
+        _isSPMode = spMode;
     }
     return self;
 }

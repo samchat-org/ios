@@ -60,7 +60,7 @@
     _progressView.frame   = self.bounds;
     
     CALayer *maskLayer = [CALayer layer];
-    maskLayer.cornerRadius = 13.0;
+    maskLayer.cornerRadius = 13.0-5.0;
     maskLayer.backgroundColor = [UIColor blackColor].CGColor;
     maskLayer.frame = self.imageView.bounds;
     self.imageView.layer.mask = maskLayer;

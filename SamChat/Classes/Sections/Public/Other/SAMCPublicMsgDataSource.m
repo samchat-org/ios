@@ -198,7 +198,7 @@
 
 #pragma mark - private methods
 - (void)insertMessage:(NIMMessage *)message{
-    NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+    NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:_currentSession.isOutgoing];
     if ([self modelIsExist:model]) {
         return;
     }
@@ -256,7 +256,7 @@
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages) {
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:_currentSession.isOutgoing];
         [array addObject:model];
     }
     return array;

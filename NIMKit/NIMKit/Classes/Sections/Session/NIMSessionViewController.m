@@ -137,7 +137,14 @@ NIMUserManagerDelegate>
     if ([self.sessionConfig respondsToSelector:@selector(showTimeInterval)]) {
         showTimestampInterval = [self.sessionConfig showTimestampInterval];
     }
-    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:_session dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
+    // SAMC_BEGIN
+//    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:_session dataProvider:dataProvider showTimeInterval:showTimestampInterval limit:limit];
+    _sessionDatasource = [[NIMSessionMsgDatasource alloc] initWithSession:_session
+                                                                   spMode:NO
+                                                             dataProvider:dataProvider
+                                                         showTimeInterval:showTimestampInterval
+                                                                    limit:limit];
+    // SAMC_END
     _sessionDatasource.sessionConfig = [self sessionConfig];
     [self.conversationManager markAllMessagesReadInSession:_session];
     
@@ -638,7 +645,10 @@ NIMUserManagerDelegate>
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for (NIMMessage *message in messages)
     {
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        // SAMC_BEGIN
+//        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:NO];
+        // SAMC_END
         [self layoutConfig:model];
         [models addObject:model];
     }
@@ -807,7 +817,10 @@ NIMUserManagerDelegate>
 - (NIMMessageModel *)makeModel:(NIMMessage *)message{
     NIMMessageModel *model = [self findModel:message];
     if (!model) {
-        model = [[NIMMessageModel alloc] initWithMessage:message];
+        // SAMC_BEGIN
+//        model = [[NIMMessageModel alloc] initWithMessage:message];
+        model = [[NIMMessageModel alloc] initWithMessage:message spMode:NO];
+        // SAMC_END
     }
     [self layoutConfig:model];
     return model;
@@ -892,7 +905,10 @@ NIMUserManagerDelegate>
     NSMutableArray *models = [[NSMutableArray alloc] init];
     for (NIMMessage *message in insert)
     {
-        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        // SAMC_BEGIN
+//        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message];
+        NIMMessageModel *model = [[NIMMessageModel alloc] initWithMessage:message spMode:NO];
+        // SAMC_END
         [self layoutConfig:model];
         [models addObject:model];
     }

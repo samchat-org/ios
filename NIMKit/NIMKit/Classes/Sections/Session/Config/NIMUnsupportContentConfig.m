@@ -31,8 +31,10 @@
 
 - (UIEdgeInsets)contentViewInsets
 {
-    return self.message.isOutgoingMsg ?
-    UIEdgeInsetsMake(11.f,11.f,9.f,15.f) : UIEdgeInsetsMake(11.f, 15.f, 9.f, 9.f);
+    // SAMC_BEGIN
+//    return self.message.isOutgoingMsg ? UIEdgeInsetsMake(11.f,11.f,9.f,15.f) : UIEdgeInsetsMake(11.f, 15.f, 9.f, 9.f);
+    return self.message.isOutgoingMsg ? UIEdgeInsetsMake(11.f,11.f,9.f,15+5.f) : UIEdgeInsetsMake(11.f, 15+5.f, 9.f, 9.f);
+    // SAMC_END
 }
 
 @end
